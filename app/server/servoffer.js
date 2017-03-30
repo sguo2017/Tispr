@@ -59,6 +59,7 @@ class FirstPageComponent extends Component {
     }
 
     clickJump() {
+        console.log("push page 2!!!")
         const { navigator } = this.props;
         if (navigator) {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
@@ -77,7 +78,7 @@ class FirstPageComponent extends Component {
             <View style={{ flex: 1 }}>
                 <Header
                     title='Sell a service'
-                    leftIcon={require('../resource/t_header_arrow_left.png')}
+                    leftIcon = {require('../resource/t_header_arrow_left.png')}
                 />
 
                 <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />
@@ -130,6 +131,7 @@ class SecondPageComponent extends Component {
     }
 
     clickJump() {
+        console.log("back 1");
         const { navigator } = this.props;
         if (navigator) {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
@@ -143,12 +145,25 @@ class SecondPageComponent extends Component {
         }
     }
 
+    _onBack = () => {
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.pop({
+                params: {
+                    serv_title: this.state.serv_title,
+                    serv_desc: this.state.serv_desc,
+                }
+            });
+        }
+    }
+
     render() {
         return (
             <View style={{ flex: 1 }}>
                 <Header
                     title='Sell a service'
-                    leftIcon={require('../resource/t_header_arrow_left.png')}
+                    leftIcon={require('../resource/t_header_arrow_left.png')}                                     
+                    leftIconAction = {this._onBack}
                 />
 
                 <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />
@@ -189,15 +204,15 @@ class ThirdPageComponent extends Component {
         super(props);
 
         this.state = {
-                    serv_title: this.props.serv_title,
-                    serv_desc: this.props.serv_desc,
+            serv_title: this.props.serv_title,
+            serv_desc: this.props.serv_desc,
         }
     }
 
     componentDidMount() {
         this.setState({
-                    serv_title: this.props.serv_title,
-                    serv_desc: this.props.serv_desc,
+            serv_title: this.props.serv_title,
+            serv_desc: this.props.serv_desc,
         });
     }
 
@@ -215,12 +230,25 @@ class ThirdPageComponent extends Component {
         }
     }
 
+    _onBack = () => {
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.pop({
+                params: {
+                    serv_title: this.state.serv_title,
+                    serv_desc: this.state.serv_desc,
+                }
+            });
+        }
+    }
+
     render() {
         return (
             <View style={{ flex: 1 }}>
                 <Header
                     title='Sell a service'
                     leftIcon={require('../resource/t_header_arrow_left.png')}
+                    leftIconAction = {this._onBack}
                 />
 
                 <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />
@@ -259,8 +287,8 @@ class ForthPageComponent extends Component {
         super(props);
 
         this.state = {
-                    serv_title: this.props.serv_title,
-                    serv_desc: this.props.serv_desc,
+            serv_title: this.props.serv_title,
+            serv_desc: this.props.serv_desc,
             serv_imges: this.props.serv_imges,
             errors: this.props.errors,
             fileName: this.props.fileName,
@@ -287,6 +315,18 @@ class ForthPageComponent extends Component {
             navigator.pop();　　//navigator.pop 使用当前页面出栈, 显示上一个栈内页面.
         }
     }
+
+    _onBack = () => {
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.pop({
+                params: {
+                    serv_title: this.state.serv_title,
+                    serv_desc: this.state.serv_desc,
+                }
+            });
+        }
+    }    
 
     selectPhotoTapped() {
         const options = {
@@ -337,62 +377,89 @@ class ForthPageComponent extends Component {
                     imgBase64: temp,
                     fileName: fName
                 });
+
+                this.uploadImage();
+
             }
         });
     }
 
-async onServOfferPres() {
-    this.setState({showProgress: true})
-    try {
-        
-      
-      let response = await fetch('http://123.56.157.233:3000/serv_offers', {
-                              method: 'POST',
-                              headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json',
-                              },
-                              body:JSON.stringify({
-                                    serv_offer:{
-                                      serv_title: this.state.serv_title,
-                                      serv_desc: this.state.serv_desc,
-                                      serv_imges: this.state.serv_imges,
-                                    }
-                                  })
-                            });
+    async onServOfferPres() {
+        this.setState({ showProgress: true })
+        try {
+            let response = await fetch('http://123.56.157.233:3000/serv_offers', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    serv_offer: {
+                        serv_title: this.state.serv_title,
+                        serv_desc: this.state.serv_desc,
+                        serv_imges: this.state.serv_imges,
+                    }
+                })
+            });
 
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                Alert.alert(
+                    '提示',
+                    '成功',
+                    [
+                        { text: '服务发布成功', onPress: () => console.log('确定') },
+                    ]
+                )
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            this.setState({ error: error });
+            console.log("error " + error);
+            this.setState({ showProgress: false });
 
-      let res = await response.text();
-      if (response.status >= 200 && response.status < 300) {
-          //Handle success
-          let accessToken = res;
-          console.log(accessToken);
-
-         Alert.alert(
-                '提示',
-                '上传成功',
-                [
-                  {text: '服务发布成功', onPress: () => console.log('确定')},
-                ]
-              )
-      } else {
-          //Handle error
-          let error = res;
-          throw error;
-      }
-    } catch(error) {
-        this.setState({error: error});
-        console.log("error " + error);
-        this.setState({showProgress: false});
+        }
     }
-  }
+
+uploadImage(){  
+  let formData = new FormData();  
+  let url = "http://localhost:8080/FastDFSWeb/servlet/imageUploadServlet";
+  console.log("uri:"+this.state.avatarSource.uri+" name:"+this.state.fileName)
+  let file = {uri: this.state.avatarSource.uri, type: 'multipart/form-data', name: this.state.fileName};  
+  
+  formData.append("images",file);  
+  
+  fetch(url,{  
+    method:'POST',  
+    mode: "cors", 
+    headers:{  
+        'Content-Type':'multipart/form-data',  
+    },  
+    body:formData,  
+  })  
+  .then((response) => response.text() )  
+  .then((responseData)=>{    
+    console.log('responseData',responseData);  
+    this.setState({
+          serv_imges: JSON.parse(responseData).images
+        });
+    
+    console.log('this.state.serv_imges：',this.state.serv_imges);  
+    
+  })  
+  .catch((error)=>{console.error('error',error)});  
+  
+}  
 
     render() {
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    title='Sell a service'
+                    title='Confrimation'
                     leftIcon={require('../resource/t_header_arrow_left.png')}
+                    leftIconAction = {this._onBack}
                 />
 
                 <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />
