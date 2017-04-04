@@ -29,14 +29,14 @@ export default class ServOfferDelivory extends Component {
 
         this.state = {
             serv_title: this.props.serv_title,
-            serv_desc: this.props.serv_desc,
+            serv_detail: this.props.serv_detail,
         }
     }
 
     componentDidMount() {
         this.setState({
             serv_title: this.props.serv_title,
-            serv_desc: this.props.serv_desc,
+            serv_detail: this.props.serv_detail,
         });
     }
 
@@ -48,7 +48,7 @@ export default class ServOfferDelivory extends Component {
                 component: ServOfferConfirm,
                 params: {
                     serv_title: this.state.serv_title,
-                    serv_desc: this.state.serv_desc,
+                    serv_detail: this.state.serv_detail,
                 }
             });
         }
@@ -60,7 +60,7 @@ export default class ServOfferDelivory extends Component {
             navigator.pop({
                 params: {
                     serv_title: this.state.serv_title,
-                    serv_desc: this.state.serv_desc,
+                    serv_detail: this.state.serv_detail,
                 }
             });
         }

@@ -29,14 +29,14 @@ export default class ServOfferDetail extends Component {
 
         this.state = {
             serv_title: this.props.serv_title,
-            serv_desc: this.props.serv_desc,
+            serv_detail: this.props.serv_detail,
         }
     }
 
     componentDidMount() {
         this.setState({
             serv_title: this.props.serv_title,
-            serv_desc: this.props.serv_desc,
+            serv_detail: this.props.serv_detail,
         });
     }
 
@@ -49,7 +49,7 @@ export default class ServOfferDetail extends Component {
                 component: ServOfferDelivory,
                 params: {
                     serv_title: this.state.serv_title,
-                    serv_desc: this.state.serv_desc,
+                    serv_detail: this.state.serv_detail,
                 }
             });
         }
@@ -61,7 +61,7 @@ export default class ServOfferDetail extends Component {
             navigator.pop({
                 params: {
                     serv_title: this.state.serv_title,
-                    serv_desc: this.state.serv_desc,
+                    serv_detail: this.state.serv_detail,
                 }
             });
         }
@@ -90,7 +90,7 @@ export default class ServOfferDetail extends Component {
                 <UselessTextInput
                     multiline={true}
                     numberOfLines={3}
-                    onChangeText={(val) => this.setState({ serv_desc: val })}
+                    onChangeText={(val) => this.setState({ serv_detail: val })}
                 />
 
                 <View style={{ alignItems: 'center', flexDirection: 'row' }}>

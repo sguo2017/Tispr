@@ -15,6 +15,7 @@ let colors = {
 
 let storeKeys = {
     SEARCH_HISTORY_KEY: 'SEARCH_HISTORY_KEY',
+    ACCESS_TOKEN_TISPR: 'ACCESS_TOKEN_TISPR',
 }
 
 let mapper = {

@@ -19,6 +19,8 @@ import { observable, computed, action, runInAction } from 'mobx';
 import ImagePicker from 'react-native-image-picker';
 import Header from '../../components/HomeNavigation';
 import UselessTextInput from '../../components/UselessTextInput';
+import Constant from '../../common/constants';
+import UserDefaults from '../../common/UserDefaults';
 
 @observer
 export default class ServOfferConfirm extends Component {
@@ -28,7 +30,7 @@ export default class ServOfferConfirm extends Component {
 
         this.state = {
             serv_title: this.props.serv_title,
-            serv_desc: this.props.serv_desc,
+            serv_detail: this.props.serv_detail,
             serv_imges: this.props.serv_imges,
             errors: this.props.errors,
             fileName: this.props.fileName,
@@ -40,7 +42,7 @@ export default class ServOfferConfirm extends Component {
     componentDidMount() {
         this.setState({
             serv_title: this.props.serv_title,
-            serv_desc: this.props.serv_desc,
+            serv_detail: this.props.serv_detail,
             serv_imges: this.props.serv_imges,
             errors: this.props.errors,
             fileName: this.props.fileName,
@@ -62,7 +64,7 @@ export default class ServOfferConfirm extends Component {
             navigator.pop({
                 params: {
                     serv_title: this.state.serv_title,
-                    serv_desc: this.state.serv_desc,
+                    serv_detail: this.state.serv_detail,
                 }
             });
         }
@@ -127,7 +129,11 @@ export default class ServOfferConfirm extends Component {
     async onServOfferPres() {
         this.setState({ showProgress: true })
         try {
-            let response = await fetch('http://123.56.157.233:3000/serv_offers', {
+            let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
+            console.log("79 accessToken:" + JSON.stringify(t));
+            let url = 'http://123.56.157.233:3000/serv_offers?token=' + t;
+            console.log("url:"+url);
+            let response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -136,7 +142,7 @@ export default class ServOfferConfirm extends Component {
                 body: JSON.stringify({
                     serv_offer: {
                         serv_title: this.state.serv_title,
-                        serv_desc: this.state.serv_desc,
+                        serv_detail: this.state.serv_detail,
                         serv_imges: this.state.serv_imges,
                     }
                 })
@@ -217,7 +223,7 @@ uploadImage(){
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_heart.png')} />
                     <Text style={{ color: "#a8a6b9" }}>I will</Text>
-                    <Text style={{ color: "#000000" }}>{this.state.serv_desc}</Text>
+                    <Text style={{ color: "#000000" }}>{this.state.serv_detail}</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
