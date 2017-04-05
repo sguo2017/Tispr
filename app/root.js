@@ -9,7 +9,6 @@ import store from './store/store';
 import Constants from './common/constants';
 import NetInfoDecorator from './common/NetInfoDecorator'
 import App from './containers/app';
-import ServOffer from './server/servoffer'
 global.Common = Constants;
 
 @NetInfoDecorator
@@ -47,7 +46,7 @@ export default class Root extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <Provider store={store}>
-                    <ServOffer />
+                    <App />
                 </Provider>
                 <Animated.View style={[styles.netInfoView, {top: positionY}]}>
                     <Text style={styles.netInfoPrompt}>网络异常，请检查网络稍后重试~</Text>

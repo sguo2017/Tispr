@@ -13,7 +13,7 @@ import Profile from '../pages/profile/Profile'
 import TabBar from '../components/TabBar'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import Bussiness from '../pages/buzz/Bussiness';
-import ServOffer from '../server/servoffer'
+import Server from '../server/index'
 
 const tabTitles = ['Buzz', 'Explore', '', 'Me', 'Chats']
 const tabIcons = [
@@ -54,9 +54,10 @@ export default class TabBarView extends PureComponent {
             >
                 <Bussiness tabLabel="Buzz" navigator={this.props.navigator}/>
                 <Feed tabLabel="Home" navigator={this.props.navigator}/>
+                <Server tabLabel="Server" navigator={this.props.navigator}/>
                 <FoodEncyclopedia tabLabel="Profile" navigator={this.props.navigator}/>
                 <Profile tabLabel="Home" navigator={this.props.navigator}/>
-                <ServOffer tabLabel="ServOffer" navigator={this.props.navigator}/>
+                
             </ScrollableTabView>
         )
     }
