@@ -15,6 +15,7 @@ import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 import TabBarView from '../containers/TabBarView';
 
+
 export default class Login extends Component {
 
   _navigate(routeName) {
@@ -56,8 +57,8 @@ export default class Login extends Component {
     UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
     this.setState({ showProgress: true })
     try {
-      console.log("state:" + JSON.stringify(this.state));
-      let response = await fetch('http://123.56.157.233:3000/users/sign_in', {
+      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_LOGIN;
+      let response = await fetch(url, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

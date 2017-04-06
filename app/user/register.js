@@ -50,7 +50,8 @@ export default class Register extends Component {
     this.setState({ showProgress: true })
     try {
       console.log("state:" + JSON.stringify(this.state));
-      let response = await fetch('http://123.56.157.233:3000/users.json', {
+      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_REGI;
+      let response = await fetch(url, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

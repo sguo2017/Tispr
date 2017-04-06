@@ -130,8 +130,7 @@ export default class ServOfferConfirm extends Component {
         this.setState({ showProgress: true })
         try {
             let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
-            console.log("79 accessToken:" + JSON.stringify(t));
-            let url = 'http://123.56.157.233:3000/serv_offers?token=' + t;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_ADD + t;
             console.log("url:"+url);
             let response = await fetch(url, {
                 method: 'POST',
@@ -171,8 +170,9 @@ export default class ServOfferConfirm extends Component {
 
 uploadImage(){  
   let formData = new FormData();  
-  let url = "http://localhost:8080/FastDFSWeb/servlet/imageUploadServlet";
-  console.log("uri:"+this.state.avatarSource.uri+" name:"+this.state.fileName)
+  let url = 'http://' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.IMG_SERV_PORT + Constant.url.SERV_API_IMG_UPLOAD_SERVLET;
+  console.log("url:"+url);    
+  //console.log("uri:"+this.state.avatarSource.uri+" name:"+this.state.fileName)
   let file = {uri: this.state.avatarSource.uri, type: 'multipart/form-data', name: this.state.fileName};  
   
   formData.append("images",file);  
