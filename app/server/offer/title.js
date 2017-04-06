@@ -30,10 +30,21 @@ export default class ServOfferTitle extends Component {
         this.state = {
             serv_title: this.props.serv_title,
             serv_detail: this.props.serv_detail,
+            detail_length: this.props.detail_length,
         }
     }
 
     clickJump() {
+        if(this.state.detail_length<10){
+            Alert.alert(
+                    '提示',
+                    '请输入不少于10个字符',
+                    [
+                        { text: '继续输入', onPress: () => console.log('确定') },
+                    ]
+                )
+            return;
+        }
         console.log("push page 2!!!")
         const { navigator } = this.props;
         if (navigator) {
@@ -82,12 +93,12 @@ export default class ServOfferTitle extends Component {
                 <UselessTextInput
                     multiline={true}
                     numberOfLines={3}
-                    onChangeText={(val) => this.setState({ serv_title: val })}
+                    onChangeText={(val) => this.setState({ serv_title: val, detail_length: val.length })}
                 />
 
                 <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                     <Text style={{ color: "#a8a6b9" }}>min.15 characters</Text>
-                    <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>62</Text>
+                    <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.detail_length}</Text>
                 </View>
 
                 <TouchableHighlight style={{ backgroundColor: '#81d49c', marginTop: 20, alignSelf: 'stretch' }} onPress={this.clickJump.bind(this)}>
