@@ -19,14 +19,14 @@ let storeKeys = {
 }
 let url = {
      SERV_API_ADDR: "123.56.157.233",
-     SERV_API_PORT: "8082",
+     SERV_API_PORT: "3000",
      IMG_SERV_ADDR: "123.56.157.233",
      IMG_SERV_PORT: "9090",
      //////////////////<<<<   API接口  >>>>>//////////////////////////////
      SERV_API_USER_LOGIN: "/users/sign_in",//登录接口
      SERV_API_USER_REGI: "/users.json", //注册接口
      SERV_API_IMG_UPLOAD_SERVLET: "/FastDFSWeb/servlet/imageUploadServlet",//图片上传接口
-     SERV_API_SERV_OFFER_ADD: "/serv_offers?token=",//服务提供的新增接口
+     SERV_API_SERV_OFFER_ADD: "/api/serv/serv_offers?token=",//服务提供的新增接口
 
 }
 
