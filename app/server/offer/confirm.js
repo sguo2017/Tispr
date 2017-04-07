@@ -243,11 +243,71 @@ uploadImage(){
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_img.png')} />
                     <Text style={{ color: "#a8a6b9" }}>Add photos or documents</Text>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                    {/*<TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 20 }]}>
                             {
                                 this.state.avatarSource === null ? <Text>选择图片</Text> :
                                     <Image style={styles.avatar} source={this.state.avatarSource} />
+                            }
+                        </View>
+                    </TouchableOpacity>*/}
+                </View>
+
+                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 5 }}>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                            {
+                                 this.state.avatarSource === null ? 
+                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
+                                 <Image style={styles.avatar} source={this.state.avatarSource} />
+                            }
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                            {
+                                 this.state.avatarSource === null ? 
+                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
+                                 <Image style={styles.avatar} source={this.state.avatarSource} />
+                            }
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                            {
+                                 this.state.avatarSource === null ? 
+                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
+                                 <Image style={styles.avatar} source={this.state.avatarSource} />
+                            }
+                        </View>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 5 }}>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                            {
+                                 this.state.avatarSource === null ? 
+                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
+                                 <Image style={styles.avatar} source={this.state.avatarSource} />
+                            }
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                            {
+                                 this.state.avatarSource === null ? 
+                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
+                                 <Image style={styles.avatar} source={this.state.avatarSource} />
+                            }
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                            {
+                                 this.state.avatarSource === null ? 
+                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
+                                 <Image style={styles.avatar} source={this.state.avatarSource} />
                             }
                         </View>
                     </TouchableOpacity>
@@ -276,8 +336,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     avatar: {
-        borderRadius: 75,
-        width: 150,
-        height: 150
+        // borderRadius: 75,
+        width: 100,
+        height: 100
     }
 })
