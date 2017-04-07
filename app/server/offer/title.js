@@ -35,7 +35,7 @@ export default class ServOfferTitle extends Component {
     }
 
     clickJump() {
-        if(this.state.detail_length<10){
+        if(undefined === this.state.serv_title || this.state.detail_length<10){
             Alert.alert(
                     '提示',
                     '请输入不少于10个字符',
