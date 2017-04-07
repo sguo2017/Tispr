@@ -21,6 +21,7 @@ import Header from '../../components/HomeNavigation';
 import UselessTextInput from '../../components/UselessTextInput';
 import Constant from '../../common/constants';
 import UserDefaults from '../../common/UserDefaults';
+import TabBarView from '../../containers/TabBarView';
 
 @observer
 export default class ServOfferConfirm extends Component {
@@ -54,7 +55,14 @@ export default class ServOfferConfirm extends Component {
     clickJump() {
         const { navigator } = this.props;
         if (navigator) {
-            navigator.pop();　　//navigator.pop 使用当前页面出栈, 显示上一个栈内页面.
+            navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+                name: "TabBarView",
+                component: TabBarView,
+                params: {
+                    //serv_title: this.state.serv_title,
+                    //serv_detail: this.state.serv_detail,
+                }
+            });
         }
     }
 
@@ -149,13 +157,14 @@ export default class ServOfferConfirm extends Component {
 
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
+                //console.log("line:153");
                 Alert.alert(
                     '提示',
                     '成功',
                     [
                         { text: '服务发布成功', onPress: () => console.log('确定') },
                     ]
-                )
+                ) 
             } else {
                 let error = res;
                 throw error;
@@ -166,13 +175,13 @@ export default class ServOfferConfirm extends Component {
             this.setState({ showProgress: false });
 
         }
+        this.clickJump();
     }
 
 uploadImage(){  
   let formData = new FormData();  
   let url = 'http://' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.IMG_SERV_PORT + Constant.url.SERV_API_IMG_UPLOAD_SERVLET;
   console.log("url:"+url);    
-  //console.log("uri:"+this.state.avatarSource.uri+" name:"+this.state.fileName)
   let file = {uri: this.state.avatarSource.uri, type: 'multipart/form-data', name: this.state.fileName};  
   
   formData.append("images",file);  
