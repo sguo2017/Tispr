@@ -21,7 +21,6 @@ import Header from '../../components/HomeNavigation';
 import UselessTextInput from '../../components/UselessTextInput';
 import Constant from '../../common/constants';
 import UserDefaults from '../../common/UserDefaults';
-import TabBarView from '../../containers/TabBarView';
 
 @observer
 export default class ServOfferConfirm extends Component {
@@ -55,14 +54,7 @@ export default class ServOfferConfirm extends Component {
     clickJump() {
         const { navigator } = this.props;
         if (navigator) {
-            navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
-                name: "TabBarView",
-                component: TabBarView,
-                params: {
-                    //serv_title: this.state.serv_title,
-                    //serv_detail: this.state.serv_detail,
-                }
-            });
+            navigator.pop();　　//navigator.pop 使用当前页面出栈, 显示上一个栈内页面.
         }
     }
 
@@ -138,7 +130,9 @@ export default class ServOfferConfirm extends Component {
         this.setState({ showProgress: true })
         try {
             let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
+            console.log("79 accessToken:" + JSON.stringify(t));
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_ADD + t;
+            //let url = 'http://123.56.157.233:8081/serv_offers?token=' + t;
             console.log("url:"+url);
             let response = await fetch(url, {
                 method: 'POST',
@@ -157,14 +151,13 @@ export default class ServOfferConfirm extends Component {
 
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
-                //console.log("line:153");
                 Alert.alert(
                     '提示',
                     '成功',
                     [
                         { text: '服务发布成功', onPress: () => console.log('确定') },
                     ]
-                ) 
+                )
             } else {
                 let error = res;
                 throw error;
@@ -175,13 +168,14 @@ export default class ServOfferConfirm extends Component {
             this.setState({ showProgress: false });
 
         }
-        this.clickJump();
+        
     }
 
 uploadImage(){  
   let formData = new FormData();  
   let url = 'http://' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.IMG_SERV_PORT + Constant.url.SERV_API_IMG_UPLOAD_SERVLET;
-  console.log("url:"+url);    
+  //let url = "http://123.56.157.233:9090/FastDFSWeb/servlet/imageUploadServlet";
+  console.log("uri:"+this.state.avatarSource.uri+" name:"+this.state.fileName)
   let file = {uri: this.state.avatarSource.uri, type: 'multipart/form-data', name: this.state.fileName};  
   
   formData.append("images",file);  
@@ -244,8 +238,35 @@ uploadImage(){
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_img.png')} />
                     <Text style={{ color: "#a8a6b9" }}>Add photos or documents</Text>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                    {/*<TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 20 }]}>
+                            {
+                                this.state.avatarSource === null ? <Text>选择图片</Text> :
+                                    <Image style={styles.avatar} source={this.state.avatarSource} />
+                            }
+                        </View>
+                    </TouchableOpacity>*/}
+                </View>
+
+                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 5 }}>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 }]}>
+                            {
+                                this.state.avatarSource === null ? <Text>选择图片</Text> :
+                                    <Image style={styles.avatar} source={this.state.avatarSource} />
+                            }
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 }]}>
+                            {
+                                this.state.avatarSource === null ? <Text>选择图片</Text> :
+                                    <Image style={styles.avatar} source={this.state.avatarSource} />
+                            }
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 }]}>
                             {
                                 this.state.avatarSource === null ? <Text>选择图片</Text> :
                                     <Image style={styles.avatar} source={this.state.avatarSource} />
@@ -277,8 +298,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     avatar: {
-        borderRadius: 75,
-        width: 150,
-        height: 150
+        // borderRadius: 50,
+        width: 100,
+        height: 100
     }
 })
