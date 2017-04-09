@@ -1,6 +1,3 @@
-/**
- * Created by ljunb on 16/6/2.
- */
 import React from 'react';
 import {
     StyleSheet,

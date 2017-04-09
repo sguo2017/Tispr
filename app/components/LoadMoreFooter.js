@@ -1,6 +1,4 @@
-/**
- * Created by ljunb on 16/12/1.
- */
+
 import React from 'react';
 import {
     ActivityIndicator,

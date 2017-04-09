@@ -1,12 +1,9 @@
-/**
- * Created by ljunb on 16/6/9.
- */
 import { AsyncStorage } from 'react-native';
 
 let UserDefaults = {
     setObject: (key, value) => {
         const jsonValue = JSON.stringify(value);
-        return AsyncStorage.setItem(key, jsonValue, (error) => {
+        AsyncStorage.setItem(key, jsonValue, (error) => {
             if (!error) console.log(key + ' setOrRemoveObject error: ' + error);
         });
     },

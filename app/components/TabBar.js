@@ -1,6 +1,3 @@
-/**
- * Created by ljunb on 16/8/21.
- */
 import React, { Component } from 'react';
 import {
     StyleSheet,
@@ -25,7 +22,7 @@ export default class TabBar extends Component {
     }
 
     setAnimationValue({value}) {
-        console.log(value);
+        
     }
 
     render() {

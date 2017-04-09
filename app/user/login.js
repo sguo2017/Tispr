@@ -46,8 +46,8 @@ export default class Login extends Component {
     super();
 
     this.state = {
-      email: "",
-      password: "",
+      email: "p2@qq.com",
+      password: "123456",
       error: "",
       showProgress: false,
     }

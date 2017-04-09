@@ -1,6 +1,4 @@
-/**
- * Created by ljunb on 2017/2/25.
- */
+
 import { Dimensions, Platform, PixelRatio } from 'react-native'
 
 global.gScreen = {
