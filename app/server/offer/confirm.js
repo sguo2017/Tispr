@@ -23,6 +23,15 @@ import Constant from '../../common/constants';
 import UserDefaults from '../../common/UserDefaults';
 import TabBarView from '../../containers/TabBarView';
 
+let imgArray = [
+    { "uri": "", "isStatic": true },
+    { "uri": "", "isStatic": true },
+    { "uri": "", "isStatic": true },
+    { "uri": "", "isStatic": true },
+    { "uri": "", "isStatic": true },
+    { "uri": "", "isStatic": true },
+];
+let serv_imges_url = ["", "", "", "", "", ""];
 @observer
 export default class ServOfferConfirm extends Component {
 
@@ -40,6 +49,8 @@ export default class ServOfferConfirm extends Component {
         }
     }
 
+
+
     componentDidMount() {
         this.setState({
             serv_title: this.props.serv_title,
@@ -48,6 +59,7 @@ export default class ServOfferConfirm extends Component {
             errors: this.props.errors,
             fileName: this.props.fileName,
             avatarSource: this.props.avatarSource,
+            avatarSourceArry: [],
             imgBase64: this.props.imgBase64,
         });
     }
@@ -76,9 +88,9 @@ export default class ServOfferConfirm extends Component {
                 }
             });
         }
-    }    
+    }
 
-    selectPhotoTapped() {
+    selectPhotoTapped(index) {
         const options = {
             title: '请选择',
             cancelButtonTitle: '取消',
@@ -121,14 +133,25 @@ export default class ServOfferConfirm extends Component {
                     source = { uri: response.uri.replace('file://', ''), isStatic: true };
                 }
 
+                imgArray[index].uri = source.uri;
+                console.log("imgArray[index]:" + imgArray[index].uri);
+                console.log("imgArray[index]:" + imgArray[index].uri);
+
+                console.log("imgArray[index]:" + imgArray[index].uri);
+
+                //let newsource = this.state.avatarSource;
+                // newsource.splice(index,1,source);
+
                 fName = response.fileName;
+                //let newfName = this.state.fileName;
+                // newfName.splice(index,1,fName);
                 this.setState({
                     avatarSource: source,
                     imgBase64: temp,
-                    fileName: fName
+                    fileName: fName,
                 });
 
-                this.uploadImage();
+                this.uploadImage(index);
 
             }
         });
@@ -139,18 +162,29 @@ export default class ServOfferConfirm extends Component {
         try {
             let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_ADD + t;
-            console.log("url:"+url);
+            console.log("url:" + url);
+
+            let serv_imges_urls = "";
+            serv_imges_url.forEach(function (value) {
+                if ("" != value) {
+                    serv_imges_urls = serv_imges_urls+ "," + value ;
+                }
+                console.log(value);
+            });
+            serv_imges_urls=serv_imges_urls.substr(1);
             let response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
+
+                //for(let i=0;i<)
                 body: JSON.stringify({
                     serv_offer: {
                         serv_title: this.state.serv_title,
                         serv_detail: this.state.serv_detail,
-                        serv_imges: this.state.serv_imges,
+                        serv_imges: serv_imges_urls
                     }
                 })
             });
@@ -164,7 +198,7 @@ export default class ServOfferConfirm extends Component {
                     [
                         { text: '服务发布成功', onPress: () => this.clickJump() },
                     ]
-                ) 
+                )
             } else {
                 let error = res;
                 throw error;
@@ -177,35 +211,37 @@ export default class ServOfferConfirm extends Component {
         }
     }
 
-uploadImage(){  
-  let formData = new FormData();  
-  let url = 'http://' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.IMG_SERV_PORT + Constant.url.SERV_API_IMG_UPLOAD_SERVLET;
-  console.log("url:"+url);    
-  let file = {uri: this.state.avatarSource.uri, type: 'multipart/form-data', name: this.state.fileName};  
-  
-  formData.append("images",file);  
-  
-  fetch(url,{  
-    method:'POST',  
-    mode: "cors", 
-    headers:{  
-        'Content-Type':'multipart/form-data',  
-    },  
-    body:formData,  
-  })  
-  .then((response) => response.text() )  
-  .then((responseData)=>{    
-    console.log('responseData',responseData);  
-    this.setState({
-          serv_imges: JSON.parse(responseData).images
-        });
-    
-    console.log('this.state.serv_imges：',this.state.serv_imges);  
-    
-  })  
-  .catch((error)=>{console.error('error',error)});  
-  
-}  
+    uploadImage(index) {
+        let formData = new FormData();
+        let url = 'http://' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.IMG_SERV_PORT + Constant.url.SERV_API_IMG_UPLOAD_SERVLET;
+        console.log("url:" + url);
+        let file = { uri: imgArray[index].uri, type: 'multipart/form-data', name: this.state.fileName };
+
+        formData.append("images", file);
+
+        fetch(url, {
+            method: 'POST',
+            mode: "cors",
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            body: formData,
+        })
+            .then((response) => response.text())
+            .then((responseData) => {
+                console.log('responseData', responseData);
+                //let newimages = this.state.serv_imges;
+                //newimages.splice(index,1,JSON.parse(responseData).images);
+                this.setState({
+                    serv_imges: JSON.parse(responseData).images
+                });
+                serv_imges_url[index] = this.state.serv_imges;
+                console.log('this.state.serv_imges：', this.state.serv_imges);
+
+            })
+            .catch((error) => { console.error('error', error) });
+
+    }
 
     render() {
         return (
@@ -213,7 +249,7 @@ uploadImage(){
                 <Header
                     title='Confrimation'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
-                    leftIconAction = {this._onBack}
+                    leftIconAction={this._onBack}
                 />
 
                 <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />
@@ -254,60 +290,60 @@ uploadImage(){
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 5 }}>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 0)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                 this.state.avatarSource === null ? 
-                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
-                                 <Image style={styles.avatar} source={this.state.avatarSource} />
+                                imgArray[0].uri === "" ?
+                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> :
+                                    <Image style={styles.avatar} source={imgArray[0]} />
                             }
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 1)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                 this.state.avatarSource === null ? 
-                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
-                                 <Image style={styles.avatar} source={this.state.avatarSource} />
+                                imgArray[1].uri === "" ?
+                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> :
+                                    <Image style={styles.avatar} source={imgArray[1]} />
                             }
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 2)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                 this.state.avatarSource === null ? 
-                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
-                                 <Image style={styles.avatar} source={this.state.avatarSource} />
+                                imgArray[2].uri === "" ?
+                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> :
+                                    <Image style={styles.avatar} source={imgArray[2]} />
                             }
                         </View>
                     </TouchableOpacity>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 5 }}>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 3)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                 this.state.avatarSource === null ? 
-                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
-                                 <Image style={styles.avatar} source={this.state.avatarSource} />
+                                imgArray[3].uri === "" ?
+                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> :
+                                    <Image style={styles.avatar} source={imgArray[3]} />
                             }
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 4)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                 this.state.avatarSource === null ? 
-                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
-                                 <Image style={styles.avatar} source={this.state.avatarSource} />
+                                imgArray[4].uri === "" ?
+                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> :
+                                    <Image style={styles.avatar} source={imgArray[4]} />
                             }
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5 ,border: 0}]}>
+                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 5)}>
+                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                 this.state.avatarSource === null ? 
-                                 <Image style={{width:100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> : 
-                                 <Image style={styles.avatar} source={this.state.avatarSource} />
+                                imgArray[5].uri === "" ?
+                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} /> :
+                                    <Image style={styles.avatar} source={imgArray[5]} />
                             }
                         </View>
                     </TouchableOpacity>
