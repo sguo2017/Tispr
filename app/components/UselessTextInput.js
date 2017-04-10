@@ -7,7 +7,7 @@ export default class UselessTextInput extends Component {
       <TextInput
         {...this.props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
         editable = {true}
-        maxLength = {40}
+        //maxLength = {40}
       />
     );
   }
