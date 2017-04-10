@@ -21,30 +21,37 @@ const FeedSingleImageItem = ({
             style={{
                 width: screenW,
                 padding: 15,
-                marginTop: 15,
+                marginTop: 2,
                 flexDirection: 'row',
                 backgroundColor: '#fff',
                 justifyContent: 'space-between'
             }}
             onPress={onPress}
         >
-            <View style={{justifyContent: 'space-between'}}>
-                <Text numberOfLines={2} style={{width: screenW * 0.55, fontSize: 15}}>{action_title}</Text>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                        <Image
-                            style={{width: 14, height: 14, marginRight: 3}}
-                            source={require('../resource/ic_feed_watch.png')}
-                        />
-                        <Text style={{color: 'rgb(150,150,150)', fontSize: 13}}>{user_name}</Text>
+           <View style ={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Image style={{width: 30, height: 30, marginRight: 5, marginLeft: 3}} source={require('../resource/user_default_image.png')}/>
+                <View style={{justifyContent: 'space-around'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
+                        <Text numberOfLines={2} style={{width: screenW * 0.55, fontSize: 15, flexShrink: 0}}>
+                            <Text style={{fontWeight: 'bold', color: 'black',marginRight: 5}} >{user_name}&nbsp;&nbsp;&nbsp;</Text>
+                            <Text>{action_title}</Text>
+                        </Text>
+                        <View numberOfLines={2} style={{width: screenW * 0.25,flexShrink: 0, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
+                            <Text style={{fontSize:13}}>1h</Text>
+                        </View>
                     </View>
-                    <Text style={{color: 'rgb(150,150,150)', fontSize: 13}}>{action_desc}</Text>
+                    
+                    {
+                        action_desc === null ? 
+                        <Text style={{color: 'black'}}>Tempe,Arizona, United States, 85281</Text> : 
+                        <Text style={{color: 'green', fontSize: 15}}>{action_desc}</Text>
+                    }
                 </View>
+                <Image
+                    style={{height: 80, width: (screenW - 15 * 2 - 10 * 2) / 3}}
+                    defaultSource={require('../resource/img_news_default.png')}
+                />
             </View>
-            <Image
-                style={{height: 80, width: (screenW - 15 * 2 - 10 * 2) / 3}}
-                defaultSource={require('../resource/img_news_default.png')}
-            />
         </TouchableOpacity>
     )
 };
