@@ -21,13 +21,10 @@ export default class FeedStore {
             runInAction(() => {
                 this.isRefreshing = false
                 this.errorMsg = ''
-                console.log("23")
                 if (this.page == 1) {                     
-                    console.log("26:"+JSON.stringify(result))           
+                    //console.log("26:"+JSON.stringify(result))           
                     this.feedList.replace(result) 
-                    console.log("28") 
-                } else {                     
-                    console.log("30")
+                } else {                
                     this.feedList.splice(this.feedList.length, 0, ...result);
                 }
             })
@@ -48,11 +45,7 @@ export default class FeedStore {
 
     _fetchDataFromUrl() {
         return new Promise((resolve, reject) => {
-            //const URL = `http://food.boohee.com/fb/v1/feeds/category_feed?page=${this.page}&category=${this.categoryId}&per=10`
-            console.log("47")
             const URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSG + `Wy4PnM5-ZsPXx1sPr9FK` + `&page=${this.page}`;   
-            
-            console.log("URL:"+URL)
             fetch(URL, {
                 method: 'GET',
                 headers: {
@@ -64,7 +57,7 @@ export default class FeedStore {
                 return null
             }).then(responseData => {
                 if (responseData) {
-                    console.log(JSON.parse(responseData.feeds))
+                    //console.log(JSON.parse(responseData.feeds))
                     resolve(JSON.parse(responseData.feeds))
                 } else {
                     reject('请求出错！')
