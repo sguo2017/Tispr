@@ -15,6 +15,8 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 import Bussiness from '../pages/buzz/Bussiness';
 import Server from '../server/index'
 import Buzz from '../buzz/index';
+import Explore from '../explore/index';
+import Me from '../me/index';
 
 const tabTitles = ['Buzz', 'Explore', '', 'Me', 'Chats']
 const tabIcons = [
@@ -54,10 +56,10 @@ export default class TabBarView extends PureComponent {
                 onChangeTab={this._onChangeTab}
             >
                 <Buzz tabLabel="Buzz" navigator={this.props.navigator}/>
-                <Feed tabLabel="Home" navigator={this.props.navigator}/>
+                <Explore tabLabel="Explore" navigator={this.props.navigator}/>
                 <Server tabLabel="Server" navigator={this.props.navigator}/>
-                <FoodEncyclopedia tabLabel="Profile" navigator={this.props.navigator}/>
-                <Profile tabLabel="Home" navigator={this.props.navigator}/>
+                <Me tabLabel="Me" navigator={this.props.navigator}/>
+                <Feed tabLabel="Home" navigator={this.props.navigator}/>
                 
             </ScrollableTabView>
         )

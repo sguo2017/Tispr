@@ -7,7 +7,13 @@ let Util = {
      * 
      * */
     get: (url, successCallback, failCallback) => {
-        fetch(url)
+        fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            })
             .then((response) => response.text())
             .then((responseText) => {
                 successCallback(JSON.parse(responseText));

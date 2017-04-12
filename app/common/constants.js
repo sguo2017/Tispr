@@ -27,6 +27,7 @@ let url = {
      SERV_API_USER_REGI: `/users.json`, //注册接口
      SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
      SERV_API_SERV_OFFER_ADD: `/api/serv/serv_offers?token=`,//服务提供的新增接口
+     SERV_API_SERV_OFFER_INDEX: `/api/serv/serv_offers?token=`,//服务提供的新增接口
      SERV_API_SYS_MSG: `/api/sys/sys_msgs?token=`,//系统消息接口
 
 }
