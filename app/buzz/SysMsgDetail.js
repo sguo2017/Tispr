@@ -6,48 +6,32 @@ import {
     Image,
     Text,
     TouchableOpacity,
+    TouchableHighlight,
     ScrollView,
-    Platform
+    Platform,
+    Dimensions
 } from 'react-native';
 import Header from '../components/HomeNavigation';
 import Common from '../common/constants';
 import ShareView from '../components/ShareView';
 
-export default class FeedDetail extends Component {
-
-    render() {
+const screenW = Dimensions.get('window').width;
+export default class SysMsgDetail extends Component {
+    render(){
         const {feed} = this.props;
-
         return (
-            (feed.link && feed.content_type == 6) ?
-                <WebViewComponent
+                <FoodCardComponent
                     popAction={() => this.props.navigator.pop()}
-                    uri={feed.link}
-                /> :
-                <View style={{flex: 1}}>
-                    {feed.type === 'food_card' ?
-                        <FoodCardComponent
-                            popAction={() => this.props.navigator.pop()}
-                            shareAction={() => this.shareView.share()}
-                            collectAction={() => alert('collect')}
-                            feed={feed}
-                        />
-                        :
-                        <FoodNewsComponent
-                            popAction={() => this.props.navigator.pop()}
-                            uri={feed.link}
-                        />
-                    }
-                    <ShareView ref={shareView => this.shareView = shareView}/>
-                </View>
+                    shareAction={() => this.shareView.share()}
+                    collectAction={() => alert('collect')}
+                    feed ={feed}
+                />
         )
     }
 }
 
 const WebViewComponent = ({
-    popAction,
-    uri
-}) => {
+    popAction}) => {
     return (
         <View style={{flex: 1, backgroundColor: 'white'}}>
             <Header
@@ -56,7 +40,6 @@ const WebViewComponent = ({
                 leftIcon={require('../resource/ic_back_dark.png')}
             />
             <WebView
-                source={{uri}}
                 startInLoadingState={true}
                 bounces={false}
                 scalesPageToFit={true}
@@ -72,13 +55,6 @@ const FoodCardComponent = ({
     collectAction,
     feed
 }) => {
-    let flagIndex = feed.card_image.indexOf('food') + 5;
-    let publishDate = feed.card_image.substr(flagIndex, 10).replace(/\//g, '-');
-    let cardImageSrc = feed.card_image.split('?')[0];
-
-    let imageScale = feed.card_image.split('?')[1].split('/')[1];
-    let imageSourceW = feed.card_image.split('?')[1].split('/')[3];
-    let cardImageH = Common.window.height * (imageSourceW / imageScale) / Common.window.width;
 
     let platformMargin = Platform.OS === 'ios' ? -40 : -30;
 
@@ -106,103 +82,43 @@ const FoodCardComponent = ({
                         alignItems: 'center',
                         overflow: 'hidden'
                     }}>
-                        <Image
-                            style={{width: 40, height: 40, borderRadius: 20}}
-                            source={{uri: feed.publisher_avatar}}
-                            defaultSource={require('../resource/img_default_avatar.png')}
-                        />
+                        <Image style={{width: 30, height: 30, marginRight: 5, marginLeft: 3}} source={require('../resource/user_default_image.png')}/>
                         <View style={{marginLeft: 10}}>
-                            <Text style={{color: 'black'}}>{feed.publisher}</Text>
-                            <Text style={{color: 'gray'}}>{publishDate}</Text>
+                            <Text style={{color: 'black',fontSize: 18}}>{feed.user_name}</Text>
+                            <Text style={{color: 'gray',fontSize: 18}}>{feed.action_title}</Text>
                         </View>
                     </View>
-                    <Image
-                        style={{width: Common.window.width, height: cardImageH, marginTop: platformMargin}}
-                        source={{uri: cardImageSrc}}
-                        defaultSource={require('../resource/img_horizontal_default.png')}
-                        resizeMode={'contain'}
-                    />
-                    {feed.description != '' &&
+                    <Image style={{width: screenW}} source={require('../resource/img_buzz_detail_default.png')}/>
                     <View style={{
                         borderColor: '#ccc',
                         borderTopWidth: 0.5,
                         paddingVertical: 20,
                         paddingHorizontal: 15,
                         justifyContent: 'center',
-                        marginTop: platformMargin
+                        marginTop: 5
                     }}>
-                        <Text style={{color: 'black'}}>{feed.description}</Text>
+                        <Text style={{color: 'black',fontSize: 18}}>{feed.action_desc}</Text>
+                        <Text style={{color: 'gray',fontSize: 18}}>{feed.action_title}</Text>
                     </View>
-                    }
-                    <View style={{height: 10, width: Common.window.width, backgroundColor: '#f5f5f5'}}/>
+                    {/*<TouchableHighlight style={[styles.bottomToolBar,{height: 40 }]}>
+                        <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: '#81d49c' }}>
+                            Connect
+                        </Text>
+                    </TouchableHighlight>*/}
                 </ScrollView>
             </View>
             <TouchableOpacity
                 activeOpacity={0.75}
-                style={[styles.bottomToolBar, {borderTopWidth: Common.window.onePR}]}
+                style={[styles.bottomToolBar, {borderTopWidth: Common.window.onePR, width: screenW}]}
                 onPress={collectAction}
             >
-                <Image style={{width: 18, height: 18}} source={require('../resource/ic_feed_like.png')}/>
-                <Text style={{color: 'black', marginLeft: 5}}>{feed.like_ct}</Text>
+                <Text style={{ fontSize: 22, color: '#FFF' }}>
+                    Connect
+                </Text>
             </TouchableOpacity>
         </View>
     )
 };
-
-const FoodNewsComponent = ({
-    popAction,
-    uri
-}) => {
-    return (
-        <View style={{flex: 1, backgroundColor: 'white'}}>
-            <Header
-                leftIconAction={popAction}
-                title='资讯详情'
-                leftIcon={require('../resource/ic_back_dark.png')}
-            />
-            <WebView
-                source={{uri}}
-                startInLoadingState={true}
-                bounces={false}
-                scalesPageToFit={true}
-                style={[styles.webView, {height: Common.window.height - 44 - Platform.OS === 'ios' ? 64 : 50}]}
-                automaticallyAdjustContentInsets={false}
-            />
-            <View style={{
-                flexDirection: 'row',
-                height: 44,
-                backgroundColor: '#fff',
-                borderTopWidth: Common.window.onePR,
-                borderColor: '#d9d9d9',
-                alignItems: 'center'
-            }}>
-                <TouchableOpacity
-                    activeOpacity={0.75}
-                    style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}
-                    onPress={() => alert('share')}
-                >
-                    <Image style={{width: 14, height: 14}}
-                           source={require('../resource/ic_share_black.png')}
-                           resizeMode="contain"
-                    />
-                    <Text style={{marginLeft: 5}}>分享</Text>
-                </TouchableOpacity>
-                <View style={[styles.line]}/>
-                <TouchableOpacity
-                    activeOpacity={0.75}
-                    style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}
-                    onPress={() => alert('share')}
-                >
-                    <Image style={{width: 18, height: 18}}
-                           source={require('../resource/ic_article_collect.png')}
-                           resizeMode="contain"
-                    />
-                    <Text style={{marginLeft: 5}}>收藏</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    )
-}
 
 const styles = StyleSheet.create({
     webView: {
@@ -217,8 +133,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderTopColor: '#ccc',
         position: 'absolute',
-        bottom: 0,
-        backgroundColor: 'white'
+        bottom: 5,
+        backgroundColor: '#81d49c'
     },
     cardImageContent: {
         height: Common.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,
