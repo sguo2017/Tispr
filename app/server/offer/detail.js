@@ -30,7 +30,11 @@ export default class ServOfferDetail extends Component {
         this.state = {
             serv_title: this.props.serv_title,
             serv_detail: this.props.serv_detail,
+            serv_imges: this.props.serv_imges,
             detail_length: this.props.detail_length,
+            avatarSourceArray: this.props.avatarSourceArray,
+            test: this.props.test,
+            getdata: this.props.getdata
         }
     }
 
@@ -38,6 +42,10 @@ export default class ServOfferDetail extends Component {
         this.setState({
             serv_title: this.props.serv_title,
             serv_detail: this.props.serv_detail,
+            serv_imges: this.props.serv_imges,
+            avatarSourceArray: this.props.avatarSourceArray,
+            test: this.props.test,
+            //getdata: this.props.getdata
         });
     }
 
@@ -53,7 +61,11 @@ export default class ServOfferDetail extends Component {
             return;
         }
         console.log("back 1");
+        let _this = this;
         const { navigator } = this.props;
+        console.log("go to delivory");
+        console.log("this.props.serv_imges:"+this.props.serv_imges);
+        console.log("this.state.serv_imges:"+this.state.serv_imges);
         if (navigator) {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "ServOfferDelivory",
@@ -61,24 +73,45 @@ export default class ServOfferDetail extends Component {
                 params: {
                     serv_title: this.state.serv_title,
                     serv_detail: this.state.serv_detail,
+                    serv_imges: this.state.serv_imges,
+                    avatarSourceArray: this.state.avatarSourceArray,
+                    getdata: (title,detail,imges,SourceArray)=>{
+                    _this.setState({
+                        serv_title: title,
+                        serv_detail: detail,
+                        serv_imges: imges,
+                        avatarSourceArray: SourceArray
+                        })
+                    }
                 }
             });
         }
     }
 
     _onBack = () => {
+        
+        // this.props.setState({
+        //     serv_detail: this.state.serv_detail
+        // })
         const { navigator } = this.props;
+        let title = this.state.serv_title;
+        let detail = this.state.serv_detail;
+        let imges = this.state.serv_imges;
+        let SourceArray = this.state.avatarSourceArray;
+        console.log("leave from details");
+        console.log("this.props.serv_imges:"+this.props.serv_imges);
+        console.log("this.state.serv_imges:"+this.state.serv_imges);
+        if (this.props.getdata) {
+            this.props.getdata(title, detail,imges, SourceArray);
+        }
+
         if (navigator) {
-            navigator.pop({
-                params: {
-                    serv_title: this.state.serv_title,
-                    serv_detail: this.state.serv_detail,
-                }
-            });
+            navigator.pop();
         }
     }
 
     render() {
+        //console.log("this.state.avatarSourceArray: "+this.state.avatarSourceArray);
         return (
             <View style={{ flex: 1 }}>
                 <Header
@@ -101,6 +134,7 @@ export default class ServOfferDetail extends Component {
                 <UselessTextInput
                     multiline={true}
                     numberOfLines={3}
+                    value ={this.state.serv_detail}
                     onChangeText={(val) => {this.setState({ serv_detail: val,detail_length: val.length })}}
                 />
 

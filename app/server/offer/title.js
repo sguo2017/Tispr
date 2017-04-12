@@ -30,7 +30,9 @@ export default class ServOfferTitle extends Component {
         this.state = {
             serv_title: this.props.serv_title,
             serv_detail: this.props.serv_detail,
+            serv_imges: this.props.serv_imges,
             detail_length: this.props.detail_length,
+            avatarSourceArray: this.props.avatarSourceArray,
         }
     }
 
@@ -46,6 +48,7 @@ export default class ServOfferTitle extends Component {
             return;
         }
         console.log("push page 2!!!")
+        let _this = this;
         const { navigator } = this.props;
         if (navigator) {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
@@ -53,21 +56,35 @@ export default class ServOfferTitle extends Component {
                 component: ServOfferDetail,
                 params: {
                     serv_title: this.state.serv_title,
-                    serv_detail: this.state.serv_detail
+                    serv_detail: this.state.serv_detail,
+                    serv_imges: this.state.serv_imges,
+                    avatarSourceArray: this.state.avatarSourceArray,
+                    getdata: (title,detail,imges,SourceArray)=>{
+                    _this.setState({
+                        serv_title: title,
+                        serv_detail: detail,
+                        serv_imges: imges,
+                        avatarSourceArray: SourceArray
+                        })
+                    }
                 }
             });
         }
     }
 
+
+
     _onBack = () => {
         const { navigator } = this.props;
+        let title = this.state.serv_title;
+        let detail = this.state.serv_detail;
+        let imges = this.state.serv_imges;
+        let SourceArray = this.state.avatarSourceArray;
+        if (this.props.getdata) {
+            this.props.getdata(title, detail,imges, SourceArray);
+        }
         if (navigator) {
-            navigator.pop({
-                params: {
-                    serv_title: this.state.serv_title,
-                    serv_detail: this.state.serv_detail,
-                }
-            });
+            navigator.pop();
         }
     }
 
@@ -93,6 +110,7 @@ export default class ServOfferTitle extends Component {
                 <UselessTextInput
                     multiline={true}
                     numberOfLines={3}
+                    value ={this.state.serv_title}
                     onChangeText={(val) => this.setState({ serv_title: val, detail_length: val.length })}
                 />
 

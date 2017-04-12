@@ -30,6 +30,8 @@ export default class ServOfferDelivory extends Component {
         this.state = {
             serv_title: this.props.serv_title,
             serv_detail: this.props.serv_detail,
+            serv_imges: this.props.serv_imges,
+            avatarSourceArray: this.props.avatarSourceArray,
         }
     }
 
@@ -37,10 +39,13 @@ export default class ServOfferDelivory extends Component {
         this.setState({
             serv_title: this.props.serv_title,
             serv_detail: this.props.serv_detail,
+            serv_imges: this.props.serv_imges,
+            avatarSourceArray: this.props.avatarSourceArray,
         });
     }
 
     clickJump() {
+        let _this = this;
         const { navigator } = this.props;
         if (navigator) {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
@@ -49,6 +54,16 @@ export default class ServOfferDelivory extends Component {
                 params: {
                     serv_title: this.state.serv_title,
                     serv_detail: this.state.serv_detail,
+                    serv_imges: this.state.serv_imges,
+                    avatarSourceArray: this.state.avatarSourceArray,
+                    getdata: (title,detail,imges,SourceArray)=>{
+                    _this.setState({
+                        serv_title: title,
+                        serv_detail: detail,
+                        serv_imges: imges,
+                        avatarSourceArray: SourceArray
+                        })
+                    }
                 }
             });
         }
@@ -56,17 +71,23 @@ export default class ServOfferDelivory extends Component {
 
     _onBack = () => {
         const { navigator } = this.props;
+        let title = this.state.serv_title;
+        let detail = this.state.serv_detail;
+        let imges = this.state.serv_imges;
+        let SourceArray = this.state.avatarSourceArray;
+        console.log("leave from delivory");
+        console.log("this.props.serv_imges:"+this.props.serv_imges);
+        console.log("this.state.serv_imges:"+this.state.serv_imges);
+        if (this.props.getdata) {
+            this.props.getdata(title, detail,imges, SourceArray);
+        }
         if (navigator) {
-            navigator.pop({
-                params: {
-                    serv_title: this.state.serv_title,
-                    serv_detail: this.state.serv_detail,
-                }
-            });
+            navigator.pop();
         }
     }
 
     render() {
+    //    console.log("this.state.avatarSourceArray: "+this.state.avatarSourceArray);
         return (
             <View style={{ flex: 1 }}>
                 <Header
