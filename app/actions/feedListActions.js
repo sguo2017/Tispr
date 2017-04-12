@@ -10,7 +10,7 @@ export let fetchFeedList = (category, page) => {
 
     return dispatch => {
         dispatch(fetchingFeedList(category, page));
-
+        console.log("fetchFeedList:"+URL)
         Util.get(URL, (response) => {
             dispatch(receiveFeedList(response.feeds, category, page));
         }, (error) => {
