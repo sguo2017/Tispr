@@ -12,7 +12,8 @@ import {
     Navigator,
     AsyncStorage,
     PixelRatio,
-    Alert
+    Alert,
+    Switch
 } from 'react-native'
 import { observer } from 'mobx-react/native'
 import { observable, computed, action, runInAction } from 'mobx';
@@ -37,6 +38,8 @@ export default class ServOfferDelivory extends Component {
         this.setState({
             serv_title: this.props.serv_title,
             serv_detail: this.props.serv_detail,
+            trueSwitchIsOn: true,
+            falseSwitchIsOn: false,
         });
     }
 
@@ -79,20 +82,33 @@ export default class ServOfferDelivory extends Component {
 
                 <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>90%</Text>
 
-                <Image style={{ width: 80, height: 80, alignSelf: 'center' }} source={require('../../resource/t_loaction.png')} />
+                <Image style={{ width: 60, height: 60, alignSelf: 'center' }} source={require('../../resource/t_loaction.png')} />
 
-                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 12 }}>How will you provide this service?</Text>
+                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 18, marginTop:5, marginBottom: 10 }}>How will you provide this service?</Text>
 
-                <Text style={{ color: "#a8a6b9" }}>Tell us more about this skill or service and \n
-                    what makes it special.Price,type,time or other. </Text>
-
-
-                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                    <Text style={{ color: "#a8a6b9" }}>Remotely/online</Text>
+                <View style={{ alignItems: 'center', flexDirection: 'row',justifyContent: 'space-between', 
+                borderBottomColor: '#a8a6b9', borderBottomWidth:1, marginLeft:5, paddingBottom: 8}}>
+                    <Text style={styles.textStyle}>Remotely/online</Text>
+                    <Switch
+                    onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
+                    style={{marginTop: 15}}
+                    value={this.state.falseSwitchIsOn} />
                 </View>
 
-                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                    <Text style={{ color: "#a8a6b9" }}>Locally</Text>
+                <View style={{borderBottomColor: '#a8a6b9',borderBottomWidth:1, marginLeft:5, paddingBottom: 8}}>
+                    <View style={{ alignItems: 'center', flexDirection: 'row',justifyContent: 'space-between' }}>
+                        <Text style={styles.textStyle}>
+                            Locally
+                        </Text>
+                        <Switch
+                        onValueChange={(value) => this.setState({trueSwitchIsOn: value})}                    
+                        style={{marginTop: 15}}
+                        value={this.state.trueSwitchIsOn} />
+                    </View>
+                    <Text style={{color:'black'}}>
+                        <Text>your profile is set to &nbsp;</Text>
+                        <Text>番禺区，广州市，广东省，中国</Text>
+                    </Text>
                 </View>
 
                 <TouchableHighlight style={{ backgroundColor: '#81d49c', marginTop: 60, alignSelf: 'stretch' }} onPress={this.clickJump.bind(this)}>
@@ -122,5 +138,10 @@ const styles = StyleSheet.create({
         borderRadius: 75,
         width: 150,
         height: 150
+    },
+    textStyle:{
+        fontSize: 20,
+        marginTop: 10,
+        color: 'black',
     }
 })
