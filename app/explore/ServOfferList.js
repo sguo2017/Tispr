@@ -106,7 +106,7 @@ export default class ServOfferList extends Component {
                                 />
                             )
                         })}
-                        <View style={[styles.loadingContainer, {top: feedHome.maxHeight}]}>
+                        <View style={[styles.loadingContainer, {top: feedHome.maxHeight+50}]}>
                             <ActivityIndicator />
                             <Text style={{fontSize: 14, marginLeft: 5}}>正在加载更多的数据...</Text>
                         </View>
@@ -137,7 +137,7 @@ const HomeItem = ({
         <TouchableOpacity
             activeOpacity={0.75}
             style={{
-                height: data.height,
+                height: data.height*1.2,
                 width: (Common.window.width - 40) / 2,
                 backgroundColor: '#fff',
                 left: data.left,
@@ -150,50 +150,52 @@ const HomeItem = ({
             <Image
                 style={{width: width, height: imageH}}
                 source={{uri: feed.serv_imges}}
-                defaultSource={require('../resource/img_horizontal_default.png')}
+                defaultSource={require('../resource/img_buzz_detail_default.png')}
             />
              <View style={{
-                height: data.titleHeight,
+                height: data.titleHeight*2,
                 width: width,
                 paddingHorizontal: 4,
-                paddingTop: 8,
+                paddingTop: 4,
+                marginBottom: 4,
+                //backgroundColor:'blue'
+                borderBottomWidth: Common.window.onePR,
+                borderColor: '#ccc'
             }}>
                 <View style={{
-                    height: data.titleHeight - 8,
+                    height: data.titleHeight*2 - 8,
                     width: width - 8,
                     justifyContent: 'space-around',
-                    borderBottomWidth: Common.window.onePR,
-                    borderColor: '#ccc'
                 }}>
-                    <Text style={{fontSize: 14, color: 'black'}} numberOfLines={1}>{feed.serv_title}</Text>
+                    <Text style={{fontSize: 16, color: 'black'}} numberOfLines={4}>{feed.serv_title}</Text>
                     {feed.serv_detail != '' &&
-                    <Text style={{color: 'gray', fontSize: 13}} numberOfLines={2}>{feed.serv_detail}</Text>
+                    <Text style={{color: 'gray', fontSize: 12}} numberOfLines={1}>{feed.serv_detail}</Text>
                     }
                 </View>
             </View>
             <View style={{
                 flexDirection: 'row',
-                alignItems: 'center',
                 justifyContent: 'space-between',
-                height: 50,
+                alignItems: 'flex-start',
+                height: 60,
                 paddingHorizontal: 4
             }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Image
-                        style={{height: 30, width: 30, borderRadius: 15}}
+                        style={{height: 20, width: 20, borderRadius: 15}}
                         source={publisherAvatar}
                         defaultSource={require('../resource/img_default_avatar.png')}
                     />
                     <Text
-                        style={{fontSize: 11, color: 'gray', marginLeft: 8, width: width * 0.4}}
+                        style={{fontSize: 14, color: 'gray', marginLeft: 8, width: width * 0.4}}
                         numberOfLines={1}
                     >
                         {feed.serv_detail}
                     </Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Image style={{height: 12, width: 12}} source={require('../resource/ic_feed_like.png')}/>
-                    <Text style={{fontSize: 11, color: 'gray', marginLeft: 2}}>{feed.serv_title}</Text>
+                    <Image style={{height: 20, width: 20}} source={require('../resource/ic_feed_like.png')}/>
+                    <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{feed.user_id}</Text>
                 </View>
             </View>
             
