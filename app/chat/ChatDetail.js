@@ -9,7 +9,8 @@ import {
     TouchableHighlight,
     ScrollView,
     Platform,
-    Dimensions
+    Dimensions,
+    TextInput
 } from 'react-native';
 import Header from '../components/HomeNavigation';
 import Common from '../common/constants';
@@ -17,12 +18,18 @@ import ShareView from '../components/ShareView';
 
 const screenW = Dimensions.get('window').width;
 export default class ChatDetail extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+           chatText : this.props.chatText, 
+        }
+    }
+
     render(){
         const {feed} = this.props;
         return (
                 <FoodCardComponent
                     popAction={() => this.props.navigator.pop()}
-                    shareAction={() => this.shareView.share()}
                     collectAction={() => alert('collect')}
                     feed ={feed}
                 />
@@ -51,7 +58,6 @@ const WebViewComponent = ({
 
 const FoodCardComponent = ({
     popAction,
-    shareAction,
     collectAction,
     feed
 }) => {
@@ -62,11 +68,10 @@ const FoodCardComponent = ({
         <View style={{flex: 1, backgroundColor: 'white'}}>
             <Header
                 leftIconAction={popAction}
-                title='查看详情'
+                title={feed.serv_offer_user_name}
                 leftIcon={require('../resource/ic_back_dark.png')}
-                rightIcon={require('../resource/ic_photo_share.png')}
-                rightIconSize={16}
-                rightIconAction={shareAction}
+                rightIcon={require('../resource/user_default_image.jpg')}
+                rightIconSize={26}
             />
             <View style={[styles.cardImageContent]}>
                 <ScrollView
@@ -80,42 +85,36 @@ const FoodCardComponent = ({
                         paddingVertical: 10,
                         paddingHorizontal: 15,
                         alignItems: 'center',
-                        overflow: 'hidden'
+                        overflow: 'hidden',
+                        justifyContent: 'flex-start'
                     }}>
-                        <Image style={{width: 30, height: 30, marginRight: 5, marginLeft: 3}} source={require('../resource/user_default_image.png')}/>
-                        <View style={{marginLeft: 10}}>
-                            <Text style={{color: 'black',fontSize: 18}}>{feed.user_name}</Text>
-                            <Text style={{color: 'gray',fontSize: 18}}>{feed.action_title}</Text>
-                        </View>
+                       <Image style={{width: 50, height: 50, marginRight: 5, borderRadius: 35}} source={require('../resource/user_default_image.jpg')}/>
+                       <View style={{padding: 10, backgroundColor:'#f8f8f0',borderRadius: 10,}}>
+                            <Text style={{color: 'black',marginRight: 5, fontSize: 16}} >{feed.lately_chat_content}&nbsp;&nbsp;&nbsp;</Text>
+                       </View>
+                       <Text>15:00</Text>
                     </View>
-                    <Image style={{width: screenW}} source={require('../resource/img_buzz_detail_default.png')}/>
+
                     <View style={{
-                        borderColor: '#ccc',
-                        borderTopWidth: 0.5,
-                        paddingVertical: 20,
+                        flexDirection: 'row',
+                        paddingVertical: 10,
                         paddingHorizontal: 15,
-                        justifyContent: 'center',
-                        marginTop: 5
+                        alignItems: 'center',
+                        overflow: 'hidden',
+                        justifyContent: 'flex-end'
                     }}>
-                        <Text style={{color: 'black',fontSize: 18}}>{feed.action_desc}</Text>
-                        <Text style={{color: 'gray',fontSize: 18}}>{feed.action_title}</Text>
+                       <Text>15:10</Text>
+                      <View style={{padding: 10, backgroundColor:'lightblue',borderRadius: 10,}}>
+                            <Text style={{color: 'black',marginRight: 5, fontSize: 16}} >{feed.lately_chat_content}&nbsp;&nbsp;&nbsp;</Text>
+                       </View>
                     </View>
-                    {/*<TouchableHighlight style={[styles.bottomToolBar,{height: 40 }]}>
-                        <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: '#81d49c' }}>
-                            Connect
-                        </Text>
-                    </TouchableHighlight>*/}
                 </ScrollView>
+                <TextInput
+                        style={{height: 40,borderWidth:2}}
+                        placeholder="Type here to translate!"
+                        onChangeText={(chatText) => this.setState({chatText})}
+                />
             </View>
-            <TouchableOpacity
-                activeOpacity={0.75}
-                style={[styles.bottomToolBar, {borderTopWidth: Common.window.onePR, width: screenW}]}
-                onPress={collectAction}
-            >
-                <Text style={{ fontSize: 22, color: '#FFF' }}>
-                    Connect
-                </Text>
-            </TouchableOpacity>
         </View>
     )
 };
@@ -124,17 +123,6 @@ const styles = StyleSheet.create({
     webView: {
         width: Common.window.width,
         height: Common.window.height - Platform.OS === 'ios' ? 64 : 50,
-    },
-    bottomToolBar: {
-        height: 44,
-        width: Common.window.width,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderTopColor: '#ccc',
-        position: 'absolute',
-        bottom: 5,
-        backgroundColor: '#81d49c'
     },
     cardImageContent: {
         height: Common.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,
