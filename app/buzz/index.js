@@ -14,7 +14,7 @@ import Loading from '../components/Loading'
 import LoadMoreFooter from '../components/LoadMoreFooter'
 import FeedSingleImageCell from './SysMsgSingleImageCell'
 import FeedMultiImageCell from './SysMsgMultiImageCell'
-import FeedDetail from './SysMsgDetail'
+import SysMsgDetail from './SysMsgDetail'
 import Toast from 'react-native-easy-toast'
 import FeedBaseStore from './SysMsgStore'
 import Header from '../components/HomeNavigation';
@@ -60,7 +60,7 @@ export default class BussList extends PureComponent {
 
     _onPressCell = feed => {
         this.props.navigator.push({
-            component: FeedDetail,
+            component: SysMsgDetail,
             passProps: {feed}
         })
     }
@@ -124,9 +124,8 @@ class KnowledgeItem extends PureComponent {
     }
 
     render() {
-        const {feed: {action_title,action_desc,user_name}} = this.props
-        const cellData = {action_title,action_desc,user_name}
-        //return (<Text>1234</Text>)
+        const {feed: {action_title,action_desc,user}} = this.props
+        const cellData = {action_title,action_desc,user}
         return <FeedSingleImageCell {...cellData} onPress={this._onPress}/>
     }
 }

@@ -20,6 +20,7 @@ import ServOfferList from './ServOfferList';
 
 class ExploreList extends PureComponent {
     
+    
 
     render() {
         return (

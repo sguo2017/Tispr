@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 const screenW = Dimensions.get('window').width;
 
-const FeedSingleImageItem = ({
+const SysMsgSingleImageItem = ({
     action_title,
     action_desc,
-    user_name,
+    user,
     onPress
 }) => {
     return (
@@ -29,11 +29,11 @@ const FeedSingleImageItem = ({
             onPress={onPress}
         >
            <View style ={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Image style={{width: 30, height: 30, marginRight: 5, marginLeft: 3}} source={require('../resource/user_default_image.png')}/>
+                <Image style={{width: 30, height: 30, marginRight: 5, marginLeft: 3}} defaultSource={require('../resource/user_default_image.png')} source={{uri: user.avatar}}/>
                 <View style={{justifyContent: 'space-around'}}>
                     <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
                         <Text numberOfLines={2} style={{width: screenW * 0.55, fontSize: 15, flexShrink: 0}}>
-                            <Text style={{fontWeight: 'bold', color: 'black',marginRight: 5}} >{user_name}&nbsp;&nbsp;&nbsp;</Text>
+                            <Text style={{fontWeight: 'bold', color: 'black',marginRight: 5}} >{user.name}&nbsp;&nbsp;&nbsp;</Text>
                             <Text>{action_title}</Text>
                         </Text>
                         <View numberOfLines={2} style={{width: screenW * 0.25,flexShrink: 0, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
@@ -56,4 +56,4 @@ const FeedSingleImageItem = ({
     )
 };
 
-export default FeedSingleImageItem;
+export default SysMsgSingleImageItem;

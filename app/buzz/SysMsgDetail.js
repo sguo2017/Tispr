@@ -9,21 +9,74 @@ import {
     TouchableHighlight,
     ScrollView,
     Platform,
-    Dimensions
+    Dimensions,
+    Alert
 } from 'react-native';
 import Header from '../components/HomeNavigation';
-import Common from '../common/constants';
+import Constant from '../common/constants';
 import ShareView from '../components/ShareView';
+import UserDefaults from '../common/UserDefaults';
 
 const screenW = Dimensions.get('window').width;
 export default class SysMsgDetail extends Component {
+
+    async _createDeal(feed) {       
+        console.log("feed:" + JSON.stringify(feed))
+        console.log("deal:" + JSON.stringify({
+                    deal: {
+                        serv_offer_title: feed.serv_offer.serv_title,
+                        serv_offer_id: feed.serv_offer_id,
+                        offer_user_id: feed.user_id,
+                    }
+                }))
+        try {
+            let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DEAL_CREATE + t;
+            let response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+
+                body: JSON.stringify({
+                    deal: {
+                        serv_offer_title: feed.serv_offer.serv_title,
+                        serv_offer_id: feed.id,
+                        offer_user_id: feed.user_id,
+                    }
+                })
+            });
+
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                //console.log("line:153");
+                Alert.alert(
+                    '提示',
+                    '成功',
+                    [
+                        { text: '已通知到对方'},
+                    ]
+                )
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            this.setState({ error: error });
+            console.log("error " + error);
+            this.setState({ showProgress: false });
+
+        }
+    }
+
     render(){
         const {feed} = this.props;
         return (
                 <FoodCardComponent
                     popAction={() => this.props.navigator.pop()}
                     shareAction={() => this.shareView.share()}
-                    collectAction={() => alert('collect')}
+                    collectAction={() => this._createDeal(feed)}
                     feed ={feed}
                 />
         )
@@ -82,13 +135,13 @@ const FoodCardComponent = ({
                         alignItems: 'center',
                         overflow: 'hidden'
                     }}>
-                        <Image style={{width: 30, height: 30, marginRight: 5, marginLeft: 3}} source={require('../resource/user_default_image.png')}/>
+                        <Image style={{width: 30, height: 30, marginRight: 5, marginLeft: 3}} source={{uri:feed.user.avatar}} defaultSource={require('../resource/user_default_image.png')}/>
                         <View style={{marginLeft: 10}}>
                             <Text style={{color: 'black',fontSize: 18}}>{feed.user_name}</Text>
                             <Text style={{color: 'gray',fontSize: 18}}>{feed.action_title}</Text>
                         </View>
                     </View>
-                    <Image style={{width: screenW}} source={require('../resource/img_buzz_detail_default.png')}/>
+                    <Image style={{width: screenW}} source={{uri:feed.serv_offer.serv_imges}} defaultSource={require('../resource/img_buzz_detail_default.png')}/>
                     <View style={{
                         borderColor: '#ccc',
                         borderTopWidth: 0.5,
@@ -109,7 +162,7 @@ const FoodCardComponent = ({
             </View>
             <TouchableOpacity
                 activeOpacity={0.75}
-                style={[styles.bottomToolBar, {borderTopWidth: Common.window.onePR, width: screenW}]}
+                style={[styles.bottomToolBar, {borderTopWidth: Constant.window.onePR, width: screenW}]}
                 onPress={collectAction}
             >
                 <Text style={{ fontSize: 22, color: '#FFF' }}>
@@ -122,12 +175,12 @@ const FoodCardComponent = ({
 
 const styles = StyleSheet.create({
     webView: {
-        width: Common.window.width,
-        height: Common.window.height - Platform.OS === 'ios' ? 64 : 50,
+        width: Constant.window.width,
+        height: Constant.window.height - Platform.OS === 'ios' ? 64 : 50,
     },
     bottomToolBar: {
         height: 44,
-        width: Common.window.width,
+        width: Constant.window.width,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -137,8 +190,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#81d49c'
     },
     cardImageContent: {
-        height: Common.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,
-        width: Common.window.width,
+        height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,
+        width: Constant.window.width,
         backgroundColor: '#f5f5f5',
         top: Platform.OS === 'ios' ? 64 : 50,
         bottom: 44,
@@ -146,7 +199,7 @@ const styles = StyleSheet.create({
     },
     line: {
         height: 30,
-        width: Common.window.onePR,
+        width: Constant.window.onePR,
         backgroundColor: '#ccc'
     }
 })

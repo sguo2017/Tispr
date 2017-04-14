@@ -69,7 +69,7 @@ export default class Server extends PureComponent {
 
                 </View>
 
-                <Image style={{ width: 50, height: 50, alignSelf: 'center', marginTop: 150 }} source={require('../resource/t_server_close.png')} />
+                <Image style={{ width: 50, height: 50, alignSelf: 'center', marginTop: 150, display: 'none' }} source={require('../resource/t_server_close.png')} />
 
             </View>
         )

@@ -30,6 +30,7 @@ let url = {
      SERV_API_SERV_OFFER_INDEX: `/api/serv/serv_offers?token=`,//服务提供的新增接口
      SERV_API_SYS_MSG: `/api/sys/sys_msgs?token=`,//系统消息接口
      SERV_API_DEAL_CHAT: `/api/order/deal_chats.json?token=`,//订单聊天沟通列表接口
+     SERV_API_DEAL_CREATE: `/api/order/deals.json?token=`,//订单新增接口
 
 }
 
