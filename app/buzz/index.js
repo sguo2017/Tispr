@@ -12,11 +12,11 @@ import {observer} from 'mobx-react/native'
 import {reaction} from 'mobx'
 import Loading from '../components/Loading'
 import LoadMoreFooter from '../components/LoadMoreFooter'
-import FeedSingleImageCell from './SysMsgSingleImageCell'
+import SysMsgSingleImageCell from './SysMsgSingleImageCell'
 import FeedMultiImageCell from './SysMsgMultiImageCell'
 import SysMsgDetail from './SysMsgDetail'
 import Toast from 'react-native-easy-toast'
-import FeedBaseStore from './SysMsgStore'
+import SysMsgStore from './SysMsgStore'
 import Header from '../components/HomeNavigation';
 
 const KNOWLEDGE_ID = 3
@@ -41,7 +41,7 @@ export default class BussList extends PureComponent {
         })
     }
 
-    knowledgeListStore = new FeedBaseStore(KNOWLEDGE_ID)
+    knowledgeListStore = new SysMsgStore(KNOWLEDGE_ID)
 
     componentDidMount() {
         reaction(
@@ -63,7 +63,7 @@ export default class BussList extends PureComponent {
             component: SysMsgDetail,
             passProps: {feed}
         })
-    }
+    }   
 
     _onRefresh = () => {
         this.knowledgeListStore.isRefreshing = true
@@ -126,7 +126,7 @@ class KnowledgeItem extends PureComponent {
     render() {
         const {feed: {action_title,action_desc,user}} = this.props
         const cellData = {action_title,action_desc,user}
-        return <FeedSingleImageCell {...cellData} onPress={this._onPress}/>
+        return <SysMsgSingleImageCell {...cellData} onPress={this._onPress}/>
     }
 }
 

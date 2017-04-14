@@ -16,59 +16,21 @@ import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import ShareView from '../components/ShareView';
 import UserDefaults from '../common/UserDefaults';
+import Connect from './Connect'
 
 const screenW = Dimensions.get('window').width;
+
 export default class SysMsgDetail extends Component {
 
-    async _createDeal(feed) {       
-        console.log("feed:" + JSON.stringify(feed))
-        console.log("deal:" + JSON.stringify({
-                    deal: {
-                        serv_offer_title: feed.serv_offer.serv_title,
-                        serv_offer_id: feed.serv_offer_id,
-                        offer_user_id: feed.user_id,
-                    }
-                }))
-        try {
-            let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
-            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DEAL_CREATE + t;
-            let response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
+  
+    _p = feed => {
+        console.log("25:"+JSON.stringify(feed))
 
-                body: JSON.stringify({
-                    deal: {
-                        serv_offer_title: feed.serv_offer.serv_title,
-                        serv_offer_id: feed.id,
-                        offer_user_id: feed.user_id,
-                    }
-                })
-            });
-
-            let res = await response.text();
-            if (response.status >= 200 && response.status < 300) {
-                //console.log("line:153");
-                Alert.alert(
-                    '提示',
-                    '成功',
-                    [
-                        { text: '已通知到对方'},
-                    ]
-                )
-            } else {
-                let error = res;
-                throw error;
-            }
-        } catch (error) {
-            this.setState({ error: error });
-            console.log("error " + error);
-            this.setState({ showProgress: false });
-
-        }
-    }
+        this.props.navigator.push({
+            component: Connect,
+            passProps: {feed}
+        })
+    } 
 
     render(){
         const {feed} = this.props;
@@ -76,7 +38,7 @@ export default class SysMsgDetail extends Component {
                 <FoodCardComponent
                     popAction={() => this.props.navigator.pop()}
                     shareAction={() => this.shareView.share()}
-                    collectAction={() => this._createDeal(feed)}
+                    collectAction={() => this._p(feed)}
                     feed ={feed}
                 />
         )
@@ -141,7 +103,7 @@ const FoodCardComponent = ({
                             <Text style={{color: 'gray',fontSize: 18}}>{feed.action_title}</Text>
                         </View>
                     </View>
-                    <Image style={{width: screenW}} source={{uri:feed.serv_offer.serv_imges}} defaultSource={require('../resource/img_buzz_detail_default.png')}/>
+                    <Image style={{width: screenW}} defaultSource={{uri:feed.serv_offer.serv_imges}} source={require('../resource/img_buzz_detail_default.png')}/>
                     <View style={{
                         borderColor: '#ccc',
                         borderTopWidth: 0.5,
