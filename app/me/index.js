@@ -33,6 +33,16 @@ export default class MeInfo extends PureComponent {
                 <Header
                     title='Tisprs'
                 />
+                <View style={{flexDirection:'row', justifyContent:'flex-start',margin: 20}}>
+                    <Image style={{width:80, height:80, borderRadius: 40}} source={require('../resource/user_default_image.jpg')}/>
+                    <View style={{justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
+                        <Text style={{fontSize:20, color:'black'}}>username</Text>
+                        <Text>番禺区，广州市，广东省，中国</Text>
+                        <Text style={{backgroundColor:'grey', color:'white',borderRadius: 10,paddingLeft: 10, paddingRight:10}}>
+                            <Text style={{}}>Complete your profile!</Text>
+                        </Text>
+                    </View>
+                </View>
                 <ScrollableTabView
                     renderTabBar={() => <TabCategoryBar tabNames={titles}/>}
                     tabBarPosition='top'
