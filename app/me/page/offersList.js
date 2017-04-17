@@ -8,10 +8,17 @@ import {
     TouchableOpacity,
     RefreshControl,
 } from 'react-native'
+import {reaction} from 'mobx'
+import {connect} from 'react-redux';
+import Loading from '../../components/Loading'
+import LoadMoreFooter from '../../components/LoadMoreFooter'
+import Toast from 'react-native-easy-toast'
 import Header from '../../components/HomeNavigation';
+import ServOfferList from '../../explore/ServOfferList';
 
 
-export default class OffersList extends PureComponent {
+
+class OffersList extends PureComponent {
 
      render() {
         return(
@@ -20,7 +27,7 @@ export default class OffersList extends PureComponent {
                 <Header
                     title='OffersList'
                 />
-
+                <ServOfferList {...this.props} />
                </View>
         )
     
@@ -37,3 +44,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5'
     }
 })
+
+export default connect((state) => {
+    const {feedHome} = state;
+    return {feedHome}
+})(OffersList);
