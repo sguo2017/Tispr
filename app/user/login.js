@@ -15,7 +15,6 @@ import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 import TabBarView from '../containers/TabBarView';
 
-
 export default class Login extends Component {
 
   _navigate(routeName) {
@@ -50,7 +49,7 @@ export default class Login extends Component {
       password: "123456",
       error: "",
       showProgress: false,
-    }
+    };
   }
 
   async onLoginPressed() {
@@ -73,10 +72,14 @@ export default class Login extends Component {
       });
       let res = await response.text();
       let result = JSON.parse(res);
+      let userdetail=JSON.parse(result.user);
       if (response.status >= 200 && response.status < 300 && result.token) {
         UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
         let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
         console.log("79 accessToken:" + JSON.stringify(t));
+        global.token=t;
+        global.username=userdetail.name;
+        global.avatar=userdetail.avatar;
         this._navigateHome();
       } else {
         UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
