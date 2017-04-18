@@ -38,12 +38,12 @@ export default class MeInfo extends PureComponent {
                 />
                 <View style={{flexDirection:'row', justifyContent:'flex-start',margin: 20}}>
                     <View style={{}}>
-                        <Image style={{width:80, height:80, borderRadius: 40, justifyContent:'flex-end', alignItems:'flex-end'}} source={{uri:global.avatar}}>
+                        <Image style={{width:80, height:80, borderRadius: 40, justifyContent:'flex-end', alignItems:'flex-end'}} source={{uri:global.user.avatar}}>
                         </Image>
                         <Image style={{width:20, height:20, borderRadius: 10,position: 'absolute',left: 60, top: 60}} source={require('../resource/icon_tel.png')}/>
                     </View>
                     <View style={{justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
-                        <Text style={{fontSize:20, color:'black'}}>{global.username}</Text>
+                        <Text style={{fontSize:20, color:'black'}}>{global.user.name}</Text>
                         <Text>番禺区，广州市，广东省，中国</Text>
                         <Text style={{backgroundColor:'grey', color:'white',borderRadius: 10,paddingLeft: 10, paddingRight:10}}>
                             <Text style={{}}>Complete your profile!</Text>
