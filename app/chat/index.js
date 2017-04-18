@@ -123,8 +123,9 @@ class KnowledgeItem extends PureComponent {
     }
 
     render() {
-        const {feed: {serv_offer_user_name,serv_offer_titile,lately_chat_content}} = this.props
-        const cellData = {serv_offer_user_name,serv_offer_titile,lately_chat_content}
+        //chats:[{"id":6,"deal_id":28,"serv_offer_id":76,"serv_offer_user_name":null,"serv_offer_titile":null,"lately_chat_content":"your offer is awesome","created_at":"2017-04-16T08:00:21.000Z","updated_at":"2017-04-17T07:00:44.000Z","offer_user_id":5,"request_user_id":4,"request_user":"p2t","offer_user":"Jim","serv":"p0 测试123456"}]
+        const {feed: {serv_offer_user_name,serv_offer_titile,lately_chat_content,deal_id}} = this.props
+        const cellData = {serv_offer_user_name,serv_offer_titile,lately_chat_content,deal_id}
         //return (<Text>1234</Text>)
         return <ChatSingleImageCell {...cellData} onPress={this._onPress}/>
     }

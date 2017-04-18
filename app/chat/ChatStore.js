@@ -22,7 +22,7 @@ export default class ChatStore {
                 this.isRefreshing = false
                 this.errorMsg = ''
                 if (this.page == 1) {                     
-                    console.log("26:"+JSON.stringify(result))           
+                    //console.log("26:"+JSON.stringify(result))           
                     this.feedList.replace(result) 
                 } else {     
                     console.log("28:"+JSON.stringify(result))              
@@ -58,13 +58,13 @@ export default class ChatStore {
                 return null
             }).then(responseData => {
                 if (responseData) {
-                    console.log(JSON.parse(responseData.feeds))
+                    //console.log(JSON.parse(responseData.feeds))
                     resolve(JSON.parse(responseData.feeds))
                 } else {
                     reject('请求出错！')
                 }
             }).catch(error => {
-                console.log(`Fetch evaluating list error: ${error}`)
+                // console.log(`Fetch evaluating list error: ${error}`)
                 reject('网络出错！')
             })
         })

@@ -13,6 +13,7 @@ import {
     TextInput
 } from 'react-native';
 import Header from '../components/HomeNavigation';
+import Constant from '../common/constants';
 
 const screenW = Dimensions.get('window').width;
 
@@ -92,8 +93,8 @@ export default class OrderDetail extends Component {
 const styles = StyleSheet.create({
     
     cardImageContent: {
-        height: Common.window.height - (Platform.OS === 'ios' ? 64 : 50) - 18,
-        width: Common.window.width,
+        height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 18,
+        width: Constant.window.width,
         backgroundColor: '#f5f5f5',
         top: Platform.OS === 'ios' ? 64 : 50,
         position: 'absolute'
