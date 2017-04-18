@@ -26,8 +26,8 @@ const controllers = [
 
 export default class MeInfo extends PureComponent {
     componentWillMount(){
-        //global.username =
-        //global.avatar =
+        //global.username = 'myname';
+        //global.avatar = require('../resource/user_default_image.jpg');
     }
      render() {
         return(
