@@ -45,7 +45,7 @@ export default class FeedStore {
 
     _fetchDataFromUrl() {
         return new Promise((resolve, reject) => {
-            const URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSG + `Wy4PnM5-ZsPXx1sPr9FK` + `&page=${this.page}`;   
+            const URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSG + `${global.user.authentication_token}&page=${this.page}`;   
             fetch(URL, {
                 method: 'GET',
                 headers: {

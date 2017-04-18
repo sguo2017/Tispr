@@ -78,6 +78,7 @@ export default class Login extends Component {
         let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
         console.log("79 accessToken:" + JSON.stringify(t));
         global.user=userdetail;
+        console.log(JSON.stringify(global.user))
         this._navigateHome();
       } else {
         UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);

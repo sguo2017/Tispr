@@ -2,7 +2,7 @@ import Util from '../common/utils';
 import Common from '../common/constants';
 
 export let fetchFeedList = (category, page) => {
-    let URL = `http://` + Common.url.IMG_SERV_ADDR + ':' + Common.url.SERV_API_PORT + Common.url.SERV_API_SERV_OFFER_INDEX + `Wy4PnM5-ZsPXx1sPr9FK` + `&page=1`;  
+    let URL = `http://` + Common.url.IMG_SERV_ADDR + ':' + Common.url.SERV_API_PORT + Common.url.SERV_API_SERV_OFFER_INDEX + `${global.user.authentication_token}&page=1`;  
     return dispatch => {
         dispatch(fetchingFeedList(category, page));
         Util.get(URL, (response) => {

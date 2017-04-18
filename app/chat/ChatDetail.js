@@ -47,7 +47,7 @@ export default class ChatDetail extends Component {
 
   componentWillMount() {
     const { feed } = this.props;
-    let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DEAL_CHAT_DETAIL + `Wy4PnM5-ZsPXx1sPr9FK` + `&deal_id=${feed.deal_id}`;
+    let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DEAL_CHAT_DETAIL + `${global.user.authentication_token}&deal_id=${feed.deal_id}`;
     Util.get(URL, (response) => {
       let messages = []
       JSON.parse(response.messages).forEach(function (value) {
@@ -92,7 +92,7 @@ export default class ChatDetail extends Component {
 
     const { feed } = this.props;
     try {
-      let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DEAL_CHAT_DETAIL_ADD + `Wy4PnM5-ZsPXx1sPr9FK`;
+      let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DEAL_CHAT_DETAIL_ADD + `${global.user.authentication_token}`;
       let response = await fetch(URL, {
         method: 'POST',
         headers: {
