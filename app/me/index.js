@@ -26,8 +26,8 @@ const controllers = [
 
 export default class MeInfo extends PureComponent {
     componentWillMount(){
-        //global.username = 'myname';
-        //global.avatar = require('../resource/user_default_image.jpg');
+        //global.username =
+        //global.avatar =
     }
      render() {
         return(
@@ -36,8 +36,12 @@ export default class MeInfo extends PureComponent {
                 <Header
                     title='Tisprs'
                 />
-                <View style={{flexDirection:'row', justifyContent:'flex-start',margin: 20}}>
-                    <Image style={{width:80, height:80, borderRadius: 40}} source={{uri:global.avatar}}/>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', margin: 20 }}>
+                    <View style={{ width: 80, height: 80, borderRadius: 40, }}>
+                        <Image style={{ width: 80, height: 80, justifyContent: 'flex-end', alignItems: 'flex-end' }} source={{uri:global.avatar}}>
+                            <Image style={{ width: 20, height: 20, borderRadius: 10 }} source={require('../resource/icon_tel.png')} />
+                        </Image>
+                    </View>
                     <View style={{justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
                         <Text style={{fontSize:20, color:'black'}}>{global.username}</Text>
                         <Text>番禺区，广州市，广东省，中国</Text>
