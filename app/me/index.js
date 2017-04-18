@@ -34,10 +34,10 @@ export default class MeInfo extends PureComponent {
                     title='Tisprs'
                 />
                 <View style={{flexDirection:'row', justifyContent:'flex-start',margin: 20}}>
-                    <View style={{width:80, height:80, borderRadius: 40,}}>
-                        <Image style={{width:80, height:80,justifyContent:'flex-end', alignItems:'flex-end'}} source={require('../resource/user_default_image.jpg')}>
-                            <Image style={{width:20, height:20, borderRadius: 10}} source={require('../resource/icon_tel.png')}/>
+                    <View style={{}}>
+                        <Image style={{width:80, height:80, borderRadius: 40, justifyContent:'flex-end', alignItems:'flex-end'}} source={require('../resource/user_default_image.jpg')}>
                         </Image>
+                        <Image style={{width:20, height:20, borderRadius: 10,position: 'absolute',left: 60, top: 60}} source={require('../resource/icon_tel.png')}/>
                     </View>
                     <View style={{justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
                         <Text style={{fontSize:20, color:'black'}}>username</Text>
