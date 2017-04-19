@@ -1,34 +1,67 @@
-import React, {PureComponent} from 'react'
+import React, {Component, PureComponent} from 'react'
 import {
     StyleSheet,
     View,
     Text,
     Image,
     ListView,
+    ProgressBarAndroid,
     TouchableOpacity,
+    Platform,
     RefreshControl,
+    Alert,
+    Navigator,
 } from 'react-native'
 import Header from '../components/HomeNavigation';
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import TabCategoryBar from './TabCategoryBar'
-
+import Constant from '../common/constants';
 const titles = ['Offers', 'Requests', 'Bookmarks'];
 
 import OffersList from './page/offersList'
 import RequestsList from './page/requestsList';
 import BookmarksList from './page/bookmarksList';
-
+import PersonInfo from './page/personalinfoEdit';
+import ImagePicker from 'react-native-image-picker';
 const controllers = [
     {categoryId: 1, controller: OffersList},
     {categoryId: 2, controller: RequestsList},
     {categoryId: 3, controller: BookmarksList}
 ]
+export default class MeInfo extends Component {
+    constructor(props) {
+        super(props);
 
-export default class MeInfo extends PureComponent {
-    componentWillMount(){
-        //global.username =
-        //global.avatar =
+        this.state = {
+            fileName: this.props.fileName,
+            fileSource: this.props.source,
+            avatar: global.user.avatar,
+            errors: this.props.errors,
+        }
     }
+   
+
+    clickJump() {
+        let _this = this;
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+                name: "PersonInfo",
+                component: PersonInfo,
+                params: {
+                    fileName: "fileName",
+                    fileSource: "fileSource",
+                    getdata: (a)=>{
+                    _this.setState({
+                        avatar:a
+                        })
+                    }
+                }
+            });
+        }
+    }
+
+
      render() {
         return(
 
@@ -38,9 +71,11 @@ export default class MeInfo extends PureComponent {
                 />
                 <View style={{flexDirection:'row', justifyContent:'flex-start',margin: 20}}>
                     <View style={{}}>
-                        <Image style={{width:80, height:80, borderRadius: 40, justifyContent:'flex-end', alignItems:'flex-end'}} source={{uri:global.user.avatar}}>
+                        <TouchableOpacity onPress={this.clickJump.bind(this)}>
+                        <Image style={{width:80, height:80, borderRadius: 40, justifyContent:'flex-end', alignItems:'flex-end'}} source={{uri:this.state.avatar}}>
                         </Image>
                         <Image style={{width:20, height:20, borderRadius: 10,position: 'absolute',left: 60, top: 60}} source={require('../resource/icon_tel.png')}/>
+                        </TouchableOpacity>
                     </View>
                     <View style={{justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
                         <Text style={{fontSize:20, color:'black'}}>{global.user.name}</Text>
