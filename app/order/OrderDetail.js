@@ -10,14 +10,61 @@ import {
     ScrollView,
     Platform,
     Dimensions,
-    TextInput
+    TextInput,
+    Alert,
+    Modal
 } from 'react-native';
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
+import CloseDeal from './CloseDeal';
 
 const screenW = Dimensions.get('window').width;
 
 export default class OrderDetail extends Component {
+    constructor(props) {  
+        super(props);  
+        this.state = {  
+        show:false,  
+        };  
+    }
+     _leftButtonClick() {  
+  
+    }  
+    _rightButtonClick() {  
+        this._setModalVisible();  
+    }  
+    
+    // 显示/隐藏 modal  
+    _setModalVisible() {  
+        let isShow = this.state.show;  
+        this.setState({  
+        show:!isShow,  
+        });  
+    }  
+
+    clickJump() {
+        let isShow = this.state.show;  
+        this.setState({  
+        show:!isShow,  
+        });
+        const { navigator } = this.props;
+        if (navigator) {
+        navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+            name: "CloseDeal",
+            component: CloseDeal,
+        });
+        }
+    }
+    // showAlert(){
+    //     Alert.alert(
+    //                     'Do you want to confirm the deal?',
+    //                     'If everyone confirms, the deal is made and the request is awarded.',
+    //                     [
+    //                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
+    //                     {text: 'Yes', onPress: this.clickJump()},
+    //                     ]
+    //                 )
+    // }
     render(){
         return (
             <View>
@@ -69,22 +116,61 @@ export default class OrderDetail extends Component {
         bottom: 5,
         backgroundColor: '#665dc6',width: screenW*0.5,height:44}}
                         >
+                           
+                            <Image style={{width:30, height: 30}} source={require('../resource/ic_my_order.png')}/>
                             <Text style={{ fontSize: 22, color: '#FFF' }}>
-                                New Proposal
+                            New Proposal
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             activeOpacity={0.75}
                             style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',borderTopColor: '#ccc',position: 'absolute',
                             bottom: 5,left: screenW*0.5,backgroundColor: '#81d49c',width: screenW*0.5,height:44}}
-                            onPress={() => alert('confirm deal')}
+                            onPress={this._rightButtonClick.bind(this)}
                         >
+                        
+                            <Image style={{width:30, height: 30}} source={require('../resource/ic_modal_window_submit.png')}/>
                             <Text style={{ fontSize: 22, color: '#FFF' }}>
-                                Confirm deal
+                            Confirm deal
                             </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
+                 <Modal  
+                    animationType='slide'  
+                    transparent={true}  
+                    visible={this.state.show}  
+                    onShow={() => {}}  
+                    onRequestClose={() => {}} >  
+                    <View style={styles.modalStyle}>  
+                        <View style={styles.subView}>  
+                        <Text style={styles.titleText}>  
+                           Do you want to confirm the deal?  
+                        </Text>  
+                        <Text style={styles.contentText}>  
+                            If everyone confirms, the deal is made and the request is awarded.  
+                        </Text>  
+                        <View style={styles.horizontalLine} />  
+                        <View style={styles.buttonView}>  
+                            <TouchableHighlight underlayColor='transparent'  
+                            style={styles.buttonStyle}  
+                            onPress={this._setModalVisible.bind(this)}>  
+                            <Text style={styles.buttonText}>  
+                                取消  
+                            </Text>  
+                            </TouchableHighlight>  
+                            <View style={styles.verticalLine} />  
+                            <TouchableHighlight underlayColor='transparent'  
+                            style={styles.buttonStyle}  
+                            onPress={this.clickJump.bind(this)}>  
+                            <Text style={styles.buttonText}>  
+                                确定  
+                            </Text>  
+                            </TouchableHighlight>  
+                        </View>  
+                        </View>  
+                    </View>  
+                    </Modal>  
             </View>
         )
     }
@@ -98,5 +184,67 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         top: Platform.OS === 'ios' ? 64 : 50,
         position: 'absolute'
-    }
+    },
+    // modal的样式  
+  modalStyle: {  
+    // backgroundColor:'#ccc',  
+    alignItems: 'center',  
+    justifyContent:'center',  
+    flex:1,  
+  },  
+  // modal上子View的样式  
+  subView:{  
+    marginLeft:40,  
+    marginRight:40,  
+    backgroundColor:'#fff',  
+    alignSelf: 'stretch',  
+    justifyContent:'center',  
+    borderRadius: 10,  
+    borderWidth: 0.5,  
+    borderColor:'#ccc',  
+  },  
+  // 标题  
+  titleText:{  
+    marginTop:10,  
+    marginBottom:5,  
+    fontSize:18,
+    color: 'black',  
+    fontWeight:'bold',  
+    textAlign:'center',  
+  },  
+  // 内容  
+  contentText:{  
+    margin:8,  
+    fontSize:18,  
+    color:'black',
+    textAlign:'center',  
+  },  
+  // 水平的分割线  
+  horizontalLine:{  
+    marginTop:5,  
+    height:0.5,  
+    backgroundColor:'#ccc',  
+  },  
+  // 按钮  
+  buttonView:{  
+    flexDirection: 'row',  
+    alignItems: 'center',  
+  },  
+  buttonStyle:{  
+    flex:1,  
+    height:44,  
+    alignItems: 'center',  
+    justifyContent:'center',  
+  },  
+  // 竖直的分割线  
+  verticalLine:{  
+    width:0.5,  
+    height:44,  
+    backgroundColor:'#ccc',  
+  },  
+  buttonText:{  
+    fontSize:16,  
+    color:'#3393F2',  
+    textAlign:'center',  
+  }
 })
