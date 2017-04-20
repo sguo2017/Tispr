@@ -4,6 +4,7 @@ import {
     View,
     Text,
     Image,
+    TextInput,
     ListView,
     TouchableOpacity,
     ProgressBarAndroid,
@@ -11,11 +12,15 @@ import {
     RefreshControl,
     Alert,
     Navigator,
+    Dimensions
 } from 'react-native'
 import Header from '../../components/HomeNavigation';
 import Constant from '../../common/constants';
 import ImagePicker from 'react-native-image-picker';
 import Me from '../index';
+
+const screenW = Dimensions.get('window').width;
+
 export default class Personinfoedit extends Component {
     constructor(props) {
         super(props);
@@ -27,6 +32,7 @@ export default class Personinfoedit extends Component {
             errors: this.props.errors,
             fileName: this.props.fileName,
             fileSource: this.props.source,
+            address: this.props.address,
         }
     }
     componentWillMount(){
@@ -182,19 +188,60 @@ export default class Personinfoedit extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    title='Confrimation'
+                    title='Edit Profile'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
                     leftIconAction={this._onBack}
                     rightIcon={require('../../resource/t_header_arrow_left.png')}
                     rightIconAction={this.updateavatar.bind(this)}
                 />
-                <View style={{flexDirection:'row', justifyContent:'flex-start',margin: 20}}>
-                    <View style={{}}>
+                <View style={{justifyContent:'flex-start',margin: 20}}>
+                    <View style={{flexDirection: 'row', justifyContent:'center'}}>
                         <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                         <Image style={{width:80, height:80, borderRadius: 40, justifyContent:'flex-end', alignItems:'flex-end'}} source={{uri:this.state.avatar}}>
                         </Image>
-                        <Image style={{width:20, height:20, borderRadius: 10,position: 'absolute',left: 60, top: 60}} source={require('../../resource/icon_tel.png')}/>
                         </TouchableOpacity>
+                    </View>
+                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                        <Image style={{width: 40, height: 40}} source={require('../../resource/ic_my_order.png')}/>
+                        <TextInput
+                        style={{flexDirection:'row',width: screenW*0.8}}
+                        multiline={true}
+                        numberOfLines={1}
+                        value ={this.state.name}
+                        onChangeText={(val) => {this.setState({ name: val})}}
+                        />
+                    </View>
+                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                        <Image style={{width: 40, height: 40}} source={require('../../resource/ic_my_address.png')}/>
+                        <TextInput
+                        style={{flexDirection:'row',width: screenW*0.8}}
+                        multiline={true}
+                        numberOfLines={1}
+                        value ={this.state.address}
+                        onChangeText={(val) => {this.setState({ address: val})}}
+                        />
+                    </View>
+                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                        <Image style={{width: 40, height: 40}} source={require('../../resource/ic_my_order.png')}/>
+                        <TextInput
+                        style={{flexDirection:'row',width: screenW*0.8}}
+                        multiline={true}
+                        numberOfLines={1}
+                        value ={this.state.address}
+                        placeholder='Add some info about yourself'
+                        onChangeText={(val) => {this.setState({ address: val})}}
+                        />
+                    </View>
+                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                        <Image style={{width: 40, height: 40}} source={require('../../resource/ic_my_address.png')}/>
+                        <TextInput
+                        style={{flexDirection:'row',width: screenW*0.8}}
+                        multiline={true}
+                        numberOfLines={1}
+                        value ={this.state.address}
+                        placeholder='Add a website link'
+                        onChangeText={(val) => {this.setState({ address: val})}}
+                        />
                     </View>
                 </View>
             </View>
