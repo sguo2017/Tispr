@@ -18,6 +18,7 @@ import { observer } from 'mobx-react/native'
 import { observable, computed, action, runInAction } from 'mobx';
 import ImagePicker from 'react-native-image-picker';
 import ServOffer from './offer/index';
+import ServRequest from './request/index';
 
 @observer
 export default class Server extends PureComponent {
@@ -41,13 +42,27 @@ export default class Server extends PureComponent {
                 )
     }
 
-     clickJump() {
+     clickServOfferJump() {
         console.log("push page 2!!!")
         const { navigator } = this.props;
         if (navigator) {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "ServOffer",
                 component: ServOffer,
+                params: {
+                   
+                }
+            });
+        }
+    }
+
+     clickServRequestJump() {
+        console.log("push page 2!!!")
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+                name: "ServRequest",
+                component: ServRequest,
                 params: {
                    
                 }
@@ -62,14 +77,15 @@ export default class Server extends PureComponent {
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 150 }}>
 
-                <TouchableOpacity onPress={this.clickJump.bind(this)}>
+                <TouchableOpacity onPress={this.clickServOfferJump.bind(this)}>
                     <Image style={{ width: 150, height: 150, alignSelf: 'center' }} source={require('../resource/t_offer_serv.png')} />
-                </TouchableOpacity>
-                    <Image style={{ width: 150, height: 150, alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', }} source={require('../resource/t_serv_request.png')} />
-
+                </TouchableOpacity>   
+                <TouchableOpacity onPress={this.clickServRequestJump.bind(this)}>           
+                    <Image style={{ width: 150, height: 150, alignSelf: 'flex-end', right: 5, justifyContent: 'center'}} source={require('../resource/t_serv_request.png')} /> 
+                </TouchableOpacity>   
                 </View>
 
-                <Image style={{ width: 50, height: 50, alignSelf: 'center', marginTop: 150, display: 'none' }} source={require('../resource/t_server_close.png')} />
+                <Image style={{ width: 50, height: 50, alignSelf: 'center', marginTop: 150}} source={require('../resource/t_server_close.png')} />
 
             </View>
         )
