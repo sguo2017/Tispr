@@ -26,12 +26,12 @@ let url = {
      SERV_API_USER_LOGIN: `/users/sign_in`,//登录接口
      SERV_API_USER_REGI: `/users.json`, //注册接口
      SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
-     SERV_API_SERV_OFFER_ADD: `/api/serv/serv_offers?token=`,//服务提供的新增接口
-     SERV_API_SERV_OFFER_INDEX: `/api/serv/serv_offers?token=`,//服务提供的新增接口
+     SERV_API_SERV_OFFER_ADD: `/api/goods/serv_offers?token=`,//服务提供的新增接口
+     SERV_API_SERV_OFFER_INDEX: `/api/goods/serv_offers?token=`,//服务提供的新增接口
      SERV_API_AVAT_UPDATE: `/api/session/users/`,//头像更新接口
      SERV_API_SYS_MSG: `/api/sys/sys_msgs?token=`,//系统消息接口
-     SERV_API_DEAL_CREATE: `/api/order/deals.json?token=`,//订单新增接口
-     SERV_API_DEAL_LIST: `/api/order/deals.json?token=`,//订单查询接口
+     SERV_API_ORDER_CREATE: `/api/order/orders.json?token=`,//订单新增接口
+     SERV_API_ORDER_LIST: `/api/order/orders.json?token=`,//订单查询接口
      SERV_API_CHAT: `/api/chat/chats.json?token=`,//订单聊天沟通详情列表接口
      SERV_API_CHAT_ADD: `/api/chat/chats?token=`,//订单聊天沟通详情新增接口
      SERV_API_SERV_OFFER_COLLECT:`/api/me/favorites?token=`,//收藏服务提供的接口

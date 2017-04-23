@@ -35,8 +35,7 @@ export default class DealConnect extends Component {
     async _createDeal() {
         const { feed } = this.props;
         try {
-            let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
-            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DEAL_CREATE + t;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_CREATE + global.user.authentication_token;
             let response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -45,7 +44,7 @@ export default class DealConnect extends Component {
                 },
 
                 body: JSON.stringify({
-                    deal: {
+                    order: {
                         serv_offer_title: feed.serv_offer.serv_title,
                         serv_offer_id: feed.id,
                         offer_user_id: feed.user_id,
