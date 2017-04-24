@@ -75,13 +75,13 @@ export default class Server extends PureComponent {
         return (
             <View style={{ flex: 1, backgroundColor: "#9189d8" }}>
 
-                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 150 }}>
+                <View style={{ alignItems: 'center', flexDirection: 'row',justifyContent:'space-around', marginTop: 150 }}>
 
                 <TouchableOpacity onPress={this.clickServOfferJump.bind(this)}>
-                    <Image style={{ width: 150, height: 150, alignSelf: 'center' }} source={require('../resource/t_offer_serv.png')} />
+                    <Image style={{ width: 150, height: 150, alignSelf: 'center' ,left: 10}} source={require('../resource/t_offer_serv.png')} />
                 </TouchableOpacity>   
                 <TouchableOpacity onPress={this.clickServRequestJump.bind(this)}>           
-                    <Image style={{ width: 150, height: 150, alignSelf: 'flex-end', right: 5, justifyContent: 'center'}} source={require('../resource/t_serv_request.png')} /> 
+                    <Image style={{ width: 150, height: 150, alignSelf: 'flex-end', right: 10, justifyContent: 'center'}} source={require('../resource/t_serv_request.png')} /> 
                 </TouchableOpacity>   
                 </View>
 
