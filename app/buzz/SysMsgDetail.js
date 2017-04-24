@@ -26,7 +26,6 @@ export default class SysMsgDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: this.props.feed.isFavorited?"../resource/ic_account_favour.png":"../resource/ic_news_collect.png",
             isFavorited: this.props.feed.isFavorited,
             favorite_id: this.props.feed.favorite_id
         };
@@ -48,10 +47,6 @@ export default class SysMsgDetail extends Component {
               isFavorited: feed.isFavorited,
               favorite_id: feed.favorite_id }
              );
-          feed.isFavorited ?
-                this.setState({ "image": "../resource/ic_account_favour.png" })
-                :
-                this.setState({ "image": "../resource/ic_news_collect.png" }) 
     }
 
     _switch() {
@@ -85,7 +80,8 @@ export default class SysMsgDetail extends Component {
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
                   let rmsg = JSON.parse(response._bodyText);
-                this.props.feed.favorite_id = rmsg.favorite_id;
+                  this.props.feed.favorite_id = rmsg.favorite_id;
+                  this.props.feed.isFavorited= true;
                 this.setState({ isFavorited: true });
             } else {
                 let error = res;
@@ -111,6 +107,7 @@ export default class SysMsgDetail extends Component {
 
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
+                this.props.feed.isFavorited= false;
                 this.setState({isFavorited: false});
             } else {
                 let error = res;
