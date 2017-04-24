@@ -1,0 +1,54 @@
+import React, {Component} from 'react';
+import {
+    View,
+    StyleSheet,
+    WebView,
+    Image,
+    Text,
+    TouchableOpacity,
+    TouchableHighlight,
+    ScrollView,
+    Platform,
+    Dimensions
+} from 'react-native';
+import Header from '../components/HomeNavigation';
+import Constant from '../common/constants';
+
+const screenW = Dimensions.get('window').width;
+
+export default class beforePropose extends Component{
+    render(){
+        return(
+            <View>
+                <Header
+                        leftIconAction={() => this.props.navigator.pop()}
+                        title={'Current Proposal'}
+                        leftIcon={require('../resource/ic_back_dark.png')}
+                        rightIcon={require('../resource/user_default_image.jpg')}
+                        rightIconSize={26}
+                    />
+                <ScrollView style={{ height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 18,}}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: 10 }}>
+                        <Image source={require('../resource/icon_phone.png')} />
+                        <Text style={{ fontSize: 16, color: 'black' }}>No deals have been proposed yet</Text>
+                    </View>
+                    <View style={{justifyContent:'center', alignItems:'center',marginTop:200}}>
+                        <Image style={{width:200,height:200}} source={require('../resource/ic_arrow_down_default.png')} />
+                    </View>
+                </ScrollView>
+                <TouchableOpacity
+                activeOpacity={0.75}
+                            style={{flexDirection: 'row',alignItems: 'center',
+                                justifyContent: 'center',
+                                borderTopColor: '#ccc',
+                                position: 'absolute',
+                                bottom: 0,
+                                backgroundColor: '#665dc6',width: screenW,height:44}}
+                >
+                    <Text style={{fontSize: 20, color: 'white'}}>Propose a deal</Text>
+                </TouchableOpacity>
+            </View>
+            
+        )
+    }
+}

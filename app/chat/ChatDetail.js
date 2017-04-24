@@ -22,6 +22,7 @@ import { connect } from 'react-redux';
 import UserDefaults from '../common/UserDefaults';
 import Util from '../common/utils';
 import OrderDetail from '../order/OrderDetail'
+import beforePropose from '../order/beforePropose'
 
 const screenW = Dimensions.get('window').width;
 
@@ -30,7 +31,8 @@ export default class ChatDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: []
+      messages: [],
+      order_status: this.props.order_status,
     };
     this.onSend = this.onSend.bind(this);
   }
@@ -38,10 +40,18 @@ export default class ChatDetail extends Component {
   clickJump() {
     const { navigator } = this.props;
     if (navigator) {
-      navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
-        name: "OrderDetail",
-        component: OrderDetail,
-      });
+      if(this.state.order_status =='00A'){
+        navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+          name: "beforePropose",
+          component: beforePropose,
+        });
+      }
+      if(this.state.order_status =='00B'){
+        navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+          name: "OrderDetail",
+          component: OrderDetail,
+        });
+      }
     }
   }
 
@@ -69,7 +79,10 @@ export default class ChatDetail extends Component {
     }, (error) => {
       console.log('Fetch category list error: ' + error);
     });
-
+    const o_status='00A'
+    this.setState({
+      order_status: o_status,
+    });
 
   }
 
@@ -137,7 +150,15 @@ export default class ChatDetail extends Component {
         <View style={[styles.cardImageContent]}>
           <TouchableOpacity onPress={this.clickJump.bind(this)} style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: 10 }}>
           <Image source={require('../resource/icon_phone.png')} />
-          <Text style={{ fontSize: 16, color: 'black' }}>No deals have been proposed yet</Text>
+          {
+            this.state.order_status =='00A'? 
+            <Text style={{ fontSize: 16, color: 'black' }}>No deals have been proposed yet</Text>:<Text></Text>
+          }
+          {
+            this.state.order_status =='00B'? 
+            <Text style={{ fontSize: 16, color: 'black' }}>A deal has been proposed</Text>:<Text></Text>
+          }
+          
          </TouchableOpacity>
           <GiftedChat
             messages={this.state.messages}
