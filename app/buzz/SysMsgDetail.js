@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     View,
     StyleSheet,
@@ -12,6 +12,7 @@ import {
     Dimensions,
     Alert
 } from 'react-native';
+import { observer } from 'mobx-react/native'
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import ShareView from '../components/ShareView';
@@ -20,126 +21,178 @@ import Connect from './Connect'
 
 const screenW = Dimensions.get('window').width;
 
+@observer
 export default class SysMsgDetail extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            image: this.props.feed.isFavorited?"../resource/ic_account_favour.png":"../resource/ic_news_collect.png",
+            isFavorited: this.props.feed.isFavorited,
+            favorite_id: this.props.feed.favorite_id
+        };
+    }
 
-  
+
     _p = feed => {
-        console.log("25:"+JSON.stringify(feed))
+        console.log("25:" + JSON.stringify(feed))
 
         this.props.navigator.push({
             component: Connect,
-            passProps: {feed}
+            passProps: { feed }
         })
-    } 
-
-    render(){
-        const {feed} = this.props;
-        return (
-                <FoodCardComponent
-                    popAction={() => this.props.navigator.pop()}
-                    shareAction={() => this.shareView.share()}
-                    collectAction={() => this._p(feed)}
-                    feed ={feed}
-                />
-        )
     }
-}
 
-const WebViewComponent = ({
-    popAction}) => {
-    return (
-        <View style={{flex: 1, backgroundColor: 'white'}}>
-            <Header
-                leftIconAction={popAction}
-                title='资讯详情'
-                leftIcon={require('../resource/ic_back_dark.png')}
-            />
-            <WebView
-                startInLoadingState={true}
-                bounces={false}
-                scalesPageToFit={true}
-                style={styles.webView}
-            />
-        </View>
-    )
-};
+    componentWillMount(){
+         const { feed } = this.props;
+          this.setState({ 
+              isFavorited: feed.isFavorited,
+              favorite_id: feed.favorite_id }
+             );
+          feed.isFavorited ?
+                this.setState({ "image": "../resource/ic_account_favour.png" })
+                :
+                this.setState({ "image": "../resource/ic_news_collect.png" }) 
+    }
 
-const FoodCardComponent = ({
-    popAction,
-    shareAction,
-    collectAction,
-    feed
-}) => {
+    _switch() {
+        if (this.state.isFavorited) {
+            this.cancelCollect()
+        } else {
+            this.collect()
+        }
+    }
 
-    let platformMargin = Platform.OS === 'ios' ? -40 : -30;
+    async collect() {
+        try {
+            let t = global.user.authentication_token;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_COLLECT + t;
+            console.log("69")
+            let response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    favorite: {
+                        obj_id: this.props.feed.serv_id,
+                        obj_type: 'serv_offer',
+                        user_id: global.user.id,
+                    }
+                })
+            });
 
-    return (
-        <View style={{flex: 1, backgroundColor: 'white'}}>
-            <Header
-                leftIconAction={popAction}
-                title='查看详情'
-                leftIcon={require('../resource/ic_back_dark.png')}
-                rightIcon={require('../resource/ic_photo_share.png')}
-                rightIconSize={16}
-                rightIconAction={shareAction}
-            />
-            <View style={[styles.cardImageContent]}>
-                <ScrollView
-                    bounces={false}
-                    showsVerticalScrollIndicator={false}
-                    removeClippedSubviews={true}
-                    contentContainerStyle={{backgroundColor: 'white'}}
-                >
-                    <View style={{
-                        flexDirection: 'row',
-                        paddingVertical: 10,
-                        paddingHorizontal: 15,
-                        alignItems: 'center',
-                        overflow: 'hidden'
-                    }}>
-                        <Image style={{width: 30, height: 30, marginRight: 5, marginLeft: 3}} source={{uri:feed.user.avatar}} defaultSource={require('../resource/user_default_image.png')}/>
-                        <View style={{marginLeft: 10}}>
-                            <Text style={{color: 'black',fontSize: 18}}>{feed.user_name}</Text>
-                            <Text style={{color: 'gray',fontSize: 18}}>{feed.action_title}</Text>
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                  let rmsg = JSON.parse(response._bodyText);
+                this.props.feed.favorite_id = rmsg.favorite_id;
+                this.setState({ isFavorited: true });
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            console.log(`Fetch evaluating list error: ${error}`)
+        }
+    }
+
+    async cancelCollect() {
+        try {
+            let t = global.user.authentication_token;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_COLLECT_CANCEL + '/' + this.props.feed.favorite_id + '?token=' + t;
+            console.log("101")
+            let response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                this.setState({isFavorited: false});
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            console.log(`Fetch evaluating list error: ${error}`)
+        }
+    }
+
+    render() {
+        const { feed } = this.props;
+          let platformMargin = Platform.OS === 'ios' ? -40 : -30;
+  
+
+        return (
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
+
+
+                <Header
+                    leftIconAction={() => this.props.navigator.pop()}
+                    title='查看详情'
+                    leftIcon={require('../resource/ic_back_dark.png')}
+                    rightIcon={this.state.isFavorited?require('../resource/ic_account_favour.png'):require('../resource/ic_news_collect.png')}
+                    rightIconSize={16}
+                    rightIconAction={() => this._switch(this.state.isFavorited, this.state.favorite_id)}
+                />
+
+                <View style={[styles.cardImageContent]}>
+                    <ScrollView
+                        bounces={false}
+                        showsVerticalScrollIndicator={false}
+                        removeClippedSubviews={true}
+                        contentContainerStyle={{ backgroundColor: 'white' }}
+                    >
+                        <View style={{
+                            flexDirection: 'row',
+                            paddingVertical: 10,
+                            paddingHorizontal: 15,
+                            alignItems: 'center',
+                            overflow: 'hidden'
+                        }}>
+                            <Image style={{ width: 30, height: 30, marginRight: 5, marginLeft: 3 }} source={{ uri: feed.user.avatar }} defaultSource={require('../resource/user_default_image.png')} />
+                            <View style={{ marginLeft: 10 }}>
+                                <Text style={{ color: 'black', fontSize: 18 }}>{feed.user_name}</Text>
+                                <Text style={{ color: 'gray', fontSize: 18 }}>{feed.action_title}</Text>
+                            </View>
                         </View>
-                    </View>
-                    <Image style={{width: screenW}} defaultSource={{uri:feed.serv_offer.serv_imges}} source={require('../resource/img_buzz_detail_default.png')}/>
-                    <View style={{
-                        borderColor: '#ccc',
-                        borderTopWidth: 0.5,
-                        paddingVertical: 20,
-                        paddingHorizontal: 15,
-                        justifyContent: 'center',
-                        marginTop: 5
-                    }}>
-                        <Text style={{color: 'black',fontSize: 18}}>{feed.action_desc}</Text>
-                        <Text style={{color: 'gray',fontSize: 18}}>{feed.action_title}</Text>
-                    </View>
-                    {/*<TouchableHighlight style={[styles.bottomToolBar,{height: 40 }]}>
+                        <Image style={{ width: screenW }} defaultSource={{ uri: feed.serv_offer.serv_imges }} source={require('../resource/img_buzz_detail_default.png')} />
+                        <View style={{
+                            borderColor: '#ccc',
+                            borderTopWidth: 0.5,
+                            paddingVertical: 20,
+                            paddingHorizontal: 15,
+                            justifyContent: 'center',
+                            marginTop: 5
+                        }}>
+                            <Text style={{ color: 'black', fontSize: 18 }}>{feed.action_desc}</Text>
+                            <Text style={{ color: 'gray', fontSize: 18 }}>{feed.action_title}</Text>
+                        </View>
+                        {/*<TouchableHighlight style={[styles.bottomToolBar,{height: 40 }]}>
                         <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: '#81d49c' }}>
                             Connect
                         </Text>
                     </TouchableHighlight>*/}
-                </ScrollView>
-            </View>
-            <TouchableOpacity
-                activeOpacity={0.75}
-                style={[styles.bottomToolBar, {borderTopWidth: Constant.window.onePR, width: screenW}]}
-                onPress={collectAction}
-            >
-                <Text style={{ fontSize: 22, color: '#FFF' }}>
-                    Connect
+                    </ScrollView>
+                </View>
+                <TouchableOpacity
+                    activeOpacity={0.75}
+                    style={[styles.bottomToolBar, { borderTopWidth: Constant.window.onePR, width: screenW }]}
+                >
+                    <Text style={{ fontSize: 22, color: '#FFF' }}>
+                        Connect
                 </Text>
-            </TouchableOpacity>
-        </View>
-    )
-};
+                </TouchableOpacity>
+            </View>
+        )
+    }
+}
 
 const styles = StyleSheet.create({
-    webView: {
-        width: Constant.window.width,
-        height: Constant.window.height - Platform.OS === 'ios' ? 64 : 50,
-    },
+
     bottomToolBar: {
         height: 44,
         width: Constant.window.width,
