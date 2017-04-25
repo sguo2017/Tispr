@@ -33,8 +33,6 @@ export default class SysMsgDetail extends Component {
 
 
     _p = feed => {
-        console.log("25:" + JSON.stringify(feed))
-
         this.props.navigator.push({
             component: Connect,
             passProps: { feed }
@@ -178,6 +176,7 @@ export default class SysMsgDetail extends Component {
                 <TouchableOpacity
                     activeOpacity={0.75}
                     style={[styles.bottomToolBar, { borderTopWidth: Constant.window.onePR, width: screenW }]}
+                    onPress={() => this._p(feed)}
                 >
                     <Text style={{ fontSize: 22, color: '#FFF' }}>
                         Connect

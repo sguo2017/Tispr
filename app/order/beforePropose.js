@@ -13,10 +13,23 @@ import {
 } from 'react-native';
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
+import ProposeDeal from './ProposeDeal';
 
 const screenW = Dimensions.get('window').width;
 
-export default class beforePropose extends Component{
+export default class BeforePropose extends Component{
+    clickJump() {
+        const { navigator } = this.props;
+        const { feed } = this.props;
+        if (navigator) {
+          navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+            name: "ProposeDeal",
+            component: ProposeDeal,
+            passProps: {feed}
+           });
+        }
+     }
+
     render(){
         return(
             <View>
@@ -44,6 +57,7 @@ export default class beforePropose extends Component{
                                 position: 'absolute',
                                 bottom: 0,
                                 backgroundColor: '#665dc6',width: screenW,height:44}}
+                onPress={this.clickJump.bind(this)}
                 >
                     <Text style={{fontSize: 20, color: 'white'}}>Propose a deal</Text>
                 </TouchableOpacity>

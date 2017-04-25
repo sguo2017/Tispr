@@ -36,6 +36,7 @@ let url = {
      SERV_API_CHAT_ADD: `/api/chat/chats?token=`,//订单聊天沟通详情新增接口
      SERV_API_SERV_OFFER_COLLECT:`/api/me/favorites?token=`,//收藏服务提供的接口
      SERV_API_SERV_OFFER_COLLECT_CANCEL:`/api/me/favorites`,//取消收藏服务提供的接口
+     SERV_API_ORDER_UPDATE:`/api/order/orders`,//订单询价更新状态接口
 }
 
 let mapper = {

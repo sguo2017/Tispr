@@ -22,7 +22,7 @@ import { connect } from 'react-redux';
 import UserDefaults from '../common/UserDefaults';
 import Util from '../common/utils';
 import OrderDetail from '../order/OrderDetail'
-import beforePropose from '../order/beforePropose'
+import BeforePropose from '../order/BeforePropose'
 
 const screenW = Dimensions.get('window').width;
 
@@ -35,24 +35,6 @@ export default class ChatDetail extends Component {
       order_status: this.props.order_status,
     };
     this.onSend = this.onSend.bind(this);
-  }
-
-  clickJump() {
-    const { navigator } = this.props;
-    if (navigator) {
-      if(this.state.order_status =='00A'){
-        navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
-          name: "beforePropose",
-          component: beforePropose,
-        });
-      }
-      if(this.state.order_status =='00B'){
-        navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
-          name: "OrderDetail",
-          component: OrderDetail,
-        });
-      }
-    }
   }
 
   componentWillMount() {
@@ -79,11 +61,31 @@ export default class ChatDetail extends Component {
     }, (error) => {
       console.log('Fetch category list error: ' + error);
     });
-    const o_status='00A'
     this.setState({
-      order_status: o_status,
+      order_status: this.props.feed.status,
     });
 
+  }
+
+    clickJump() {
+    const { navigator } = this.props;
+    const { feed } = this.props;
+    if (navigator) {
+      if(this.state.order_status =='00A'){
+        navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+          name: "BeforePropose",
+          component: BeforePropose,
+          passProps: {feed}
+        });
+      }
+      if(this.state.order_status =='00B'){
+        navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+          name: "OrderDetail",
+          component: OrderDetail,
+          passProps: {feed}
+        });
+      }
+    }
   }
 
   onSend(messages = []) {

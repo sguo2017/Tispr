@@ -17,6 +17,7 @@ import {
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import CloseDeal from './CloseDeal';
+import ProposeDeal from './ProposeDeal'
 
 const screenW = Dimensions.get('window').width;
 
@@ -28,7 +29,15 @@ export default class OrderDetail extends Component {
         };  
     }
      _leftButtonClick() {  
-  
+      const { navigator } = this.props;
+      const { feed } = this.props;
+        if (navigator) {
+        navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+            name: "ProposeDeal",
+            component: ProposeDeal,
+            passProps: {feed}
+        });
+        }
     }  
     _rightButtonClick() {  
         this._setModalVisible();  
@@ -66,13 +75,14 @@ export default class OrderDetail extends Component {
     //                 )
     // }
     render(){
+        const { feed } = this.props;
         return (
             <View>
                 <Header
                         leftIconAction={() => this.props.navigator.pop()}
                         title={'Current Proposal'}
                         leftIcon={require('../resource/ic_back_dark.png')}
-                        rightIcon={require('../resource/user_default_image.jpg')}
+                        rightIcon={{uri: feed.request_user_avatar}}
                         rightIconSize={26}
                     />
                 <View style={[styles.cardImageContent]}>
@@ -83,22 +93,32 @@ export default class OrderDetail extends Component {
                             contentContainerStyle={{backgroundColor: 'white'}}
                     >
                         <View style={{flexDirection:'row', justifyContent:'flex-start', alignItems:'center',padding:10, width: screenW}}>
-                            <Image style={{width: 50, height: 50, borderRadius:25}} source={require('../resource/user_default_image.jpg')}/>
+                            <Image style={{width: 50, height: 50, borderRadius:25}} defaultSource={require('../resource/user_default_image.jpg')} source={{uri: feed.offer_user_avatar}}/>
                             <View style={{paddingLeft: 10}}>
-                                <Text style={{fontSize:20, color:'black'}}>username</Text>
-                                <Text style={{fontSize: 16}}>Pending Confirmation</Text>
+                                <Text style={{fontSize:20, color:'black'}}>{feed.offer_user}</Text>
+                                <Text style={{fontSize: 16}}>{feed.serv}</Text>
                             </View>
-                            
+                            {
+                                 feed.bidder== feed.offer_user_id ?
+                                <View style={{flexDirection:'row',width:screenW*0.2, justifyContent:'flex-end'}}>
+                                    <Image style={{width:30, height: 30}} source={require('../resource/icon_check_img.png')}/>
+                                </View> :
+                                <View></View>
+                            }
                         </View>
                         <View style={{flexDirection:'row', justifyContent:'flex-start', alignItems:'center',padding:10, width: screenW,backgroundColor:'white'}}>
-                            <Image style={{width: 50, height: 50, borderRadius:25}} source={require('../resource/user_default_image.jpg')}/>
+                            <Image style={{width: 50, height: 50, borderRadius:25}} defaultSource={require('../resource/user_default_image.jpg')} source={{uri: feed.request_user_avatar}}/>
                             <View style={{paddingLeft: 10}}>
-                                <Text style={{fontSize:20, color:'black'}}>wendi liu</Text>
-                                <Text style={{fontSize: 16}}>Pending Confirmation</Text>
+                                <Text style={{fontSize:20, color:'black'}}>{feed.request_user}</Text>
+                                <Text style={{fontSize: 16}}>{feed.lately_chat_content}</Text>
                             </View>
-                            <View style={{flexDirection:'row',width:screenW*0.35, justifyContent:'flex-end'}}>
-                                <Image style={{width:30, height: 30}} source={require('../resource/icon_check_img.png')}/>
-                            </View>
+                            {
+                                 feed.bidder== feed.request_user_id ?
+                                <View style={{flexDirection:'row',width:screenW*0.2, justifyContent:'flex-end'}}>
+                                    <Image style={{width:30, height: 30}} source={require('../resource/icon_check_img.png')}/>
+                                </View>:
+                                <View></View>
+                            }
                         </View>
                         <View style={{flexDirection:'row',paddingTop: 30, paddingLeft: 10,}}>
                             <Text style={{fontSize: 16, color:'black', }}>
@@ -115,6 +135,7 @@ export default class OrderDetail extends Component {
         position: 'absolute',
         bottom: 5,
         backgroundColor: '#665dc6',width: screenW*0.5,height:44}}
+                            onPress={this._leftButtonClick.bind(this)}
                         >
                            
                             <Image style={{width:30, height: 30}} source={require('../resource/ic_my_order.png')}/>
