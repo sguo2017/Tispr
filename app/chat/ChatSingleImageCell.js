@@ -13,6 +13,7 @@ const ChatSingleImageItem = ({
     serv_offer_user_name,
     serv_offer_titile,
     lately_chat_content,
+    avatar,
     onPress
 }) => {
     return (
@@ -29,7 +30,7 @@ const ChatSingleImageItem = ({
             onPress={onPress}
         >
            <View style ={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Image style={{width: 70, height: 70, marginRight: 5, borderRadius: 35}} source={require('../resource/user_default_image.jpg')}/>
+                <Image style={{width: 70, height: 70, marginRight: 5, borderRadius: 35}} source={{uri:avatar}}/>
                 <View style={{justifyContent: 'space-around'}}>
                     <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',paddingBottom:2}}>
                         <Text numberOfLines={2} style={{width: screenW * 0.5, fontSize: 15, flexShrink: 0}}>
