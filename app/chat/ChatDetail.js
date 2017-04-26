@@ -23,6 +23,7 @@ import UserDefaults from '../common/UserDefaults';
 import Util from '../common/utils';
 import OrderDetail from '../order/OrderDetail'
 import BeforePropose from '../order/BeforePropose'
+import CloseDeal from '../order/CloseDeal';
 
 const screenW = Dimensions.get('window').width;
 
@@ -82,6 +83,13 @@ export default class ChatDetail extends Component {
         navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
           name: "OrderDetail",
           component: OrderDetail,
+          passProps: {feed}
+        });
+      }
+      if(this.state.order_status =='00C'){
+        navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+          name: "CloseDeal",
+          component: CloseDeal,
           passProps: {feed}
         });
       }
@@ -159,6 +167,10 @@ export default class ChatDetail extends Component {
           {
             this.state.order_status =='00B'? 
             <Text style={{ fontSize: 16, color: 'black' }}>A deal has been proposed</Text>:<Text></Text>
+          }
+          {
+            this.state.order_status =='00C'? 
+            <Text style={{ fontSize: 16, color: 'black' }}>The deal has been close</Text>:<Text></Text>
           }
           
          </TouchableOpacity>
