@@ -51,23 +51,48 @@ export default class OrderDetail extends Component {
         });  
     }  
 
-    clickJump() {
+    async clickJump() {
         let isShow = this.state.show;  
-        this.setState({  
-        show:!isShow,  
-        });
-        const { navigator } = this.props;
-        if (navigator) {
-        navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
-            name: "CloseDeal",
-            component: CloseDeal,
-        });
-        }
+        try {         
+            let t = global.user.authentication_token;
+            let order_id = this.props.feed.id;
+            let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_UPDATE +'/' +order_id +'?token='+ t;            
+            let response = await fetch(url, {
+                method: 'PATCH',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    order: {
+                        status: '00C',
+                    }
+                })
+            });
+             let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                this.setState({  
+                    show:!isShow,  
+                });
+                const { navigator } = this.props;
+                if (navigator) {
+                navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+                    name: "CloseDeal",
+                    component: CloseDeal,
+                });
+                }
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            this.setState({ error: error });
+        } 
     }
     // showAlert(){
     //     Alert.alert(
     //                     'Do you want to confirm the deal?',
-    //                     'If everyone confirms, the deal is made and the request is awarded.',
+    //                         'If everyone confirms, the deal is made and the request is awarded.',
     //                     [
     //                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
     //                     {text: 'Yes', onPress: this.clickJump()},
@@ -122,19 +147,21 @@ export default class OrderDetail extends Component {
                         </View>
                         <View style={{flexDirection:'row',paddingTop: 30, paddingLeft: 10,}}>
                             <Text style={{fontSize: 16, color:'black', }}>
-                                你的服务很好，我愿意支付你100元，培训2小时
+                               {feed.lately_chat_content}
                             </Text>
                         </View>
                     </ScrollView>
-                    <View>
+                    {
+                        global.user.id == feed.signature?
+                        <View>
                          <TouchableOpacity
                             activeOpacity={0.75}
                             style={{flexDirection: 'row',alignItems: 'center',
-        justifyContent: 'center',
-        borderTopColor: '#ccc',
-        position: 'absolute',
-        bottom: 5,
-        backgroundColor: '#665dc6',width: screenW*0.5,height:44}}
+                                    justifyContent: 'center',
+                                    borderTopColor: '#ccc',
+                                    position: 'absolute',
+                                    bottom: 5,
+                                    backgroundColor: '#665dc6',width: screenW*0.5,height:44}}
                             onPress={this._leftButtonClick.bind(this)}
                         >
                            
@@ -156,6 +183,8 @@ export default class OrderDetail extends Component {
                             </Text>
                         </TouchableOpacity>
                     </View>
+                    : <View></View>
+                    }
                 </View>
                  <Modal  
                     animationType='slide'  
