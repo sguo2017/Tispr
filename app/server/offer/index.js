@@ -20,6 +20,7 @@ import ImagePicker from 'react-native-image-picker';
 import Header from '../../components/HomeNavigation';
 import UselessTextInput from '../../components/UselessTextInput';
 import ServOfferTitle from './title';
+import navpage from './navpage';
 
 var FileUpload = require('NativeModules').FileUpload;
 

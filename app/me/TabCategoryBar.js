@@ -3,6 +3,7 @@ import {
     StyleSheet,
     View,
     Text,
+    ScrollView,
     TouchableOpacity,
     Image,
     LayoutAnimation,
@@ -52,7 +53,7 @@ export default class TabCategoryBar extends Component {
 
     render() {
         return (
-            <View style={styles.tabs}>
+            <ScrollView horizontal={true} style={styles.tabs}>
                 {this.props.tabs.map((tab, i) => {
                     let color = this.props.activeTab === i ? 'white' : '#665dc6';
                     let bgcolor = this.props.activeTab === i ? '#665dc6' : 'transparent';
@@ -69,10 +70,7 @@ export default class TabCategoryBar extends Component {
                         </TouchableOpacity>
                     )
                 })}
-                <View style={[styles.indicatorContainer, {left: this.state.indicatorPosition}]}>
-                    <View style={styles.indicator}/>
-                </View>
-            </View>
+            </ScrollView>
         )
     }
 }
@@ -80,19 +78,13 @@ export default class TabCategoryBar extends Component {
 const styles = StyleSheet.create({
     tabs: {
         flexDirection: 'row',
-        height: 44,
-        // borderBottomColor: 'rgb(242, 242, 242)',
         borderWidth: 1,
-        margin: 6,
-        //borderRadius:10,
         borderColor: '#665dc6'
-        // borderBottomWidth: 1,
     },
     tab: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        width: screenW*0.2,
         borderLeftWidth: 1,
         borderLeftColor: '#665dc6'
     },

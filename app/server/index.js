@@ -19,7 +19,7 @@ import { observable, computed, action, runInAction } from 'mobx';
 import ImagePicker from 'react-native-image-picker';
 import ServOffer from './offer/index';
 import ServRequest from './request/index';
-
+import navpage from './offer/navpage';
 @observer
 export default class Server extends PureComponent {
 
@@ -70,6 +70,18 @@ export default class Server extends PureComponent {
         }
     }
 
+    clickNavigationJump(){
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+                name: "navpage",
+                component: navpage,
+                params: {
+                   
+                }
+            });
+        }
+    }
 
     render() {
         return (
@@ -84,7 +96,9 @@ export default class Server extends PureComponent {
                     <Image style={{ width: 150, height: 150, alignSelf: 'flex-end', right: 10, justifyContent: 'center'}} source={require('../resource/t_serv_request.png')} /> 
                 </TouchableOpacity>   
                 </View>
-
+                <TouchableOpacity onPress={this.clickNavigationJump.bind(this)}>           
+                    <Text>navigation</Text>
+                </TouchableOpacity>
                 <Image style={{ width: 50, height: 50, alignSelf: 'center', marginTop: 150}} source={require('../resource/t_server_close.png')} />
 
             </View>
