@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react'
+import React, { PureComponent } from 'react'
 import {
     StyleSheet,
     View,
@@ -8,8 +8,8 @@ import {
     TouchableOpacity,
     RefreshControl,
 } from 'react-native'
-import {observer} from 'mobx-react/native'
-import {reaction} from 'mobx'
+import { observer } from 'mobx-react/native'
+import { reaction } from 'mobx'
 import Loading from '../components/Loading'
 import LoadMoreFooter from '../components/LoadMoreFooter'
 import ChatSingleImageCell from './ChatSingleImageCell'
@@ -23,7 +23,7 @@ const KNOWLEDGE_ID = 3
 @observer
 export default class ChatList extends PureComponent {
     _pictureAction = () => {
-        const {user: {name}} = RootStore
+        const { user: { name } } = RootStore
         if (name) {
             alert(name)
         } else {
@@ -50,17 +50,17 @@ export default class ChatList extends PureComponent {
     }
 
     componentWillReact() {
-        const {errorMsg} = this.knowledgeListStore
+        const { errorMsg } = this.knowledgeListStore
         errorMsg && this.toast.show(errorMsg)
     }
 
-    _renderRow = feed => <KnowledgeItem onPress={this._onPressCell} feed={feed}/>
+    _renderRow = feed => <KnowledgeItem onPress={this._onPressCell} feed={feed} />
 
 
     _onPressCell = feed => {
         this.props.navigator.push({
             component: FeedDetail,
-            passProps: {feed}
+            passProps: { feed }
         })
     }
 
@@ -69,12 +69,12 @@ export default class ChatList extends PureComponent {
         this.knowledgeListStore.fetchFeedList()
     }
 
-    _onEndReach = () => this.knowledgeListStore.page ++
+    _onEndReach = () => this.knowledgeListStore.page++
 
-    _renderFooter = () => <LoadMoreFooter/>
+    _renderFooter = () => <LoadMoreFooter />
 
     render() {
-        const {feedList, isRefreshing, isFetching} = this.knowledgeListStore
+        const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
         return (
             <View style={styles.listView}>
                 <Header
@@ -82,29 +82,29 @@ export default class ChatList extends PureComponent {
                 />
 
                 {!isFetching &&
-                <ListView
-                    dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
-                    renderRow={this._renderRow}
-                    renderFooter={this._renderFooter}
-                    enableEmptySections
-                    initialListSize={3}
-                    onScroll={this._onScroll}
-                    onEndReached={this._onEndReach}
-                    onEndReachedThreshold={30}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={isRefreshing}
-                            onRefresh={this._onRefresh}
-                            colors={['rgb(217, 51, 58)']}
-                        />
-                    }
+                    <ListView
+                        dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
+                        renderRow={this._renderRow}
+                        renderFooter={this._renderFooter}
+                        enableEmptySections
+                        initialListSize={3}
+                        onScroll={this._onScroll}
+                        onEndReached={this._onEndReach}
+                        onEndReachedThreshold={30}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={isRefreshing}
+                                onRefresh={this._onRefresh}
+                                colors={['rgb(217, 51, 58)']}
+                            />
+                        }
 
 
-                />
+                    />
 
                 }
-                <Loading isShow={isFetching}/>
-                <Toast ref={toast => this.toast = toast}/>
+                <Loading isShow={isFetching} />
+                <Toast ref={toast => this.toast = toast} />
             </View>
         )
     }
@@ -118,21 +118,26 @@ class KnowledgeItem extends PureComponent {
     }
 
     _onPress = () => {
-        const {feed, onPress} = this.props
+        const { feed, onPress } = this.props
         onPress && onPress(feed)
     }
 
     render() {
         //chats:[{"id":6,"deal_id":28,"serv_offer_id":76,"serv_offer_user_name":null,"serv_offer_titile":null,"lately_chat_content":"your offer is awesome","created_at":"2017-04-16T08:00:21.000Z","updated_at":"2017-04-17T07:00:44.000Z","offer_user_id":5,"request_user_id":4,"request_user":"p2t","offer_user":"Jim","serv":"p0 测试123456"}]
-        const {feed: {serv_offer_user_name,serv_offer_titile,lately_chat_content,deal_id}} = this.props;
-        let avatar ;
-        if(global.user.id == this.props.feed.bidder)
-            avatar = this.props.feed.offer_user_avatar;           
-        else
+        const { feed: { serv_offer_user_name, serv_offer_titile, lately_chat_content, deal_id } } = this.props;
+        let avatar;
+        let user_name;
+        if (global.user.name == this.props.feed.offer_user) {
+            user_name = this.props.feed.request_user;
             avatar = this.props.feed.request_user_avatar;
-        const cellData = {serv_offer_user_name,serv_offer_titile,lately_chat_content,deal_id,avatar}
+        }
+        else if (global.user.name == this.props.feed.request_user) {
+            user_name = this.props.feed.offer_user;
+            avatar = this.props.feed.offer_user_avatar;
+        }
+        const cellData = { user_name, serv_offer_titile, lately_chat_content, deal_id, avatar }
         //return (<Text>1234</Text>)
-        return <ChatSingleImageCell {...cellData} onPress={this._onPress}/>
+        return <ChatSingleImageCell {...cellData} onPress={this._onPress} />
     }
 }
 

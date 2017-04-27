@@ -10,7 +10,7 @@ import {
 const screenW = Dimensions.get('window').width;
 
 const ChatSingleImageItem = ({
-    serv_offer_user_name,
+    user_name,
     serv_offer_titile,
     lately_chat_content,
     avatar,
@@ -34,7 +34,7 @@ const ChatSingleImageItem = ({
                 <View style={{justifyContent: 'space-around'}}>
                     <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',paddingBottom:2}}>
                         <Text numberOfLines={2} style={{width: screenW * 0.5, fontSize: 15, flexShrink: 0}}>
-                            <Text style={{fontSize: 18, color:'black', fontWeight:'bold'}}>{serv_offer_user_name}</Text>
+                            <Text style={{fontSize: 18, color:'black', fontWeight:'bold'}}>{user_name}</Text>
                         </Text>
                         <View numberOfLines={2} style={{width: screenW * 0.25, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
                             <Text style={{fontSize:13}}>星期五</Text>
