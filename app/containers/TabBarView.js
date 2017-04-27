@@ -57,7 +57,7 @@ export default class TabBarView extends PureComponent {
                 onChangeTab={this._onChangeTab}
             >
                 <Buzz tabLabel="Buzz" navigator={this.props.navigator}/>
-                <Explore tabLabel="Explore" navigator={this.props.navigator}/>
+                <Explore tabLabel="Explore" categoryId={0} navigator={this.props.navigator}/>
                 <Server tabLabel="Server" navigator={this.props.navigator}/>
                 <Me tabLabel="Me" navigator={this.props.navigator}/>
                 <Chat tabLabel="Chat" navigator={this.props.navigator}/>
