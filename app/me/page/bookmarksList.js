@@ -8,19 +8,26 @@ import {
     TouchableOpacity,
     RefreshControl,
 } from 'react-native'
+import {reaction} from 'mobx'
+import {connect} from 'react-redux';
+import Loading from '../../components/Loading'
+import LoadMoreFooter from '../../components/LoadMoreFooter'
+import Toast from 'react-native-easy-toast'
 import Header from '../../components/HomeNavigation';
+import Marklist from './marklist';
 
 
-export default class BookmarksList extends PureComponent {
+
+class BookmarksList extends PureComponent {
 
      render() {
         return(
 
               <View style={styles.listView}>
                 <Header
-                    title='BookmarksList'
+                    title='Marklist'
                 />
-
+                <Marklist {...this.props} />
                </View>
         )
     
@@ -37,3 +44,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5'
     }
 })
+
+export default connect((state) => {
+    const {MeMarkList} = state;
+    return {MeMarkList}
+})(BookmarksList);

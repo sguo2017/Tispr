@@ -11,8 +11,10 @@ import feedHome from './feed/feedHomeListReducer';
 import feedDelicacy from './feed/feedDelicacyListReducer';
 import feedEvaluating from './feed/feedEvaluatingListReducer';
 import feedKnowledge from './feed/feedKnowledgeListReducer';
+import MeMarkList from './MeMarkListReducer'
 
 export default rootReducer = combineReducers({
+    MeMarkList,
     FoodsList,
     FoodCompare,
     FoodInfo,

@@ -5,6 +5,9 @@
 // 轮播actions
 export const FETCH_BANNER_LIST = 'FETCH_BANNER_LIST';
 export const RECEIVE_BANNER_LIST = 'RECEIVE_BANNER_LIST'
+//收藏actions
+export const ME_BOOK_MARK_RECEIVE_LIST = 'ME_BOOK_MARK_RECEIVE_LIST';
+export const ME_BOOK_MARK_FETCH_LIST = 'ME_BOOK_MARK_FETCH_LIST';
 
 // 逛吃列表actions
 export const FETCH_FEED_LIST = 'FETCH_FEEDS_LIST';
