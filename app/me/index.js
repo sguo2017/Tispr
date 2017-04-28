@@ -21,7 +21,7 @@ const titles = ['Offers', 'Requests', 'Bookmarks'];
 import OffersList from './page/offersList'
 import RequestsList from './page/requestsList';
 import BookmarksList from './page/bookmarksList';
-import PersonInfo from './page/personalinfoEdit';
+import PersonInfo from './personalinfoEdit';
 import ImagePicker from 'react-native-image-picker';
 const controllers = [
     {categoryId: 1, controller: OffersList},
@@ -93,7 +93,7 @@ export default class MeInfo extends Component {
                                 key={titles[index]}
                                 tabLabel={titles[index]}
                                 categoryId={data.categoryId}
-                                navigator={navigator}
+                                navigator={this.props.navigator}
                             />
                         )
                     })}

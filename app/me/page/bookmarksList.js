@@ -14,7 +14,7 @@ import Loading from '../../components/Loading'
 import LoadMoreFooter from '../../components/LoadMoreFooter'
 import Toast from 'react-native-easy-toast'
 import Header from '../../components/HomeNavigation';
-import Marklist from './marklist';
+import Marklist from '../mark/marklist';
 
 
 

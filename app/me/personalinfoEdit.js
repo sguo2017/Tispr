@@ -14,10 +14,9 @@ import {
     Navigator,
     Dimensions
 } from 'react-native'
-import Header from '../../components/HomeNavigation';
-import Constant from '../../common/constants';
+import Header from '../components/HomeNavigation';
+import Constant from '../common/constants';
 import ImagePicker from 'react-native-image-picker';
-import Me from '../index';
 
 const screenW = Dimensions.get('window').width;
 
@@ -188,9 +187,9 @@ export default class Personinfoedit extends Component {
             <View style={{ flex: 1 }}>
                 <Header
                     title='Edit Profile'
-                    leftIcon={require('../../resource/t_header_arrow_left.png')}
+                    leftIcon={require('../resource/t_header_arrow_left.png')}
                     leftIconAction={this._onBack}
-                    rightIcon={require('../../resource/t_header_arrow_left.png')}
+                    rightIcon={require('../resource/t_header_arrow_left.png')}
                     rightIconAction={this.updateavatar.bind(this)}
                 />
                 <View style={{justifyContent:'flex-start',margin: 20}}>
@@ -201,7 +200,7 @@ export default class Personinfoedit extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                        <Image style={{width: 40, height: 40}} source={require('../../resource/ic_my_order.png')}/>
+                        <Image style={{width: 40, height: 40}} source={require('../resource/ic_my_order.png')}/>
                         <TextInput
                         style={{flexDirection:'row',width: screenW*0.8}}
                         multiline={true}
@@ -211,7 +210,7 @@ export default class Personinfoedit extends Component {
                         />
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                        <Image style={{width: 40, height: 40}} source={require('../../resource/ic_my_address.png')}/>
+                        <Image style={{width: 40, height: 40}} source={require('../resource/ic_my_address.png')}/>
                         <TextInput
                         style={{flexDirection:'row',width: screenW*0.8}}
                         multiline={true}
@@ -221,7 +220,7 @@ export default class Personinfoedit extends Component {
                         />
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                        <Image style={{width: 40, height: 40}} source={require('../../resource/ic_my_order.png')}/>
+                        <Image style={{width: 40, height: 40}} source={require('../resource/ic_my_order.png')}/>
                         <TextInput
                         style={{flexDirection:'row',width: screenW*0.8}}
                         multiline={true}
@@ -232,7 +231,7 @@ export default class Personinfoedit extends Component {
                         />
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                        <Image style={{width: 40, height: 40}} source={require('../../resource/ic_my_address.png')}/>
+                        <Image style={{width: 40, height: 40}} source={require('../resource/ic_my_address.png')}/>
                         <TextInput
                         style={{flexDirection:'row',width: screenW*0.8}}
                         multiline={true}
