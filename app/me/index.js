@@ -44,19 +44,15 @@ export default class MeInfo extends Component {
     clickJump() {
         let _this = this;
         const { navigator } = this.props;
+        let  getdata=(a)=>{_this.setState({
+                        avatar:a
+                    })}
+        let abc='abc';
         if (navigator) {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "PersonInfo",
                 component: PersonInfo,
-                params: {
-                    fileName: "fileName",
-                    fileSource: "fileSource",
-                    getdata: (a)=>{
-                    _this.setState({
-                        avatar:a
-                        })
-                    }
-                }
+                passProps: {getdata},
             });
         }
     }

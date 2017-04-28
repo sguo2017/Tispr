@@ -53,7 +53,6 @@ export default class Personinfoedit extends Component {
         if (this.props.getdata) {
             this.props.getdata(global.user.avatar);
         }
-       // Me.render();
         if (navigator) {
             navigator.pop();
         }
