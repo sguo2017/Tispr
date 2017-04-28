@@ -31,6 +31,7 @@ export let fetchFeedList = (category, page) => {
 
 export const FEED_HOME_LIST_FETCH_LIST = 'FEED_HOME_LIST_FETCH_LIST';
 export const ME_BOOK_MARK_FETCH_LIST = 'ME_BOOK_MARK_FETCH_LIST';
+export const ME_OFFER_FETCH_LIST = 'ME_OFFER_FETCH_LIST';
 
 let fetchingFeedList = (category, page) => {
     let type ;
@@ -39,7 +40,7 @@ let fetchingFeedList = (category, page) => {
             type = FEED_HOME_LIST_FETCH_LIST;
             break;
         case 1:
-            type = FEED_HOME_LIST_FETCH_LIST;
+            type = ME_OFFER_FETCH_LIST;
             break;
         case 2:
             type = FEED_HOME_LIST_FETCH_LIST;
@@ -57,6 +58,7 @@ let fetchingFeedList = (category, page) => {
 
 export const FEED_HOME_LIST_RECEIVE_LIST = 'FEED_HOME_LIST_RECEIVE_LIST';
 export const ME_BOOK_MARK_RECEIVE_LIST = 'ME_BOOK_MARK_RECEIVE_LIST';
+export const ME_OFFER_RECEIVE_LIST = 'ME_OFFER_RECEIVE_LIST';
 let receiveFeedList = (feedList, category, page) => {
     let type ;
     switch (category) {
@@ -64,7 +66,7 @@ let receiveFeedList = (feedList, category, page) => {
             type = FEED_HOME_LIST_RECEIVE_LIST;
             break;
         case 1:
-            type = FEED_HOME_LIST_RECEIVE_LIST;
+            type = ME_OFFER_RECEIVE_LIST;
             break;
         case 2:
             type = FEED_HOME_LIST_RECEIVE_LIST;

@@ -14,7 +14,7 @@ import Loading from '../../components/Loading'
 import LoadMoreFooter from '../../components/LoadMoreFooter'
 import Toast from 'react-native-easy-toast'
 import Header from '../../components/HomeNavigation';
-import ServOfferList from '../../explore/ServOfferList';
+import ServOfferList from '../offer/offerlist';
 
 
 
@@ -46,6 +46,6 @@ const styles = StyleSheet.create({
 })
 
 export default connect((state) => {
-    const {feedHome} = state;
-    return {feedHome}
+    const {MeOfferList} = state;
+    return {MeOfferList}
 })(OffersList);
