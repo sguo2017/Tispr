@@ -18,14 +18,15 @@ let storeKeys = {
     ACCESS_TOKEN_TISPR: 'ACCESS_TOKEN_TISPR',
 }
 let url = {
-     SERV_API_ADDR: `123.56.157.233`,
-     SERV_API_PORT: `8081`,
+     //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
      IMG_SERV_ADDR: "123.56.157.233",
      IMG_SERV_PORT: "9090",
-     //////////////////<<<<   API接口  >>>>>//////////////////////////////
-     SERV_API_USER_LOGIN: `/users/sign_in`,//登录接口
-     SERV_API_USER_REGI: `/users.json`, //注册接口
      SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
+     //////////////////<<<<   API接口  >>>>>//////////////////////////////
+     SERV_API_ADDR: `123.56.157.233`,
+     SERV_API_PORT: `3000`,
+     SERV_API_USER_LOGIN: `/api/users/sessions`,//登录接口
+     SERV_API_USER_REGI: `/api/users/registrations`, //注册接口
      SERV_API_SERV_OFFER_ADD: `/api/goods/serv_offers?token=`,//服务提供的新增接口
      SERV_API_SERV_OFFER_INDEX: `/api/goods/serv_offers?token=`,//服务提供的list接口
 	 SERV_API_SERV_OFFER_MARKS: `/api/me/favorites.json?token=`,//服务提供的收藏展示接口
@@ -38,6 +39,11 @@ let url = {
      SERV_API_SERV_OFFER_COLLECT:`/api/me/favorites?token=`,//收藏服务提供的接口
      SERV_API_SERV_OFFER_COLLECT_CANCEL:`/api/me/favorites`,//取消收藏服务提供的接口
      SERV_API_ORDER_UPDATE:`/api/orders/orders`,//订单询价更新状态接口
+     SERV_API_SMS_SEND_ADD:`/api/sys/sms_sends.json`,//生成短信验证码
+     SERV_API_SMS_LOGIN:`/api/users/sms_login`,//短信验证码登录
+     //////////////////<<<<   GEOAPI服务器  >>>>>//////////////////////////////
+     GEO_LOCATION_ADDR: "http://api.map.baidu.com/geocoder/v2/?output=json&pois=1&ak=ZFFEI4cl338WSpoGsGSuHhpxiQpuEnfe",
+     
 }
 
 let mapper = {

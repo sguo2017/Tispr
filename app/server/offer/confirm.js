@@ -37,7 +37,13 @@ export default class ServOfferConfirm extends Component {
             serv_imges: this.props.serv_imges,
             errors: this.props.errors,
             fileName: this.props.fileName,
-            avatarSourceArray: this.props.avatarSourceArray,
+            avatarSourceArray: this.props.avatarSourceArray,            
+            district: this.props.district,
+            city: this.props.city,
+            province: this.props.province,
+            country: this.props.country,
+            latitude: this.props.latitude,
+            longitude: this.props.longitude,
             //isavatarSourceArrayFlag: this.props.isavatarSourceArrayFlag,
             imgBase64: this.props.imgBase64,
         }
@@ -53,6 +59,12 @@ export default class ServOfferConfirm extends Component {
             errors: this.props.errors,
             fileName: this.props.fileName,
             avatarSourceArray: this.props.avatarSourceArray,
+            district: this.props.district,
+            city: this.props.city,
+            province: this.props.province,
+            country: this.props.country,
+            latitude: this.props.latitude,
+            longitude: this.props.longitude,
             imgBase64: this.props.imgBase64,
         });
     }
@@ -77,8 +89,9 @@ export default class ServOfferConfirm extends Component {
         let detail = this.state.serv_detail;
         let imges = this.state.serv_imges;
         let SourceArray = this.state.avatarSourceArray;
+        
         if (this.props.getdata) {
-            this.props.getdata(title, detail,imges, SourceArray);
+            this.props.getdata(title,detail,imges,SourceArray,district,city,province,country,latitude,longitude);
         }
         if (navigator) {
             navigator.pop();
@@ -160,21 +173,25 @@ export default class ServOfferConfirm extends Component {
     async onServOfferPres() {
         this.setState({ showProgress: true })
         try {
-            let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
-            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_ADD + t;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_ADD + global.user.authentication_token;
             let response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-
                 body: JSON.stringify({
                     serv_offer: {
                         serv_title: this.state.serv_title,
                         serv_detail: this.state.serv_detail,
                         serv_imges: this.state.serv_imges,
-                        serv_catagory: "serv_offer"
+                        serv_catagory: "serv_offer",
+                        district: this.state.district,
+                        city: this.state.city,
+                        province: this.state.province,
+                        country: this.state.country,
+                        latitude: this.state.latitude,
+                        longitude: this.state.longitude,
                     }
                 })
             });

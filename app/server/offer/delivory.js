@@ -18,6 +18,7 @@ import {
 import { observer } from 'mobx-react/native'
 import { observable, computed, action, runInAction } from 'mobx';
 import ImagePicker from 'react-native-image-picker';
+import Constant from '../../common/constants';
 import Header from '../../components/HomeNavigation';
 import UselessTextInput from '../../components/UselessTextInput';
 import ServOfferConfirm from './confirm';
@@ -33,6 +34,12 @@ export default class ServOfferDelivory extends Component {
             serv_detail: this.props.serv_detail,
             serv_imges: this.props.serv_imges,
             avatarSourceArray: this.props.avatarSourceArray,
+            district: this.props.district,
+            city: this.props.city,
+            province: this.props.province,
+            country: this.props.country,
+            latitude: this.props.latitude,
+            longitude: this.props.longitude,
             initialPosition: 'unknown',
             lastPosition: 'unknown',
             addressComponent:{"country":"中国","country_code":0,"province":"广东省","city":"广州市","district":"番禺区","adcode":"440113","street":"石北路","street_number":"","direction":"","distance":""}
@@ -66,11 +73,11 @@ export default class ServOfferDelivory extends Component {
     }
 
     async getGeoLocation() {
-        let latitude = (JSON.parse(this.state.lastPosition)).coords.latitude
-        let longitude = (JSON.parse(this.state.lastPosition)).coords.longitude
+        this.setState({latitude:(JSON.parse(this.state.lastPosition)).coords.latitude})
+        this.setState({longitude:(JSON.parse(this.state.lastPosition)).coords.longitude})
         this.setState({ showProgress: true })
         try {
-            let url = `http://api.map.baidu.com/geocoder/v2/?location=${latitude},${longitude}&output=json&pois=1&ak=ZFFEI4cl338WSpoGsGSuHhpxiQpuEnfe`;
+            let url = Constant.url.GEO_LOCATION_ADDR + `&location=${this.state.latitude},${this.state.longitude}`;
             console.log("URL:"+url)
             let response = await fetch(url, {
                 method: 'POST',
@@ -84,7 +91,10 @@ export default class ServOfferDelivory extends Component {
             if (response.status >= 200 && response.status < 300) {
                 var addressComponent = JSON.stringify((JSON.parse(res)).result.addressComponent)
                 this.setState({ addressComponent });
-                console.log("87:"+(JSON.parse(this.state.addressComponent)).country)
+                this.setState({district:(JSON.parse(this.state.addressComponent)).district})
+                this.setState({city:(JSON.parse(this.state.addressComponent)).city})
+                this.setState({province:(JSON.parse(this.state.addressComponent)).province})
+                this.setState({country:(JSON.parse(this.state.addressComponent)).country})
             } else {
                 let error = res;
                 throw error;
@@ -109,12 +119,24 @@ export default class ServOfferDelivory extends Component {
                     serv_detail: this.state.serv_detail,
                     serv_imges: this.state.serv_imges,
                     avatarSourceArray: this.state.avatarSourceArray,
-                    getdata: (title,detail,imges,SourceArray)=>{
+                    district: this.state.district,
+                    city: this.state.city,
+                    province: this.state.province,
+                    country: this.state.country,
+                    latitude: this.state.latitude,
+                    longitude: this.state.longitude,
+                    getdata: (title,detail,imges,SourceArray,district,city,province,country,latitude,longitude)=>{
                     _this.setState({
                         serv_title: title,
                         serv_detail: detail,
                         serv_imges: imges,
-                        avatarSourceArray: SourceArray
+                        avatarSourceArray: SourceArray,
+                        district: district,
+                        city: city,
+                        province: province,
+                        country: country,
+                        latitude: latitude,
+                        longitude: longitude,                        
                         })
                     }
                 }
@@ -182,7 +204,7 @@ export default class ServOfferDelivory extends Component {
                     </View>
                     <Text style={{color:'black'}}>
                         <Text>your profile is set to &nbsp;</Text>
-                        <Text>{(JSON.parse(this.state.addressComponent)).district}，{(JSON.parse(this.state.addressComponent)).city}，{(JSON.parse(this.state.addressComponent)).province}，{(JSON.parse(this.state.addressComponent)).country}</Text>
+                        <Text>{this.state.district}，{this.state.city}，{this.state.province}，{this.state.country}</Text>
                     </Text>
                 </View>
 
