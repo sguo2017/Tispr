@@ -33,8 +33,13 @@ export default class ServOfferDelivory extends Component {
             serv_detail: this.props.serv_detail,
             serv_imges: this.props.serv_imges,
             avatarSourceArray: this.props.avatarSourceArray,
+            initialPosition: 'unknown',
+            lastPosition: 'unknown',
+            addressComponent:{"country":"中国","country_code":0,"province":"广东省","city":"广州市","district":"番禺区","adcode":"440113","street":"石北路","street_number":"","direction":"","distance":""}
         }
     }
+
+    watchID: ?number = null;
 
     componentDidMount() {
         this.setState({
@@ -45,6 +50,51 @@ export default class ServOfferDelivory extends Component {
             serv_imges: this.props.serv_imges,
             avatarSourceArray: this.props.avatarSourceArray,
         });
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                var initialPosition = JSON.stringify(position);
+                this.setState({ initialPosition });
+            },
+            (error) => alert(JSON.stringify(error)),
+            { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
+        );
+        this.watchID = navigator.geolocation.watchPosition((position) => {
+            var lastPosition = JSON.stringify(position);
+            this.setState({ lastPosition });
+            this.getGeoLocation();
+        });        
+    }
+
+    async getGeoLocation() {
+        let latitude = (JSON.parse(this.state.lastPosition)).coords.latitude
+        let longitude = (JSON.parse(this.state.lastPosition)).coords.longitude
+        this.setState({ showProgress: true })
+        try {
+            let url = `http://api.map.baidu.com/geocoder/v2/?location=${latitude},${longitude}&output=json&pois=1&ak=ZFFEI4cl338WSpoGsGSuHhpxiQpuEnfe`;
+            console.log("URL:"+url)
+            let response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                var addressComponent = JSON.stringify((JSON.parse(res)).result.addressComponent)
+                this.setState({ addressComponent });
+                console.log("87:"+(JSON.parse(this.state.addressComponent)).country)
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            this.setState({ error: error });
+            console.log("error " + error);
+            this.setState({ showProgress: false });
+
+        }
     }
 
     clickJump() {
@@ -89,6 +139,10 @@ export default class ServOfferDelivory extends Component {
         }
     }
 
+    componentWillUnmount() {
+        navigator.geolocation.clearWatch(this.watchID);
+    }
+
     render() {
     //    console.log("this.state.avatarSourceArray: "+this.state.avatarSourceArray);
         return (
@@ -128,7 +182,7 @@ export default class ServOfferDelivory extends Component {
                     </View>
                     <Text style={{color:'black'}}>
                         <Text>your profile is set to &nbsp;</Text>
-                        <Text>番禺区，广州市，广东省，中国</Text>
+                        <Text>{(JSON.parse(this.state.addressComponent)).district}，{(JSON.parse(this.state.addressComponent)).city}，{(JSON.parse(this.state.addressComponent)).province}，{(JSON.parse(this.state.addressComponent)).country}</Text>
                     </Text>
                 </View>
 
