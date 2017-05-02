@@ -24,7 +24,7 @@ const titles = ['1aaa', '2bbb', '3ccc', '4ddd','5aaa', '6bbb', '7ccc', '8ddd','9
 import OffersList from '../../me/page/offersList'
 import RequestsList from '../../me/page/requestsList';
 import BookmarksList from '../../me/page/bookmarksList';
-import ServOffer from './index';
+import ServRequest from './index';
 const controllers = [
     {categoryId: 1, controller: OffersList},
     {categoryId: 2, controller: RequestsList},
@@ -46,7 +46,7 @@ export default class navpage extends Component{
                     leftIconAction={() => this.props.navigator.pop()}
                     title='Chose a Category'
                     leftIcon={require('../../resource/ic_back_dark.png')}
-                    rightIconAction = {() => {const { navigator } = this.props;navigator.push({name: "ServOffer", component: ServOffer})}} 
+                    rightIconAction = {() => {const { navigator } = this.props;navigator.push({name: "ServRequest", component: ServRequest})}} 
                     rightIcon={require('../../resource/ic_contrast_add.png')}
                 />
                 
