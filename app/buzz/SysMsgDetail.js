@@ -154,7 +154,7 @@ export default class SysMsgDetail extends Component {
                                 <Text style={{ color: 'gray', fontSize: 18 }}>{feed.action_title}</Text>
                             </View>
                         </View>
-                        <Image style={{ width: screenW }} defaultSource={{ uri: feed.serv_offer.serv_imges }} source={require('../resource/img_buzz_detail_default.png')} />
+                        <Image style={{ width: screenW }} source={{ uri: feed.serv_offer.serv_imges }} defaultSource={require('../resource/img_buzz_detail_default.png')} />
                         <View style={{
                             borderColor: '#ccc',
                             borderTopWidth: 0.5,
