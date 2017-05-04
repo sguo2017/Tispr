@@ -53,6 +53,7 @@ export default class navpage extends Component {
                 if (responseData) {
                     let goods_catalog_I = this.state.goods_catalog_I;
                     goods_catalog_I = JSON.parse(responseData.feeds);
+                    console.log("goods_catalog_I:"+JSON.stringify(goods_catalog_I))
                     this.setState({goods_catalog_I:goods_catalog_I})
                 } else {
                 }
@@ -86,7 +87,14 @@ export default class navpage extends Component {
                         this.state.goods_catalog_I.map((data, index) => {
                             return (
                                 <Text tabLabel={data.name}>
-                                    My
+                                    <Text>{data.goods_count}</Text>
+                                    {   
+                                        JSON.parse(data.goods_catalogs_II).map((d, i) => {
+                                            return (
+                                                <Text>{d.name}</Text>
+                                            )
+                                        })
+                                    }
                                 </Text>
                             )
                         })
