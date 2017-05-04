@@ -196,7 +196,7 @@ export default class Login extends Component {
 
   async _smsCodeLogin() {
     try {
-      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_LOGIN;
+      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SMS_LOGIN;
       let response = await fetch(url, {
         method: 'POST',
         headers: {
