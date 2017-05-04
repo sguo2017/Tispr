@@ -7,7 +7,9 @@ import {
   AsyncStorage,
   Text,
   View,
-  Alert
+  Alert,
+  Image,
+  Dimensions,
 } from 'react-native';
 import Header from '../components/HomeNavigation';
 import Register from '../user/register';
@@ -15,17 +17,20 @@ import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 import TabBarView from '../containers/TabBarView';
 
+const screenW = Dimensions.get('window').width;
+
 export default class Login extends Component {
 
   constructor() {
     super();
     this.state = {
-      email: "p0@qq.com",
+      email: "p1@qq.com",
       password: "123456",
       error: "",
       showProgress: false,
       num: "",
       code: "",
+      loginWay: 'email'
     };
   }
 
@@ -190,52 +195,75 @@ export default class Login extends Component {
         <Header
           title='登录'
         />
-        <TextInput
-          onChangeText={(text) => this.setState({ email: text })}
+        { this.state.loginWay =='email'?
+        <View style={{padding:15}}>
+          <TextInput
+            onChangeText={(text) => this.setState({ email: text })}
 
-          style={styles.input} placeholder="邮箱">
-        </TextInput>
-        <TextInput
-          onChangeText={(text) => this.setState({ password: text })}
-          style={styles.input}
-          placeholder="密码"
+            style={styles.input} placeholder="邮箱">
+          </TextInput>
+          <TextInput
+            onChangeText={(text) => this.setState({ password: text })}
+            style={styles.input}
+            placeholder="密码"
 
-          secureTextEntry={true}>
-        </TextInput>
-        <TouchableHighlight onPress={this.onLoginPressed.bind(this)} style={styles.button}>
-          <Text style={styles.buttonText}>
-            登录
-          </Text>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={this._navigateReg.bind(this)} style={styles.button}>
-          <Text style={styles.buttonText}>
-            注册
-          </Text>
-        </TouchableHighlight>
+            secureTextEntry={true}>
+          </TextInput>
+          <TouchableHighlight onPress={this.onLoginPressed.bind(this)} style={styles.button}>
+            <Text style={styles.buttonText}>
+              登录
+            </Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={this._navigateReg.bind(this)} style={styles.button}>
+            <Text style={styles.buttonText}>
+              注册
+            </Text>
+          </TouchableHighlight>
 
-        <TextInput
-          onChangeText={(text) => this.setState({ num: text })}
-          style={styles.input}
-          placeholder="手机号码">
-        </TextInput>
-        <TouchableHighlight onPress={this._smsSend.bind(this)} style={styles.button}>
-          <Text style={styles.buttonText}>
-            发送短信验证码
-          </Text>
-        </TouchableHighlight>
+          <TouchableHighlight onPress={()=>this.setState({loginWay: 'phonenumber'})}>
+            <Text>
+              使用手机号登录
+            </Text>
+          </TouchableHighlight>
+        </View>:
 
-        <TextInput
-          onChangeText={(text) => this.setState({ code: text })}
-          style={styles.input}
-          placeholder="验证码">
-        </TextInput>
-        <TouchableHighlight onPress={this._smsCodeLogin.bind(this)} style={styles.button}>
-          <Text style={styles.buttonText}>
-            短信验证码登录
-          </Text>
-        </TouchableHighlight>
+        <View style={{padding:15}}>
+          <Text style={{color:'black', fontSize:16}}>使用手机号登录</Text>
+          <View style={{flexDirection:'row', justifyContent:'flex-start',alignItems:'center'}}>
+            <Image style={{height: 30, width: 40}} source={require('../resource/qk_china_flag.png')}/>
+            <Text style={{fontSize: 20, color:'black'}}>+86</Text>
+            <TextInput
+              onChangeText={(text) => this.setState({ num: text })}
+              style={[styles.input, {width:250}]}
+              placeholder="输入您的手机号">
+            </TextInput>
+          </View>
 
-
+          <View style={{flexDirection:'row', justifyContent:'flex-start'}}>
+            <TextInput
+              onChangeText={(text) => this.setState({ code: text })}
+              style={[styles.input,{width:160}]}
+              placeholder="输入短信验证码">
+            </TextInput>
+            <TouchableHighlight onPress={this._smsSend.bind(this)} style={[styles.button,{height:34,borderRadius: 5,padding:10,backgroundColor:'#4a90e2'}]}>
+              <Text style={styles.buttonText}>
+                获取短信验证码
+              </Text>
+            </TouchableHighlight>
+          </View>
+        
+          <TouchableHighlight onPress={()=>this.setState({loginWay: 'email'})}>
+            <Text>
+              使用邮箱登录
+            </Text>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={this._smsCodeLogin.bind(this)} style={[styles.button, {backgroundColor:'#ffc400',position:'absolute', top: 506,flexShrink: 0, width: screenW}]}>
+            <Text style={styles.buttonText}>
+              登录
+            </Text>
+          </TouchableHighlight>
+        </View>
+        }
       </View>
     );
   }
