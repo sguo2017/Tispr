@@ -30,8 +30,59 @@ export default class Login extends Component {
       showProgress: false,
       num: "",
       code: "",
-      loginWay: 'email'
+      loginWay: 'email',
+      initialPosition: 'unknown',
+      lastPosition: 'unknown',
+      addressComponent: { "country": "中国", "country_code": 0, "province": "广东省", "city": "广州市", "district": "番禺区", "adcode": "440113", "street": "石北路", "street_number": "", "direction": "", "distance": "" }
     };
+  }
+  watchID: ?number = null;
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        var initialPosition = JSON.stringify(position);
+        this.setState({ initialPosition });
+      },
+      (error) => alert(JSON.stringify(error)),
+      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
+    );
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      var lastPosition = JSON.stringify(position);
+      this.setState({ lastPosition });
+      this.getGeoLocation();
+    });
+  }
+
+  async getGeoLocation() {
+    this.setState({ latitude: (JSON.parse(this.state.lastPosition)).coords.latitude })
+    this.setState({ longitude: (JSON.parse(this.state.lastPosition)).coords.longitude })
+    this.setState({ showProgress: true })
+    try {
+      let url = Constant.url.GEO_LOCATION_ADDR + `&location=${this.state.latitude},${this.state.longitude}`;
+      console.log("URL:" + url)
+      let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      });
+
+      let res = await response.text();
+      if (response.status >= 200 && response.status < 300) {
+        var addressComponent = (JSON.parse(res)).result.addressComponent
+        this.setState({ addressComponent: addressComponent});
+      } else {
+        let error = res;
+        throw error;
+      }
+    } catch (error) {
+      this.setState({ error: error });
+      console.log("error " + error);
+      this.setState({ showProgress: false });
+
+    }
   }
 
   _navigateReg() {
@@ -84,6 +135,7 @@ export default class Login extends Component {
         let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
         console.log("79 accessToken:" + JSON.stringify(t));
         global.user = userdetail;
+        global.user.addressComponent=this.state.addressComponent;
         console.log(JSON.stringify(global.user))
         this._navigateHome();
       } else {
@@ -166,6 +218,7 @@ export default class Login extends Component {
         let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
         console.log("79 accessToken:" + JSON.stringify(t));
         global.user = userdetail;
+        global.user.addressComponent=this.state.addressComponent;
         console.log(JSON.stringify(global.user))
         this._navigateHome();
       } else {
