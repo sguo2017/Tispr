@@ -5,7 +5,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import TabBarView from '../containers/TabBarView';
-import Login from '../user/login';
+import Login from './signup';
 import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 
