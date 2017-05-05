@@ -98,7 +98,7 @@ export default class navpage extends Component {
                                                 <View style={{marginBottom:5}}>
                                                     <Image style={{width:screenW, height:150,borderRadius:10,
                                                     flexDirection:'column-reverse'}} 
-                                                    source={require('../../resource/qk_nav_default.png')}>                                                   
+                                                    source={{uri:d.image}}>                                                   
                                                             <Text style={{color:'white',fontSize:20,margin:10}}>{d.name}&nbsp;</Text>
                                                     </Image>    
                                                 </View>
