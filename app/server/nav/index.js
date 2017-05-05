@@ -13,6 +13,7 @@ import {
     AsyncStorage,
     PixelRatio,
     Alert,
+    Dimensions,
     ScrollView
 } from 'react-native'
 import Header from '../../components/HomeNavigation';
@@ -20,7 +21,7 @@ import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-ta
 import Constant from '../../common/constants';
 
 import ServOffer from './index';
-
+const screenW = Dimensions.get('window').width;
 export default class navpage extends Component {
 
     constructor(props){
@@ -77,7 +78,6 @@ export default class navpage extends Component {
                     rightIconAction={() => { const { navigator } = this.props; navigator.push({ name: "ServOffer", component: ServOffer }) }}
                     rightIcon={require('../../resource/ic_contrast_add.png')}
                 />
-
                 <ScrollableTabView
                     style={{ marginTop: 20, }}
                     initialPage={2}
@@ -86,22 +86,31 @@ export default class navpage extends Component {
                     {
                         this.state.goods_catalog_I.map((data, index) => {
                             return (
-                                <Text tabLabel={data.name}>
+                                <View tabLabel={data.name}>
+                                    <Text style={{color:'black',padding: 16,fontSize:16,backgroundColor:'#b0b0b0'}}>
                                     <Text>{data.goods_count}</Text>
+                                    位客户需要&nbsp;<Text>{data.name}</Text>类&nbsp;专业人士
+                                    </Text>
+                                    <ScrollView>
                                     {   
                                         JSON.parse(data.goods_catalogs_II).map((d, i) => {
                                             return (
-                                                <Text>{d.name}</Text>
+                                                <View style={{marginBottom:5}}>
+                                                    <Image style={{width:screenW, height:150,borderRadius:10,
+                                                    flexDirection:'column-reverse'}} 
+                                                    source={require('../../resource/qk_nav_default.png')}>                                                   
+                                                            <Text style={{color:'white',fontSize:20,margin:10}}>{d.name}&nbsp;</Text>
+                                                    </Image>    
+                                                </View>
                                             )
                                         })
                                     }
-                                </Text>
+                                    </ScrollView>
+                                </View>
                             )
                         })
                     }
                 </ScrollableTabView>
-
-
             </View>
 
         )
