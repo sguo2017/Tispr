@@ -30,7 +30,7 @@ export default class Login extends Component {
       showProgress: false,
       num: "",
       code: "",
-      loginWay: 'email',
+      loginWay: 'phonenumber',
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       addressComponent: { "country": "中国", "country_code": 0, "province": "广东省", "city": "广州市", "district": "番禺区", "adcode": "440113", "street": "石北路", "street_number": "", "direction": "", "distance": "" }
