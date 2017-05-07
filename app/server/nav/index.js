@@ -10,30 +10,36 @@ import {
     Platform,
     StyleSheet,
     Navigator,
-    AsyncStorage,
     PixelRatio,
     Alert,
     Dimensions,
     ScrollView
 } from 'react-native'
+import { observer } from 'mobx-react/native'
+import { observable, computed, action, runInAction } from 'mobx';
 import Header from '../../components/HomeNavigation';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import Constant from '../../common/constants';
-
-import ServOffer from './index';
+import Serv from './index';
+import ServOffer from '../offer/index';
+import ServRequest from '../request/index';
 const screenW = Dimensions.get('window').width;
+
+@observer
 export default class navpage extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
-            goods_catalog: "request",
-            goods_catalog_I: [],
+            goods_catalog: "",
+            goods_catalog_I: [],            
+            user: this.props.user,  
+            pwd: this.props.pwd  
         }
     }
 
-    componentDidMount() {
+    componentDidMount() {        
         this.getGoodsCatalog();
     }
 
@@ -54,7 +60,7 @@ export default class navpage extends Component {
                 if (responseData) {
                     let goods_catalog_I = this.state.goods_catalog_I;
                     goods_catalog_I = JSON.parse(responseData.feeds);
-                    console.log("goods_catalog_I:"+JSON.stringify(goods_catalog_I))
+                    //console.log("goods_catalog_I:"+JSON.stringify(goods_catalog_I))
                     this.setState({goods_catalog_I:goods_catalog_I})
                 } else {
                 }
@@ -67,6 +73,25 @@ export default class navpage extends Component {
             this.setState({ showProgress: false });
         }      
     }
+    
+    jump(){
+        console.log("global.goods_tpye:"+global.goods_tpye)
+        if(global.goods_tpye=="serv_offer"){
+            const { navigator } = this.props; 
+            navigator.resetTo({component: ServOffer, name: 'ServOffer'})
+        } 
+        else if(global.goods_tpye=="serv_request"){
+            const { navigator } = this.props; 
+            navigator.resetTo({component: ServRequest, name: 'ServRequest'})
+        }
+    }
+
+    _onBack = () => {        
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.pop();
+        }
+    }
 
     render() {
         return (
@@ -75,7 +100,8 @@ export default class navpage extends Component {
                     leftIconAction={() => this.props.navigator.pop()}
                     title='Chose a Category'
                     leftIcon={require('../../resource/ic_back_dark.png')}
-                    rightIconAction={() => { const { navigator } = this.props; navigator.push({ name: "ServOffer", component: ServOffer }) }}
+                    leftIconAction = {this._onBack}
+                    rightIconAction={() => { const { navigator } = this.props; navigator.push({ name: "Serv", component: Serv }) }}
                     rightIcon={require('../../resource/ic_contrast_add.png')}
                 />
                 <ScrollableTabView
@@ -96,11 +122,13 @@ export default class navpage extends Component {
                                         JSON.parse(data.goods_catalogs_II).map((d, i) => {
                                             return (
                                                 <View style={{marginBottom:5}}>
-                                                    <Image style={{width:screenW, height:150,borderRadius:10,
-                                                    flexDirection:'column-reverse'}} 
-                                                    source={{uri:d.image}}>                                                   
-                                                            <Text style={{color:'white',fontSize:20,margin:10}}>{d.name}&nbsp;</Text>
-                                                    </Image>    
+                                                    <TouchableOpacity onPress={()=>{this.jump()}}>
+                                                        <Image style={{width:screenW, height:150,borderRadius:10,
+                                                        flexDirection:'column-reverse'}} 
+                                                        source={{uri:d.image}}>                                                   
+                                                                <Text style={{color:'white',fontSize:20,margin:10}}>{d.name}&nbsp;</Text>
+                                                        </Image>  
+                                                    </TouchableOpacity>
                                                 </View>
                                             )
                                         })

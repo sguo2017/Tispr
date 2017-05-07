@@ -10,87 +10,62 @@ import {
     Platform,
     StyleSheet,
     Navigator,
-    AsyncStorage,
     PixelRatio,
     Alert
 } from 'react-native'
 import { observer } from 'mobx-react/native'
 import { observable, computed, action, runInAction } from 'mobx';
-import ImagePicker from 'react-native-image-picker';
-import ServOffer from './offer/index';
-import ServRequest from './request/index';
-import Nav from './nav/index';
+import NavPage from './nav/index';
+
 @observer
-export default class Server extends PureComponent {
+export default class Server extends Component {
 
+    constructor(props) {
+        super(props);
 
-    redirect() {
-        this.props.navigator.push({
-            title: 'servhomepage',
-            component: ServOffer,
-            params: {}
-        })
+        this.state = {
+            user: this.props.user,
+            pwd: this.props.pwd
+        };  
     }
 
-    _onpressClk() {
-        Alert.alert(
-            '提示',
-            '成功',
-            [
-                { text: '服务发布成功', onPress: () => console.log('确定') },
-            ]
-        )
-    }
-
-    clickServOfferJump() {
-        const { navigator } = this.props;
-        if (navigator) {
-            navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
-                name: "ServOffer",
-                component: ServOffer,
-                params: {
-
-                }
-            });
+    clickNavigationJump(serv) {        
+        const { navigator } = this.props;  
+        if("serv_offer" == serv){
+            global.goods_tpye = "serv_offer";
+            console.log("global.goods_tpye:"+global.goods_tpye)
+            if (navigator) {
+                navigator.push({
+                    name: 'NavPage',  
+                    component: NavPage,  
+                });
+            }
         }
-    }
+        if("serv_request" == serv){            
+            global.goods_tpye = "serv_request";
+            console.log("global.goods_tpye:"+global.goods_tpye)
+            if (navigator) {
+                //this.setState({goods_tpye:"serv_request"})
+                navigator.push({
+                    name: "NavPage",
+                    component: NavPage,
+                    params: {
+                        goods_tpye:this.state.goods_tpye
+                    }
+                });                
+            }
+        }        
 
-    //进入servRequest
-    clickServRequestJump() {
-        const { navigator } = this.props;
-        if (navigator) {
-            navigator.push({
-                name: "ServRequest",
-                component: ServRequest,
-                params: {
-
-                }
-            });
-        }
-    }
-
-    //进入ServOff
-    clickNavigationJump() {
-        const { navigator } = this.props;
-        if (navigator) {
-            navigator.push({
-                name: "Nav_ServOffer",
-                component: Nav,
-                params: {
-
-                }
-            });
-        }
     }
 
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: "#9189d8" }}>
                 <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around', marginTop: 150 }}>
-                    <TouchableOpacity onPress={this.clickNavigationJump.bind(this)}>
+                    <TouchableOpacity onPress={() => {this.clickNavigationJump("serv_offer")}}>
                         <Image style={{ width: 150, height: 150, alignSelf: 'center', left: 10 }} source={require('../resource/t_offer_serv.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this.clickServRequestJump.bind(this)}>
+                    <TouchableOpacity onPress={() => {this.clickNavigationJump("serv_request")}}>
                         <Image style={{ width: 150, height: 150, alignSelf: 'flex-end', right: 10, justifyContent: 'center' }} source={require('../resource/t_serv_request.png')} />
                     </TouchableOpacity>
                 </View>
