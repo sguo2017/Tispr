@@ -101,12 +101,20 @@ export default class Register extends Component {
     this._navigate('TabBarView');
   }
 
+  _onBack = () => {        
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.pop();
+        }
+ }
 
   render() {
     return (
       <View style={styles.container}>
         <Header
           title='注册'
+          leftIcon={require('../resource/ic_back_dark.png')}
+          leftIconAction = {this._onBack}
         />
         <TextInput
           onChangeText={(text) => this.setState({ email: text })}

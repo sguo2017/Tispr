@@ -240,13 +240,20 @@ export default class Login extends Component {
     }
   }
 
-
+  _onBack = () => {        
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.pop();
+        }
+ }
 
   render() {
     return (
       <View style={styles.container}>
         <Header
           title='登录'
+          leftIcon={require('../resource/ic_back_dark.png')}
+          leftIconAction = {this._onBack}
         />
         { this.state.loginWay =='email'?
         <View style={{padding:15}}>

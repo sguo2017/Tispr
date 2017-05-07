@@ -21,6 +21,7 @@ import Header from '../../components/HomeNavigation';
 import UselessTextInput from '../../components/UselessTextInput';
 import ServOfferDetail from './detail';
 import ServOfferDelivory from './delivory';
+import NavPage from '../nav/index';
 
 @observer
 export default class ServOfferTitle extends Component {
@@ -73,20 +74,9 @@ export default class ServOfferTitle extends Component {
         }
     }
 
-
-
-    _onBack = () => {
+    _onBack = () => {        
         const { navigator } = this.props;
-        let title = this.state.serv_title;
-        let detail = this.state.serv_detail;
-        let imges = this.state.serv_imges;
-        let SourceArray = this.state.avatarSourceArray;
-        if (this.props.getdata) {
-            this.props.getdata(title, detail,imges, SourceArray);
-        }
-        if (navigator) {
-            navigator.pop();
-        }
+        navigator.resetTo({component: NavPage, name: 'NavPage'})
     }
 
     render() {

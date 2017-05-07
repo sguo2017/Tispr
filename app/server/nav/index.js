@@ -20,7 +20,7 @@ import { observable, computed, action, runInAction } from 'mobx';
 import Header from '../../components/HomeNavigation';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import Constant from '../../common/constants';
-import Serv from './index';
+import ServIndex from '../index';
 import ServOffer from '../offer/index';
 import ServRequest from '../request/index';
 const screenW = Dimensions.get('window').width;
@@ -88,9 +88,7 @@ export default class navpage extends Component {
 
     _onBack = () => {        
         const { navigator } = this.props;
-        if (navigator) {
-            navigator.pop();
-        }
+        navigator.resetTo({component: ServIndex, name: 'ServIndex'})
     }
 
     render() {

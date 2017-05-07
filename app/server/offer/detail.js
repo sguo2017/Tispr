@@ -10,7 +10,6 @@ import {
     Platform,
     StyleSheet,
     Navigator,
-    AsyncStorage,
     PixelRatio,
     Alert
 } from 'react-native'
