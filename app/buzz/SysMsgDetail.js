@@ -198,12 +198,12 @@ const styles = StyleSheet.create({
         borderTopColor: '#ccc',
         position: 'absolute',
         bottom: 5,
-        backgroundColor: '#81d49c'
+        backgroundColor: global.gColors.buttonColor,
     },
     cardImageContent: {
         height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,
         width: Constant.window.width,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: global.gColors.bgColors,
         top: Platform.OS === 'ios' ? 64 : 50,
         bottom: 44,
         position: 'absolute'

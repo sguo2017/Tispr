@@ -11,7 +11,8 @@ global.gScreen = {
 }
 
 global.gColors = {
-    themColor: 'rgb(217, 51, 58)',
+    themeColor: '#4a8fe3',//蓝
     bgColor: '#f5f5f5',
-    borderColor: '#d5d5d5'
+    borderColor: '#d5d5d5',
+    buttonColor: '#ffc400',//黄
 }

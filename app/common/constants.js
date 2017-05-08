@@ -24,7 +24,7 @@ let url = {
      SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
      //////////////////<<<<   API接口  >>>>>//////////////////////////////
      SERV_API_ADDR: `123.56.157.233`,
-     SERV_API_PORT: `3000`,
+     SERV_API_PORT: `8081`,
      SERV_API_USER_LOGIN: `/api/users/sessions`,//登录接口
      SERV_API_USER_REGI: `/api/users/registrations`, //注册接口
      SERV_API_SERV_OFFER_ADD: `/api/goods/serv_offers?token=`,//服务提供的新增接口

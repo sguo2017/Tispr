@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         height: gScreen.navBarHeight,
         paddingTop: gScreen.navBarPaddingTop,
         alignItems: 'center',
-        borderBottomColor: '#d9d9d9',
+        borderBottomColor: global.gColors.themeColor,
         backgroundColor: 'white',
         justifyContent: 'center'
     },

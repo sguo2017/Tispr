@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     Image,
 } from 'react-native';
-
+import GlobalContants from '../common/globalContants';
 export default class TabBar extends Component {
     static propType = {
         goToPage    : React.PropTypes.func,
@@ -29,8 +29,8 @@ export default class TabBar extends Component {
         return (
             <View style={[styles.tabs, {borderTopWidth: Common.window.onePR}]}>
                 {this.props.tabs.map((tab, i) => {
-                    let color = this.props.activeTab === i ? '#4a8fe3' : '#999999';
-                    let bgcolor = this.props.activeTab === i ? '#4a8fe3' : '#999999';
+                    let color = this.props.activeTab === i ? global.gColors.themeColor : '#999999';
+                    let bgcolor = this.props.activeTab === i ? global.gColors.themeColor : '#999999';
                     return (
                         <TouchableOpacity
                             key={i}
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     tabs: {
         flexDirection: 'row',
         height: 49,
-        borderTopColor: '#d9d9d9',
+        borderTopColor: global.gColors.themeColor,
     },
 
     tab: {

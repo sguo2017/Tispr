@@ -141,8 +141,8 @@ export default class ServOfferDetail extends Component {
                     <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.detail_length}</Text>
                 </View>
 
-                <TouchableHighlight style={{ backgroundColor: '#81d49c', marginTop: 20, alignSelf: 'stretch' }} onPress={this.clickJump.bind(this)}>
-                    <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: '#81d49c', }}>
+                <TouchableHighlight style={{ backgroundColor: global.gColors.buttonColor, marginTop: 20, alignSelf: 'stretch' }} onPress={this.clickJump.bind(this)}>
+                    <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor:global.gColors.buttonColor }}>
                         下一步
                   </Text>
                 </TouchableHighlight>

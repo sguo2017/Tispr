@@ -88,8 +88,8 @@ export default class DealConnect extends Component {
                 <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 12 }}>Hi {feed.user.name}! Your offer is awesome!</Text>
 
 
-                <TouchableHighlight style={{ backgroundColor: '#81d49c', marginTop: 60, alignSelf: 'stretch' }} onPress={this._createDeal.bind(this)} >
-                    <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: '#81d49c', }}>
+                <TouchableHighlight style={{ backgroundColor: global.gColors.buttonColor, marginTop: 60, alignSelf: 'stretch' }} onPress={this._createDeal.bind(this)} >
+                    <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: global.gColors.buttonColor, }}>
                         下一步
                   </Text>
                 </TouchableHighlight>                
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
         borderTopColor: '#ccc',
         position: 'absolute',
         bottom: 5,
-        backgroundColor: '#81d49c'
+        backgroundColor: global.gColors.buttonColor
     },
     cardImageContent: {
         height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,

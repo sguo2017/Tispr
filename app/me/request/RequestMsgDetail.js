@@ -166,11 +166,6 @@ export default class RequestMsgDetail extends Component {
                             <Text style={{ color: 'black', fontSize: 18 }}>{feed.action_desc}</Text>
                             <Text style={{ color: 'gray', fontSize: 18 }}>{feed.action_title}</Text>
                         </View>
-                        {/*<TouchableHighlight style={[styles.bottomToolBar,{height: 40 }]}>
-                        <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: '#81d49c' }}>
-                            Connect
-                        </Text>
-                    </TouchableHighlight>*/}
                     </ScrollView>
                 </View>
                 <TouchableOpacity
@@ -198,7 +193,7 @@ const styles = StyleSheet.create({
         borderTopColor: '#ccc',
         position: 'absolute',
         bottom: 5,
-        backgroundColor: '#81d49c'
+        backgroundColor: global.gColors.buttonColor
     },
     cardImageContent: {
         height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,

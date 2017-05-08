@@ -48,7 +48,7 @@ export default class TabBarView extends PureComponent {
                     />
                 }
                 tabBarPosition='bottom'
-                tabBarActiveTextColor='#665dc6'
+                tabBarActiveTextColor={global.gColors.themeColor}
                 tabBarTextStyle={{fontSize: 18}}
                 locked
                 scrollWithoutAnimation

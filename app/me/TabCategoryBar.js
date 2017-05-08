@@ -54,8 +54,8 @@ export default class TabCategoryBar extends Component {
         return (
             <View style={styles.tabs}>
                 {this.props.tabs.map((tab, i) => {
-                    let color = this.props.activeTab === i ? 'white' : '#665dc6';
-                    let bgcolor = this.props.activeTab === i ? '#665dc6' : 'transparent';
+                    let color = this.props.activeTab === i ? 'white' :  global.gColors.themeColor;
+                    let bgcolor = this.props.activeTab === i ?  global.gColors.themeColor : 'transparent';
                     return (
                         <TouchableOpacity
                             key={i}
@@ -69,9 +69,6 @@ export default class TabCategoryBar extends Component {
                         </TouchableOpacity>
                     )
                 })}
-                <View style={[styles.indicatorContainer, {left: this.state.indicatorPosition}]}>
-                    <View style={styles.indicator}/>
-                </View>
             </View>
         )
     }
@@ -83,7 +80,7 @@ const styles = StyleSheet.create({
         height: 44,
         borderWidth: 1,
         margin: 6,
-        borderColor: '#665dc6'
+        borderColor:  global.gColors.themeColor,
     },
     tab: {
         flex: 1,
@@ -91,7 +88,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: screenW*0.2,
         borderLeftWidth: 1,
-        borderLeftColor: '#665dc6'
+        borderLeftColor:  global.gColors.themeColor,
     },
     indicatorContainer: {
         position: 'absolute',
@@ -99,11 +96,5 @@ const styles = StyleSheet.create({
         height: 3,
         width: Constants.window.width / 4,
         alignItems: 'center'
-    },
-    indicator: {
-        backgroundColor: 'red',
-        height: 3,
-        width: 3,
-        borderRadius: 1.5,
     }
 });

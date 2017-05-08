@@ -349,8 +349,8 @@ export default class ServOfferConfirm extends Component {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableHighlight style={{ backgroundColor: '#81d49c', marginTop: 60, alignSelf: 'stretch' }} onPress={this.onServOfferPres.bind(this)} >
-                    <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: '#81d49c', }}>
+                <TouchableHighlight style={{ backgroundColor: global.gColors.buttonColor, marginTop: 60, alignSelf: 'stretch' }} onPress={this.onServOfferPres.bind(this)} >
+                    <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor:global.gColors.ButtonColor }}>
                         下一步
                   </Text>
                 </TouchableHighlight>

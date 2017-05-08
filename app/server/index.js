@@ -60,7 +60,7 @@ export default class Server extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: "#9189d8" }}>
+            <View style={{ flex: 1, backgroundColor: global.gColors.themeColor }}>
                 <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around', marginTop: 150 }}>
                     <TouchableOpacity onPress={() => {this.clickNavigationJump("serv_offer")}}>
                         <Image style={{ width: 150, height: 150, alignSelf: 'center', left: 10 }} source={require('../resource/t_offer_serv.png')} />

@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     Platform
 } from 'react-native';
-
+import GlobalContants from '../common/globalContants';
 export default class HomeNavigation extends Component {
 
     render() {
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomColor: '#ccc',
         borderBottomWidth: 0.5,
-        backgroundColor: '#4890e0',
+        backgroundColor:global.gColors.themeColor,
         justifyContent: 'center'
     },
 

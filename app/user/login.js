@@ -16,6 +16,7 @@ import Register from '../user/register';
 import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 import TabBarView from '../containers/TabBarView';
+import GlobalContants from '../common/globalContants';
 
 const screenW = Dimensions.get('window').width;
 
@@ -305,7 +306,7 @@ export default class Login extends Component {
               style={[styles.input,{width:160}]}
               placeholder="输入短信验证码">
             </TextInput>
-            <TouchableHighlight onPress={this._smsSend.bind(this)} style={[styles.button,{height:34,borderRadius: 5,padding:10,backgroundColor:'#4a90e2'}]}>
+            <TouchableHighlight onPress={this._smsSend.bind(this)} style={[styles.button,{height:34,borderRadius: 5,padding:10}]}>
               <Text style={styles.buttonText}>
                 获取短信验证码
               </Text>
@@ -317,7 +318,7 @@ export default class Login extends Component {
               使用邮箱登录
             </Text>
           </TouchableHighlight>
-          <TouchableHighlight onPress={this._smsCodeLogin.bind(this)} style={[styles.button, {backgroundColor:'#ffc400',position:'absolute', top: 506,flexShrink: 0, width: screenW}]}>
+          <TouchableHighlight onPress={this._smsCodeLogin.bind(this)} style={[styles.button, {backgroundColor:global.gColors.buttonColor,position:'absolute', top: 506,flexShrink: 0, width: screenW}]}>
             <Text style={styles.buttonText}>
               登录
             </Text>
@@ -334,7 +335,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     //alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: global.gColors.bgColor,
 
   },
   input: {
@@ -347,7 +348,7 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 50,
-    backgroundColor: '#48BBEC',
+    backgroundColor: global.gColors.themeColor,
     alignSelf: 'stretch',
     marginTop: 10,
     justifyContent: 'center'

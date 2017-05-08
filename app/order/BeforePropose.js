@@ -56,7 +56,7 @@ export default class BeforePropose extends Component{
                                 borderTopColor: '#ccc',
                                 position: 'absolute',
                                 bottom: 0,
-                                backgroundColor: '#665dc6',width: screenW,height:44}}
+                                backgroundColor: global.gColors.buttonColor,width: screenW,height:44}}
                 onPress={this.clickJump.bind(this)}
                 >
                     <Text style={{fontSize: 20, color: 'white'}}>Propose a deal</Text>

@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomColor: '#ccc',
         borderBottomWidth: 0.5,
-        backgroundColor: '#665dc6'
+        backgroundColor: global.gColors.themeColor,
     },
 
     title: {

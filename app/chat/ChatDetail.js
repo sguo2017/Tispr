@@ -192,14 +192,14 @@ const styles = StyleSheet.create({
   cardImageContent: {
     height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,
     width: Constant.window.width,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: global.gColors.bgColor,
     top: Platform.OS === 'ios' ? 64 : 50,
     bottom: 44,
     position: 'absolute'
   },
   listView: {
     flex: 1,
-    backgroundColor: '#f5f5f5'
+    backgroundColor:  global.gColors.bgColor,
   },
   loadingContainer: {
     height: 40,

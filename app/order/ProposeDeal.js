@@ -102,7 +102,7 @@ export default class ProposeDeal extends Component{
                                     justifyContent: 'center',
                                     borderTopColor: '#ccc',
                                     marginTop:5,
-                                    backgroundColor: '#665dc6',width: screenW,height:44}}
+                                    backgroundColor: global.gColors.buttonColor,width: screenW,height:44}}
                     onPress={this.askPrice.bind(this)}
                     >
                         <Text style={{fontSize: 20, color: 'white'}}>Propose a deal</Text>
