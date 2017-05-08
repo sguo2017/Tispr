@@ -19,7 +19,7 @@ import Explore from '../explore/index';
 import Me from '../me/index';
 import Chat from '../chat/index';
 
-const tabTitles = ['Buzz', 'Explore', '', 'Me', 'Chats']
+const tabTitles = ['动态', '发现', '发布', '消息', '我的']
 const tabIcons = [
     require('../resource/ic_tab_buzz.png'),
     require('../resource/ic_tab_explore.png'),
@@ -45,8 +45,6 @@ export default class TabBarView extends PureComponent {
                 renderTabBar={() =>
                     <TabBar
                         tabNames={tabTitles}
-                        tabIconNames={tabIcons}
-                        selectedTabIconNames={tabSelectedIcon}
                     />
                 }
                 tabBarPosition='bottom'
@@ -59,9 +57,8 @@ export default class TabBarView extends PureComponent {
                 <Buzz tabLabel="Buzz" navigator={this.props.navigator}/>
                 <Explore tabLabel="Explore" categoryId={0} navigator={this.props.navigator}/>
                 <Server tabLabel="Server" navigator={this.props.navigator}/>
-                <Me tabLabel="Me" navigator={this.props.navigator}/>
                 <Chat tabLabel="Chat" navigator={this.props.navigator}/>
-                
+                <Me tabLabel="Me" navigator={this.props.navigator}/>       
             </ScrollableTabView>
         )
     }
