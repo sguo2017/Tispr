@@ -78,7 +78,7 @@ export default class ChatList extends PureComponent {
         return (
             <View style={styles.listView}>
                 <Header
-                    title='Tispr'
+                    title='Qiker'
                 />
 
                 {!isFetching &&

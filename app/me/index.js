@@ -63,7 +63,7 @@ export default class MeInfo extends Component {
 
               <View style={styles.listView}>
                 <Header
-                    title='Tisprs'
+                    title='Qiker'
                 />
                 <View style={{flexDirection:'row', justifyContent:'flex-start',margin: 20}}>
                     <View style={{}}>

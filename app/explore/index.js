@@ -26,7 +26,7 @@ class ExploreList extends PureComponent {
         return (
             <View style={styles.listView}>
                 <Header
-                    title='Tispr'
+                    title='Qiker'
                 />
 
                 <ServOfferList {...this.props} />

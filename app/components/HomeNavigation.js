@@ -92,14 +92,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomColor: '#ccc',
         borderBottomWidth: 0.5,
-        backgroundColor: '#665dc6',
+        backgroundColor: '#4890e0',
         justifyContent: 'center'
     },
 
     title: {
-        fontSize: 16,
+        fontSize: 20,
         marginLeft: 15,
-        color: 'white'
+        color: 'white',
+        fontFamily: '微软雅黑',
+        fontWeight: '500'
     },
 
     leftIcon: {
