@@ -119,16 +119,15 @@ export default class ServOfferDetail extends Component {
                     leftIconAction = {this._onBack}
                 />
 
-                <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />
+                <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.6} indeterminate={false} style={{ marginTop: -10 }} />
 
-                <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>90%</Text>
+                <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>60%</Text>
 
                 <Image style={{ width: 50, height: 50, alignSelf: 'center' }} source={require('../../resource/t_heart.png')} />
 
-                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 12 }}>What makes it special?</Text>
+                <Text style={{  alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>服务有什么特点</Text>
 
-                <Text style={{ color: "#a8a6b9" }}>Tell us more about this skill or service and \n
-                    what makes it special.Price,type,time or other. </Text>
+                <Text style={{  alignSelf: 'center', color: "#a8a6b9",paddingLeft: 10}}>详细描述服务内容，包括您的优势，专业性，价格以及时间等</Text>
 
                 <UselessTextInput
                     multiline={true}
@@ -138,7 +137,7 @@ export default class ServOfferDetail extends Component {
                 />
 
                 <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                    <Text style={{ color: "#a8a6b9" }}>min.60 characters</Text>
+                    <Text style={{ color: "#a8a6b9" }}>不少于60个字符</Text>
                     <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.detail_length}</Text>
                 </View>
 

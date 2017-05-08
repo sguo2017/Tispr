@@ -258,7 +258,7 @@ export default class ServOfferConfirm extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    title='Confrimation'
+                    title='确认'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
                     leftIconAction={this._onBack}
                 />
@@ -267,37 +267,26 @@ export default class ServOfferConfirm extends Component {
 
                 <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>90%</Text>
 
-                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 12 }}>Sell this Audio & sound service to customers</Text>
+                <Text style={{ color: "#000", fontSize: 16 }}>向客户出售您的&nbsp;摄影&nbsp;摄像&nbsp;服务</Text>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_text.png')} />
-                    <Text style={{ color: "#a8a6b9" }}>I will</Text>
                     <Text style={{ color: "#000000" }}>{this.state.serv_title}</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_heart.png')} />
-                    <Text style={{ color: "#a8a6b9" }}>I will</Text>
                     <Text style={{ color: "#000000" }}>{this.state.serv_detail}</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_loaction.png')} />
-                    <Text style={{ color: "#a8a6b9" }}>I will</Text>
                     <Text style={{ color: "#000000" }}>XXX</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_img.png')} />
-                    <Text style={{ color: "#a8a6b9" }}>Add photos or documents</Text>
-                    {/*<TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 20 }]}>
-                            {
-                                this.state.avatarSource === null ? <Text>选择图片</Text> :
-                                    <Image style={styles.avatar} source={this.state.avatarSource} />
-                            }
-                        </View>
-                    </TouchableOpacity>*/}
+                    <Text style={{ color: "#000" }}>上传作品或相关图片</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 5 }}>

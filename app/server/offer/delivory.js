@@ -181,11 +181,11 @@ export default class ServOfferDelivory extends Component {
 
                 <Image style={{ width: 60, height: 60, alignSelf: 'center' }} source={require('../../resource/t_loaction.png')} />
 
-                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 18, marginTop:5, marginBottom: 10 }}>How will you provide this service?</Text>
+                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 18, marginTop:5, marginBottom: 10 }}>怎样提供服务</Text>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row',justifyContent: 'space-between', 
                 borderBottomColor: '#a8a6b9', borderBottomWidth:1, marginLeft:5, paddingBottom: 8}}>
-                    <Text style={styles.textStyle}>Remotely/online</Text>
+                    <Text style={styles.textStyle}>远程/在线</Text>
                     <Switch
                     onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
                     style={{marginTop: 15}}
@@ -195,7 +195,7 @@ export default class ServOfferDelivory extends Component {
                 <View style={{borderBottomColor: '#a8a6b9',borderBottomWidth:1, marginLeft:5, paddingBottom: 8}}>
                     <View style={{ alignItems: 'center', flexDirection: 'row',justifyContent: 'space-between' }}>
                         <Text style={styles.textStyle}>
-                            Locally
+                            本地
                         </Text>
                         <Switch
                         onValueChange={(value) => this.setState({trueSwitchIsOn: value})}                    
@@ -203,7 +203,7 @@ export default class ServOfferDelivory extends Component {
                         value={this.state.trueSwitchIsOn} />
                     </View>
                     <Text style={{color:'black'}}>
-                        <Text>your profile is set to &nbsp;</Text>
+                        <Text>您的服务范围设置在 &nbsp;</Text>
                         <Text>{this.state.district}，{this.state.city}，{this.state.province}，{this.state.country}</Text>
                     </Text>
                 </View>

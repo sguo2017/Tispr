@@ -99,7 +99,7 @@ export default class navpage extends Component {
                     title='Chose a Category'
                     leftIcon={require('../../resource/ic_back_dark.png')}
                     leftIconAction = {this._onBack}
-                    rightIconAction={() => { const { navigator } = this.props; navigator.push({ name: "Serv", component: Serv }) }}
+                    rightIconAction={() => { const { navigator } = this.props; navigator.push({ name: "Serv", component: ServOffer }) }}
                     rightIcon={require('../../resource/ic_contrast_add.png')}
                 />
                 <ScrollableTabView
