@@ -31,11 +31,22 @@ export default class Guide extends React.Component {
         let accessToken = token
 
         try {
-            let response = await fetch('https://afternoon-beyond-22141.herokuapp.com/api/verify?session%5Baccess_token%5D=' + accessToken);
+            let URL = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_TOKEN_LOGIN + accessToken;
+            console.log("35 URL="+URL);
+            let response = await fetch(URL,{
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                 }
+            });
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
                 //Verified token means user is logged in so we redirect him to home.
-                this.redirect('TabBarView');
+                let result = JSON.parse(res);
+                UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token);
+                global.user = JSON.parse(result.user);
+                this._navigate('TabBarView');
             } else {
                 //Handle error
                 let error = res;
@@ -43,12 +54,12 @@ export default class Guide extends React.Component {
             }
         } catch (error) {
             console.log("error response: " + error);
+            UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
         }
     }
 
     async existsToken(token) {    
-        try {     
-            UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);       
+        try {
             let accessToken = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
             if (null == accessToken) {
                 this._navigate("Login");
@@ -61,14 +72,14 @@ export default class Guide extends React.Component {
     }
 
     componentDidMount() {
-        const { navigator } = this.props;
+        // const { navigator } = this.props;
         // this.timer = setTimeout(() => {
-        //     this.existsToken();
+        //      this.existsToken();
         // }, 2000);
     }
 
-    componentWillUnmount() {
-        // clearTimeout(this.timer);
+    componentWillMount(){
+        this.existsToken();
     }
 
     render() {

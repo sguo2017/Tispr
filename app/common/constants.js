@@ -41,6 +41,7 @@ let url = {
      SERV_API_ORDER_UPDATE:`/api/orders/orders`,//订单询价更新状态接口
      SERV_API_SMS_SEND_ADD:`/api/sys/sms_sends.json`,//生成短信验证码
      SERV_API_SMS_LOGIN:`/api/users/sms_login`,//短信验证码登录
+     SERV_API_TOKEN_LOGIN: `/api/users/token_login?token=`,//token登录
      SERV_API_GOODS_CATALOG:`/api/goods/goods_catalogs?token=`,//商品分类
      //////////////////<<<<   GEOAPI服务器  >>>>>//////////////////////////////
      GEO_LOCATION_ADDR: "http://api.map.baidu.com/geocoder/v2/?output=json&pois=1&ak=ZFFEI4cl338WSpoGsGSuHhpxiQpuEnfe",
