@@ -35,7 +35,8 @@ export default class navpage extends Component {
             goods_catalog: "",
             goods_catalog_I: [],            
             user: this.props.user,  
-            pwd: this.props.pwd  
+            pwd: this.props.pwd,
+            goods_tpye: this.props.goods_tpye,
         }
     }
 
@@ -75,12 +76,12 @@ export default class navpage extends Component {
     }
     
     jump(){
-        console.log("global.goods_tpye:"+global.goods_tpye)
-        if(global.goods_tpye=="serv_offer"){
+        console.log("this.state.goods_tpye:"+this.state.goods_tpye)
+        if(this.state.goods_tpye=="serv_offer"){
             const { navigator } = this.props; 
             navigator.resetTo({component: ServOffer, name: 'ServOffer'})
         } 
-        else if(global.goods_tpye=="serv_request"){
+        else if(this.state.goods_tpye=="serv_request"){
             const { navigator } = this.props; 
             navigator.resetTo({component: ServRequest, name: 'ServRequest'})
         }

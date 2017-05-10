@@ -32,29 +32,27 @@ export default class Server extends Component {
     clickNavigationJump(serv) {        
         const { navigator } = this.props;  
         if("serv_offer" == serv){
-            global.goods_tpye = "serv_offer";
-            console.log("global.goods_tpye:"+global.goods_tpye)
+            let goods_tpye="serv_offer";
+            console.log("goods_tpye:"+goods_tpye)
             if (navigator) {
                 navigator.push({
                     name: 'NavPage',  
                     component: NavPage,  
+                    passProps: {goods_tpye},
                 });
             }
         }
         if("serv_request" == serv){            
-            global.goods_tpye = "serv_request";
-            console.log("global.goods_tpye:"+global.goods_tpye)
+            let goods_tpye="serv_request";
+            console.log("goods_tpye:"+goods_tpye)
             if (navigator) {
-                //this.setState({goods_tpye:"serv_request"})
                 navigator.push({
                     name: "NavPage",
                     component: NavPage,
-                    params: {
-                        goods_tpye:this.state.goods_tpye
-                    }
+                    passProps: {goods_tpye},
                 });                
             }
-        }        
+        }
 
     }
 
