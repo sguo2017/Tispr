@@ -32,19 +32,10 @@ export default class ServOfferConfirm extends Component {
         super(props);
 
         this.state = {
-            serv_title: this.props.serv_title,
-            serv_detail: this.props.serv_detail,
+            serv_offer: this.props.serv_offer,
             serv_imges: this.props.serv_imges,
-            errors: this.props.errors,
             fileName: this.props.fileName,
             avatarSourceArray: this.props.avatarSourceArray,            
-            district: this.props.district,
-            city: this.props.city,
-            province: this.props.province,
-            country: this.props.country,
-            latitude: this.props.latitude,
-            longitude: this.props.longitude,
-            //isavatarSourceArrayFlag: this.props.isavatarSourceArrayFlag,
             imgBase64: this.props.imgBase64,
         }
     }
@@ -53,18 +44,6 @@ export default class ServOfferConfirm extends Component {
 
     componentDidMount() {
         this.setState({
-            serv_title: this.props.serv_title,
-            serv_detail: this.props.serv_detail,
-            serv_imges: this.props.serv_imges,
-            errors: this.props.errors,
-            fileName: this.props.fileName,
-            avatarSourceArray: this.props.avatarSourceArray,
-            district: this.props.district,
-            city: this.props.city,
-            province: this.props.province,
-            country: this.props.country,
-            latitude: this.props.latitude,
-            longitude: this.props.longitude,
             imgBase64: this.props.imgBase64,
         });
     }
@@ -85,13 +64,8 @@ export default class ServOfferConfirm extends Component {
 
     _onBack = () => {
         const { navigator } = this.props;
-        let title = this.state.serv_title;
-        let detail = this.state.serv_detail;
-        let imges = this.state.serv_imges;
-        let SourceArray = this.state.avatarSourceArray;
-        
         if (this.props.getdata) {
-            this.props.getdata(title,detail,imges,SourceArray,district,city,province,country,latitude,longitude);
+            this.props.getdata(this.state.serv_offer.offer);
         }
         if (navigator) {
             navigator.pop();
@@ -182,16 +156,17 @@ export default class ServOfferConfirm extends Component {
                 },
                 body: JSON.stringify({
                     serv_offer: {
-                        serv_title: this.state.serv_title,
-                        serv_detail: this.state.serv_detail,
-                        serv_imges: this.state.serv_imges,
-                        serv_catagory: "serv_offer",
-                        district: this.state.district,
-                        city: this.state.city,
-                        province: this.state.province,
-                        country: this.state.country,
-                        latitude: this.state.latitude,
-                        longitude: this.state.longitude,
+                        serv_title: this.state.serv_offer.serv_title,
+                        serv_detail: this.state.serv_offer.serv_detail,
+                        serv_imges: this.state.serv_offer.serv_imges,
+                        serv_catagory: this.state.serv_offer.goods.tpye,
+                        district: this.state.serv_offer.district,
+                        city: this.state.serv_offer.city,
+                        province: this.state.serv_offer.province,
+                        country: this.state.serv_offer.country,
+                        latitude: this.state.serv_offer.latitude,
+                        longitude: this.state.serv_offer.longitude,
+                        goods_catalog_id: this.state.serv_offer.goods_catalogs_id,
                     }
                 })
             });
@@ -260,7 +235,7 @@ export default class ServOfferConfirm extends Component {
                 <Header
                     title='确认'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
-                    leftIconAction={this._onBack}
+                    leftIconAction={this._onBack.bind(this)}
                 />
 
                 <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />
@@ -271,12 +246,12 @@ export default class ServOfferConfirm extends Component {
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_text.png')} />
-                    <Text style={{ color: "#000000" }}>{this.state.serv_title}</Text>
+                    <Text style={{ color: "#000000" }}>{this.state.serv_offer.serv_title}</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_heart.png')} />
-                    <Text style={{ color: "#000000" }}>{this.state.serv_detail}</Text>
+                    <Text style={{ color: "#000000" }}>{this.state.serv_offer.serv_detail}</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>

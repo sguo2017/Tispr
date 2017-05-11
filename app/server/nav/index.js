@@ -75,11 +75,17 @@ export default class navpage extends Component {
         }      
     }
     
-    jump(){
-        console.log("this.state.goods_tpye:"+this.state.goods_tpye)
+    jump(goods_catalogs_id){
+        console.log("this.state.goods_tpye:"+this.state.goods_tpye);
         if(this.state.goods_tpye=="serv_offer"){
-            const { navigator } = this.props; 
-            navigator.resetTo({component: ServOffer, name: 'ServOffer'})
+            const { navigator } = this.props;
+            goods_tpye = this.state.goods_tpye;
+            console.log("goods_catalogs_id"+goods_catalogs_id);
+            navigator.push({
+                component: ServOffer, 
+                name: 'ServOffer', 
+                passProps: {goods_catalogs_id, goods_tpye},
+            })
         } 
         else if(this.state.goods_tpye=="serv_request"){
             const { navigator } = this.props; 
@@ -99,7 +105,7 @@ export default class navpage extends Component {
                     leftIconAction={() => this.props.navigator.pop()}
                     title='Chose a Category'
                     leftIcon={require('../../resource/ic_back_dark.png')}
-                    leftIconAction = {this._onBack}
+                    leftIconAction = {this._onBack.bind()}
                     rightIconAction={() => { const { navigator } = this.props; navigator.push({ name: "Serv", component: ServOffer }) }}
                     rightIcon={require('../../resource/ic_contrast_add.png')}
                 />
@@ -121,7 +127,7 @@ export default class navpage extends Component {
                                         JSON.parse(data.goods_catalogs_II).map((d, i) => {
                                             return (
                                                 <View style={{marginBottom:5}}>
-                                                    <TouchableOpacity onPress={()=>{this.jump()}}>
+                                                    <TouchableOpacity onPress={()=>{this.jump(d.id)}}>
                                                         <Image style={{width:screenW, height:150,borderRadius:10,
                                                         flexDirection:'column-reverse'}} 
                                                         source={{uri:d.image}}>                                                   

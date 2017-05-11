@@ -29,16 +29,27 @@ export default class ServOfferTitle extends Component {
         super(props);
 
         this.state = {
-            serv_title: this.props.serv_title,
-            serv_detail: this.props.serv_detail,
-            serv_imges: this.props.serv_imges,
-            detail_length: this.props.detail_length,
-            avatarSourceArray: this.props.avatarSourceArray,
+            serv_offer: {},
         }
     }
 
+    componentWillMount() {
+        let offer = this.props.serv_offer
+        //note: from detail.js  from nav/index.js
+        if(offer == undefined){
+            offer = {}
+        }
+        if(this.props.goods_catalogs_id != undefined){
+             offer.goods_catalogs_id = this.props.goods_catalogs_id;
+        }
+        if(this.props.goods_tpye != undefined){
+            offer.goods_tpye = this.props.goods_tpye;
+        }
+        this.setState({serv_offer: offer})
+    }
+
     clickJump() {
-        if(undefined === this.state.serv_title || this.state.detail_length<10){
+        if(undefined === this.state.serv_offer.serv_title || this.state.serv_offer.title_length<10){
             Alert.alert(
                     '提示',
                     '请输入不少于10个字符',
@@ -56,16 +67,10 @@ export default class ServOfferTitle extends Component {
                 name: "ServOfferDelivory",
                 component: ServOfferDetail,
                 params: {
-                    serv_title: this.state.serv_title,
-                    serv_detail: this.state.serv_detail,
-                    serv_imges: this.state.serv_imges,
-                    avatarSourceArray: this.state.avatarSourceArray,
-                    getdata: (title,detail,imges,SourceArray)=>{
+                    serv_offer: this.state.serv_offer,
+                    getdata: (offer)=>{
                     _this.setState({
-                        serv_title: title,
-                        serv_detail: detail,
-                        serv_imges: imges,
-                        avatarSourceArray: SourceArray
+                        serv_offer: offer,
                         })
                     }
                 }
@@ -84,7 +89,7 @@ export default class ServOfferTitle extends Component {
                 <Header
                     title='Sell a service'
                     leftIcon = {require('../../resource/t_header_arrow_left.png')}
-                    leftIconAction = {this._onBack}
+                    leftIconAction = {this._onBack.bind(this)}
                 />
 
                 <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.3} indeterminate={false} style={{ marginTop: -10 }} />
@@ -100,13 +105,18 @@ export default class ServOfferTitle extends Component {
                 <UselessTextInput
                     multiline={true}
                     numberOfLines={3}
-                    value ={this.state.serv_title}
-                    onChangeText={(val) => this.setState({ serv_title: val, detail_length: val.length })}
+                    value ={this.state.serv_offer.serv_title}
+                    onChangeText={(val) => {
+                        let offer=this.state.serv_offer;
+                        offer.serv_title = val;
+                        offer.title_length = val.length;
+                        this.setState({ serv_offer: offer})
+                        }}
                 />
 
                 <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                     <Text style={{ color: "#a8a6b9" }}>不少于16个字符</Text>
-                    <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.detail_length}</Text>
+                    <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.serv_offer.title_length}</Text>
                 </View>
 
                 <TouchableHighlight style={{ backgroundColor: global.gColors.buttonColor, marginTop: 20, alignSelf: 'stretch' }} onPress={this.clickJump.bind(this)}>

@@ -30,16 +30,7 @@ export default class ServOfferDelivory extends Component {
         super(props);
 
         this.state = {
-            serv_title: this.props.serv_title,
-            serv_detail: this.props.serv_detail,
-            serv_imges: this.props.serv_imges,
-            avatarSourceArray: this.props.avatarSourceArray,
-            district: this.props.district,
-            city: this.props.city,
-            province: this.props.province,
-            country: this.props.country,
-            latitude: this.props.latitude,
-            longitude: this.props.longitude,
+            serv_offer: this.props.serv_offer,
             initialPosition: 'unknown',
             lastPosition: 'unknown',
             addressComponent:{"country":"中国","country_code":0,"province":"广东省","city":"广州市","district":"番禺区","adcode":"440113","street":"石北路","street_number":"","direction":"","distance":""}
@@ -50,12 +41,8 @@ export default class ServOfferDelivory extends Component {
 
     componentDidMount() {
         this.setState({
-            serv_title: this.props.serv_title,
-            serv_detail: this.props.serv_detail,
             trueSwitchIsOn: true,
             falseSwitchIsOn: false,
-            serv_imges: this.props.serv_imges,
-            avatarSourceArray: this.props.avatarSourceArray,
         });
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -73,11 +60,13 @@ export default class ServOfferDelivory extends Component {
     }
 
     async getGeoLocation() {
-        this.setState({latitude:(JSON.parse(this.state.lastPosition)).coords.latitude})
-        this.setState({longitude:(JSON.parse(this.state.lastPosition)).coords.longitude})
+        let offer = this.state.serv_offer;
+        offer.latitude = (JSON.parse(this.state.lastPosition)).coords.latitude;
+        offer.longitude = (JSON.parse(this.state.lastPosition)).coords.longitude;
+        this.setState({ serv_offer: offer });
         this.setState({ showProgress: true })
         try {
-            let url = Constant.url.GEO_LOCATION_ADDR + `&location=${this.state.latitude},${this.state.longitude}`;
+            let url = Constant.url.GEO_LOCATION_ADDR + `&location=${this.state.serv_offer.latitude},${this.state.serv_offer.longitude}`;
             console.log("URL:"+url)
             let response = await fetch(url, {
                 method: 'POST',
@@ -89,12 +78,14 @@ export default class ServOfferDelivory extends Component {
 
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
-                var addressComponent = JSON.stringify((JSON.parse(res)).result.addressComponent)
-                this.setState({ addressComponent });
-                this.setState({district:(JSON.parse(this.state.addressComponent)).district})
-                this.setState({city:(JSON.parse(this.state.addressComponent)).city})
-                this.setState({province:(JSON.parse(this.state.addressComponent)).province})
-                this.setState({country:(JSON.parse(this.state.addressComponent)).country})
+                var addressComponent = (JSON.parse(res)).result.addressComponent;
+                let offer = serv_offer;
+                offer.addressComponent = addressComponent;
+                offer.district = addressComponent.district;
+                offer.city = addressComponent.city;
+                offer.province = addressComponent.province;
+                offer.country = addressComponent.country;
+                this.setState({ serv_offer: offer });
             } else {
                 let error = res;
                 throw error;
@@ -107,7 +98,7 @@ export default class ServOfferDelivory extends Component {
         }
     }
 
-    clickJump() {
+      clickJump() {
         let _this = this;
         const { navigator } = this.props;
         if (navigator) {
@@ -115,28 +106,10 @@ export default class ServOfferDelivory extends Component {
                 name: "ServOfferConfirm",
                 component: ServOfferConfirm,
                 params: {
-                    serv_title: this.state.serv_title,
-                    serv_detail: this.state.serv_detail,
-                    serv_imges: this.state.serv_imges,
-                    avatarSourceArray: this.state.avatarSourceArray,
-                    district: this.state.district,
-                    city: this.state.city,
-                    province: this.state.province,
-                    country: this.state.country,
-                    latitude: this.state.latitude,
-                    longitude: this.state.longitude,
-                    getdata: (title,detail,imges,SourceArray,district,city,province,country,latitude,longitude)=>{
+                    serv_offer: this.state.serv_offer,
+                    getdata: (offer)=>{
                     _this.setState({
-                        serv_title: title,
-                        serv_detail: detail,
-                        serv_imges: imges,
-                        avatarSourceArray: SourceArray,
-                        district: district,
-                        city: city,
-                        province: province,
-                        country: country,
-                        latitude: latitude,
-                        longitude: longitude,                        
+                        serv_offer: offer                      
                         })
                     }
                 }
@@ -146,21 +119,13 @@ export default class ServOfferDelivory extends Component {
 
     _onBack = () => {
         const { navigator } = this.props;
-        let title = this.state.serv_title;
-        let detail = this.state.serv_detail;
-        let imges = this.state.serv_imges;
-        let SourceArray = this.state.avatarSourceArray;
-        console.log("leave from delivory");
-        console.log("this.props.serv_imges:"+this.props.serv_imges);
-        console.log("this.state.serv_imges:"+this.state.serv_imges);
         if (this.props.getdata) {
-            this.props.getdata(title, detail,imges, SourceArray);
+            this.props.getdata(this.state.serv_offer);
         }
         if (navigator) {
             navigator.pop();
         }
     }
-
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID);
     }
@@ -172,7 +137,7 @@ export default class ServOfferDelivory extends Component {
                 <Header
                     title='Delivory detail'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
-                    leftIconAction = {this._onBack}
+                    leftIconAction = {this._onBack.bind(this)}
                 />
 
                 <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />
@@ -204,7 +169,7 @@ export default class ServOfferDelivory extends Component {
                     </View>
                     <Text style={{color:'black'}}>
                         <Text>您的服务范围设置在 &nbsp;</Text>
-                        <Text>{this.state.district}，{this.state.city}，{this.state.province}，{this.state.country}</Text>
+                        <Text>{this.state.serv_offer.district}，{this.state.serv_offer.city}，{this.state.serv_offer.province}，{this.state.serv_offer.country}</Text>
                     </Text>
                 </View>
 
