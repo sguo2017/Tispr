@@ -19,7 +19,6 @@ import Loading from '../../components/Loading'
 import LoadMoreFooter from '../../components/LoadMoreFooter'
 import FeedSingleImageCell from '../../components/FeedSingleImageCell'
 import FeedMultiImageCell from '../../components/FeedMultiImageCell'
-import FeedDetail from '../feed/FeedDetail'
 import Toast from 'react-native-easy-toast'
 import FeedBaseStore from '../../mobx/feedBaseStore'
 import SearchContainer from '../../containers/SearchContainer'
@@ -64,10 +63,6 @@ export default class BussList extends PureComponent {
 
 
     _onPressCell = feed => {
-        this.props.navigator.push({
-            component: FeedDetail,
-            passProps: {feed}
-        })
     }
 
     _onRefresh = () => {
