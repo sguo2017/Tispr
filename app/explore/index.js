@@ -33,7 +33,10 @@ class ExploreList extends PureComponent {
             classify: this.props.classify,
             transiClassify: this.props.transiClassify,
             location: this.props.location,
-            transiLocation: this.props.transiLocation
+            transiLocation: this.props.transiLocation,
+            sps:[false,false,false,false],//排序按钮操作
+            cps:[false,false,false,false,false,false],//类型按钮操作
+            lps:[false,false],//位置按钮操作
         };  
     }
     componentWillMount(){
@@ -159,26 +162,35 @@ class ExploreList extends PureComponent {
                                     <TouchableOpacity onPress={()=>this.setState({tabName: 'index'})}>
                                         <Text style={styles.themeColorText}>返回</Text>
                                     </TouchableOpacity>  
-                                    
                                     <Text style={styles.blackText}>选择排序</Text>
                                     <TouchableOpacity onPress={()=>this.setState({tabName: 'index'})}>
                                         <Text style={styles.themeColorText}>确定</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{marginTop:20,marginBottom: 20,marginLeft:20}}>
-                                    <TouchableOpacity style={[styles.selectButton,{backgroundColor:global.gColors.themeColor}]}>
+                                    <TouchableOpacity 
+                                        style={[styles.selectButton,{backgroundColor:global.gColors.themeColor}]}
+                                    >
                                         <Text style={[styles.whiteText]}>全部排序</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{flexDirection:'row',justifyContent:'space-around',marginLeft:20}}>
-                                    <TouchableOpacity style={styles.selectButton} onPress={()=>this.setState({transiSortBy:'最近发布'})}>
-                                        <Text style={styles.themeColorText}>最近发布</Text>
+                                    <TouchableOpacity  
+                                        style={[styles.selectButton,this.state.sps[1]&&{backgroundColor:global.gColors.themeColor}]} 
+                                        onPress={()=>{this.setState({transiSortBy:'最近发布',sps:[false,true,false,false]})}}
+                                    >
+                                        <Text style={[styles.themeColorText, this.state.sps[1]&&styles.whiteText]}>最近发布</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.selectButton,{width:100}]} onPress={()=>this.setState({transiSortBy:'半年内发布'})}>
-                                        <Text style={styles.themeColorText}>半年内发布</Text>
+                                    <TouchableOpacity 
+                                        style={[styles.selectButton,{width:100},this.state.sps[2]&&{backgroundColor:global.gColors.themeColor}]} 
+                                        onPress={()=>{this.setState({transiSortBy:'半年内发布',sps:[false,false,true,false]})}}
+                                    >
+                                        <Text style={[styles.themeColorText, this.state.sps[2]&&styles.whiteText]}>半年内发布</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.selectButton,{width:120}]} onPress={()=>this.setState({transiSortBy:'六周以内发布'})}>
-                                        <Text style={styles.themeColorText}>六周以内发布</Text>
+                                    <TouchableOpacity 
+                                        style={[styles.selectButton,{width:120},this.state.sps[3]&&{backgroundColor:global.gColors.themeColor}]} 
+                                        onPress={()=>this.setState({transiSortBy:'六周以内发布',sps:[false,false,false,true]})}>
+                                        <Text style={[styles.themeColorText, this.state.sps[3]&&styles.whiteText]}>六周以内发布</Text>
                                     </TouchableOpacity>
                                 </View>       
                             </View>
@@ -201,25 +213,43 @@ class ExploreList extends PureComponent {
                                     
                                 </View>
                                 <View style={{marginTop:20,marginBottom: 20,marginLeft:20}}>
-                                    <TouchableOpacity style={[styles.selectButton,{backgroundColor:global.gColors.themeColor}]}>
-                                        <Text style={styles.whiteText}>全部分类</Text>
+                                    <TouchableOpacity 
+                                    style={[styles.selectButton,this.state.cps[0]&&{backgroundColor:global.gColors.themeColor}]}
+                                    onPress={()=>this.setState({transiClassify:'全部分类',cps:[!this.state.cps[0],false,false,false,false,false]})}                                  
+                                    >
+                                        <Text style={[styles.themeColorText, this.state.cps[0]&&styles.whiteText]}>全部分类</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{flexDirection:'row',flexWrap:'wrap',marginLeft:20}}>
-                                    <TouchableHighlight style={styles.selectButton} onPress={()=>this.setState({transiClassify:'艺术创意'})}>
-                                        <Text style={styles.themeColorText}>艺术创意</Text>
+                                    <TouchableHighlight 
+                                        style={[styles.selectButton,this.state.cps[1]&&{backgroundColor:global.gColors.themeColor}]} 
+                                        onPress={()=>this.setState({transiClassify:'艺术创意',cps:[false,!this.state.cps[1],this.state.cps[2]&&true,this.state.cps[3]&&true,this.state.cps[4]&&true,this.state.cps[5]&&true]})}
+                                    >
+                                        <Text style={[styles.themeColorText, this.state.cps[1]&&styles.whiteText]}>艺术创意</Text>
                                     </TouchableHighlight>
-                                    <TouchableOpacity style={styles.selectButton} onPress={()=>this.setState({transiClassify:'生活方式'})}>
-                                        <Text style={styles.themeColorText}>生活方式</Text>
+                                    <TouchableOpacity 
+                                        style={[styles.selectButton,this.state.cps[2]&&{backgroundColor:global.gColors.themeColor}]} 
+                                        onPress={()=>this.setState({transiClassify:'生活方式',cps:[false,this.state.cps[1]&&true,!this.state.cps[2],this.state.cps[3]&&true,this.state.cps[4]&&true,this.state.cps[5]&&true]})}
+                                    >
+                                        <Text style={[styles.themeColorText, this.state.cps[2]&&styles.whiteText]}>生活方式</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.selectButton} onPress={()=>this.setState({transiClassify:'文艺活动'})}>
-                                        <Text style={styles.themeColorText}>文艺活动</Text>
+                                    <TouchableOpacity 
+                                        style={[styles.selectButton,this.state.cps[3]&&{backgroundColor:global.gColors.themeColor}]} 
+                                        onPress={()=>this.setState({transiClassify:'文艺活动',cps:[false,this.state.cps[1]&&true,this.state.cps[2]&&true,!this.state.cps[3],this.state.cps[4]&&true,this.state.cps[5]&&true]})}
+                                    >
+                                        <Text style={[styles.themeColorText, this.state.cps[3]&&styles.whiteText]}>文艺活动</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.selectButton} onPress={()=>this.setState({transiClassify:'信息技术'})}>
-                                        <Text style={styles.themeColorText}>信息技术</Text>
+                                    <TouchableOpacity 
+                                        style={[styles.selectButton,this.state.cps[4]&&{backgroundColor:global.gColors.themeColor}]} 
+                                        onPress={()=>this.setState({transiClassify:'信息技术',cps:[false,this.state.cps[1]&&true,this.state.cps[2]&&true,this.state.cps[3]&&true,!this.state.cps[4],this.state.cps[5]&&true]})}
+                                    >
+                                        <Text style={[styles.themeColorText, this.state.cps[4]&&styles.whiteText]}>信息技术</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.selectButton} onPress={()=>this.setState({transiClassify:'商务职能'})}>
-                                        <Text style={styles.themeColorText}>商务职能</Text>
+                                    <TouchableOpacity 
+                                        style={[styles.selectButton,this.state.cps[5]&&{backgroundColor:global.gColors.themeColor}]} 
+                                        onPress={()=>this.setState({transiClassify:'商务职能',cps:[false,this.state.cps[1]&&true,this.state.cps[2]&&true,this.state.cps[3]&&true,this.state.cps[4]&&true,!this.state.cps[5]]})}
+                                    >
+                                        <Text style={[styles.themeColorText, this.state.cps[5]&&styles.whiteText]}>商务职能</Text>
                                     </TouchableOpacity>
                                 </View>              
                             </View>
@@ -245,11 +275,17 @@ class ExploreList extends PureComponent {
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{flexDirection:'row',marginLeft:20}}>
-                                    <TouchableOpacity style={[styles.selectButton,{width:60}]} onPress={()=>this.setState({transiLocation:'番禺区'})}>
-                                        <Text style={styles.themeColorText}>番禺区</Text>
+                                    <TouchableOpacity 
+                                        style={[styles.selectButton,this.state.lps[0]&&{backgroundColor:global.gColors.themeColor}]} 
+                                        onPress={()=>this.setState({transiLocation:'番禺区',lps:[true,false]})}
+                                    >
+                                        <Text style={[styles.themeColorText, this.state.lps[0]&&styles.whiteText]}>番禺区</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.selectButton,{width:60}]} onPress={()=>this.setState({transiLocation:'海珠区'})}>
-                                        <Text style={styles.themeColorText}>海珠区</Text>
+                                    <TouchableOpacity 
+                                        style={[styles.selectButton,this.state.lps[1]&&{backgroundColor:global.gColors.themeColor}]} 
+                                        onPress={()=>this.setState({transiLocation:'海珠区',lps:[false,true]})}
+                                    >
+                                        <Text style={[styles.themeColorText, this.state.lps[1]&&styles.whiteText]}>海珠区</Text>
                                     </TouchableOpacity>
                                 </View>              
                             </View>
