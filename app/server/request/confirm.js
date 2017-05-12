@@ -250,37 +250,21 @@ export default class ServOfferConfirm extends Component {
 
                 <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>99%</Text>
 
-                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 12 }}>Get introduced to Video & Animation experts</Text>
+                <Text style={{ color: "#000", fontSize: 16 }}>向专家描述&nbsp;摄影&nbsp;摄像&nbsp;服务需求</Text>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_text.png')} />
-                    <Text style={{ color: "#a8a6b9" }}>I need </Text>
                     <Text style={{ color: "#000000" }}>{this.state.serv_title}</Text>
                 </View>
-
-                {/*<View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
-                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_heart.png')} />
-                    <Text style={{ color: "#a8a6b9" }}>Get it done near</Text>
-                    <Text style={{ color: "#000000" }}>{this.state.serv_detail}</Text>
-                </View>*/}
-
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_loaction.png')} />
-                    <Text style={{ color: "#a8a6b9" }}>Get it done near </Text>
-                    <Text style={{ color: "#000000" }}>XXX</Text>
+                    <Text style={{ color: "#a8a6b9" }}>您的服务范围设置在 &nbsp;</Text>
+                    <Text style={{ color: "#000000" }}>番禺区，广州市，广东省，中国</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_img.png')} />
-                    <Text style={{ color: "#a8a6b9" }}>Add a photo or documment (drat and drop to reorder)</Text>
-                    {/*<TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 20 }]}>
-                            {
-                                this.state.avatarSource === null ? <Text>选择图片</Text> :
-                                    <Image style={styles.avatar} source={this.state.avatarSource} />
-                            }
-                        </View>
-                    </TouchableOpacity>*/}
+                    <Text style={{ color: "#a8a6b9" }}>添加作品或相关图片</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 5 }}>

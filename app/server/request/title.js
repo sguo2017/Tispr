@@ -88,15 +88,15 @@ export default class ServOfferTitle extends Component {
                     leftIconAction = {this._onBack}
                 />
 
-                <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />
+                <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.3} indeterminate={false} style={{ marginTop: -10 }} />
 
-                <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>90%</Text>
+                <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>30%</Text>
 
                 <Image style={{ width: 50, height: 50, alignSelf: 'center' }} source={require('../../resource/t_text.png')} />
 
-                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 12 }}>What exactly do you need?</Text>
+                <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10}}>需要什么服务</Text>
 
-                <Text style={{ color: "#a8a6b9" }}>I need </Text>
+                <Text style={{ alignSelf: 'center', color: "#a8a6b9" }}>一句话概括表述你的服务需要</Text>
 
                 <UselessTextInput
                     multiline={true}
@@ -106,7 +106,7 @@ export default class ServOfferTitle extends Component {
                 />
 
                 <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                    <Text style={{ color: "#a8a6b9" }}>min.15 characters</Text>
+                    <Text style={{ color: "#a8a6b9" }}>不少于15个字符</Text>
                     <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.detail_length}</Text>
                 </View>
 
