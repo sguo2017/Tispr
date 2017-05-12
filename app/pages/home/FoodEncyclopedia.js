@@ -17,7 +17,7 @@ import {observer} from 'mobx-react/native'
 import FoodEncyclopediaStore from '../../mobx/foodEncyclopediaStore'
 import RootStore from '../../mobx'
 
-import Login from '../Login'
+import Login from '../../user/login'
 import SearchContainer from '../../containers/SearchContainer'
 import Scanner from '../../components/Scanner'
 

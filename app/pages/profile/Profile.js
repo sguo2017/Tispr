@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import {observer} from 'mobx-react/native'
 import RootStore from '../../mobx'
-import Login from '../Login'
+import Login from '../../user/login'
 
 @observer
 export default class Profile extends PureComponent {
