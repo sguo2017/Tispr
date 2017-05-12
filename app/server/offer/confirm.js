@@ -104,7 +104,7 @@ export default class ServOfferConfirm extends Component {
             else {
                 var source, temp, fName;
                 let imgArray;
-                if (this.state.avatarSourceArray === undefined) {
+                if (this.state.serv_offer.avatarSourceArray === undefined) {
                     imgArray = [
                         { "uri": "", "isStatic": true },
                         { "uri": "", "isStatic": true },
@@ -115,7 +115,7 @@ export default class ServOfferConfirm extends Component {
                     ];
                 }
                 else {
-                    imgArray = this.state.avatarSourceArray.slice(0);
+                    imgArray = this.state.serv_offer.avatarSourceArray.slice(0);
                 }
                 // You can display the image using either:
                 //source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
@@ -131,12 +131,13 @@ export default class ServOfferConfirm extends Component {
 
                 imgArray[index].uri = source.uri;
                 fName = response.fileName;
-
+                let offer = this.state.serv_offer;
+                offer.fileName = fName;
+                offer.avatarSourceArray = imgArray;
 
                 this.setState({
                     imgBase64: temp,
-                    fileName: fName,
-                    avatarSourceArray: imgArray,
+                    serv_offer: offer,
                 });
                 this.uploadImage(index);
 
@@ -197,7 +198,7 @@ export default class ServOfferConfirm extends Component {
         let formData = new FormData();
         let url = 'http://' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.IMG_SERV_PORT + Constant.url.SERV_API_IMG_UPLOAD_SERVLET;
         console.log("url:" + url);
-        let file = { uri: this.state.avatarSourceArray[index].uri, type: 'multipart/form-data', name: this.state.fileName };
+        let file = { uri: this.state.serv_offer.avatarSourceArray[index].uri, type: 'multipart/form-data', name: this.state.serv_offer.fileName };
 
         formData.append("images", file);
 
@@ -212,17 +213,17 @@ export default class ServOfferConfirm extends Component {
             .then((response) => response.text())
             .then((responseData) => {
                 console.log('responseData', responseData);
-                if (this.state.serv_imges === undefined) {
-                    this.setState({
-                        serv_imges: JSON.parse(responseData).images
-                    });
+                let offer = this.state.serv_offer;
+                if (offer.serv_imges === undefined) {
+                    offer.serv_imges = JSON.parse(responseData).images;
                 }
                 else {
-                    this.setState({
-                        serv_imges: this.state.serv_imges + "," + JSON.parse(responseData).images
-                    });
+                    offer.serv_imges = offer.serv_imges + "," + JSON.parse(responseData).images;
                 }
-                console.log('this.state.serv_imges：', this.state.serv_imges);
+                this.setState({
+                        serv_offer: offer
+                    });
+                console.log('this.state.serv_offer.serv_imges：', this.state.serv_offer.serv_imges);
 
             })
             .catch((error) => { console.error('error', error) });
@@ -268,8 +269,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 0)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[0].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[0]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[0].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[0]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>
@@ -277,8 +278,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 1)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[1].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[1]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[1].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[1]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>
@@ -286,8 +287,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 2)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[2].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[2]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[2].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[2]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>
@@ -298,8 +299,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 3)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[3].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[3]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[3].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[3]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>
@@ -307,8 +308,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 4)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[4].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[4]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[4].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[4]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>
@@ -316,8 +317,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 5)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[5].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[5]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[5].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[5]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>

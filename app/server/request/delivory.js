@@ -29,22 +29,11 @@ export default class ServOfferDelivory extends Component {
         super(props);
 
         this.state = {
-            serv_title: this.props.serv_title,
-            serv_detail: this.props.serv_detail,
-            serv_imges: this.props.serv_imges,
-            avatarSourceArray: this.props.avatarSourceArray,
+            serv_offer: this.props.serv_offer,
         }
     }
 
     componentDidMount() {
-        this.setState({
-            serv_title: this.props.serv_title,
-            serv_detail: this.props.serv_detail,
-            trueSwitchIsOn: true,
-            falseSwitchIsOn: false,
-            serv_imges: this.props.serv_imges,
-            avatarSourceArray: this.props.avatarSourceArray,
-        });
     }
 
     clickJump() {
@@ -55,16 +44,10 @@ export default class ServOfferDelivory extends Component {
                 name: "ServOfferConfirm",
                 component: ServOfferConfirm,
                 params: {
-                    serv_title: this.state.serv_title,
-                    serv_detail: this.state.serv_detail,
-                    serv_imges: this.state.serv_imges,
-                    avatarSourceArray: this.state.avatarSourceArray,
-                    getdata: (title,detail,imges,SourceArray)=>{
+                    serv_offer: this.state.serv_offer,
+                    getdata: (offer)=>{
                     _this.setState({
-                        serv_title: title,
-                        serv_detail: detail,
-                        serv_imges: imges,
-                        avatarSourceArray: SourceArray
+                        serv_offer: offer                      
                         })
                     }
                 }
@@ -74,15 +57,8 @@ export default class ServOfferDelivory extends Component {
 
     _onBack = () => {
         const { navigator } = this.props;
-        let title = this.state.serv_title;
-        let detail = this.state.serv_detail;
-        let imges = this.state.serv_imges;
-        let SourceArray = this.state.avatarSourceArray;
-        console.log("leave from delivory");
-        console.log("this.props.serv_imges:"+this.props.serv_imges);
-        console.log("this.state.serv_imges:"+this.state.serv_imges);
         if (this.props.getdata) {
-            this.props.getdata(title, detail,imges, SourceArray);
+            this.props.getdata(this.state.serv_offer);
         }
         if (navigator) {
             navigator.pop();
@@ -96,7 +72,7 @@ export default class ServOfferDelivory extends Component {
                 <Header
                     title='Location details'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
-                    leftIconAction = {this._onBack}
+                    leftIconAction = {this._onBack.bind(this)}
                 />
 
                 <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />

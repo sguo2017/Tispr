@@ -32,13 +32,10 @@ export default class ServOfferConfirm extends Component {
         super(props);
 
         this.state = {
-            serv_title: this.props.serv_title,
-            serv_detail: this.props.serv_detail,
+            serv_offer: this.props.serv_offer,
             serv_imges: this.props.serv_imges,
-            errors: this.props.errors,
             fileName: this.props.fileName,
-            avatarSourceArray: this.props.avatarSourceArray,
-            //isavatarSourceArrayFlag: this.props.isavatarSourceArrayFlag,
+            avatarSourceArray: this.props.avatarSourceArray,            
             imgBase64: this.props.imgBase64,
         }
     }
@@ -46,15 +43,6 @@ export default class ServOfferConfirm extends Component {
 
 
     componentDidMount() {
-        this.setState({
-            serv_title: this.props.serv_title,
-            serv_detail: this.props.serv_detail,
-            serv_imges: this.props.serv_imges,
-            errors: this.props.errors,
-            fileName: this.props.fileName,
-            avatarSourceArray: this.props.avatarSourceArray,
-            imgBase64: this.props.imgBase64,
-        });
     }
 
     clickJump() {
@@ -64,21 +52,14 @@ export default class ServOfferConfirm extends Component {
                 name: "TabBarView",
                 component: TabBarView,
                 params: {
-                    //serv_title: this.state.serv_title,
-                    //serv_detail: this.state.serv_detail,
                 }
             });
         }
     }
-
     _onBack = () => {
         const { navigator } = this.props;
-        let title = this.state.serv_title;
-        let detail = this.state.serv_detail;
-        let imges = this.state.serv_imges;
-        let SourceArray = this.state.avatarSourceArray;
         if (this.props.getdata) {
-            this.props.getdata(title, detail,imges, SourceArray);
+            this.props.getdata(this.state.serv_offer.offer);
         }
         if (navigator) {
             navigator.pop();
@@ -117,7 +98,7 @@ export default class ServOfferConfirm extends Component {
             else {
                 var source, temp, fName;
                 let imgArray;
-                if (this.state.avatarSourceArray === undefined) {
+                if (this.state.serv_offer.avatarSourceArray === undefined) {
                     imgArray = [
                         { "uri": "", "isStatic": true },
                         { "uri": "", "isStatic": true },
@@ -128,7 +109,7 @@ export default class ServOfferConfirm extends Component {
                     ];
                 }
                 else {
-                    imgArray = this.state.avatarSourceArray.slice(0);
+                    imgArray = this.state.serv_offer.avatarSourceArray.slice(0);
                 }
                 // You can display the image using either:
                 //source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
@@ -144,12 +125,13 @@ export default class ServOfferConfirm extends Component {
 
                 imgArray[index].uri = source.uri;
                 fName = response.fileName;
-
+                let offer = this.state.serv_offer;
+                offer.fileName = fName;
+                offer.avatarSourceArray = imgArray;
 
                 this.setState({
                     imgBase64: temp,
-                    fileName: fName,
-                    avatarSourceArray: imgArray,
+                    serv_offer: offer,
                 });
                 this.uploadImage(index);
 
@@ -171,10 +153,10 @@ export default class ServOfferConfirm extends Component {
 
                 body: JSON.stringify({
                     serv_offer: {
-                        serv_title: this.state.serv_title,
-                        serv_detail: this.state.serv_detail,
-                        serv_imges: this.state.serv_imges,
-                        serv_catagory: "serv_request"
+                        serv_title: this.state.serv_offer.serv_title,
+                        serv_detail: this.state.serv_offer.serv_detail,
+                        serv_imges: this.state.serv_offer.serv_imges,
+                        serv_catagory: this.state.serv_offer.goods.tpye,
                     }
                 })
             });
@@ -205,7 +187,7 @@ export default class ServOfferConfirm extends Component {
         let formData = new FormData();
         let url = 'http://' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.IMG_SERV_PORT + Constant.url.SERV_API_IMG_UPLOAD_SERVLET;
         console.log("url:" + url);
-        let file = { uri: this.state.avatarSourceArray[index].uri, type: 'multipart/form-data', name: this.state.fileName };
+        let file = { uri: this.state.serv_offer.avatarSourceArray[index].uri, type: 'multipart/form-data', name: this.state.serv_offer.fileName };
 
         formData.append("images", file);
 
@@ -220,17 +202,17 @@ export default class ServOfferConfirm extends Component {
             .then((response) => response.text())
             .then((responseData) => {
                 console.log('responseData', responseData);
-                if (this.state.serv_imges === undefined) {
-                    this.setState({
-                        serv_imges: JSON.parse(responseData).images
-                    });
+                let offer = this.state.serv_offer;
+                if (offer.serv_imges === undefined) {
+                    offer.serv_imges = JSON.parse(responseData).images;
                 }
                 else {
-                    this.setState({
-                        serv_imges: this.state.serv_imges + "," + JSON.parse(responseData).images
-                    });
+                    offer.serv_imges = offer.serv_imges + "," + JSON.parse(responseData).images;
                 }
-                console.log('this.state.serv_imges：', this.state.serv_imges);
+                this.setState({
+                        serv_offer: offer
+                    });
+                console.log('this.state.serv_offer.serv_imges：', this.state.serv_offer.serv_imges);
 
             })
             .catch((error) => { console.error('error', error) });
@@ -243,7 +225,7 @@ export default class ServOfferConfirm extends Component {
                 <Header
                     title='Confrimation'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
-                    leftIconAction={this._onBack}
+                    leftIconAction={this._onBack.bind(this)}
                 />
 
                 <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />

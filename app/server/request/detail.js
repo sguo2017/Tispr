@@ -28,25 +28,11 @@ export default class ServOfferDetail extends Component {
         super(props);
 
         this.state = {
-            serv_title: this.props.serv_title,
-            serv_detail: this.props.serv_detail,
-            serv_imges: this.props.serv_imges,
-            detail_length: this.props.detail_length,
-            avatarSourceArray: this.props.avatarSourceArray,
-            test: this.props.test,
-            getdata: this.props.getdata
+            serv_offer: this.props.serv_offer,
         }
     }
 
     componentDidMount() {
-        this.setState({
-            serv_title: this.props.serv_title,
-            serv_detail: this.props.serv_detail,
-            serv_imges: this.props.serv_imges,
-            avatarSourceArray: this.props.avatarSourceArray,
-            test: this.props.test,
-            //getdata: this.props.getdata
-        });
     }
 
     clickJump() {
@@ -60,27 +46,18 @@ export default class ServOfferDetail extends Component {
                 )
             return;
         }
-        console.log("back 1");
         let _this = this;
         const { navigator } = this.props;
         console.log("go to delivory");
-        console.log("this.props.serv_imges:"+this.props.serv_imges);
-        console.log("this.state.serv_imges:"+this.state.serv_imges);
         if (navigator) {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "ServOfferDelivory",
                 component: ServOfferDelivory,
                 params: {
-                    serv_title: this.state.serv_title,
-                    serv_detail: this.state.serv_detail,
-                    serv_imges: this.state.serv_imges,
-                    avatarSourceArray: this.state.avatarSourceArray,
-                    getdata: (title,detail,imges,SourceArray)=>{
+                    serv_offer: this.state.serv_offer,
+                    getdata: (offer)=>{
                     _this.setState({
-                        serv_title: title,
-                        serv_detail: detail,
-                        serv_imges: imges,
-                        avatarSourceArray: SourceArray
+                        serv_offer: offer,
                         })
                     }
                 }
@@ -89,20 +66,9 @@ export default class ServOfferDetail extends Component {
     }
 
     _onBack = () => {
-        
-        // this.props.setState({
-        //     serv_detail: this.state.serv_detail
-        // })
         const { navigator } = this.props;
-        let title = this.state.serv_title;
-        let detail = this.state.serv_detail;
-        let imges = this.state.serv_imges;
-        let SourceArray = this.state.avatarSourceArray;
-        console.log("leave from details");
-        console.log("this.props.serv_imges:"+this.props.serv_imges);
-        console.log("this.state.serv_imges:"+this.state.serv_imges);
         if (this.props.getdata) {
-            this.props.getdata(title, detail,imges, SourceArray);
+            this.props.getdata(this.state.serv_offer);
         }
 
         if (navigator) {
@@ -117,7 +83,7 @@ export default class ServOfferDetail extends Component {
                 <Header
                     title='Service details'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}                                     
-                    leftIconAction = {this._onBack}
+                    leftIconAction = {this._onBack.bind(this)}
                 />
 
                 <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.6} indeterminate={false} style={{ marginTop: -10 }} />
