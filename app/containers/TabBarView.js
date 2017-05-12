@@ -1,13 +1,9 @@
-/**
- * Created by ljunb on 16/5/26.
- */
 import React, {PureComponent} from 'react'
 import {
     View,
     Text,
 } from 'react-native'
 import RootStore from '../mobx'
-import Feed from '../pages/feed/Feed'
 import FoodEncyclopedia from '../pages/home/FoodEncyclopedia'
 import Profile from '../pages/profile/Profile'
 import TabBar from '../components/TabBar'
