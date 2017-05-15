@@ -31,74 +31,13 @@ export default class ServOfferDelivory extends Component {
 
         this.state = {
             serv_offer: this.props.serv_offer,
-            initialPosition: 'unknown',
-            lastPosition: 'unknown',
-            addressComponent:{"country":"中国","country_code":0,"province":"广东省","city":"广州市","district":"番禺区","adcode":"440113","street":"石北路","street_number":"","direction":"","distance":""}
-        }
+            }
     }
-
-    watchID: ?number = null;
 
     componentDidMount() {
-        this.setState({
-            trueSwitchIsOn: true,
-            falseSwitchIsOn: false,
-        });
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                var initialPosition = JSON.stringify(position);
-                this.setState({ initialPosition });
-            },
-            (error) => alert(JSON.stringify(error)),
-            { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
-        );
-        this.watchID = navigator.geolocation.watchPosition((position) => {
-            var lastPosition = JSON.stringify(position);
-            this.setState({ lastPosition });
-            this.getGeoLocation();
-        });        
+        
     }
-
-    async getGeoLocation() {
-        let offer = this.state.serv_offer;
-        offer.latitude = (JSON.parse(this.state.lastPosition)).coords.latitude;
-        offer.longitude = (JSON.parse(this.state.lastPosition)).coords.longitude;
-        this.setState({ serv_offer: offer });
-        this.setState({ showProgress: true })
-        try {
-            let url = Constant.url.GEO_LOCATION_ADDR + `&location=${this.state.serv_offer.latitude},${this.state.serv_offer.longitude}`;
-            console.log("URL:"+url)
-            let response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                }
-            });
-
-            let res = await response.text();
-            if (response.status >= 200 && response.status < 300) {
-                var addressComponent = (JSON.parse(res)).result.addressComponent;
-                let offer = serv_offer;
-                offer.addressComponent = addressComponent;
-                offer.district = addressComponent.district;
-                offer.city = addressComponent.city;
-                offer.province = addressComponent.province;
-                offer.country = addressComponent.country;
-                this.setState({ serv_offer: offer });
-            } else {
-                let error = res;
-                throw error;
-            }
-        } catch (error) {
-            this.setState({ error: error });
-            console.log("error " + error);
-            this.setState({ showProgress: false });
-
-        }
-    }
-
-      clickJump() {
+    clickJump() {
         let _this = this;
         const { navigator } = this.props;
         if (navigator) {
@@ -107,9 +46,9 @@ export default class ServOfferDelivory extends Component {
                 component: ServOfferConfirm,
                 params: {
                     serv_offer: this.state.serv_offer,
-                    getdata: (offer)=>{
-                    _this.setState({
-                        serv_offer: offer                      
+                    getdata: (offer) => {
+                        _this.setState({
+                            serv_offer: offer
                         })
                     }
                 }
@@ -169,7 +108,7 @@ export default class ServOfferDelivory extends Component {
                     </View>
                     <Text style={{color:'black'}}>
                         <Text>您的服务范围设置在 &nbsp;</Text>
-                        <Text>{this.state.serv_offer.district}，{this.state.serv_offer.city}，{this.state.serv_offer.province}，{this.state.serv_offer.country}</Text>
+                        <Text>{global.user.addressComponent.district}，{global.user.addressComponent.city}，{global.user.addressComponent.province}，{global.user.addressComponent.country}</Text>
                     </Text>
                 </View>
 

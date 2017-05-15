@@ -75,21 +75,27 @@ export default class navpage extends Component {
         }      
     }
     
-    jump(goods_catalogs_id){
-        console.log("this.state.goods_tpye:"+this.state.goods_tpye);
-        if(this.state.goods_tpye=="serv_offer"){
+    jump(goods_catalogs_id, goods_catalogs_name) {
+        console.log("this.state.goods_tpye:" + this.state.goods_tpye);
+        if (this.state.goods_tpye == "serv_offer") {
             const { navigator } = this.props;
             goods_tpye = this.state.goods_tpye;
-            console.log("goods_catalogs_id"+goods_catalogs_id);
-            navigator.push({
-                component: ServOffer, 
-                name: 'ServOffer', 
-                passProps: {goods_catalogs_id, goods_tpye},
+            console.log("goods_catalogs_id" + goods_catalogs_id);
+            navigator.resetTo({
+                component: ServOffer,
+                name: 'ServOffer',
+                passProps: { goods_catalogs_id, goods_catalogs_name, goods_tpye },
             })
-        } 
-        else if(this.state.goods_tpye=="serv_request"){
-            const { navigator } = this.props; 
-            navigator.resetTo({component: ServRequest, name: 'ServRequest'})
+        }
+        else if (this.state.goods_tpye == "serv_request") {
+            const { navigator } = this.props;
+            goods_tpye = this.state.goods_tpye;
+            console.log("goods_catalogs_id" + goods_catalogs_id);
+            navigator.resetTo({
+                component: ServRequest,
+                name: 'ServRequest',
+                passProps: { goods_catalogs_id, goods_catalogs_name, goods_tpye },
+            })
         }
     }
 
@@ -105,7 +111,7 @@ export default class navpage extends Component {
                     leftIconAction={() => this.props.navigator.pop()}
                     title='Chose a Category'
                     leftIcon={require('../../resource/ic_back_dark.png')}
-                    leftIconAction = {this._onBack.bind()}
+                    leftIconAction={this._onBack.bind(this)}
                     rightIconAction={() => { const { navigator } = this.props; navigator.push({ name: "Serv", component: ServOffer }) }}
                     rightIcon={require('../../resource/ic_contrast_add.png')}
                 />
@@ -118,26 +124,28 @@ export default class navpage extends Component {
                         this.state.goods_catalog_I.map((data, index) => {
                             return (
                                 <View tabLabel={data.name}>
-                                    <Text style={{color:'black',padding: 16,fontSize:16,backgroundColor:'#b0b0b0'}}>
-                                    <Text>{data.goods_count}</Text>
-                                    位客户需要&nbsp;<Text>{data.name}</Text>类&nbsp;专业人士
+                                    <Text style={{ color: 'black', padding: 16, fontSize: 16, backgroundColor: '#b0b0b0' }}>
+                                        <Text>{data.goods_count}</Text>
+                                        位客户需要&nbsp;<Text>{data.name}</Text>类&nbsp;专业人士
                                     </Text>
                                     <ScrollView>
-                                    {   
-                                        JSON.parse(data.goods_catalogs_II).map((d, i) => {
-                                            return (
-                                                <View style={{marginBottom:5}}>
-                                                    <TouchableOpacity onPress={()=>{this.jump(d.id)}}>
-                                                        <Image style={{width:screenW, height:150,borderRadius:10,
-                                                        flexDirection:'column-reverse'}} 
-                                                        source={{uri:d.image}}>                                                   
-                                                                <Text style={{color:'white',fontSize:20,margin:10}}>{d.name}&nbsp;</Text>
-                                                        </Image>  
-                                                    </TouchableOpacity>
-                                                </View>
-                                            )
-                                        })
-                                    }
+                                        {
+                                            JSON.parse(data.goods_catalogs_II).map((d, i) => {
+                                                return (
+                                                    <View style={{ marginBottom: 5 }}>
+                                                        <TouchableOpacity onPress={() => { this.jump(d.id, d.name) }}>
+                                                            <Image style={{
+                                                                width: screenW, height: 150, borderRadius: 10,
+                                                                flexDirection: 'column-reverse'
+                                                            }}
+                                                                source={{ uri: d.image }}>
+                                                                <Text style={{ color: 'white', fontSize: 20, margin: 10 }}>{d.name}&nbsp;</Text>
+                                                            </Image>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                )
+                                            })
+                                        }
                                     </ScrollView>
                                 </View>
                             )

@@ -99,13 +99,18 @@ export default class ServOfferDetail extends Component {
                 <UselessTextInput
                     multiline={true}
                     numberOfLines={3}
-                    value ={this.state.serv_detail}
-                    onChangeText={(val) => {this.setState({ serv_detail: val,detail_length: val.length })}}
+                    value ={this.state.serv_offer.serv_detail}
+                    onChangeText={(val) => {
+                        let offer = this.state.serv_offer;
+                        offer.serv_detail = val;
+                        offer.detail_length = val.length;
+                        this.setState({ serv_offer: offer })
+                        }}
                 />
 
                 <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                     <Text style={{ color: "#a8a6b9" }}>不少于60个字符</Text>
-                    <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.detail_length}</Text>
+                    <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.serv_offer.detail_length}</Text>
                 </View>
 
                 <TouchableHighlight style={{ backgroundColor: '#81d49c', marginTop: 20, alignSelf: 'stretch' }} onPress={this.clickJump.bind(this)}>

@@ -42,7 +42,13 @@ export default class ServOfferConfirm extends Component {
 
 
 
-    componentDidMount() {
+    componentWillMount() {
+        let offer = this.state.serv_offer;
+        offer.serv_imges = "";
+        this.setState({
+            serv_offer: offer,
+            imgBase64: this.props.imgBase64,
+        });
     }
 
     clickJump() {
@@ -156,7 +162,7 @@ export default class ServOfferConfirm extends Component {
                         serv_title: this.state.serv_offer.serv_title,
                         serv_detail: this.state.serv_offer.serv_detail,
                         serv_imges: this.state.serv_offer.serv_imges,
-                        serv_catagory: this.state.serv_offer.goods.tpye,
+                        serv_catagory: this.state.serv_offer.goods_tpye,
                     }
                 })
             });
@@ -232,11 +238,11 @@ export default class ServOfferConfirm extends Component {
 
                 <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>99%</Text>
 
-                <Text style={{ color: "#000", fontSize: 16 }}>向专家描述&nbsp;摄影&nbsp;摄像&nbsp;服务需求</Text>
+                <Text style={{ color: "#000", fontSize: 16 }}>向专家描述&nbsp;<Text>{this.state.serv_offer.goods_catalogs_name}</Text>&nbsp;服务需求</Text>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_text.png')} />
-                    <Text style={{ color: "#000000" }}>{this.state.serv_title}</Text>
+                    <Text style={{ color: "#000000" }}>{this.state.serv_offer.serv_title}</Text>
                 </View>
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_loaction.png')} />
@@ -253,8 +259,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 0)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[0].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[0]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[0].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[0]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>
@@ -262,8 +268,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 1)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[1].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[1]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[1].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[1]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>
@@ -271,8 +277,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 2)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[2].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[2]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[2].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[2]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>
@@ -283,8 +289,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 3)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[3].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[3]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[3].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[3]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>
@@ -292,8 +298,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 4)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[4].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[4]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[4].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[4]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>
@@ -301,8 +307,8 @@ export default class ServOfferConfirm extends Component {
                     <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 5)}>
                         <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
                             {
-                                this.state.avatarSourceArray instanceof Array && this.state.avatarSourceArray[5].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.avatarSourceArray[5]} /> :
+                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[5].uri != "" ?
+                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[5]} /> :
                                     <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                             }
                         </View>

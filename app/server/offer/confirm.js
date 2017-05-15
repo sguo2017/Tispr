@@ -42,8 +42,11 @@ export default class ServOfferConfirm extends Component {
 
 
 
-    componentDidMount() {
+    componentWillMount() {
+        let offer = this.state.serv_offer;
+        offer.serv_imges = "";
         this.setState({
+            serv_offer: offer,
             imgBase64: this.props.imgBase64,
         });
     }
@@ -160,13 +163,13 @@ export default class ServOfferConfirm extends Component {
                         serv_title: this.state.serv_offer.serv_title,
                         serv_detail: this.state.serv_offer.serv_detail,
                         serv_imges: this.state.serv_offer.serv_imges,
-                        serv_catagory: this.state.serv_offer.goods.tpye,
-                        district: this.state.serv_offer.district,
-                        city: this.state.serv_offer.city,
-                        province: this.state.serv_offer.province,
-                        country: this.state.serv_offer.country,
-                        latitude: this.state.serv_offer.latitude,
-                        longitude: this.state.serv_offer.longitude,
+                        serv_catagory: this.state.serv_offer.goods_tpye,
+                        district: global.user.addressComponent.district,
+                        city: global.user.addressComponent.city,
+                        province: global.user.addressComponent.province,
+                        country: global.user.addressComponent.country,
+                        latitude: global.user.addressComponent.latitude,
+                        longitude: global.user.addressComponent.longitude,
                         goods_catalog_id: this.state.serv_offer.goods_catalogs_id,
                     }
                 })
@@ -243,7 +246,7 @@ export default class ServOfferConfirm extends Component {
 
                 <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>90%</Text>
 
-                <Text style={{ color: "#000", fontSize: 16 }}>向客户出售您的&nbsp;摄影&nbsp;摄像&nbsp;服务</Text>
+                <Text style={{ color: "#000", fontSize: 16 }}>向客户出售您的&nbsp;<Text>{this.state.serv_offer.goods_catalogs_name}</Text>&nbsp;服务</Text>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_text.png')} />

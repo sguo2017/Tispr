@@ -40,7 +40,7 @@ export default class ServOffer extends PureComponent {
                 renderScene={
                     (route, navigator) => {
                         let Component = route.component;
-                        return <Component{...route.params} goods_tpye={this.props.goods_tpye} goods_catalogs_id={this.props.goods_catalogs_id} navigator={navigator} />　　//渲染场景
+                        return <Component{...route.params} goods_tpye={this.props.goods_tpye} goods_catalogs_id={this.props.goods_catalogs_id} goods_catalogs_name={this.props.goods_catalogs_name} navigator={navigator} />　　//渲染场景
                     }
                 }
             />

@@ -45,6 +45,9 @@ export default class ServOfferTitle extends Component {
         if(this.props.goods_tpye != undefined){
             offer.goods_tpye = this.props.goods_tpye;
         }
+        if(this.props.goods_catalogs_name != undefined){
+             offer.goods_catalogs_name = this.props.goods_catalogs_name;
+        }
         this.setState({serv_offer: offer})
     }
 
