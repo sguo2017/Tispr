@@ -43,10 +43,7 @@ export default class ServOfferConfirm extends Component {
 
 
     componentWillMount() {
-        let offer = this.state.serv_offer;
-        offer.serv_imges = "";
         this.setState({
-            serv_offer: offer,
             imgBase64: this.props.imgBase64,
         });
     }
@@ -149,6 +146,16 @@ export default class ServOfferConfirm extends Component {
     }
 
     async onServOfferPres() {
+        if(undefined === this.state.serv_offer.serv_imges){
+            Alert.alert(
+                    '提示',
+                    '请至少提交一张图片',
+                    [
+                        { text: '继续编辑', onPress: () => console.log('确定') },
+                    ]
+                )
+            return;
+        }
         this.setState({ showProgress: true })
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_ADD + global.user.authentication_token;
