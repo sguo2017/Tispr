@@ -37,114 +37,17 @@ export default class Login extends Component {
       addressComponent: { "country": "中国", "country_code": 0, "province": "广东省", "city": "广州市", "district": "番禺区", "adcode": "440113", "street": "石北路", "street_number": "", "direction": "", "distance": "" }
     };
   }
-  watchID: ?number = null;
 
   componentWillMount() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        var initialPosition = JSON.stringify(position);
-        this.setState({ initialPosition });
-      },
-      (error) => alert(JSON.stringify(error)),
-      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
-    );
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      var lastPosition = JSON.stringify(position);
-      this.setState({ lastPosition });
-      this.getGeoLocation();
-    });
+    
   }
-
-  async getGeoLocation() {
-    let _that = this;
-    this.setState({ latitude: (JSON.parse(this.state.lastPosition)).coords.latitude })
-    this.setState({ longitude: (JSON.parse(this.state.lastPosition)).coords.longitude })
-    this.setState({ showProgress: true })
-    let url = Constant.url.GEO_LOCATION_ADDR + `&location=${this.state.latitude},${this.state.longitude}`;
-    await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    }).then((response) => {
-        return response.json().then(function(json) { 
-            //console.log("100:"+JSON.stringify(json.result.addressComponent));
-            var addressComponent = json.result.addressComponent;            
-            //console.log("103:"+JSON.stringify(addressComponent));
-            _that.setState({ addressComponent: addressComponent });      
-            //console.log("105:"+JSON.stringify(_that.state.addressComponent))
-        })
-
-
-    }).then(() => {      
-      this.existsToken();
-    }).catch((error) => {
-      this.setState({ error: error });
-      //console.log("109 error: " + error);
-      this.setState({ showProgress: false });
-    });
-  }
-
-
-  //If token is verified we will redirect the user to the home page
-  async verifyToken(token) {
-    let accessToken = token
-
-    try {
-      let URL = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_TOKEN_LOGIN + accessToken;
-      let response = await fetch(URL, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user: {
-            district: this.state.addressComponent.district,
-            city: this.state.addressComponent.city,
-            province: this.state.addressComponent.province,
-            country: this.state.addressComponent.country,
-            latitude: this.state.latitude,
-            longitude: this.state.longitude,
-          }
-        })
-      });
-      let res = await response.text();
-      if (response.status >= 200 && response.status < 300) {
-        //Verified token means user is logged in so we redirect him to home.
-        //console.log("148:"+JSON.stringify(res))
-        let result = JSON.parse(res);
-        let userdetail = JSON.parse(result.user);
-        UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token);
-        global.user = userdetail;
-        global.user.addressComponent = this.state.addressComponent;
-        global.user.addressComponent.latitude = this.state.latitude;
-        global.user.addressComponent.longitude = this.state.longitude;
-        this._navigate('TabBarView');
-      } else {
-        //Handle error
-        let error = res;
-        throw error;
-      }
-    } catch (error) {
-      //console.log("error response: " + error);
-      //UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
+  
+  _onBack = () => {
+    const { navigator } = this.props;
+    if (navigator) {
+      navigator.pop();
     }
   }
-
-  async existsToken(token) {    
-    try {
-      let accessToken = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
-      if (null != accessToken) {
-        this.verifyToken(accessToken)
-      }
-      return;
-    } catch (error) {
-      //console.log('existsToken error:' + error)
-    }
-  }
-
 
 
 
@@ -188,6 +91,12 @@ export default class Login extends Component {
           user: {
             email: this.state.email,
             password: this.state.password,
+            district: global.user.addressComponent.district,
+            city: global.user.addressComponent.city,
+            province: global.user.addressComponent.province,
+            country: global.user.addressComponent.country,
+            latitude: global.user.addressComponent.latitude,
+            longitude: global.user.addressComponent.longitude,
           }
         })
       });
@@ -195,13 +104,12 @@ export default class Login extends Component {
       let result = JSON.parse(res);
       let userdetail = JSON.parse(result.user);
       if (response.status >= 200 && response.status < 300 && result.token) {
-        UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
+        UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token);
         let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
-        //console.log("79 accessToken:" + JSON.stringify(t));
+        console.log("97 accessToken:" + JSON.stringify(t));
+        let address = global.user.addressComponent;
         global.user = userdetail;
-        global.user.addressComponent = this.state.addressComponent;
-        global.user.addressComponent.latitude = this.state.latitude;
-        global.user.addressComponent.longitude = this.state.longitude;
+        global.user.addressComponent = address;
         //console.log(JSON.stringify(global.user))
         this._navigateHome();
       } else {
@@ -211,12 +119,12 @@ export default class Login extends Component {
       }
     } catch (error) {
       this.setState({ error: error });
-      //console.log("error " + error);
+      console.log("error " + error);
       Alert.alert(
         '提示',
         '失败',
         [
-          { text: '登录失败', onPress: () => //console.log('确定') },
+          { text: '登录失败', onPress: () => console.log('确定') },
         ]
       )
       this.setState({ showProgress: false });
@@ -253,7 +161,7 @@ export default class Login extends Component {
         '提示',
         '失败',
         [
-          { text: '短信验证发送失败', onPress: () => //console.log('确定') },
+          { text: '短信验证发送失败', onPress: () => console.log('确定') },
         ]
       )
       this.setState({ showProgress: false });
@@ -273,6 +181,12 @@ export default class Login extends Component {
           user: {
             code: this.state.code,
             num: this.state.num,
+            district: global.user.addressComponent.district,
+            city: global.user.addressComponent.city,
+            province: global.user.addressComponent.province,
+            country: global.user.addressComponent.country,
+            latitude: global.user.addressComponent.latitude,
+            longitude: global.user.addressComponent.longitude,
           }
         })
       });
@@ -283,10 +197,9 @@ export default class Login extends Component {
         UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
         let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
         //console.log("79 accessToken:" + JSON.stringify(t));
+        let address = global.user.addressComponent;
         global.user = userdetail;
-        global.user.addressComponent = this.state.addressComponent;
-        global.user.addressComponent.latitude = this.state.latitude;
-        global.user.addressComponent.longitude = this.state.longitude;
+        global.user.addressComponent = address;
         //console.log(JSON.stringify(global.user))
         this._navigateHome();
       } else {
@@ -300,17 +213,10 @@ export default class Login extends Component {
         '提示',
         '失败',
         [
-          { text: '登录失败', onPress: () => //console.log('确定') },
+          { text: '登录失败', onPress: () => console.log('确定') },
         ]
       )
       this.setState({ showProgress: false });
-    }
-  }
-
-  _onBack = () => {
-    const { navigator } = this.props;
-    if (navigator) {
-      navigator.pop();
     }
   }
 
