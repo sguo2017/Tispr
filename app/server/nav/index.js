@@ -40,8 +40,10 @@ export default class navpage extends Component {
         }
     }
 
-    componentDidMount() {        
-        this.getGoodsCatalog();
+    componentDidMount() {
+        if (global.goods_catalog_I === undefined) {
+            this.getGoodsCatalog();
+        }
     }
 
     async getGoodsCatalog(){
@@ -61,6 +63,7 @@ export default class navpage extends Component {
                 if (responseData) {
                     let goods_catalog_I = this.state.goods_catalog_I;
                     goods_catalog_I = JSON.parse(responseData.feeds);
+                    global.goods_catalog_I = goods_catalog_I;
                     //console.log("goods_catalog_I:"+JSON.stringify(goods_catalog_I))
                     this.setState({goods_catalog_I:goods_catalog_I})
                 } else {
@@ -73,8 +76,8 @@ export default class navpage extends Component {
             this.setState({ error: error });
             this.setState({ showProgress: false });
         }      
-    }
-    
+    } 
+
     jump(goods_catalogs_id, goods_catalogs_name) {
         console.log("this.state.goods_tpye:" + this.state.goods_tpye);
         if (this.state.goods_tpye == "serv_offer") {
@@ -98,7 +101,6 @@ export default class navpage extends Component {
             })
         }
     }
-
     _onBack = () => {        
         const { navigator } = this.props;
         navigator.resetTo({component: ServIndex, name: 'ServIndex'})

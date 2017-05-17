@@ -19,7 +19,8 @@ import LoadMoreFooter from '../components/LoadMoreFooter'
 import Toast from 'react-native-easy-toast'
 import ServOfferList from './ServOfferList';
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
-import TabCategoryBar from '../me/TabCategoryBar'
+import TabCategoryBar from '../me/TabCategoryBar';
+import Constant from '../common/constants'
 
 const titles = ['远程', '本地',];
 class ExploreList extends PureComponent {
@@ -50,7 +51,40 @@ class ExploreList extends PureComponent {
                 transiClassify: '全部人才',
                 location: '广州',
                 transiLocation: '广州',
-            });
+         });
+         if (global.goods_catalog_I === undefined) {
+             this.getGoodsCatalog();
+         }
+    }
+
+    async getGoodsCatalog(){
+        try {
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_GOODS_CATALOG + global.user.authentication_token + `&level=1`;
+  
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            }).then(response => {
+                if (response.status == 200) return response.json()
+                return null
+            }).then(responseData => {
+                if (responseData) {
+                    let goods_catalog_I = this.state.goods_catalog_I;
+                    goods_catalog_I = JSON.parse(responseData.feeds);
+                    global.goods_catalog_I = goods_catalog_I;
+                    //console.log("goods_catalog_I:"+JSON.stringify(goods_catalog_I))
+                } else {
+                }
+            }).catch(error => {
+                console.log(`Fetch evaluating list error: ${error}`)
+               
+            })
+        } catch (error) {
+            console.log("error:"+error)
+        }      
     }
 
     render() {
@@ -223,33 +257,33 @@ class ExploreList extends PureComponent {
                                 <View style={{flexDirection:'row',flexWrap:'wrap',marginLeft:20}}>
                                     <TouchableHighlight 
                                         style={[styles.selectButton,this.state.cps[1]&&{backgroundColor:global.gColors.themeColor}]} 
-                                        onPress={()=>this.setState({transiClassify:'艺术创意',cps:[false,!this.state.cps[1],this.state.cps[2]&&true,this.state.cps[3]&&true,this.state.cps[4]&&true,this.state.cps[5]&&true]})}
+                                        onPress={()=>this.setState({transiClassify:global.goods_catalog_I[0].name,cps:[false,!this.state.cps[1],this.state.cps[2]&&true,this.state.cps[3]&&true,this.state.cps[4]&&true,this.state.cps[5]&&true]})}
                                     >
-                                        <Text style={[styles.themeColorText, this.state.cps[1]&&styles.whiteText]}>艺术创意</Text>
+                                        <Text style={[styles.themeColorText, this.state.cps[1]&&styles.whiteText]}>{global.goods_catalog_I[0].name}</Text>
                                     </TouchableHighlight>
                                     <TouchableOpacity 
                                         style={[styles.selectButton,this.state.cps[2]&&{backgroundColor:global.gColors.themeColor}]} 
-                                        onPress={()=>this.setState({transiClassify:'生活方式',cps:[false,this.state.cps[1]&&true,!this.state.cps[2],this.state.cps[3]&&true,this.state.cps[4]&&true,this.state.cps[5]&&true]})}
+                                        onPress={()=>this.setState({transiClassify:global.goods_catalog_I[1].name,cps:[false,this.state.cps[1]&&true,!this.state.cps[2],this.state.cps[3]&&true,this.state.cps[4]&&true,this.state.cps[5]&&true]})}
                                     >
-                                        <Text style={[styles.themeColorText, this.state.cps[2]&&styles.whiteText]}>生活方式</Text>
+                                        <Text style={[styles.themeColorText, this.state.cps[2]&&styles.whiteText]}>{global.goods_catalog_I[1].name}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity 
                                         style={[styles.selectButton,this.state.cps[3]&&{backgroundColor:global.gColors.themeColor}]} 
-                                        onPress={()=>this.setState({transiClassify:'文艺活动',cps:[false,this.state.cps[1]&&true,this.state.cps[2]&&true,!this.state.cps[3],this.state.cps[4]&&true,this.state.cps[5]&&true]})}
+                                        onPress={()=>this.setState({transiClassify:global.goods_catalog_I[2].name,cps:[false,this.state.cps[1]&&true,this.state.cps[2]&&true,!this.state.cps[3],this.state.cps[4]&&true,this.state.cps[5]&&true]})}
                                     >
-                                        <Text style={[styles.themeColorText, this.state.cps[3]&&styles.whiteText]}>文艺活动</Text>
+                                        <Text style={[styles.themeColorText, this.state.cps[3]&&styles.whiteText]}>{global.goods_catalog_I[2].name}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity 
                                         style={[styles.selectButton,this.state.cps[4]&&{backgroundColor:global.gColors.themeColor}]} 
-                                        onPress={()=>this.setState({transiClassify:'信息技术',cps:[false,this.state.cps[1]&&true,this.state.cps[2]&&true,this.state.cps[3]&&true,!this.state.cps[4],this.state.cps[5]&&true]})}
+                                        onPress={()=>this.setState({transiClassify:global.goods_catalog_I[3].name,cps:[false,this.state.cps[1]&&true,this.state.cps[2]&&true,this.state.cps[3]&&true,!this.state.cps[4],this.state.cps[5]&&true]})}
                                     >
-                                        <Text style={[styles.themeColorText, this.state.cps[4]&&styles.whiteText]}>信息技术</Text>
+                                        <Text style={[styles.themeColorText, this.state.cps[4]&&styles.whiteText]}>{global.goods_catalog_I[3].name}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity 
                                         style={[styles.selectButton,this.state.cps[5]&&{backgroundColor:global.gColors.themeColor}]} 
-                                        onPress={()=>this.setState({transiClassify:'商务职能',cps:[false,this.state.cps[1]&&true,this.state.cps[2]&&true,this.state.cps[3]&&true,this.state.cps[4]&&true,!this.state.cps[5]]})}
+                                        onPress={()=>this.setState({transiClassify:global.goods_catalog_I[4].name,cps:[false,this.state.cps[1]&&true,this.state.cps[2]&&true,this.state.cps[3]&&true,this.state.cps[4]&&true,!this.state.cps[5]]})}
                                     >
-                                        <Text style={[styles.themeColorText, this.state.cps[5]&&styles.whiteText]}>商务职能</Text>
+                                        <Text style={[styles.themeColorText, this.state.cps[5]&&styles.whiteText]}>{global.goods_catalog_I[4].name}</Text>
                                     </TouchableOpacity>
                                 </View>              
                             </View>
