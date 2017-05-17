@@ -78,9 +78,6 @@ export default class BussList extends PureComponent {
         const {feedList, isRefreshing, isFetching} = this.knowledgeListStore
         return (
             <View style={styles.listView}>
-                <Header
-                    title='Qiker'
-                />
 
                 {!isFetching &&
                 <ListView
