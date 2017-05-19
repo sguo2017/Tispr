@@ -14,18 +14,18 @@ import Chat from '../chat/index';
 
 const tabTitles = ['动态', '发现', '发布', '消息', '我的']
 const tabIcons = [
-    require('../resource/ic_tab_buzz.png'),
-    require('../resource/ic_tab_explore.png'),
-    require('../resource/ic_tab_add.png'),
-    require('../resource/ic_tab_my.png'),
-    require('../resource/ic_tab_chats.png')
+    require('../resource/tabbar/ico_dt_nor.png'),
+    require('../resource/tabbar/ico_fx_nor.png'),
+    require('../resource/tabbar/ico_fb_nor.png'),
+    require('../resource/tabbar/ico_xx_nor.png'),
+    require('../resource/tabbar/ico_wd_nor.png')
 ]
 const tabSelectedIcon = [
-    require('../resource/ic_tab_buzz_select.png'),
-    require('../resource/ic_tab_explore_select.png'),
-    require('../resource/ic_tab_add_select.png'),
-    require('../resource/ic_tab_my_select.png'),
-    require('../resource/ic_tab_chats_select.png')
+    require('../resource/tabbar/ico_dt_hl.png'),
+    require('../resource/tabbar/ico_fx_hl.png'),
+    require('../resource/tabbar/ico_fb_nor.png'),
+    require('../resource/tabbar/ico_xx_hl.png'),
+    require('../resource/tabbar/ico_wd_hl.png')
 ]
 
 export default class TabBarView extends PureComponent {
@@ -38,6 +38,8 @@ export default class TabBarView extends PureComponent {
                 renderTabBar={() =>
                     <TabBar
                         tabNames={tabTitles}
+                        tabIconNames={tabIcons}
+                        selectedTabIconNames={tabSelectedIcon}
                     />
                 }
                 tabBarPosition='bottom'

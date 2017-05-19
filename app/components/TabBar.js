@@ -29,6 +29,7 @@ export default class TabBar extends Component {
         return (
             <View style={[styles.tabs, {borderTopWidth: Common.window.onePR}]}>
                 {this.props.tabs.map((tab, i) => {
+                    let icon = this.props.activeTab == i ? this.props.selectedTabIconNames[i] : this.props.tabIconNames[i];
                     let color = this.props.activeTab === i ? global.gColors.themeColor : '#999999';
                     let bgcolor = this.props.activeTab === i ? global.gColors.themeColor : '#999999';
                     return (
@@ -39,7 +40,10 @@ export default class TabBar extends Component {
                             onPress={()=>this.props.goToPage(i)}
                         >
                             <View style={styles.tabItem}>
-                                <View style={{backgroundColor:bgcolor,width:25,height:25,borderRadius:5}}></View>
+                                <Image
+                                    style={styles.icon}
+                                    source={icon}
+                                />
                                 <Text style={{color: color, fontSize: 12}}>
                                     {this.props.tabNames[i]}
                                 </Text>
