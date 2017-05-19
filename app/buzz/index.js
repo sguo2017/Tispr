@@ -18,9 +18,19 @@ import SysMsgDetail from './SysMsgDetail'
 import Toast from 'react-native-easy-toast'
 import SysMsgStore from './SysMsgStore'
 import Header from '../components/HomeNavigation';
-
+import ElasticStack from 'react-native-elastic-stack';
+import Card from './Card'
+import Wrapper from './Wrapper';
 const KNOWLEDGE_ID = 3
-
+const itemWidth =global.gScreen.width-20;
+const itemHeight =300;
+const cardArray =[{},
+    {user_name:'zengkm',action_desc:'aaa,我需要一个创造性艺术专业可以做类似的服务，我发现你很适合，希望了解更多'},
+    {user_name:'zhangsan',action_desc:'bbb我需要一个创造性艺术专业可以做类似的服务，我发现你很适合，希望了解更多'},
+    {user_name:'lisi',action_desc:'ccc我需要一个创造性艺术专业可以做类似的服务，我发现你很适合，希望了解更多'},
+    {user_name:'wangwu',action_desc:'ddd我需要一个创造性艺术专业可以做类似的服务，我发现你很适合，希望了解更多'},
+    {user_name:'liuqi',action_desc:'eee我需要一个创造性艺术专业可以做类似的服务，我发现你很适合，希望了解更多'}
+];
 @observer
 export default class BussList extends PureComponent {
     _pictureAction = () => {
@@ -73,12 +83,26 @@ export default class BussList extends PureComponent {
     _onEndReach = () => this.knowledgeListStore.page ++
 
     _renderFooter = () => <LoadMoreFooter/>
-
     render() {
         const {feedList, isRefreshing, isFetching} = this.knowledgeListStore
+        const {navigator} = this.props;
         return (
             <View style={styles.listView}>
-
+                <Header
+                    title='Qiker'
+                />
+                <Wrapper parallaxHeight={45}>
+                    <ElasticStack
+                        items={cardArray}
+                        itemWidth={itemWidth}
+                        itemHeight={itemHeight}
+                        renderItem={(item) => <Card content={item} navigator={navigator}/>}
+                        elastickRange={0.5}
+                        elastickItemsCount={20}
+                        infinite={true}
+                        directions={[false, true, false, true,]}
+                     />
+                </Wrapper>
                 {!isFetching &&
                 <ListView
                     dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
