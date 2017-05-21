@@ -17,6 +17,7 @@ import {
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import ImagePicker from 'react-native-image-picker';
+import Setting from '../sys/Setting';
 
 const screenW = Dimensions.get('window').width;
 
@@ -143,7 +144,6 @@ export default class Personinfoedit extends Component {
         // let file = { avatar: this.state.avatar};
         // formData.append("user", file);
 
-
         try {
             let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_AVAT_UPDATE + global.user.id+'?token='+global.user.authentication_token;
             let response = await fetch(url, {
@@ -176,21 +176,30 @@ export default class Personinfoedit extends Component {
             }
         } catch (error) {
             this.setState({ error: error });
-            console.log("158 error "+error);
-
+            //console.log("158 error "+error);
         }
     }
 
+    editSetting(){
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.push({　　
+                name: "Setting",
+                component: Setting,
+            });
+        }
+    }
 
     render(){
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    title='Edit Profile'
+                    title='编辑个人信息'
                     leftIcon={require('../resource/t_header_arrow_left.png')}
                     leftIconAction={this._onBack}
-                    rightIcon={require('../resource/t_header_arrow_left.png')}
+                    rightButton='设置'
                     rightIconAction={this.updateavatar.bind(this)}
+                    rightButtonAction={this.editSetting.bind(this)}
                 />
                 <View style={{justifyContent:'flex-start',margin: 20}}>
                     <View style={{flexDirection: 'row', justifyContent:'center'}}>

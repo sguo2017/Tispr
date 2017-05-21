@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import Login from '../user/login';
 import Register from '../user/register';
+import UserAgreement from '../sys/UserAgreement';
 
 const screenW = Dimensions.get('window').width;
 export default class signup extends Component{
@@ -29,6 +30,15 @@ export default class signup extends Component{
             });
         }
     }
+    toUserAgreement(){
+        const { navigator } = this.props;
+        if (navigator) {
+            navigator.push({　　
+                name: "UserAgreement",
+                component: UserAgreement,
+            });
+        }
+    }
     render(){
         return(
             <View style={{justifyContent:'flex-start',alignItems:'center',backgroundColor:'#ffffff'}}>
@@ -44,9 +54,10 @@ export default class signup extends Component{
                 </TouchableHighlight>
                 <Text>创建帐户您同意使用 </Text>
                 <Text>
-                    <Text style={{color:global.gColors.themeColor,borderBottomWidth:1, borderBottomColor:global.gColors.themeColor}}>使用条款</Text>
-                     &nbsp;和&nbsp;
-                    <Text style={{color:global.gColors.themeColor,borderBottomWidth:1, borderBottomColor:global.gColors.themeColor}}>隐私政策</Text>
+                    <Text onPress={this.toUserAgreement.bind(this)} style={{color:global.gColors.themeColor,borderBottomWidth:1, borderBottomColor:global.gColors.themeColor}}>使用条款</Text>
+                        &nbsp;和&nbsp;
+                    <Text onPress={this.toUserAgreement.bind(this)} style={{color:global.gColors.themeColor,borderBottomWidth:1, borderBottomColor:global.gColors.themeColor}}>隐私政策</Text>
+                    
                 </Text>
                 <Image style={{width:screenW, resizeMode:'stretch'}} source={require('../resource/qk_signup_feet.png')}/>
             </View>
