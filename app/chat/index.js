@@ -17,7 +17,7 @@ import { reaction } from 'mobx'
 import Header from '../components/HomeNavigation';
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import ChatList from './ChatIndex';
-import BuzzList from '../buzz/index';
+import BuzzList from './SysMsgIndex';
 import TabCategoryBar from '../me/TabCategoryBar';
 const titles = ['消息', '通知'];
 const controllers = [
