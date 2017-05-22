@@ -18,7 +18,7 @@ import Header from '../components/HomeNavigation';
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import ChatList from './ChatIndex';
 import BuzzList from './SysMsgIndex';
-import TabCategoryBar from '../me/TabCategoryBar';
+import TabCategoryBar from './TabCategoryBar';
 const titles = ['消息', '通知'];
 const controllers = [
     {controller: ChatList},
