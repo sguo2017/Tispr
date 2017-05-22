@@ -1,7 +1,7 @@
 import Util from '../common/utils';
 import Common from '../common/constants';
 
-export let fetchFeedList = (category, page) => {
+export let fetchFeedList = (category, page, exploreparams) => {
     let URL;
     switch(category){        
         case 0:
@@ -25,7 +25,7 @@ export let fetchFeedList = (category, page) => {
         }, (error) => {
             // console.log('Fetch category list error: ' + error);
             dispatch(receiveFeedList([]));
-        });
+        },exploreparams);
     }
 }
 

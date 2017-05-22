@@ -59,7 +59,8 @@ export default class ServOfferList extends Component {
         const {dispatch, categoryId} = this.props;
         page = 1;
         canLoadMore = false;
-        dispatch(fetchFeedList(categoryId, page))
+        //console.log('this.state.exploreparams:'+this.state.exploreparams);
+        dispatch(fetchFeedList(categoryId, page, this.props.exploreparams))
     }
 
     _onPressCell(feed) {

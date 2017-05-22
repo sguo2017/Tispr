@@ -6,8 +6,9 @@ let Util = {
      * failCallback: 请求失败回调
      * 
      * */
-    get: (url, successCallback, failCallback) => {
-        fetch(url, {
+    get: (url, successCallback, failCallback, exploreparams) => {
+        const URL = url + '&exploreparams=' + JSON.stringify(exploreparams)                   
+        fetch(URL, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
