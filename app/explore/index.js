@@ -38,6 +38,7 @@ class ExploreList extends PureComponent {
             sps:[false,false,false,false],//排序按钮操作
             cps:[false,false,false,false,false,false],//类型按钮操作
             lps:[false,false],//位置按钮操作
+            searchText:this.props.searchText
         };  
     }
     componentWillMount(){
@@ -51,6 +52,7 @@ class ExploreList extends PureComponent {
                 transiClassify: '全部人才',
                 location: '广州',
                 transiLocation: '广州',
+                searchText:''
          });
          if (global.goods_catalog_I === undefined) {
              this.getGoodsCatalog();
@@ -91,15 +93,17 @@ class ExploreList extends PureComponent {
         return (
             <View style={styles.listView}>
                 <View style={styles.container}>   
-                    <Image source={require('../resource/ic_feed_watch.png')} style={styles.logo}/>        
                     <View style={styles.searchBox}>  
-                        <Image source={require('../resource/ic_feed_watch.png')} style={styles.searchIcon}/>    
+                        <Image source={require('../resource/g_search.png')} style={styles.searchIcon}/>    
                         <TextInput style={styles.inputText}   underlineColorAndroid='transparent'
-                                    keyboardType='web-search'    
-                                    placeholder='输入搜索内容' />                             
-                        <Image source={require('../resource/ic_feed_watch.png')} style={styles.voiceIcon}/>              
+                                    keyboardType='web-search'   value={this.state.searchText}
+                                    onChangeText={(val)=>this.setState({searchText:val})}
+                                    placeholder='搜索' /> 
+                        <TouchableOpacity onPress={() =>this.setState({searchText:''})}>                            
+                        <Image source={require('../resource/g_cancel_pre.png')} style={styles.voiceIcon}/>
+                        </TouchableOpacity>              
                     </View>         
-                    <Image source={require('../resource/ic_feed_watch.png')} style={styles.scanIcon}/>                    
+                    <Image source={require('../resource/b_xuqiu_xl.png')} style={styles.scanIcon}/>                    
                 </View>  
                 <View style={{flexDirection:'row',padding: 10,justifyContent:'space-around'}}>
                     <TouchableOpacity style={styles.filterButton} onPress={()=>this.setState({tabName: 'index',show:true})}>
@@ -380,7 +384,7 @@ const styles = StyleSheet.create({
     voiceIcon: {    
         marginLeft: 5,    
         marginRight: 8,    
-        width: 15,    
+        width: 20,    
         height: 20,    
         resizeMode: 'stretch'    
     },   

@@ -130,6 +130,8 @@ const styles = StyleSheet.create({
         height: 44,
         justifyContent: 'center',
         flexDirection: 'row',
+        alignItems:'center',
+        top:2,
     },
 
     buttonTitleFont: {
