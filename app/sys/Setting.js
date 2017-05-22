@@ -6,11 +6,13 @@ import {
 	Image,
 	ScrollView,
 	TouchableOpacity,
+	TouchableHighlight
 } from 'react-native'
 import { observer } from 'mobx-react/native';
 import { observable, computed, action, runInAction } from 'mobx';
 import Header from '../components/HomeNavigation';
 import PersonalinfoEdit from '../me/personalinfoEdit';
+import UserAgreement from './UserAgreement';
 
 @observer
 export default class Setting extends Component {
@@ -24,7 +26,13 @@ export default class Setting extends Component {
 		const { navigator } = this.props;
 		navigator.resetTo({ component: PersonalinfoEdit, name: 'PersonalinfoEdit' })
 	}
-
+	clickJump =() =>{
+		const { navigator } = this.props;
+		navigator.push({
+			component: UserAgreement,
+			name:'UserAgreement'
+		})
+	}
 	render() {
 		return (
 			<View style={styles.container}>
@@ -90,19 +98,19 @@ export default class Setting extends Component {
 							<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 30, height: 30 }} />
 							<Text style={styles.rectangle_text} >
 								关于奇客
-			  </Text>
+			  			</Text>
 						</View>
 						<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</View>
-					<View style={styles.rectangle_view}>
+					<TouchableOpacity style={styles.rectangle_view} onPress={this.clickJump.bind(this)}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 30, height: 30 }} />
-							<Text style={styles.rectangle_text} >
+							<Text style={styles.rectangle_text}>
 								用户协议
-			  </Text>
+			  			</Text>
 						</View>
 						<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
+					</TouchableOpacity>
 
 					<View style={styles.rectangle_view}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
