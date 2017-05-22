@@ -3,6 +3,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableHighlight,
+  TouchableOpacity,
   ActivityIndicatorIOS,
   AsyncStorage,
   Text,
@@ -34,8 +35,9 @@ export default class Login extends Component {
       loginWay: 'phonenumber',
       initialPosition: 'unknown',
       lastPosition: 'unknown',
-      addressComponent: { "country": "中国", "country_code": 0, "province": "广东省", "city": "广州市", "district": "番禺区", "adcode": "440113", "street": "石北路", "street_number": "", "direction": "", "distance": "" }
-    };
+      addressComponent: { "country": "中国", "country_code": 0, "province": "广东省", "city": "广州市", "district": "番禺区", "adcode": "440113", "street": "石北路", "street_number": "", "direction": "", "distance": "" },
+      seePassword:true,
+  };
   }
 
   componentWillMount() {
@@ -235,13 +237,26 @@ export default class Login extends Component {
 
               style={styles.input} placeholder="邮箱">
             </TextInput>
-            <TextInput
-              onChangeText={(text) => this.setState({ password: text })}
-              style={styles.input}
-              placeholder="密码"
-
-              secureTextEntry={true}>
-            </TextInput>
+            <View style={{flexDirection:'row'}}>
+              <TextInput
+                onChangeText={(text) => this.setState({ password: text })}
+                style={[styles.input,{width:screenW*0.8}]}
+                placeholder="密码"
+                secureTextEntry={this.state.seePassword}>
+              </TextInput>
+              {
+                this.state.seePassword?
+                <TouchableOpacity onPress={()=>this.setState({seePassword:false})}>
+                  <Image style={{ marginLeft: 5, marginRight: 8,marginTop:25, width: 25, height: 20,    
+        resizeMode: 'stretch'}} source={require('../resource/g_eyes_open.png')}/>
+                </TouchableOpacity>:
+                <TouchableOpacity onPress={()=>this.setState({seePassword:true})}>
+                  <Image style={{ marginLeft: 5, marginRight: 8,marginTop:25, width: 25, height: 20,    
+        resizeMode: 'stretch'}} source={require('../resource/g_eyes_close.png')}/>
+                </TouchableOpacity>
+              }
+              
+            </View>
             <TouchableHighlight onPress={this.onLoginPressed.bind(this)} style={styles.button}>
               <Text style={styles.buttonText}>
                 登录
@@ -313,7 +328,7 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     marginTop: 10,
-    padding: 4,
+    //padding: 4,
     fontSize: 18,
     borderWidth: 0,
     // borderColor: '#48bbec'
