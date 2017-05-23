@@ -122,7 +122,7 @@ class ExploreList extends PureComponent {
                         <Text style={styles.whiteText}>{this.state.location}</Text>
                     </TouchableOpacity>
                 </View>
-                <ServOfferList exploreparams = {this.state.exploreparams} {...this.props} />
+                <ServOfferList exploreparams = {this.state.exploreparams} cps = {this.state.cps} {...this.props} />
                 <Modal  
                     animationType='slide'  
                     transparent={true}  

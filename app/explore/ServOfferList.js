@@ -60,7 +60,20 @@ export default class ServOfferList extends Component {
         page = 1;
         canLoadMore = false;
         //console.log('this.state.exploreparams:'+this.state.exploreparams);
-        dispatch(fetchFeedList(categoryId, page, this.props.exploreparams))
+        let exploreparams = this.props.exploreparams;
+        let goods_catalog = this.props.cps;
+        if(goods_catalog[0]){
+            goods_catalog.map((item,index,input)=>{input[index]=true});
+        }
+        goods_catalog.splice(0,1);
+        let goods_catalog_paramas = [];
+        goods_catalog.map((item,index,input)=>{
+            if(item){
+                goods_catalog_paramas.push(index+1);
+            }
+        });
+        exploreparams.goods_catalog_I = goods_catalog_paramas;
+        dispatch(fetchFeedList(categoryId, page, exploreparams));
     }
 
     _onPressCell(feed) {
