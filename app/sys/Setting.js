@@ -13,7 +13,14 @@ import { observable, computed, action, runInAction } from 'mobx';
 import Header from '../components/HomeNavigation';
 import PersonalinfoEdit from '../me/personalinfoEdit';
 import UserAgreement from './UserAgreement';
-
+import PasswordConfirm from './account/PasswordConfirm';
+import userMsg from './account/userMsg';
+import MyFavorite from './account/MyFavorite';
+import UseHelp from './help/UseHelp';
+import feedback from './help/feedback';
+import inviteFriend from './help/inviteFriend';
+import aboutQike from './help/aboutQike';
+import others from './others'
 @observer
 export default class Setting extends Component {
 
@@ -45,91 +52,90 @@ export default class Setting extends Component {
 					<View style={{ height: 40, backgroundColor: '#f7f7f7', justifyContent: 'center', paddingLeft: 20 }}>
 						<Text style={{ color: '#999999' }}>账户</Text>
 					</View>
-					<View style={styles.rectangle_view}>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:PasswordConfirm,name:'PasswordConfirm'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 30, height: 30 }} />
 							<Text style={styles.rectangle_text} >
 								账户
-			  </Text>
+			  				</Text>
 						</View>
-						<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
-					<View style={styles.rectangle_view}>
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:userMsg,name:'userMsg'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 30, height: 30 }} />
 							<Text style={styles.rectangle_text} >
 								个人信息
 			  			</Text>
 						</View>
-						<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
-					<View style={styles.rectangle_view}>
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:MyFavorite,name:'MyFavorite'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 30, height: 30 }} />
 							<Text style={styles.rectangle_text} >
 								我的存档
-			  	</Text>
+			  				</Text>
 						</View>
-						<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>
 					<View style={{ height: 40, backgroundColor: '#f7f7f7',justifyContent:'center',paddingLeft:20 }}>
 						<Text style={{color:'#999999'}}>帮助</Text>
 					</View>
-					<View style={styles.rectangle_view}>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:UseHelp,name:'UseHelp'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 30, height: 30 }} />
 							<Text style={styles.rectangle_text} >
 								如何使用
-			        </Text>
+			        		</Text>
 						</View>
-						<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
-					<View style={styles.rectangle_view}>
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 30, height: 30 }} />
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:feedback,name:'feedback'})}>
+						<View style={{ flexDirection: 'row', alignItems: 'center' }} >
 							<Text style={styles.rectangle_text} >
 								意见反馈
-			  </Text>
+							</Text>
 						</View>
-						<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
-					<View style={styles.rectangle_view}>
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:aboutQike,name:'aboutQike'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 30, height: 30 }} />
 							<Text style={styles.rectangle_text} >
 								关于奇客
 			  			</Text>
 						</View>
-						<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>
 					<TouchableOpacity style={styles.rectangle_view} onPress={this.clickJump.bind(this)}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 30, height: 30 }} />
 							<Text style={styles.rectangle_text}>
 								用户协议
 			  			</Text>
 						</View>
-						<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
 
-					<View style={styles.rectangle_view}>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:inviteFriend,name:'inviteFriend'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 30, height: 30 }} />
 							<Text style={styles.rectangle_text} >
 								邀请好友
-			  </Text>
+							</Text>
 						</View>
-						<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>
 					<View style={styles.rectangle_view}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 30, height: 30 }} />
 							<Text style={styles.rectangle_text} >
 								退出登录
-			  </Text>
+			  				</Text>
 						</View>
-						<Image source={require('../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</View>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:others,name:'others'})}>
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<Text style={styles.rectangle_text} >
+								其它
+			  				</Text>
+						</View>
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>
 				</ScrollView>
 				<TouchableOpacity
 					style={styles.button}
@@ -168,7 +174,7 @@ const styles = StyleSheet.create({
 	rectangle_view: {
 		paddingTop: 8,
 		paddingBottom: 8,
-		paddingLeft: 15,
+		paddingLeft: 10,
 		paddingRight: 15,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
@@ -176,6 +182,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		borderBottomColor: '#dedfe0',
 		borderBottomWidth: 1,
+		height:50
 	},
 	rectangle_text: {
 		color: 'black',
