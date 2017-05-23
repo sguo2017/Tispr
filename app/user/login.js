@@ -18,6 +18,7 @@ import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 import TabBarView from '../containers/TabBarView';
 import GlobalContants from '../common/globalContants';
+import nationWarning from '../sys/others/nationWarning'
 
 const screenW = Dimensions.get('window').width;
 
@@ -278,8 +279,10 @@ export default class Login extends Component {
           <View style={{ padding: 15 }}>
             <Text style={{ color: 'black', fontSize: 16 }}>使用手机号登录</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-              <Image style={{ height: 30, width: 40 }} source={require('../resource/qk_china_flag.png')} />
-              <Text style={{ fontSize: 20, color: 'black' }}>+86</Text>
+              <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>this.props.navigator.push({name:'nationWarning',component:nationWarning})}>
+                <Image style={{ height: 30, width: 40 }} source={require('../resource/qk_china_flag.png')} />
+                <Text style={{ fontSize: 20, color: 'black' }}>+86</Text>
+              </TouchableOpacity>
               <TextInput
                 onChangeText={(text) => this.setState({ num: text })}
                 style={[styles.input, { width: 250 }]}

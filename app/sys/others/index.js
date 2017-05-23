@@ -14,6 +14,10 @@ import Header from '../../components/HomeNavigation';
 import Setting from '../Setting';
 import breakdown from './breakdown';
 import offline from './offline';
+import nationWarning from './nationWarning';
+import accountBan from './accountBan';
+import sysNotice from './sysNotice';
+import restTimes from './restTimes';
 
 export default class others extends Component {
 
@@ -55,51 +59,38 @@ export default class others extends Component {
 						</View>
 						<Image source={require('../../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.rectangle_view}>
+					<TouchableOpacity style={styles.rectangle_view}  onPress={()=>this.props.navigator.push({component:nationWarning,name:'nationWarning'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
-								如何下载奇客
+								登录限制
 			  				</Text>
 						</View>
 						<Image source={require('../../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
-					<View style={styles.rectangle_view}>
+					<TouchableOpacity style={styles.rectangle_view}  onPress={()=>this.props.navigator.push({component:accountBan,name:'accountBan'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
-								如何注册和登录我的账户
-			        </Text>
-						</View>
-						<Image source={require('../../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
-					<View style={styles.rectangle_view}>
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Text style={styles.rectangle_text} >
-								社会准则
-			                </Text>
-						</View>
-						<Image source={require('../../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
-					<View style={styles.rectangle_view}>
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Text style={styles.rectangle_text} >
-								如何创建和修改我的信息
-			  			</Text>
-						</View>
-						<Image source={require('../../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
-                    <View style={{ height: 40, backgroundColor: '#f7f7f7',justifyContent:'center',paddingLeft:20 }}>
-						<Text style={{color:'#999999'}}>保证品质</Text>
-					</View>
-					<TouchableOpacity style={styles.rectangle_view}>
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Text style={styles.rectangle_text}>
-								安全与信任
-			  			    </Text>
+								账号封禁
+			        		</Text>
 						</View>
 						<Image source={require('../../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
-
-					
+					<TouchableOpacity style={styles.rectangle_view} onPress={()=>this.props.navigator.push({component:sysNotice,name:'sysNotice'})}>
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<Text style={styles.rectangle_text} >
+								系统通知
+			                </Text>
+						</View>
+						<Image source={require('../../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>	
+					<TouchableOpacity style={styles.rectangle_view} onPress={()=>this.props.navigator.push({component:restTimes,name:'restTimes'})}>
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<Text style={styles.rectangle_text} >
+								剩余沟通次数
+			                </Text>
+						</View>
+						<Image source={require('../../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>		
 				</ScrollView>
 				<TouchableOpacity
 					style={styles.button}
