@@ -72,7 +72,7 @@ export default class ServOfferList extends Component {
                 goods_catalog_paramas.push(index+1);
             }
         });
-        exploreparams.goods_catalog_I = goods_catalog_paramas;
+        exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
         dispatch(fetchFeedList(categoryId, page, exploreparams));
     }
 
