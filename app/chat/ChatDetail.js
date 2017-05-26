@@ -154,7 +154,7 @@ export default class ChatDetail extends Component {
           leftIconAction={() => this.props.navigator.pop()}
           title={feed.offer_user}
           leftIcon={require('../resource/ic_back_dark.png')}
-          rightIcon={require('../resource/user_default_image.jpg')}
+          rightIcon={require('../resource/user_default_image.png')}
           rightIconSize={26}
         />
         <View style={[styles.cardImageContent]}>
