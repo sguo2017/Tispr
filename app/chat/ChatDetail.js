@@ -26,7 +26,7 @@ import BeforePropose from '../order/BeforePropose'
 import CloseDeal from '../order/CloseDeal';
 
 const screenW = Dimensions.get('window').width;
-
+let int;
 export default class ChatDetail extends Component {
 
   constructor(props) {
@@ -39,6 +39,12 @@ export default class ChatDetail extends Component {
   }
 
   componentWillMount() {
+    this.refreshmessage();
+    int = setInterval(this.refreshmessage.bind(this),5000);
+  }
+    //
+    //let ws = new WebSocket('ws://' + Constant.url.SERV_API_ADDR + ':' + '3001' + '/websocket');
+  async refreshmessage() {
     const { feed } = this.props;
     let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + `${global.user.authentication_token}&deal_id=${feed.deal_id}`;
     Util.get(URL, (response) => {
@@ -112,7 +118,6 @@ export default class ChatDetail extends Component {
     if (messages.length > 0) {
       chat_content = messages[0].text
     }
-
     const { feed } = this.props;
     try {
       let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + `${global.user.authentication_token}`;
@@ -151,7 +156,9 @@ export default class ChatDetail extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <Header
-          leftIconAction={() => this.props.navigator.pop()}
+          leftIconAction={() => {
+            clearInterval(int);
+            this.props.navigator.pop()}}
           title={feed.offer_user}
           leftIcon={require('../resource/ic_back_dark.png')}
           rightIcon={require('../resource/user_default_image.png')}
