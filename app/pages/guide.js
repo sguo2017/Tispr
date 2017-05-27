@@ -112,13 +112,14 @@ export default class Guide extends React.Component {
                 let address = global.user.addressComponent;
                 global.user = userdetail;
                 global.user.addressComponent = address;
+                global.user.authentication_token = result.token;
                 this._navigate('TabBarView');
             } else {
                 let error = res;
                 throw error;
             }
         } catch (error) {
-            //console.log("error response: " + error);
+            console.log("error response: " + error);
             UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
         }
     }

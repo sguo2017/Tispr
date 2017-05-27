@@ -132,7 +132,7 @@ export default class ChatDetail extends Component {
           chat: {
             deal_id: feed.deal_id,
             chat_content: chat_content,
-            user_id: feed.offer_user_id,
+            user_id: global.user.id,
             catalog: 2
           }
         })
@@ -185,7 +185,7 @@ export default class ChatDetail extends Component {
             messages={this.state.messages}
             onSend={this.onSend}
             user={{
-              _id: feed.request_user_id
+              _id: global.user.id
             }}
           />
         </View>
