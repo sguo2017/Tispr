@@ -1,13 +1,10 @@
-/**
- * Created by ljunb on 16/5/25.
- */
 import React, {PureComponent} from 'react'
 import {
-    Navigator,
     View,
     Platform,
     StatusBar
 } from 'react-native';
+import {Navigator} from 'react-native-deprecated-custom-components';
 import {observer} from 'mobx-react/native'
 import TabBarView from '../containers/TabBarView'
 import Splash from '../pages/Splash'
@@ -31,8 +28,8 @@ export default class App extends PureComponent {
     }
 
     render() {
-        const initialPage = Platform.OS === 'ios' ? TabBarView : Splash
-        const initialPageName = Platform.OS === 'ios' ? 'TabBarView' : 'Splash'
+        const initialPage = Splash; // Platform.OS === 'ios' ? TabBarView : Splash
+        const initialPageName = 'Splash';// Platform.OS === 'ios' ? 'TabBarView' : 'Splash'
 
         return (
             <View style={{flex: 1}}>
