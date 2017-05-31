@@ -7,6 +7,7 @@ import {
     ListView,
     TouchableOpacity,
     RefreshControl,
+    PanResponder
 } from 'react-native'
 import {observer} from 'mobx-react/native'
 import {reaction} from 'mobx'
@@ -21,6 +22,8 @@ import Header from '../components/HomeNavigation';
 import ElasticStack from 'react-native-elastic-stack';
 import Card from './Card'
 import Wrapper from './Wrapper';
+import StackCard from 'stack-card-z';
+import Carousel from "react-native-carousel-control";
 const KNOWLEDGE_ID = 3
 const itemWidth =global.gScreen.width-20;
 const itemHeight =300;
@@ -33,6 +36,7 @@ const cardArray =[{},
 ];
 @observer
 export default class BussList extends PureComponent {
+    
     _pictureAction = () => {
         const {user: {name}} = RootStore
         if (name) {
@@ -59,7 +63,21 @@ export default class BussList extends PureComponent {
             () => this.knowledgeListStore.fetchFeedList()
         )
     }
+    componentWillMount(){
+        this._panResponder = PanResponder.create({
+            onMoveShouldSetPanResponder: (e, gestureState) => {
+                    if (
+                    Platform.OS == 'android'
+                    && (gestureState.dx < 2 && gestureState.dx > -2)
+                    && (gestureState.dy < 2 && gestureState.dy > -2)
+                    ) {
+                    return false;
+                    }
 
+                    return true;
+            }
+        })
+    }
     componentWillReact() {
         const {errorMsg} = this.knowledgeListStore
         errorMsg && this.toast.show(errorMsg)
@@ -91,18 +109,12 @@ export default class BussList extends PureComponent {
                 <Header
                     title='Qiker'
                 />
-                <Wrapper parallaxHeight={45}>
-                    <ElasticStack
-                        items={cardArray}
-                        itemWidth={itemWidth}
-                        itemHeight={itemHeight}
-                        renderItem={(item) => <Card content={item} navigator={navigator}/>}
-                        elastickRange={0.5}
-                        elastickItemsCount={20}
-                        infinite={true}
-                        directions={[false, true, false, true,]}
-                     />
-                </Wrapper>
+                
+                <Carousel>
+                    {
+                        cardArray.map((data,index) => <Card content={data} navigator={navigator}/>)
+                    }
+                </Carousel>
                 {!isFetching &&
                 <ListView
                     dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
@@ -161,5 +173,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
-    }
-})
+    }})
