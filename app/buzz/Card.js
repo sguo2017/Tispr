@@ -16,7 +16,6 @@ export default function Card({ content, navigator, width, height }) {
       </View>
     )
   }else {
-    //this.props.content={content};
     return (
       <View style={[styles.wrapper, { width, height }]}>
         <View style={{height :60, flexDirection:'row',justifyContent:'space-between',alignItems:'flex-start'}}>
@@ -65,6 +64,7 @@ const styles = StyleSheet.create({
   wrapper: {
     borderRadius: 5,
     backgroundColor: '#fff',
+    flex:0,
   },
   button: {
     height: 50,
