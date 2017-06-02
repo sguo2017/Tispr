@@ -17,6 +17,14 @@ let storeKeys = {
     SEARCH_HISTORY_KEY: 'SEARCH_HISTORY_KEY',
     ACCESS_TOKEN_TISPR: 'ACCESS_TOKEN_TISPR',
 }
+
+let sysMsgCatalog = {
+    PRIVATE: '1',
+    PUBLIC: '3',
+    SYSTEM: '2',
+    ALL: '0'
+}
+
 let url = {
      //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
      IMG_SERV_ADDR: "123.56.157.233",
@@ -44,6 +52,7 @@ let url = {
      SERV_API_TOKEN_LOGIN: `/api/users/token_login?token=`,//token登录
      SERV_API_GOODS_CATALOG:`/api/goods/goods_catalogs?token=`,//商品分类
      SERV_API_SYS_MSGS_QUERIES:`/api/sys_msgs_timelines/sys_msgs_queries?token=`,//系统消息查询API
+     SSRV_API_SYS_MSGS_TIMELINES:`/api/sys_msgs_timelines/sys_msgs_timelines/`,//系统消息操作API
      //////////////////<<<<   GEOAPI服务器  >>>>>//////////////////////////////
      GEO_LOCATION_ADDR: "http://api.map.baidu.com/geocoder/v2/?output=json&pois=1&ak=ZFFEI4cl338WSpoGsGSuHhpxiQpuEnfe"
      
@@ -80,5 +89,6 @@ export default {
     window: window,
     colors: colors,
     storeKeys: storeKeys,
-    ingredientMapper: mapper
+    ingredientMapper: mapper,
+    sysMsgCatalog: sysMsgCatalog
 }

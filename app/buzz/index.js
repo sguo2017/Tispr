@@ -109,7 +109,7 @@ export default class BussList extends Component {
     }
 
     componentWillMount() {
-         this._getSysMsgs();
+        this._getSysMsgs();
         this._panResponder = PanResponder.create({
             onMoveShouldSetPanResponder: (e, gestureState) => {
                 if (
@@ -148,8 +148,8 @@ export default class BussList extends Component {
 
    async _getSysMsgs(){
         try {
-            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSGS_QUERIES +global.user.authentication_token+ `&query_type=0&user_id=`+global.user.id+`&page=1`;
-            //console.log("148:"+url)
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSGS_QUERIES +global.user.authentication_token+ `&query_type=` + Constant.sysMsgCatalog.PRIVATE + `&user_id=`+global.user.id+`&page=1`;
+            console.log("148:"+url)
             fetch(url, {
                 method: 'GET',
                 headers: {
@@ -180,9 +180,36 @@ export default class BussList extends Component {
             console.log(`Fetch evaluating list error: ${error}`)
         }      
     } 
-
+   
     _renderFooter = () => <LoadMoreFooter />
-    _updateCard(index){
+    async _changeSysMsgStatus(newStatus,id){
+        try {         
+            let t = global.user.authentication_token;
+            let htext= "http://";
+            let url = "http://" + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SSRV_API_SYS_MSGS_TIMELINES +id +'?token='+ t;            
+            let response = await fetch(url, {
+                method: 'PATCH',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    sys_msgs_timeline: {
+                        status: newStatus,
+                    }
+                })
+            });
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                alert('已通知对方');
+            } else {
+                alert('出错了1')
+            }
+        } catch (error) {
+            alert(error)
+        } 
+    }
+    _updateCard(index, newStatus, id){
       let arr=d.state.sys_msgs;
       if(index == arr.length-1){
         arr.pop()
@@ -193,7 +220,9 @@ export default class BussList extends Component {
       d.setState({
           sys_msgs:arr,
           initCard:index
-      })  
+      })
+
+      d._changeSysMsgStatus(newStatus,id);
     }
     render() {
         const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
