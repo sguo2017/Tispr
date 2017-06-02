@@ -74,6 +74,10 @@ var styles = StyleSheet.create({
 
 @observer
 export default class BussList extends Component {
+    constructor(props){
+     super(props);
+      d = this;                    
+  }
 
     _pictureAction = () => {
         const { user: { name } } = RootStore
@@ -91,8 +95,8 @@ export default class BussList extends Component {
         dataSource: new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
         }),
-        sys_msgs:this.props.sys_msgs
-        
+        sys_msgs:this.props.sys_msgs,    
+        initCard:0    
     }
 
     knowledgeListStore = new SysMsgStore(KNOWLEDGE_ID)
@@ -178,13 +182,27 @@ export default class BussList extends Component {
     } 
 
     _renderFooter = () => <LoadMoreFooter />
+    _updateCard(index){
+      let arr=d.state.sys_msgs;
+      if(index == arr.length-1){
+        arr.pop()
+      } else{
+        arr.copyWithin(index,index+1);
+        arr.pop();
+      } 
+      d.setState({
+          sys_msgs:arr,
+          initCard:index
+      })  
+    }
     render() {
         const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
         const { navigator } = this.props
         if(this.state.sys_msgs)
         {
             cardArray=this.state.sys_msgs;
-            cardArray.unshift('0');
+            if(cardArray[0]!=='0')
+                cardArray.unshift('0');
         }
         return (
             <View style={styles.listView}>
@@ -193,10 +211,10 @@ export default class BussList extends Component {
                 />
                 <Text style={{ alignSelf: 'center', margin: 8 }}>您有重要更新</Text>
                 <Swiper style={styles.wrapper} height={230} showsButtons={false}
-                    showsPagination={false}
+                    showsPagination={false} index={this.state.initCard}
                 >
                     {
-                       cardArray.map((data, index) => <Card content={data} navigator={navigator} />)
+                       cardArray.map((data, index) => <Card content={data} navigator={navigator} update={this._updateCard} index={index}/>)
                     }
                     
                 </Swiper>

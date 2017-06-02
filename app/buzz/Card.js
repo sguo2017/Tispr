@@ -7,12 +7,12 @@ TouchableWithoutFeedback } from 'react-native';
 import ConnectPage from './HeadCard/ConnectPage';
 import DiscardPage from './HeadCard/DiscardPage';
 
-export default function Card({ content, navigator, width, height }) {
+export default function Card({ content, navigator, width, height, update,index }) {
 
-  if(content.user_name===undefined){
+  if(content=='0'){
     return(
       <View style={[styles.wrapper, { width, height }]}>
-        <Image source={require('../resource/card_l_guide_1.png')}/>
+        <Image style={{alignSelf:'center'}} source={require('../resource/card_l_guide_1.png')}/>
       </View>
     )
   }else {
@@ -32,7 +32,7 @@ export default function Card({ content, navigator, width, height }) {
                 borderTopColor:global.gColors.buttonColor,borderBottomColor:'transparent',borderLeftColor:'transparent'}}></View>
             <View>
               <TouchableHighlight
-              onPress={()=>{navigator.push({component:DiscardPage,name:'DiscardPage'})}}
+              onPress={()=>{navigator.push({component:DiscardPage,name:'DiscardPage',passProps:{feed:content,callback:update,discardIndex:index}})}}
               style={{ width: 20,height:20,backgroundColor:global.gColors.buttonColor,justifyContent:'center'}}>
                 <Text style={[styles.buttonText]}>
                   &times;

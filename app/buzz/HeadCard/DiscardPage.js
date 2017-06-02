@@ -10,6 +10,10 @@ import {
 } from 'react-native';
 
 export default class DiscardPage extends Component{
+    constructor(props) {
+        super(props);
+    }
+    
     render(){
         return(
             <View style={{width:global.gScreen.width,height:global.gScreen.height,backgroundColor:global.gColors.themeColor,
@@ -26,7 +30,7 @@ export default class DiscardPage extends Component{
                         </TouchableOpacity> 
                        <TouchableOpacity 
                        style={{borderRadius:5,width:100,height:40,justifyContent:'center',alignItems:'center',backgroundColor:global.gColors.buttonColor}}
-                       onPress={() => this.props.navigator.pop()}
+                       onPress={() =>{this.props.callback(this.props.discardIndex); this.props.navigator.pop()}}
                        >
                            <Text style={{color:'white'}}>确定</Text>
                         </TouchableOpacity>
