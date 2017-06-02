@@ -47,7 +47,7 @@ export default function Card({ content, navigator, width, height, update,index }
         <View style={{height :100,padding:10}}>
           <Text style={{color:global.gColors.themeColor,fontSize:16}}>{content.action_title}</Text>
         </View>
-        <TouchableHighlight onPress={()=>{navigator.push({component:ConnectPage,name:'ConnectPage',passProps:{content}})}}
+        <TouchableHighlight onPress={()=>{navigator.push({component:ConnectPage,name:'ConnectPage',passProps:{feed:content,callback:update,discardIndex:index}})}}
           style={[styles.button, {backgroundColor:global.gColors.buttonColor,margin:10}]}
           >
           <Text style={styles.buttonText}>

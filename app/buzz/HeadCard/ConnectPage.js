@@ -17,7 +17,7 @@ export default class ConnectPage extends Component{
         }
     }
     render(){
-        const { content } = this.props;
+        const { feed } = this.props;
         return(
             <View>
                 <Header
@@ -29,7 +29,7 @@ export default class ConnectPage extends Component{
                     <Image 
                     style={{width:50,height:50,borderRadius:25,alignSelf:'center'}} 
                     source={require('../../resource/user_default_image.png')}/>
-                    <Text style={{color:'black', fontSize:18,marginTop:20,marginBottom:20}}>{content.user_name} 您好！{this.state.msg}</Text>
+                    <Text style={{color:'black', fontSize:18,marginTop:20,marginBottom:20}}>{feed.user_name} 您好！{this.state.msg}</Text>
                     <TouchableHighlight 
                         style={[styles.selectButton,{width:160}]} 
                         onPress={()=>this.setState({msg:'我想我能够帮到您！'})}
@@ -48,8 +48,12 @@ export default class ConnectPage extends Component{
                     >
                         <Text style={[styles.themeColorText]}>请问需要多长时间内完成？</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight style={[styles.button, {backgroundColor:global.gColors.buttonColor,position:'absolute', top: 506,flexShrink: 0, width: global.gScreen.width}]}>
-                        <Text style={styles.buttonText}>
+                    <TouchableHighlight style={[styles.button, {backgroundColor:global.gColors.buttonColor,position:'absolute', top: 506,flexShrink: 0, width: global.gScreen.width}]}
+                        onPress={() =>{this.props.callback(this.props.discardIndex); this.props.navigator.pop()}}
+
+                    >
+                        <Text style={styles.buttonText}
+                        >
                         联系TA
                         </Text>
                     </TouchableHighlight>
