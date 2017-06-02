@@ -43,8 +43,9 @@ let url = {
      SERV_API_SMS_LOGIN:`/api/users/sms_login`,//短信验证码登录
      SERV_API_TOKEN_LOGIN: `/api/users/token_login?token=`,//token登录
      SERV_API_GOODS_CATALOG:`/api/goods/goods_catalogs?token=`,//商品分类
+     SERV_API_SYS_MSGS_QUERIES:`/api/sys_msgs_timelines/sys_msgs_queries?token=`,//系统消息查询API
      //////////////////<<<<   GEOAPI服务器  >>>>>//////////////////////////////
-     GEO_LOCATION_ADDR: "http://api.map.baidu.com/geocoder/v2/?output=json&pois=1&ak=ZFFEI4cl338WSpoGsGSuHhpxiQpuEnfe",
+     GEO_LOCATION_ADDR: "http://api.map.baidu.com/geocoder/v2/?output=json&pois=1&ak=ZFFEI4cl338WSpoGsGSuHhpxiQpuEnfe"
      
 }
 

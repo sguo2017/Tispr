@@ -27,6 +27,7 @@ import Card from './Card'
 import Wrapper from './Wrapper';
 import StackCard from 'stack-card-z';
 import Carousel from "./HeadCard/carousel";
+import Constant from '../common/constants';
 const KNOWLEDGE_ID = 3
 const itemWidth = global.gScreen.width - 20;
 const itemHeight = 300;
@@ -89,7 +90,9 @@ export default class BussList extends Component {
     state = {
         dataSource: new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
-        })
+        }),
+        sys_msgs:this.props.sys_msgs
+        
     }
 
     knowledgeListStore = new SysMsgStore(KNOWLEDGE_ID)
@@ -100,7 +103,9 @@ export default class BussList extends Component {
             () => this.knowledgeListStore.fetchFeedList()
         )
     }
+
     componentWillMount() {
+         this._getSysMsgs();
         this._panResponder = PanResponder.create({
             onMoveShouldSetPanResponder: (e, gestureState) => {
                 if (
@@ -137,10 +142,50 @@ export default class BussList extends Component {
 
     _onEndReach = () => this.knowledgeListStore.page++
 
+   async _getSysMsgs(){
+        try {
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSGS_QUERIES +global.user.authentication_token+ `&query_type=0&user_id=`+global.user.id+`&page=1`;
+            //console.log("148:"+url)
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            }).then(response => {
+                // console.log("156:"+JSON.stringify(response))
+                if (response.status == 200) return response.json()
+                return null
+            }).then(responseData => {                
+                // console.log("160:"+JSON.stringify(responseData.feeds))
+                if (responseData) {
+                    let sys_msgs = this.state.sys_msgs;
+                    // console.log("163:")
+                    sys_msgs = responseData.feeds;
+                    // console.log("165:"+JSON.stringify(sys_msgs))
+                    this.setState({sys_msgs:sys_msgs})
+                     //console.log("167:"+JSON.stringify(this.state.sys_msgs))
+                } else {
+
+                }
+            }).catch(error => {
+                console.log(`Fetch evaluating list error: ${error}`)
+               
+            })
+        } catch (error) {
+            console.log(`Fetch evaluating list error: ${error}`)
+        }      
+    } 
+
     _renderFooter = () => <LoadMoreFooter />
     render() {
         const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
-        const { navigator } = this.props;
+        const { navigator } = this.props
+        if(this.state.sys_msgs)
+        {
+            cardArray=this.state.sys_msgs;
+            cardArray.unshift('0');
+        }
         return (
             <View style={styles.listView}>
                 <Header
@@ -151,8 +196,9 @@ export default class BussList extends Component {
                     showsPagination={false}
                 >
                     {
-                        cardArray.map((data, index) => <Card content={data} navigator={navigator} />)
+                       cardArray.map((data, index) => <Card content={data} navigator={navigator} />)
                     }
+                    
                 </Swiper>
                 {!isFetching &&
                     <ListView
