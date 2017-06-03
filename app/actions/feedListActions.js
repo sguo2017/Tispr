@@ -1,6 +1,3 @@
-/**
- * Created by ljunb on 16/5/26.
- */
 import * as types from './actionTypes';
 import Util from '../common/utils';
 import Common from '../common/constants';

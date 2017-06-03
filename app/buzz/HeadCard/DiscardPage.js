@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
 } from 'react-native';
+import Constant from '../../common/constants';
 
 export default class DiscardPage extends Component{
     constructor(props) {
@@ -31,7 +32,7 @@ export default class DiscardPage extends Component{
                         </TouchableOpacity> 
                        <TouchableOpacity 
                        style={{borderRadius:5,width:100,height:40,justifyContent:'center',alignItems:'center',backgroundColor:global.gColors.buttonColor}}
-                       onPress={() =>{this.props.callback(this.props.discardIndex,'00X',this.props.feed.smt_id); this.props.navigator.pop()}}
+                       onPress={() =>{this.props.callback(this.props.discardIndex,Constant.sys_msgs_status.DISCARDED,this.props.feed.smt_id); this.props.navigator.pop()}}
                        >
                            <Text style={{color:'white'}}>确定</Text>
                         </TouchableOpacity>

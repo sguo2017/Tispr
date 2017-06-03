@@ -147,7 +147,7 @@ export default class BussList extends Component {
    async _getSysMsgs(){
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSGS_QUERIES +global.user.authentication_token+ `&query_type=` + Constant.sysMsgCatalog.PRIVATE + `&user_id=`+global.user.id+`&page=1`;
-            console.log("148:"+url)
+            // console.log("148:"+url)
             fetch(url, {
                 method: 'GET',
                 headers: {
@@ -155,7 +155,7 @@ export default class BussList extends Component {
                     'Content-Type': 'application/json',
                 },
             }).then(response => {
-                // console.log("156:"+JSON.stringify(response))
+                console.log("156:"+JSON.stringify(response))
                 if (response.status == 200) return response.json()
                 return null
             }).then(responseData => {                
@@ -180,11 +180,11 @@ export default class BussList extends Component {
     } 
    
     _renderFooter = () => <LoadMoreFooter />
-    async _changeSysMsgStatus(newStatus,id){
+
+    async _changeSysMsgStatus(newStatus,id,lately_chat_content){
         try {         
             let t = global.user.authentication_token;
-            let htext= "http://";
-            let url = "http://" + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SSRV_API_SYS_MSGS_TIMELINES +id +'?token='+ t;            
+            let url = 'http:\/\/' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SSRV_API_SYS_MSGS_TIMELINES +id +'?token='+ t;            
             let response = await fetch(url, {
                 method: 'PATCH',
                 headers: {
@@ -194,20 +194,22 @@ export default class BussList extends Component {
                 body: JSON.stringify({
                     sys_msgs_timeline: {
                         status: newStatus,
-                    }
+                    },
+                    lately_chat_content:lately_chat_content
                 })
             });
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
                 alert('已通知对方');
             } else {
-                alert('出错了1')
+                alert('出错了')
             }
         } catch (error) {
             alert(error)
         } 
     }
-    _updateCard(index, newStatus, id){
+    
+    _updateCard(index, newStatus, id, lately_chat_content){
       let arr=d.state.sys_msgs;
       if(index == arr.length-1){
         arr.pop()
@@ -220,7 +222,7 @@ export default class BussList extends Component {
           initCard:index
       })
 
-      d._changeSysMsgStatus(newStatus,id);
+      d._changeSysMsgStatus(newStatus,id,lately_chat_content);
     }
     render() {
         const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
@@ -236,14 +238,13 @@ export default class BussList extends Component {
                 <Header
                     title='Qiker'
                 />
-                <Text style={{ alignSelf: 'center', margin: 8 }}>您有重要更新</Text>
+                <Text style={{ alignSelf: 'center', margin: 8 }}>您有重要更新!</Text>
                 <Swiper style={styles.wrapper} height={230} showsButtons={false}
                     showsPagination={false} index={this.state.initCard}
                 >
                     {
                        cardArray.map((data, index) => <Card content={data} navigator={navigator} update={this._updateCard} index={index}/>)
-                    }
-                    
+                    }       
                 </Swiper>
                 {!isFetching &&
                     <ListView

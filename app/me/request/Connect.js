@@ -48,6 +48,7 @@ export default class DealConnect extends Component {
                         serv_offer_title: feed.serv_offer.serv_title,
                         serv_offer_id: feed.id,
                         offer_user_id: feed.user_id,
+                        lately_chat_content: 'your offer is awesome',
                     }
                 })
             });

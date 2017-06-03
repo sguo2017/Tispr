@@ -18,11 +18,25 @@ let storeKeys = {
     ACCESS_TOKEN_TISPR: 'ACCESS_TOKEN_TISPR',
 }
 
+/*
+    A|a|1 ：对应场景00A 某人新增goods[serv_catagory=serv_request]，由系统向同城人新建一条此类型的数据,user_id=新增人，accept_user_id=推送同城人；
+    B|b|2 ：对应场景00B 在pc端由管理员新建消息，发布范围：所有人、按区域选择接受人
+    C|c|3 ：对应场景00C 动态消息列表
+    ALL|all|0 ：得到全部信息
+*/
 let sysMsgCatalog = {
     PRIVATE: '1',
-    PUBLIC: '3',
     SYSTEM: '2',
+    PUBLIC: '3',
     ALL: '0'
+}
+
+let sys_msgs_status = {
+    CREATED: 'created',
+    UNREAD: 'unread',
+    READ: 'read',
+    DISCARDED: 'discarded',
+    FINISHED: 'finished'
 }
 
 let url = {
@@ -90,5 +104,6 @@ export default {
     colors: colors,
     storeKeys: storeKeys,
     ingredientMapper: mapper,
-    sysMsgCatalog: sysMsgCatalog
+    sysMsgCatalog: sysMsgCatalog,
+    sys_msgs_status: sys_msgs_status
 }

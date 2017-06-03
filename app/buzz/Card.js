@@ -20,7 +20,7 @@ export default function Card({ content, navigator, width, height, update,index }
       <View style={[styles.wrapper, { width, height }]}>
         <View style={{height :60, flexDirection:'row',justifyContent:'space-between',alignItems:'flex-start'}}>
           <View style={{height :60, flexDirection:'row',justifyContent:'flex-start',padding:10,alignItems:'center'}}>
-            <Image style={{borderRadius:20, width:40, height:40}} source={require('../resource/user_default_image.png')}/>     
+            <Image style={{borderRadius:20, width:40, height:40}} source={{uri:content.avatar}}/>     
             <View>
               <Text style={{color:'black',fontSize:20}}>{content.user_name}</Text>
               <Text style={{color:'grey',fontSize:16}}>常用.其它创意艺术</Text>
