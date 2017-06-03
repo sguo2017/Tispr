@@ -118,7 +118,7 @@ export default class OrderDetail extends Component {
                             contentContainerStyle={{backgroundColor: 'white'}}
                     >
                         <View style={{flexDirection:'row', justifyContent:'flex-start', alignItems:'center',padding:10, width: screenW}}>
-                            <Image style={{width: 50, height: 50, borderRadius:25}} defaultSource={require('../resource/user_default_image.jpg')} source={{uri: feed.offer_user_avatar}}/>
+                            <Image style={{width: 50, height: 50, borderRadius:25}} defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.offer_user_avatar}}/>
                             <View style={{paddingLeft: 10}}>
                                 <Text style={{fontSize:20, color:'black'}}>{feed.offer_user}</Text>
                                 <Text style={{fontSize: 16}}>{feed.serv}</Text>
@@ -132,7 +132,7 @@ export default class OrderDetail extends Component {
                             }
                         </View>
                         <View style={{flexDirection:'row', justifyContent:'flex-start', alignItems:'center',padding:10, width: screenW,backgroundColor:'white'}}>
-                            <Image style={{width: 50, height: 50, borderRadius:25}} defaultSource={require('../resource/user_default_image.jpg')} source={{uri: feed.request_user_avatar}}/>
+                            <Image style={{width: 50, height: 50, borderRadius:25}} defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.request_user_avatar}}/>
                             <View style={{paddingLeft: 10}}>
                                 <Text style={{fontSize:20, color:'black'}}>{feed.request_user}</Text>
                                 <Text style={{fontSize: 16}}>{feed.lately_chat_content}</Text>

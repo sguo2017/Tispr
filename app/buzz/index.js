@@ -25,7 +25,6 @@ import Header from '../components/HomeNavigation';
 import ElasticStack from 'react-native-elastic-stack';
 import Card from './Card'
 import Wrapper from './Wrapper';
-import Carousel from "./HeadCard/carousel";
 import Constant from '../common/constants';
 const KNOWLEDGE_ID = 3
 const itemWidth = global.gScreen.width - 20;

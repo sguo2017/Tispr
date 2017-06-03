@@ -1,7 +1,3 @@
-/**
- * Created by ljunb on 16/5/25.
- * action类型
- */
 // 轮播actions
 export const FETCH_BANNER_LIST = 'FETCH_BANNER_LIST';
 export const RECEIVE_BANNER_LIST = 'RECEIVE_BANNER_LIST'

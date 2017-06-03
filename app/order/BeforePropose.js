@@ -37,7 +37,7 @@ export default class BeforePropose extends Component{
                         leftIconAction={() => this.props.navigator.pop()}
                         title={'Current Proposal'}
                         leftIcon={require('../resource/ic_back_dark.png')}
-                        rightIcon={require('../resource/user_default_image.jpg')}
+                        rightIcon={require('../resource/user_default_image.png')}
                         rightIconSize={26}
                     />
                 <ScrollView style={{ height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 18,}}>

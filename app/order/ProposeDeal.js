@@ -79,7 +79,7 @@ export default class ProposeDeal extends Component{
                         leftIconAction={() => this.props.navigator.pop()}
                         title={'Propose a new deal'}
                         leftIcon={require('../resource/ic_back_dark.png')}
-                        rightIcon={require('../resource/user_default_image.jpg')}
+                        rightIcon={require('../resource/user_default_image.png')}
                         rightIconSize={26}
                     />
                 <View style={{justifyContent:'center',alignItems:'center', paddingTop:60}}>
