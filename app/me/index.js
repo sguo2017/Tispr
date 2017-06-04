@@ -16,7 +16,7 @@ import Header from '../components/HomeNavigation';
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import TabCategoryBar from './TabCategoryBar'
 import Constant from '../common/constants';
-const titles = ['Offers', 'Requests', 'Bookmarks'];
+const titles = ['服务', '需求', '收藏'];
 
 import OffersList from './page/offersList'
 import RequestsList from './page/requestsList';

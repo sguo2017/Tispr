@@ -24,9 +24,6 @@ class OffersList extends PureComponent {
         return(
 
               <View style={styles.listView}>
-                <Header
-                    title='OffersList'
-                />
                 <ServOfferList {...this.props} />
                </View>
         )

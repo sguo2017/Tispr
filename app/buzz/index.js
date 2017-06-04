@@ -22,7 +22,6 @@ import SysMsgDetail from './SysMsgDetail'
 import Toast from 'react-native-easy-toast'
 import SysMsgStore from './SysMsgStore'
 import Header from '../components/HomeNavigation';
-import ElasticStack from 'react-native-elastic-stack';
 import Card from './Card'
 import Wrapper from './Wrapper';
 import Constant from '../common/constants';
@@ -290,8 +289,8 @@ class KnowledgeItem extends Component {
     }
 
     render() {
-        const { feed: { action_title, action_desc, user } } = this.props
-        const cellData = { action_title, action_desc, user }
+        const { feed: { action_title, action_desc,interval,user } } = this.props
+        const cellData = { action_title, action_desc,interval,user }
         return <SysMsgSingleImageCell {...cellData} onPress={this._onPress} />
     }
 }

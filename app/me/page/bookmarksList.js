@@ -24,9 +24,6 @@ class BookmarksList extends PureComponent {
         return(
 
               <View style={styles.listView}>
-                <Header
-                    title='Marklist'
-                />
                 <Marklist {...this.props} />
                </View>
         )

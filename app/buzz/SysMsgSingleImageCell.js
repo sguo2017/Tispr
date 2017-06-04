@@ -12,6 +12,7 @@ const screenW = Dimensions.get('window').width;
 const SysMsgSingleImageItem = ({
     action_title,
     action_desc,
+    interval,
     user,
     onPress
 }) => {
@@ -37,7 +38,7 @@ const SysMsgSingleImageItem = ({
                             <Text>{action_title}</Text>
                         </Text>
                         <View numberOfLines={2} style={{width: screenW * 0.25,flexShrink: 0, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                            <Text style={{fontSize:13}}>1h</Text>
+                            <Text style={{fontSize:13}}>{interval}</Text>
                         </View>
                     </View>
                     

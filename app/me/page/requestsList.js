@@ -78,9 +78,6 @@ export default class RequestsList extends PureComponent {
         return(
 
             <View style={styles.listView}>
-                <Header
-                    title='RequestsList'
-                />
                 {!isFetching &&
                     <ListView
                         dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
