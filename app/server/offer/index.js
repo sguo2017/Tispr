@@ -20,6 +20,7 @@ import ImagePicker from 'react-native-image-picker';
 import Header from '../../components/HomeNavigation';
 import UselessTextInput from '../../components/UselessTextInput';
 import ServOfferTitle from './title';
+import NavigationExperimental from 'react-native-deprecated-custom-components';
 
 var FileUpload = require('NativeModules').FileUpload;
 
@@ -30,11 +31,11 @@ export default class ServOffer extends PureComponent {
         let defaultName = 'firstPage';
         let defaultComponent = ServOfferTitle;
         return (
-            <Navigator
+            <NavigationExperimental.Navigator
                 initialRoute={{ name: defaultName, component: defaultComponent }}　　//初始化导航器Navigator,指定默认的页面
                 configureScene={
                     (route) => {
-                        return Navigator.SceneConfigs.FloatFromRight;　　//配置场景动画，页面之间跳转时候的动画
+                        return NavigationExperimental.Navigator.SceneConfigs.FloatFromRight;　　//配置场景动画，页面之间跳转时候的动画
                     }
                 }
                 renderScene={

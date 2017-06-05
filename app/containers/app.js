@@ -4,7 +4,7 @@ import {
     Platform,
     StatusBar
 } from 'react-native';
-import {Navigator} from 'react-native-deprecated-custom-components';
+import NavigationExperimental from 'react-native-deprecated-custom-components';
 import {observer} from 'mobx-react/native'
 import TabBarView from '../containers/TabBarView'
 import Splash from '../pages/Splash'
@@ -17,7 +17,7 @@ export default class App extends PureComponent {
         if (route.sceneConfig) return route.sceneConfig
 
         return {
-            ...Navigator.SceneConfigs.PushFromRight,
+            ...NavigationExperimental.Navigator.SceneConfigs.PushFromRight,
             gestures: {}    // 禁用左滑返回手势
         }
     }
@@ -34,7 +34,7 @@ export default class App extends PureComponent {
         return (
             <View style={{flex: 1}}>
                 <StatusBar barStyle={RootStore.barStyle}/>
-                <Navigator
+                <NavigationExperimental.Navigator
                     initialRoute={{name: initialPageName, component: initialPage}}
                     configureScene={this._configureScene}
                     renderScene={this._renderScene}
