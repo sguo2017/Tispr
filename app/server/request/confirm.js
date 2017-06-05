@@ -186,11 +186,12 @@ export default class ServOfferConfirm extends Component {
                 )
             } else {
                 let error = res;
-                throw error;
+                console.log("error189 " + error);
+                throw error;     
             }
         } catch (error) {
             this.setState({ error: error });
-            console.log("error " + error);
+            console.log("error195 " + error);
             this.setState({ showProgress: false });
 
         }
@@ -228,7 +229,7 @@ export default class ServOfferConfirm extends Component {
                 console.log('this.state.serv_offer.serv_imges：', this.state.serv_offer.serv_imges);
 
             })
-            .catch((error) => { console.error('error', error) });
+            .catch((error) => { console.error('imagerror', error) });
 
     }
 

@@ -52,7 +52,7 @@ export default class ServOfferTitle extends Component {
     }
 
     clickJump() {
-        if(undefined === this.state.serv_title || this.state.detail_length<10){
+        if(undefined === this.state.serv_offer.serv_title || this.state.serv_offer.title_length<10){
             Alert.alert(
                     '提示',
                     '请输入不少于10个字符',
@@ -113,7 +113,7 @@ export default class ServOfferTitle extends Component {
                         let offer=this.state.serv_offer;
                         offer.serv_title = val;
                         offer.title_length = val.length;
-                        this.setState({ serv_offer: offer})
+                        this.setState({ serv_offer: offer});
                         }}
                 />
 
