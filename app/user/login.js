@@ -250,11 +250,11 @@ export default class Login extends Component {
                 this.state.seePassword?
                 <TouchableOpacity onPress={()=>this.setState({seePassword:false})}>
                   <Image style={{ marginLeft: 5, marginRight: 8,marginTop:25, width: 25, height: 20,    
-        resizeMode: 'stretch'}} source={require('../resource/g_eyes_open.png')}/>
+        resizeMode: 'stretch'}} source={require('../resource/g_eyes_close.png')}/>
                 </TouchableOpacity>:
                 <TouchableOpacity onPress={()=>this.setState({seePassword:true})}>
                   <Image style={{ marginLeft: 5, marginRight: 8,marginTop:25, width: 25, height: 20,    
-        resizeMode: 'stretch'}} source={require('../resource/g_eyes_close.png')}/>
+        resizeMode: 'stretch'}} source={require('../resource/g_eyes_open.png')}/>
                 </TouchableOpacity>
               }
               
@@ -271,14 +271,14 @@ export default class Login extends Component {
             </TouchableHighlight>
 
             <TouchableHighlight onPress={() => this.setState({ loginWay: 'phonenumber' })}>
-              <Text>
+              <Text style={{ color: '#4A90E2'}}>
                 使用手机号登录
             </Text>
             </TouchableHighlight>
           </View> :
 
           <View style={{ padding: 15 }}>
-            <Text style={{ color: 'black', fontSize: 16 }}>使用手机号登录</Text>
+            <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold' }}>使用手机号码动态登录</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
               <Image style={{ height: 30, width: 40 }} source={require('../resource/qk_china_flag.png')} />
               <Text style={{ fontSize: 20, color: 'black' }}>+86</Text>
@@ -303,7 +303,7 @@ export default class Login extends Component {
             </View>
 
             <TouchableHighlight onPress={() => this.setState({ loginWay: 'email' })}>
-              <Text>
+              <Text style={{ color: '#4A90E2'}}>
                 使用邮箱登录
             </Text>
             </TouchableHighlight>
