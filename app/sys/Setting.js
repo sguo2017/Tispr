@@ -20,7 +20,8 @@ import UseHelp from './help/UseHelp';
 import feedback from './help/feedback';
 import inviteFriend from './help/inviteFriend';
 import aboutQike from './help/aboutQike';
-import others from './others'
+import others from './others';
+import login from '../user/login'
 @observer
 export default class Setting extends Component {
 
@@ -120,14 +121,14 @@ export default class Setting extends Component {
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
-					<View style={styles.rectangle_view}>
+					<TouchableOpacity style={styles.rectangle_view} onPress={()=>this.props.navigator.resetTo({component:login})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
 								退出登录
 			  				</Text>
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</View>
+					</TouchableOpacity>
 					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:others,name:'others'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >

@@ -23,6 +23,7 @@ import RequestsList from './page/requestsList';
 import BookmarksList from './page/bookmarksList';
 import PersonInfo from './personalinfoEdit';
 import ImagePicker from 'react-native-image-picker';
+import Setting from '../sys/Setting';
 const controllers = [
     {categoryId: 1, controller: OffersList},
     {categoryId: 2, controller: RequestsList},
@@ -65,11 +66,11 @@ export default class MeInfo extends Component {
                 <View style={{ backgroundColor: '#4A90E2' }}>
                     <View style={{flexDirection:'row', justifyContent:'flex-start',margin: 20}}>
                         <View style={{}}>
-                            <View>
+                            <TouchableOpacity onPress={this.clickJump.bind(this)}>
                             <Image style={{width: 72, height:72, borderRadius: 36, justifyContent:'flex-end', alignItems:'flex-end'}} source={{uri:this.state.avatar}}>
                             </Image>
                             <Image style={{width:20, height:20, borderRadius: 10,position: 'absolute',left: 52, top: 52}} source={require('../resource/y-call-tx3x.png')}/>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                         <View style={{justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
                             <Text style={{fontSize:16, color:'white'}}>{global.user.name}</Text>
@@ -78,7 +79,9 @@ export default class MeInfo extends Component {
                                 <Text style={{color: 'white', fontSize: 12, lineHeight: 18}} onPress={this.clickJump.bind(this)}>编辑个人信息</Text>
                             </Text>
                         </View>
-                        <Image style={{marginLeft: 26}} source={require('../resource/w-setting.png')}></Image>
+                        <TouchableOpacity>
+                            <Image style={{marginLeft: 26}} source={require('../resource/w-setting.png')}></Image>
+                        </TouchableOpacity>
                     </View>
                     <View style={{marginHorizontal: 16}}>
                         <Text style={styles.text}>Being the savage's bowsman, that is, the person who pulled the bow-oar in his boat.</Text>
