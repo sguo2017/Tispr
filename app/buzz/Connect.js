@@ -30,6 +30,9 @@ export default class DealConnect extends Component {
 
     constructor(props) {
         super(props);
+        this.state={
+            lately_chat_content: ''
+        }
     }
     
     async _createDeal() {
@@ -48,7 +51,7 @@ export default class DealConnect extends Component {
                         serv_offer_title: feed.serv_offer.serv_title,
                         serv_offer_id: feed.id,
                         offer_user_id: feed.user_id,
-                        lately_chat_content: 'your offer is awesome',
+                        lately_chat_content: this.state.lately_chat_content,
                     }
                 })
             });
@@ -83,10 +86,20 @@ export default class DealConnect extends Component {
                 <Header
                     title='Get Connect'
                     leftIcon={require('../resource/t_header_arrow_left.png')}
+                    leftIconAction={() => this.props.navigator.pop()}
                 />
 
 
-                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 12 }}>Hi {feed.user.name}! Your offer is awesome!</Text>
+                <Text style={{ marginTop:30, color: "#a8a6b9", fontSize: 16}}>联系{feed.user.name}询问服务细节</Text>
+                <TextInput
+                    multiline={true}
+                    numberOfLines={3}
+                    value ={this.state.lately_chat_content}
+                    placeholder='请输入聊天内容'
+                    onChangeText={(val) => {
+                        this.setState({ lately_chat_content: val })
+                        }}
+                />
 
 
                 <TouchableHighlight style={{ backgroundColor: '#81d49c', marginTop: 60, alignSelf: 'stretch' }} onPress={this._createDeal.bind(this)} >
