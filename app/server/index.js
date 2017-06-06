@@ -16,6 +16,7 @@ import {
 import { observer } from 'mobx-react/native'
 import { observable, computed, action, runInAction } from 'mobx';
 import NavPage from './nav/index';
+import TabBarView from'../containers/TabBarView';
 
 @observer
 export default class Server extends Component {
@@ -67,7 +68,9 @@ export default class Server extends Component {
                         <Image style={{ width: 150, height: 150, alignSelf: 'flex-end', right: 10, justifyContent: 'center' }} source={require('../resource/t_serv_request.png')} />
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity onPress={() => {this.props.navigator.resetTo({component:TabBarView})}}>
                 <Image style={{ width: 50, height: 50, alignSelf: 'center', marginTop: 150 }} source={require('../resource/t_server_close.png')} />
+                </TouchableOpacity>
             </View>
         )
     }
