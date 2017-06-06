@@ -40,9 +40,11 @@ export default class navpage extends Component {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         if (global.goods_catalog_I === undefined) {
             this.getGoodsCatalog();
+        }else{
+            this.setState({goods_catalog_I:global.goods_catalog_I})
         }
     }
 

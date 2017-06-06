@@ -83,7 +83,8 @@ export default class ServOfferTitle extends Component {
 
     _onBack = () => {        
         const { navigator } = this.props;
-        navigator.resetTo({component: NavPage, name: 'NavPage'})
+        let {goods_tpye} =this.props;
+        navigator.resetTo({component: NavPage, name: 'NavPage',passProps:{goods_tpye}})
     }
 
     render() {
