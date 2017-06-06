@@ -50,7 +50,7 @@ export default class ConnectPage extends Component{
                         <Text style={[styles.themeColorText]}>请问需要多长时间内完成？</Text>
                     </TouchableHighlight>
                     <TouchableHighlight style={[styles.button, {backgroundColor:global.gColors.buttonColor,position:'absolute', top: 506,flexShrink: 0, width: global.gScreen.width}]}
-                        onPress={() =>{this.props.callback(this.props.discardIndex,Constant.sys_msgs_status.FINISHED,this.props.feed.smt_id,"我想我能够帮到您"); this.props.navigator.pop()}}
+                        onPress={() =>{this.props.callback(this.props.discardIndex,Constant.sys_msgs_status.FINISHED,this.props.feed.smt_id,this.state.msg); this.props.navigator.pop()}}
 
                     >
                         <Text style={styles.buttonText}

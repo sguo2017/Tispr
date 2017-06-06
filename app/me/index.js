@@ -62,23 +62,30 @@ export default class MeInfo extends Component {
         return(
 
               <View style={styles.listView}>
-                <Header
-                    title='Qiker'
-                />
-                <View style={{flexDirection:'row', justifyContent:'flex-start',margin: 20}}>
-                    <View style={{}}>
-                        <TouchableOpacity onPress={this.clickJump.bind(this)}>
-                        <Image style={{width:80, height:80, borderRadius: 40, justifyContent:'flex-end', alignItems:'flex-end'}} source={{uri:this.state.avatar}}>
-                        </Image>
-                        <Image style={{width:20, height:20, borderRadius: 10,position: 'absolute',left: 60, top: 60}} source={require('../resource/icon_tel.png')}/>
-                        </TouchableOpacity>
+                <View style={{ backgroundColor: '#4A90E2' }}>
+                    <View style={{flexDirection:'row', justifyContent:'flex-start',margin: 20}}>
+                        <View style={{}}>
+                            <View>
+                            <Image style={{width: 72, height:72, borderRadius: 36, justifyContent:'flex-end', alignItems:'flex-end'}} source={{uri:this.state.avatar}}>
+                            </Image>
+                            <Image style={{width:20, height:20, borderRadius: 10,position: 'absolute',left: 52, top: 52}} source={require('../resource/y-call-tx3x.png')}/>
+                            </View>
+                        </View>
+                        <View style={{justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
+                            <Text style={{fontSize:16, color:'white'}}>{global.user.name}</Text>
+                            <Text style={styles.text}>番禺区，广州市，广东省，中国</Text>
+                            <Text style={{backgroundColor: 'rgba(255,255,255,0.24)', borderRadius: 10, paddingLeft: 10, paddingRight:10, height: 20}}>
+                                <Text style={{color: 'white', fontSize: 12, lineHeight: 18}} onPress={this.clickJump.bind(this)}>编辑个人信息</Text>
+                            </Text>
+                        </View>
+                        <Image style={{marginLeft: 26}} source={require('../resource/w-setting.png')}></Image>
                     </View>
-                    <View style={{justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
-                        <Text style={{fontSize:20, color:'black'}}>{global.user.name}</Text>
-                        <Text>番禺区，广州市，广东省，中国</Text>
-                        <Text style={{backgroundColor:'grey', color:'white',borderRadius: 10,paddingLeft: 10, paddingRight:10}}>
-                            <Text style={{}}>Complete your profile!</Text>
-                        </Text>
+                    <View style={{marginHorizontal: 16}}>
+                        <Text style={styles.text}>Being the savage's bowsman, that is, the person who pulled the bow-oar in his boat.</Text>
+                    </View>
+                    <View style={{marginLeft: 16, marginVertical: 16, flexDirection: 'row'}}>
+                        <Image style={{ marginRight: 11 }} source={require('../resource/w-earth.png')}></Image>
+                        <Text style={styles.text}>www.straphoto.com</Text>
                     </View>
                 </View>
                 <ScrollableTabView
@@ -111,6 +118,9 @@ export default class MeInfo extends Component {
 const styles = StyleSheet.create({
     listView: {
         flex: 1,
-        backgroundColor: '#f5f5f5'
+    },
+    text: {
+        fontSize: 14,
+        color: 'white',
     }
 })
