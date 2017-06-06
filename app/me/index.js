@@ -78,13 +78,13 @@ export default class MeInfo extends Component {
                                 <Text style={{color: 'white', fontSize: 12, lineHeight: 18}} onPress={this.clickJump.bind(this)}>编辑个人信息</Text>
                             </Text>
                         </View>
-                        <Image style={{ height: 18, width: 18, marginLeft: 28}} source={require('../resource/w-setting2x.png')}></Image>
+                        <Image style={{marginLeft: 26}} source={require('../resource/w-setting.png')}></Image>
                     </View>
                     <View style={{marginHorizontal: 16}}>
                         <Text style={styles.text}>Being the savage's bowsman, that is, the person who pulled the bow-oar in his boat.</Text>
                     </View>
                     <View style={{marginLeft: 16, marginVertical: 16, flexDirection: 'row'}}>
-                        <Image style={{ height: 18, width: 18, marginRight: 11 }} source={require('../resource/w-earth3x.png')}></Image>
+                        <Image style={{ marginRight: 11 }} source={require('../resource/w-earth.png')}></Image>
                         <Text style={styles.text}>www.straphoto.com</Text>
                     </View>
                 </View>
