@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
-
 const screenW = Dimensions.get('window').width;
 
 export default class ProposeDeal extends Component{
@@ -77,14 +76,14 @@ export default class ProposeDeal extends Component{
             <View>
                 <Header
                         leftIconAction={() => this.props.navigator.pop()}
-                        title={'Propose a new deal'}
+                        title={'提出新的交易'}
                         leftIcon={require('../resource/ic_back_dark.png')}
                         rightIcon={require('../resource/user_default_image.png')}
                         rightIconSize={26}
                     />
                 <View style={{justifyContent:'center',alignItems:'center', paddingTop:60}}>
                     <Image source={require('../resource/t_text.png')}/>
-                    <Text style={{fontSize:18,color:'#808080', width:screenW}}>Make a proposal, and if it's accepted the deal at this price and time.</Text>
+                    <Text style={{fontSize:18,color:'#808080', width:screenW}}>请提出您的方案，包括时间和价格，如果被接受了将产生订单</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center', width:screenW}}>
                         <Image style={{width:40, height:40}} source={require('../resource/ic_photo_comment.png')}/>
                         <TextInput
@@ -93,7 +92,7 @@ export default class ProposeDeal extends Component{
                         numberOfLines={1}
                         value={this.state.new_price}
                         onChangeText={(val) => {this.setState({ new_price: val})}}
-                        placeholder='I propose the following deal at this price and time'
+                        placeholder='我建议本次交易的时间和价格是'
                         />
                     </View>
                     <TouchableOpacity
@@ -105,7 +104,7 @@ export default class ProposeDeal extends Component{
                                     backgroundColor: global.gColors.buttonColor,width: screenW,height:44}}
                     onPress={this.askPrice.bind(this)}
                     >
-                        <Text style={{fontSize: 20, color: 'white'}}>Propose a deal</Text>
+                        <Text style={{fontSize: 20, color: 'white'}}>提出交易</Text>
                     </TouchableOpacity>
                 </View>
             </View>

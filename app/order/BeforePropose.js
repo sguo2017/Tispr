@@ -43,7 +43,7 @@ export default class BeforePropose extends Component{
                 <ScrollView style={{ height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 18,}}>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: 10 }}>
                         <Image source={require('../resource/icon_phone.png')} />
-                        <Text style={{ fontSize: 16, color: 'black' }}>No deals have been proposed yet</Text>
+                        <Text style={{ fontSize: 16, color: 'black' }}>还没有提出交易</Text>
                     </View>
                     <View style={{justifyContent:'center', alignItems:'center',marginTop:200}}>
                         <Image style={{width:200,height:200}} source={require('../resource/ic_arrow_down_default.png')} />
@@ -59,7 +59,7 @@ export default class BeforePropose extends Component{
                                 backgroundColor: global.gColors.buttonColor,width: screenW,height:44}}
                 onPress={this.clickJump.bind(this)}
                 >
-                    <Text style={{fontSize: 20, color: 'white'}}>Propose a deal</Text>
+                    <Text style={{fontSize: 20, color: 'white'}}>提出交易</Text>
                 </TouchableOpacity>
             </View>
             

@@ -167,7 +167,7 @@ export default class OrderDetail extends Component {
                            
                             <Image style={{width:30, height: 30}} source={require('../resource/ic_my_order.png')}/>
                             <Text style={{ fontSize: 22, color: '#FFF' }}>
-                            New Proposal
+                            新的提议
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -179,7 +179,7 @@ export default class OrderDetail extends Component {
                         
                             <Image style={{width:30, height: 30}} source={require('../resource/ic_modal_window_submit.png')}/>
                             <Text style={{ fontSize: 22, color: '#FFF' }}>
-                            Confirm deal
+                            确认交易
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -195,10 +195,10 @@ export default class OrderDetail extends Component {
                     <View style={styles.modalStyle}>  
                         <View style={styles.subView}>  
                         <Text style={styles.titleText}>  
-                           Do you want to confirm the deal?  
+                           您是否确认本次交易？
                         </Text>  
                         <Text style={styles.contentText}>  
-                            If everyone confirms, the deal is made and the request is awarded.  
+                            如果您确认了交易，将会产生订单，并开始分配服务  
                         </Text>  
                         <View style={styles.horizontalLine} />  
                         <View style={styles.buttonView}>  
