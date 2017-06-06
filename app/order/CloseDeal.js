@@ -9,7 +9,7 @@ import {
     TouchableHighlight,
     ScrollView,
 } from 'react-native';
-
+import TabBarView from'../containers/TabBarView';
 export default class CloseDeal extends Component{
     render(){
         return(
@@ -21,7 +21,7 @@ export default class CloseDeal extends Component{
                     activeOpacity={0.75}
                     style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',borderTopColor: '#ccc',
                    marginTop: 30, backgroundColor: '#81d49c',width: 300,height:44}}
-                   onPress={() => this.props.navigator.pop()}
+                   onPress={() => this.props.navigator.resetTo({component:TabBarView})}
                 >
                     <Text style={{ fontSize: 22, color: '#FFF' }}>
                         Got it
