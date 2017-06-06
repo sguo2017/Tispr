@@ -39,6 +39,7 @@ class ExploreList extends PureComponent {
             location: this.props.location,
             transiLocation: this.props.transiLocation,
             exploreparams: {},
+            exploretitle:'',
             sps: [false, false, false, false],//排序按钮操作
             cps: [false, false, false, false, false, false],//类型按钮操作
             lps: [false, false],//位置按钮操作
@@ -118,18 +119,18 @@ class ExploreList extends PureComponent {
                     <View style={styles.searchBox}>
                         <Image source={require('../resource/g_search.png')} style={styles.searchIcon} />
                         <TextInput style={styles.inputText} underlineColorAndroid='transparent'
-                            keyboardType='web-search' value={this.state.exploreparams.title}
+                            keyboardType='web-search' value={this.state.exploretitle}
                             //onChangeText={(val)=>this.setState({searchText:val})}
                             placeholder='搜索'
                             onChangeText={(val) => {
                                 let explore = this.state.exploreparams;
                                 explore.title = val;
-                                this.setState({ exploreparams: explore })
+                                this.setState({ exploreparams: explore, exploretitle:val })
                             }} />
                         <TouchableOpacity onPress={() => {
                             let explore = this.state.exploreparams;
                             explore.title = '';
-                            this.setState({ exploreparams: explore })
+                            this.setState({ exploreparams: explore,exploretitle:'' });
                         }}>
                             <Image source={require('../resource/g_cancel_pre.png')} style={styles.voiceIcon} />
                         </TouchableOpacity>
