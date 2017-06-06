@@ -43,6 +43,9 @@ var styles = StyleSheet.create({
         backgroundColor: '#f5f5f5'
     },
     wrapper: {
+        width: 376,
+        height: 260,
+        borderRadius: 4,
     },
     slide1: {
         flex: 1,
@@ -66,6 +69,37 @@ var styles = StyleSheet.create({
         color: '#fff',
         fontSize: 30,
         fontWeight: 'bold',
+    },
+    view: {
+        backgroundColor: '#FFFFFF',
+        height: 40,
+        flexDirection: 'row',
+        marginBottom: -2,
+        paddingLeft: 13.7,
+        marginTop: 40
+    },
+    line: {
+        width: 122.5,
+        height: 2.5,
+        backgroundColor: '#EEEEEE',
+        marginVertical: 20,
+    },
+    text1: {
+        alignSelf: 'center',
+        marginVertical: 16,
+        height:20,
+        width:84,
+        fontWeight: 'bold',
+        color: '#1B2833',
+        fontSize: 14,
+    },
+    text2: {
+        width: 56,
+        height: 20,
+        color: '#9E9E9E',
+        fontSize: 14,
+        marginHorizontal: 13.7,
+        marginVertical: 11
     }
 })
 
@@ -237,14 +271,19 @@ export default class BussList extends Component {
                 <Header
                     title='Qiker'
                 />
-                <Text style={{ alignSelf: 'center', margin: 8 }}>您有重要更新!</Text>
+                <Text style={styles.text1}>您有重要更新</Text>
                 <Swiper style={styles.wrapper} height={230} showsButtons={false}
                     showsPagination={false} index={this.state.initCard}
                 >
                     {
                        cardArray.map((data, index) => <Card content={data} navigator={navigator} update={this._updateCard} index={index}/>)
                     }       
-                </Swiper>
+                </Swiper>                
+                <View style={styles.view}>
+                    <View style={styles.line}></View>
+                    <Text style={styles.text2}>奇客动态</Text>
+                    <View style={styles.line}></View>
+                </View>
                 {!isFetching &&
                     <ListView
                         dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
