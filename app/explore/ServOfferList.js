@@ -183,8 +183,8 @@ const HomeItem = ({
                     <Text style={{fontSize: 16, color: 'black'}} numberOfLines={2}>{feed.serv_title}</Text>
                     <Text>创意艺术</Text>
                     <View style={{flexDirection:'row'}}>
-                        <Image/>
-                        <Text>距离100km</Text>
+                        <Image source={require('../resource/g-location-s.png')}/>
+                        <Text style={{fontSize: 12, color: '#B8B8B8'}}>距离100km</Text>
                     </View>
                 </View>
             </View>
@@ -211,7 +211,7 @@ const HomeItem = ({
                     </Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Image style={{height: 20, width: 20}} source={require('../resource/ic_feed_like.png')}/>
+                    <Image style={{height: 20, width: 20}} source={require('../resource/y-chat.png')}/>
                     <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{feed.user_id}</Text>
                 </View>
             </View>

@@ -51,9 +51,9 @@ class ExploreList extends PureComponent {
         this.setState({
             show: false,
             tabName: this.props.tabName,
-            sortBy: '最近发布',
+            sortBy: '综合排序',
             transiSortBy: '最近发布',
-            classify: '所有人才',
+            classify: '全部人才',
             transiClassify: '全部人才',
             location: '广州',
             transiLocation: '广州',
@@ -117,11 +117,12 @@ class ExploreList extends PureComponent {
             <View style={styles.listView}>
                 <View style={styles.container}>
                     <View style={styles.searchBox}>
-                        <Image source={require('../resource/g_search.png')} style={styles.searchIcon} />
+                        <Image source={require('../resource/w-search.png')} style={styles.searchIcon} />
                         <TextInput style={styles.inputText} underlineColorAndroid='transparent'
                             keyboardType='web-search' value={this.state.exploretitle}
                             //onChangeText={(val)=>this.setState({searchText:val})}
                             placeholder='搜索'
+                            placeholderTextColor='white'
                             onChangeText={(val) => {
                                 let explore = this.state.exploreparams;
                                 explore.title = val;
@@ -132,14 +133,14 @@ class ExploreList extends PureComponent {
                             explore.title = '';
                             this.setState({ exploreparams: explore,exploretitle:'' });
                         }}>
-                            <Image source={require('../resource/g_cancel_pre.png')} style={styles.voiceIcon} />
+                            
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={() => this.refresh()}>
-                        <Image source={require('../resource/b_xuqiu_xl.png')} style={styles.scanIcon} />
+                        <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
                     </TouchableOpacity>
                 </View>
-                <View style={{ flexDirection: 'row', padding: 10, justifyContent: 'space-around' }}>
+                <View style={{ flexDirection: 'row', paddingVertical: 10, backgroundColor: 'rgba(0,0,0,0.16)'}}>
                     <TouchableOpacity style={styles.filterButton} onPress={() => this.setState({ tabName: 'index', show: true })}>
                         <Text style={styles.whiteText}>{this.state.sortBy}</Text>
                     </TouchableOpacity>
@@ -147,6 +148,7 @@ class ExploreList extends PureComponent {
                         <Text style={styles.whiteText}>{this.state.classify}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.filterButton} onPress={() => this.setState({ tabName: 'index', show: true })}>
+                        <Image source={require('../resource/w-location.png')} style={{marginTop: -2}}></Image>
                         <Text style={styles.whiteText}>{this.state.location}</Text>
                     </TouchableOpacity>
                 </View>
@@ -376,12 +378,12 @@ class ExploreList extends PureComponent {
 const styles = StyleSheet.create({
     listView: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#4A90E2',
     },
     container: {
         flexDirection: 'row',   // 水平排布    
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: 8,
+        paddingRight: 8,
         paddingTop: Platform.OS === 'ios' ? 20 : 0,  // 处理iOS状态栏    
         height: Platform.OS === 'ios' ? 68 : 48,   // 处理iOS状态栏    
         backgroundColor: global.gColors.themeColor,
@@ -393,14 +395,13 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch'  // 设置拉伸模式    
     },
     searchBox: {//搜索框  
-        height: 30,
         flexDirection: 'row',   // 水平排布    
         flex: 1,
         borderRadius: 5,  // 设置圆角边    
-        backgroundColor: 'white',
+        backgroundColor: 'rgba(255,255,255,0.24)',
         alignItems: 'center',
-        marginLeft: 8,
-        marginRight: 8,
+        width: 300,
+        height: 32,
     },
     searchIcon: {//搜索图标    
         height: 20,
@@ -411,10 +412,9 @@ const styles = StyleSheet.create({
     inputText: {
         flex: 1,
         backgroundColor: 'transparent',
-        fontSize: 15,
+        fontSize: 14,
         position: 'relative',
-        height: 30,
-        padding: 0
+        padding: 0,
     },
     voiceIcon: {
         marginLeft: 5,
@@ -437,7 +437,13 @@ const styles = StyleSheet.create({
     },
     filterButton: {
         backgroundColor: global.gColors.themeColor,
-        padding: 5,
+        borderRadius: 2,
+        height: 28,
+        width: 72,
+        marginLeft: 8,
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        flexDirection: 'row'
     },
     filterRow: {
         flexDirection: 'row',
@@ -462,7 +468,7 @@ const styles = StyleSheet.create({
     },
     whiteText: {
         color: '#fff',
-        fontSize: 16
+        fontSize: 14
     },
     selectButton: {
         borderWidth: 1,
