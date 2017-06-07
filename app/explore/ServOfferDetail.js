@@ -30,6 +30,8 @@ export default class ServOfferDetail extends PureComponent {
     }
 
     render() {
+        const { feed } = this.props;
+
         return (
             <View style={styles.listView}>
                 <Header
@@ -43,9 +45,9 @@ export default class ServOfferDetail extends PureComponent {
                     <View style={{paddingHorizontal: 16, justifyContent: 'space-between', backgroundColor: 'white'}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, height: 48, }}>
                             <View style={{justifyContent: 'space-around', flexDirection: 'row',}}>
-                                <Image style={{width: 32, height: 32, borderRadius: 16}} source={require('../resource/user_default_image.png')}></Image>
+                                <Image style={{width: 32, height: 32, borderRadius: 16}} source={{uri: feed.user.avatar}} defaultsource={require('../resource/user_default_image.png')}></Image>
                                 <View style={{marginLeft: 8, marginTop: -5}}>
-                                    <Text style={{fontSize: 14, lineHeight: 20}}>李小娜</Text>
+                                    <Text style={{fontSize: 14, lineHeight: 20}}>{feed.user.name}</Text>
                                     <Text style={{color: '#999999', fontSize: 12}}>视频</Text>
                                 </View>
                             </View>
@@ -53,7 +55,7 @@ export default class ServOfferDetail extends PureComponent {
                                 <Text style={{color: '#999999', fontSize: 12}}>2017/2/21</Text>
                             </View> 
                         </View>
-                        <Text style={{color: '#424242', fontSize: 16, lineHeight: 24}}>三月，醉一场青春的流年。慢步在三月的春光里，走走停停，看花开嫣然，看春雨绵绵，感受春风拂面，春天，就是青春的流年。青春，是人生中最美的风景，是一场花开的遇见；青春，是一场痛并快乐着的旅行；青春，是一场轰轰烈烈的比赛；青春，是一场鲜衣奴马的争荣岁月；青春，是一场风花雪月的光阴。</Text>
+                        <Text style={{color: '#424242', fontSize: 16, lineHeight: 24}}>{feed.serv_detail}</Text>
                         <Text style={{fontSize: 14, color: '#999999', marginTop: 26, marginBottom: 10}}>远程或附近</Text>
                         <Image source={require('../resource/img_default_home_cover.png')} style={{height: 128, width: 328}}></Image>
                         <View style={{flexDirection: 'row', marginTop: 20, height: 48, justifyContent: 'space-between'}}>
