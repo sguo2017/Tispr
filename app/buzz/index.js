@@ -7,10 +7,10 @@ import {
     ListView,
     TouchableOpacity,
     RefreshControl,
-    PanResponder
+    PanResponder,
+    ViewPagerAndroid,
+    TouchableHighlight
 } from 'react-native';
-
-import Swiper from 'react-native-swiper';
 
 import { observer } from 'mobx-react/native'
 import { reaction } from 'mobx'
@@ -25,18 +25,12 @@ import Header from '../components/HomeNavigation';
 import Card from './Card'
 import Wrapper from './Wrapper';
 import Constant from '../common/constants';
+import Swiper from 'react-native-swiper';
 const KNOWLEDGE_ID = 3
 const itemWidth = global.gScreen.width - 20;
 const itemHeight = 300;
-const cardArray = [{},
-{ user_name: 'zengkm', action_desc: 'aaa,我需要一个创造性艺术专业可以做类似的服务，我发现你很适合，希望了解更多' },
-{ user_name: 'zhangsan', action_desc: 'bbb我需要一个创造性艺术专业可以做类似的服务，我发现你很适合，希望了解更多' },
-{ user_name: 'lisi', action_desc: 'ccc我需要一个创造性艺术专业可以做类似的服务，我发现你很适合，希望了解更多' },
-{ user_name: 'wangwu', action_desc: 'ddd我需要一个创造性艺术专业可以做类似的服务，我发现你很适合，希望了解更多' },
-{ user_name: 'liuqi', action_desc: 'eee我需要一个创造性艺术专业可以做类似的服务，我发现你很适合，希望了解更多' }
-];
 
-
+var cardArray=[];
 var styles = StyleSheet.create({
     listView: {
         flex: 1,
@@ -46,24 +40,6 @@ var styles = StyleSheet.create({
         width: 376,
         height: 260,
         borderRadius: 4,
-    },
-    slide1: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#9DD6EB',
-    },
-    slide2: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#97CAE5',
-    },
-    slide3: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#92BBD9',
     },
     text: {
         color: '#fff',
@@ -100,7 +76,18 @@ var styles = StyleSheet.create({
         fontSize: 14,
         marginHorizontal: 13.7,
         marginVertical: 11
-    }
+    },
+    button: {
+        height: 50,
+        backgroundColor: global.gColors.themeColor,
+        alignSelf: 'stretch',
+        justifyContent: 'center'
+    },
+    buttonText: {
+        fontSize: 22,
+        color: '#FFF',
+        alignSelf: 'center'
+    },
 })
 
 @observer
@@ -127,7 +114,7 @@ export default class BussList extends Component {
             rowHasChanged: (row1, row2) => row1 !== row2,
         }),
         sys_msgs:this.props.sys_msgs,    
-        initCard:0    
+        initCard:0 ,
     }
 
     knowledgeListStore = new SysMsgStore(KNOWLEDGE_ID)
@@ -136,25 +123,18 @@ export default class BussList extends Component {
         reaction(
             () => this.knowledgeListStore.page,
             () => this.knowledgeListStore.fetchFeedList()
-        )
+        );
+        setTimeout(()=>{
+            this.setState({
+                sys_msgs:this.state.sys_msgs,
+            })
+        },3000);
     }
 
     componentWillMount() {
         this._getSysMsgs();
-        this._panResponder = PanResponder.create({
-            onMoveShouldSetPanResponder: (e, gestureState) => {
-                if (
-                    Platform.OS == 'android'
-                    && (gestureState.dx < 2 && gestureState.dx > -2)
-                    && (gestureState.dy < 2 && gestureState.dy > -2)
-                ) {
-                    return false;
-                }
-
-                return true;
-            }
-        })
     }
+
     componentWillReact() {
         const { errorMsg } = this.knowledgeListStore
         errorMsg && this.toast.show(errorMsg)
@@ -172,7 +152,7 @@ export default class BussList extends Component {
 
     _onRefresh = () => {
         this.knowledgeListStore.isRefreshing = true
-        this.knowledgeListStore.fetchFeedList()
+        this.knowledgeListStore.fetchFeedList();
     }
 
     _onEndReach = () => this.knowledgeListStore.page++
@@ -197,8 +177,11 @@ export default class BussList extends Component {
                     let sys_msgs = this.state.sys_msgs;
                     // console.log("163:")
                     sys_msgs = responseData.feeds;
+                    sys_msgs.unshift('0');
                     // console.log("165:"+JSON.stringify(sys_msgs))
-                    this.setState({sys_msgs:sys_msgs})
+                        this.setState({
+                            sys_msgs:sys_msgs,
+                        });
                      //console.log("167:"+JSON.stringify(this.state.sys_msgs))
                 } else {
 
@@ -233,7 +216,10 @@ export default class BussList extends Component {
             });
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
-                alert('已通知对方');
+                if(newStatus == Constant.sys_msgs_status.FINISHED)
+                  alert('已通知对方')
+                if(newStatus == Constant.sys_msgs_status.DISCARDED)
+                  alert('已忽略，不再显示')
             } else {
                 alert('出错了')
             }
@@ -259,26 +245,27 @@ export default class BussList extends Component {
     }
     render() {
         const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
-        const { navigator } = this.props
-        if(this.state.sys_msgs)
-        {
-            cardArray=this.state.sys_msgs;
-            if(cardArray[0]!=='0')
-                cardArray.unshift('0');
-        }
+        const { navigator } = this.props;
+        cardArray =this.state.sys_msgs;
         return (
             <View style={styles.listView}>
                 <Header
                     title='Qiker'
                 />
                 <Text style={styles.text1}>您有重要更新</Text>
-                <Swiper style={styles.wrapper} height={230} showsButtons={false}
-                    showsPagination={false} index={this.state.initCard}
-                >
-                    {
-                       cardArray.map((data, index) => <Card content={data} navigator={navigator} update={this._updateCard} index={index}/>)
-                    }       
-                </Swiper>                
+                {cardArray?
+                        
+                        <Swiper style={styles.wrapper} height={230} showsButtons={false}
+                            showsPagination={false} index={this.state.initCard}
+                        >
+                            {cardArray?
+                                cardArray.map((data, index) => <Card key={index} content={data} navigator={navigator} update={this._updateCard} index={index} width={global.gScreen.width}/>)
+                            :<View></View>
+                            }
+                        </Swiper>
+                    :<View>
+                    </View>   
+                }                           
                 <View style={styles.view}>
                     <View style={styles.line}></View>
                     <Text style={styles.text2}>奇客动态</Text>
