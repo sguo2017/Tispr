@@ -267,7 +267,7 @@ export default class ServOfferConfirm extends Component {
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b_location.png')} />
-                    <Text style={{ color: "#000000" }}>XXX</Text>
+                    <Text style={{ color: "#000000" }}>{global.user.addressComponent.district}，{global.user.addressComponent.city}，{global.user.addressComponent.province}，{global.user.addressComponent.country}</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
