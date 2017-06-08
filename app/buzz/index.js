@@ -126,6 +126,9 @@ export default class BussList extends Component {
         }),
         sys_msgs:this.props.sys_msgs,    
         initCard:0 ,
+        swiper_mutex:true,
+        swiper_1_height:230,
+        swiper_2_height:230
     }
 
     knowledgeListStore = new SysMsgStore(KNOWLEDGE_ID)
@@ -137,9 +140,15 @@ export default class BussList extends Component {
         );
         setTimeout(()=>{
             this.setState({
-                sys_msgs:this.state.sys_msgs,
+                swiper_1_height:231,
             })
-        },3000);
+        },100);
+        setTimeout(()=>{
+            this.setState({
+                swiper_2_height:231,
+            })
+        },100);
+
     }
 
     componentWillMount() {
@@ -241,7 +250,7 @@ export default class BussList extends Component {
     _updateCard(index, newStatus, id, lately_chat_content){
       let arr=d.state.sys_msgs;
       if(index == arr.length-1){
-        arr.pop()
+        arr.pop();
       } else{
         arr.copyWithin(index,index+1);
         arr.pop();
@@ -263,12 +272,13 @@ export default class BussList extends Component {
                     title='Qiker'
                 />
                 <Text style={styles.text1}>您有重要更新</Text>
-                {cardArray?
-                        
-                        <Swiper style={styles.wrapper} height={230} showsButtons={false}
-                            showsPagination={false} index={this.state.initCard}
+
+                {this.state.swiper_mutex?
+                    <Swiper style={styles.wrapper} height={this.state.swiper_1_height} showsButtons={false} showsPagination={false}
+                         onMomentumScrollEnd={(e, state, context) => {if(state.index==2){this.setState({swiper_mutex:false,swiper_2_height:230})}}}
+
                         >
-                            {/*<View style={[styles.cardWrapper,{backgroundColor:'#fff'}]}>
+                            <View style={[styles.cardWrapper,{backgroundColor:'#fff'}]}>
                                 <Text style={styles.CardText}>欢迎您，{global.user.name}</Text>
                                 <Text style={styles.CardText}>这是您的客户需求卡片组，可以向左或</Text>
                                 <Text style={styles.CardText}>向右滑动，快试试看！</Text>
@@ -279,15 +289,25 @@ export default class BussList extends Component {
                             </View>
                             <View style={styles.cardWrapper}>
                                 <Image style={[{alignSelf:'center'}]} source={require('../resource/card-l-guide-3.png')}/>
-                            </View>*/}
-                            {cardArray?
-                                cardArray.map((data, index) => <Card key={index} content={data} navigator={navigator} update={this._updateCard} index={index} width={global.gScreen.width}/>)
-                            :<View></View>
+                            </View>
+                    </Swiper>
+                    :
+                    cardArray?                            
+                        <Swiper style={styles.wrapper} height={this.state.swiper_2_height} showsButtons={false}
+                            showsPagination={false} index={this.state.initCard}
+                        >
+                            { cardArray?
+                            cardArray.map((data, index) => <Card key={index} content={data} navigator={navigator} update={this._updateCard} index={index} width={global.gScreen.width}/>)
+                            :<View></View>   
                             }
                         </Swiper>
-                    :<View>
-                    </View>   
-                }                           
+                        :<View>
+                            <Text>没有推送</Text>
+                        </View>                      
+
+                }
+
+                    
                 <View style={[styles.view,{marginTop:10}]}>
                     <View style={styles.line}></View>
                     <Text style={styles.text2}>奇客动态</Text>
