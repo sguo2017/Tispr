@@ -288,7 +288,7 @@ export default class BussList extends Component {
                     :<View>
                     </View>   
                 }                           
-                <View style={styles.view}>
+                <View style={[styles.view,{marginTop:10}]}>
                     <View style={styles.line}></View>
                     <Text style={styles.text2}>奇客动态</Text>
                     <View style={styles.line}></View>

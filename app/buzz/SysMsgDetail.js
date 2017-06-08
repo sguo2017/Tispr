@@ -179,7 +179,7 @@ export default class SysMsgDetail extends Component {
                     onPress={() => this._p(feed)}
                 >
                     <Text style={{ fontSize: 22, color: '#FFF' }}>
-                        Connect
+                        联系TA
                 </Text>
                 </TouchableOpacity>
             </View>
