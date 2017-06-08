@@ -26,6 +26,7 @@ import Card from './Card'
 import Wrapper from './Wrapper';
 import Constant from '../common/constants';
 import Swiper from 'react-native-swiper';
+import 'babel-polyfill';
 const KNOWLEDGE_ID = 3
 const itemWidth = global.gScreen.width - 20;
 const itemHeight = 300;
@@ -249,9 +250,9 @@ export default class BussList extends Component {
     
     _updateCard(index, newStatus, id, lately_chat_content){
       let arr=d.state.sys_msgs;
-      if(index == arr.length-1){
+      if((index == arr.length-1) && arr){
         arr.pop();
-      } else{
+      } else if(arr){
         arr.copyWithin(index,index+1);
         arr.pop();
       } 
