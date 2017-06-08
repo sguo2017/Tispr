@@ -79,7 +79,7 @@ export default class MeInfo extends Component {
                                 <Text style={{color: 'white', fontSize: 12, lineHeight: 18}} onPress={this.clickJump.bind(this)}>编辑个人信息</Text>
                             </Text>
                         </View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.props.navigator.push({component:Setting})}>
                             <Image style={{marginLeft: 26}} source={require('../resource/w-setting.png')}></Image>
                         </TouchableOpacity>
                     </View>

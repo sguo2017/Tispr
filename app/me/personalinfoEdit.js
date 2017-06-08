@@ -198,8 +198,7 @@ export default class Personinfoedit extends Component {
                     leftIcon={require('../resource/w-back.png')}
                     leftIconAction={this._onBack}
                     rightButton='保存'
-                    rightIconAction={this.updateavatar.bind(this)}
-                    rightButtonAction={this.editSetting.bind(this)}
+                    rightButtonAction={this.updateavatar.bind(this)}
                 />
                 <View style={{justifyContent:'flex-start',margin: 20}}>
                     <View style={{flexDirection: 'row', justifyContent:'center', marginBottom: 26}}>
