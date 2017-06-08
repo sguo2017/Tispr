@@ -9,13 +9,6 @@ import DiscardPage from './HeadCard/DiscardPage';
 
 export default function Card({ content, navigator, width, height, update,index }) {
 
-  if(content=='0'){
-    return(
-      <View style={[styles.wrapper, { width, height }]}>
-        <Image style={{alignSelf:'center'}} source={require('../resource/card_l_guide_1.png')}/>
-      </View>
-    )
-  }else {
     return (
       <View style={[styles.wrapper, { width, height }]}>
         <View style={{height :60, flexDirection:'row',justifyContent:'space-between',alignItems:'flex-start'}}>
@@ -56,8 +49,6 @@ export default function Card({ content, navigator, width, height, update,index }
         </TouchableHighlight>
       </View>
   );
-  }
- 
 }
 
 const styles = StyleSheet.create({
@@ -76,6 +67,5 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#FFF',
     alignSelf: 'center'
-  },
-  
+  }  
 });

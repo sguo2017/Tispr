@@ -37,9 +37,20 @@ var styles = StyleSheet.create({
         backgroundColor: '#f5f5f5'
     },
     wrapper: {
-        width: 376,
+        width: global.gScreen.width,
         height: 260,
         borderRadius: 4,
+    },
+    cardWrapper:{
+        width: global.gScreen.width,
+        height: 260,
+        borderRadius: 4,
+        alignItems:'center'
+    },
+    CardText:{
+        fontSize:16,
+        margin:5,
+        color:global.gColors.themeColor
     },
     text: {
         color: '#fff',
@@ -177,11 +188,10 @@ export default class BussList extends Component {
                     let sys_msgs = this.state.sys_msgs;
                     // console.log("163:")
                     sys_msgs = responseData.feeds;
-                    sys_msgs.unshift('0');
                     // console.log("165:"+JSON.stringify(sys_msgs))
-                        this.setState({
-                            sys_msgs:sys_msgs,
-                        });
+                    this.setState({
+                        sys_msgs:sys_msgs,
+                    });
                      //console.log("167:"+JSON.stringify(this.state.sys_msgs))
                 } else {
 
@@ -258,6 +268,18 @@ export default class BussList extends Component {
                         <Swiper style={styles.wrapper} height={230} showsButtons={false}
                             showsPagination={false} index={this.state.initCard}
                         >
+                            {/*<View style={[styles.cardWrapper,{backgroundColor:'#fff'}]}>
+                                <Text style={styles.CardText}>欢迎您，{global.user.name}</Text>
+                                <Text style={styles.CardText}>这是您的客户需求卡片组，可以向左或</Text>
+                                <Text style={styles.CardText}>向右滑动，快试试看！</Text>
+                                <Image style={[{alignSelf:'center'},{width:global.gScreen.width,height:140}]} source={require('../resource/card_l_guide_b.png')}/>
+                            </View>
+                            <View style={styles.cardWrapper}>
+                                <Image style={[{alignSelf:'center'}]} source={require('../resource/card-l-guide-2.png')}/>
+                            </View>
+                            <View style={styles.cardWrapper}>
+                                <Image style={[{alignSelf:'center'}]} source={require('../resource/card-l-guide-3.png')}/>
+                            </View>*/}
                             {cardArray?
                                 cardArray.map((data, index) => <Card key={index} content={data} navigator={navigator} update={this._updateCard} index={index} width={global.gScreen.width}/>)
                             :<View></View>
