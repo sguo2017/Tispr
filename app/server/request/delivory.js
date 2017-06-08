@@ -70,7 +70,7 @@ export default class ServOfferDelivory extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    title='Location details'
+                    title='发布需求'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
                     leftIconAction = {this._onBack.bind(this)}
                 />
@@ -79,13 +79,13 @@ export default class ServOfferDelivory extends Component {
 
                 <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>90%</Text>
 
-                <Image style={{ width: 60, height: 60, alignSelf: 'center' }} source={require('../../resource/t_loaction.png')} />
+                <Image style={{ width: 60, height: 60, alignSelf: 'center' }} source={require('../../resource/b_location.png')} />
 
-                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 18, marginTop:5, marginBottom: 10 }}>需要的服务地点范围</Text>
+                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 18, marginTop:5, marginBottom: 10 }}>服务地点</Text>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row',justifyContent: 'space-between', 
                 borderBottomColor: '#a8a6b9', borderBottomWidth:1, marginLeft:5, paddingBottom: 8}}>
-                    <Text style={styles.textStyle}>远程/在线</Text>
+                    <Text style={styles.textStyle}>我希望远程完成</Text>
                     <Switch
                     onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
                     style={{marginTop: 15}}
@@ -95,7 +95,7 @@ export default class ServOfferDelivory extends Component {
                 <View style={{borderBottomColor: '#a8a6b9',borderBottomWidth:1, marginLeft:5, paddingBottom: 8}}>
                     <View style={{ alignItems: 'center', flexDirection: 'row',justifyContent: 'space-between' }}>
                         <Text style={styles.textStyle}>
-                            本地
+                            我希望本地完成
                         </Text>
                         <Switch
                         onValueChange={(value) => this.setState({trueSwitchIsOn: value})}                    

@@ -112,10 +112,9 @@ export default class navpage extends Component {
         return (
             <View style={styles.listView}>
                 <Header
-                    leftIconAction={() => this.props.navigator.pop()}
-                    title='Chose a Category'
+                    leftIconAction={() => this.props.navigator.resetTo({component: ServIndex, name: 'ServIndex'})}
+                    title='选择分类'
                     leftIcon={require('../../resource/ic_back_dark.png')}
-                    leftIconAction={this._onBack.bind(this)}
                     rightIconAction={() => { const { navigator } = this.props; navigator.push({ name: "Serv", component: ServOffer }) }}
                     rightIcon={require('../../resource/ic_contrast_add.png')}
                 />

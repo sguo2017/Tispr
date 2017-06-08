@@ -237,7 +237,7 @@ export default class ServOfferConfirm extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    title='Confrimation'
+                    title='确认发布'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
                     leftIconAction={this._onBack.bind(this)}
                 />
@@ -253,14 +253,14 @@ export default class ServOfferConfirm extends Component {
                     <Text style={{ color: "#000000" }}>{this.state.serv_offer.serv_title}</Text>
                 </View>
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
-                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_loaction.png')} />
+                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b_location.png')} />
                     <Text style={{ color: "#a8a6b9" }}>您的服务范围设置在 &nbsp;</Text>
-                    <Text style={{ color: "#000000" }}>番禺区，广州市，广东省，中国</Text>
+                    <Text style={{ color: "#000000" }}>{global.user.addressComponent.district}，{global.user.addressComponent.city}，{global.user.addressComponent.province}，{global.user.addressComponent.country}</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
-                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_img.png')} />
-                    <Text style={{ color: "#a8a6b9" }}>添加作品或相关图片</Text>
+                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b-pic.png')} />
+                    <Text style={{ color: "#a8a6b9" }}>上传作品或相关图片</Text>
                 </View>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 5 }}>

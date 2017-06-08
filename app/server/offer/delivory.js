@@ -74,7 +74,7 @@ export default class ServOfferDelivory extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    title='Delivory detail'
+                    title='发布服务'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
                     leftIconAction = {this._onBack.bind(this)}
                 />
@@ -83,7 +83,7 @@ export default class ServOfferDelivory extends Component {
 
                 <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>90%</Text>
 
-                <Image style={{ width: 60, height: 60, alignSelf: 'center' }} source={require('../../resource/t_loaction.png')} />
+                <Image style={{ width: 60, height: 60, alignSelf: 'center' }} source={require('../../resource/b_location.png')} />
 
                 <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 18, marginTop:5, marginBottom: 10 }}>怎样提供服务</Text>
 

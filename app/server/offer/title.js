@@ -52,10 +52,10 @@ export default class ServOfferTitle extends Component {
     }
 
     clickJump() {
-        if(undefined === this.state.serv_offer.serv_title || this.state.serv_offer.title_length<10){
+        if(undefined === this.state.serv_offer.serv_title || this.state.serv_offer.title_length<16){
             Alert.alert(
                     '提示',
-                    '请输入不少于10个字符',
+                    '请输入不少于16个字符',
                     [
                         { text: '继续输入', onPress: () => console.log('确定') },
                     ]
@@ -90,7 +90,7 @@ export default class ServOfferTitle extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    title='Sell a service'
+                    title='发布服务'
                     leftIcon = {require('../../resource/t_header_arrow_left.png')}
                     leftIconAction = {this._onBack.bind(this)}
                 />
@@ -99,7 +99,7 @@ export default class ServOfferTitle extends Component {
 
                 <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>30%</Text>
 
-                <Image style={{ width: 50, height: 50, alignSelf: 'center' }} source={require('../../resource/t_text.png')} />
+                <Image style={{ width: 50, height: 50, alignSelf: 'center' }} source={require('../../resource/b-aixin-xl.png')} />
 
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>提供什么服务</Text>
 
