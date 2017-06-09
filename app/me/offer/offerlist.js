@@ -1,7 +1,3 @@
-/**
- * Created by ljunb on 2016/11/19.
- * 逛吃-首页
- */
 import React, {Component} from 'react';
 import {observer} from 'mobx-react/native'
 import {

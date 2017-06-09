@@ -122,8 +122,8 @@ class KnowledgeItem extends PureComponent {
     }
 
     render() {
-        const {feed: {action_title,action_desc,user}} = this.props
-        const cellData = {action_title,action_desc,user}
+        const {feed: {serv_title,serv_detail,user}} = this.props
+        const cellData = {serv_title,serv_detail,user}
         return <RequestMsgSingleImageCell {...cellData} onPress={this._onPress}/>
     }
 }

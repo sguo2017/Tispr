@@ -10,8 +10,8 @@ import {
 const screenW = Dimensions.get('window').width;
 
 const RequestMsgSingleImageItem = ({
-    action_title,
-    action_desc,
+    serv_title,
+    serv_detail,
     user,
     onPress
 }) => {
@@ -33,18 +33,13 @@ const RequestMsgSingleImageItem = ({
                     <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
                         <Text numberOfLines={2} style={{width: screenW * 0.55, fontSize: 15, flexShrink: 0}}>
                             <Text style={{fontWeight: 'bold', color: 'black',marginRight: 5}} >{user.name}&nbsp;&nbsp;&nbsp;</Text>
-                            <Text>{action_title}</Text>
+                            <Text>{serv_title}</Text>
                         </Text>
                         <View numberOfLines={2} style={{width: screenW * 0.25,flexShrink: 0, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
                             <Text style={{fontSize:13}}>1h</Text>
                         </View>
                     </View>
-                    
-                    {
-                        action_desc === null ? 
-                        <Text style={{color: 'black'}}>Tempe,Arizona, United States, 85281</Text> : 
-                        <Text style={{color: 'green', fontSize: 15}}>{action_desc}</Text>
-                    }
+                   <Text style={{color: 'green', fontSize: 15}}>{serv_detail}</Text>
                 </View>
                 <Image
                     style={{height: 80, width: (screenW - 15 * 2 - 10 * 2) / 3}}

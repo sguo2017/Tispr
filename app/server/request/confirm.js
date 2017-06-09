@@ -170,6 +170,16 @@ export default class ServOfferConfirm extends Component {
                         serv_detail: this.state.serv_offer.serv_detail,
                         serv_imges: this.state.serv_offer.serv_imges,
                         serv_catagory: this.state.serv_offer.goods_tpye,
+
+                      
+                        catalog: this.state.serv_offer.goods_catalogs_name,
+                        district: global.user.addressComponent.district,
+                        city: global.user.addressComponent.city,
+                        province: global.user.addressComponent.province,
+                        country: global.user.addressComponent.country,
+                        latitude: global.user.addressComponent.latitude,
+                        longitude: global.user.addressComponent.longitude,
+                        goods_catalog_id: this.state.serv_offer.goods_catalogs_id,
                     }
                 })
             });

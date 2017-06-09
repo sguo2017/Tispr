@@ -39,6 +39,12 @@ let sys_msgs_status = {
     FINISHED: 'finished'
 }
 
+let serv_qry_type = {
+    OFFER: '1', //我的->服务
+    REQUEST: '2',//我的->需求
+}
+
+
 let url = {
      //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
      IMG_SERV_ADDR: "123.56.157.233",
@@ -46,7 +52,7 @@ let url = {
      SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
      //////////////////<<<<   API接口  >>>>>//////////////////////////////
      SERV_API_ADDR: `123.56.157.233`,
-     SERV_API_PORT: `8081`,
+     SERV_API_PORT: `8082`,
      SERV_API_USER_LOGIN: `/api/users/sessions`,//登录接口
      SERV_API_USER_REGI: `/api/users/registrations`, //注册接口
      SERV_API_SERV_OFFER_ADD: `/api/goods/serv_offers?token=`,//服务提供的新增接口
@@ -105,5 +111,6 @@ export default {
     storeKeys: storeKeys,
     ingredientMapper: mapper,
     sysMsgCatalog: sysMsgCatalog,
-    sys_msgs_status: sys_msgs_status
+    sys_msgs_status: sys_msgs_status,
+    serv_qry_type: serv_qry_type
 }
