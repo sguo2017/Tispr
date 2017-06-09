@@ -84,7 +84,7 @@ export default class DealConnect extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    title='Get Connect'
+                    title='联系TA'
                     leftIcon={require('../resource/t_header_arrow_left.png')}
                     leftIconAction={() => this.props.navigator.pop()}
                 />
