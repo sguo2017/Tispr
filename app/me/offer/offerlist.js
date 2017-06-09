@@ -124,10 +124,11 @@ const HomeItem = ({
    
     let screenW = Common.window.width;
     let width = (screenW - 15 * 2 - 10) / 2;
-    let imageH = width;//feed.content_type != 5 ? width + 50 : width;
-
+    let imageH = 100;//feed.content_type != 5 ? width + 50 : width;
+    let offerUser = feed.user;
     // 返回的数据中，头像出现null的情况，所以source仍然做个判断
     let publisherAvatar = require('../../resource/img_default_avatar.png');//feed.publisher_avatar ? {uri: feed.publisher_avatar} : require('../resource/img_default_avatar.png');
+    let serv_image = feed.serv_images?{uri:feed.serv_images}:require('../../resource/qk_nav_default.png')
     console.log("135")
     return (
         <TouchableOpacity
@@ -139,34 +140,34 @@ const HomeItem = ({
                 left: data.left,
                 top: data.top,
                 position: 'absolute',
-                flex: 1
+                flex: 1,
+                marginBottom:20
             }}
             onPress={onPress}
         >
             <Image
                 style={{width: width, height: imageH}}
-                source={{uri: feed.serv_imges}}
-                defaultSource={require('../../resource/img_buzz_detail_default.png')}
+                source={serv_image}
             />
              <View style={{
-                height: data.titleHeight*2,
+                height: data.titleHeight*3,
                 width: width,
                 paddingHorizontal: 4,
                 paddingTop: 4,
                 marginBottom: 4,
                 //backgroundColor:'blue'
-                borderBottomWidth: Common.window.onePR,
-                borderColor: '#ccc'
             }}>
                 <View style={{
-                    height: data.titleHeight*2 - 8,
+                    height: data.titleHeight*3- 8,
                     width: width - 8,
                     justifyContent: 'space-around',
                 }}>
-                    <Text style={{fontSize: 16, color: 'black'}} numberOfLines={4}>{feed.serv_title}</Text>
-                    {feed.serv_detail != '' &&
-                    <Text style={{color: 'gray', fontSize: 12}} numberOfLines={1}>{feed.serv_detail}</Text>
-                    }
+                    <Text style={{fontSize: 16, color: 'black'}} numberOfLines={2}>{feed.serv_title}</Text>
+                    <Text>创意艺术</Text>
+                    <View style={{flexDirection:'row'}}>
+                        <Image source={require('../../resource/g-location-s.png')}/>
+                        <Text style={{fontSize: 12, color: '#B8B8B8'}}>距离100km</Text>
+                    </View>
                 </View>
             </View>
             <View style={{
@@ -174,23 +175,25 @@ const HomeItem = ({
                 justifyContent: 'space-between',
                 alignItems: 'flex-start',
                 height: 60,
-                paddingHorizontal: 4
+                paddingHorizontal: 4,
+                borderBottomWidth: Common.window.onePR,
+                borderColor: '#ccc',
             }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Image
                         style={{height: 20, width: 20, borderRadius: 15}}
-                        source={publisherAvatar}
+                        source={{uri:offerUser.avatar}}
                         defaultSource={require('../../resource/img_default_avatar.png')}
                     />
                     <Text
                         style={{fontSize: 14, color: 'gray', marginLeft: 8, width: width * 0.4}}
                         numberOfLines={1}
                     >
-                        {feed.serv_detail}
+                        {offerUser.name}
                     </Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Image style={{height: 20, width: 20}} source={require('../../resource/ic_feed_like.png')}/>
+                    <Image style={{height: 20, width: 20}} source={require('../../resource/y-chat.png')}/>
                     <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{feed.user_id}</Text>
                 </View>
             </View>
