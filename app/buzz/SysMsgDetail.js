@@ -151,7 +151,7 @@ export default class SysMsgDetail extends Component {
                             <Image style={{ width: 30, height: 30, marginRight: 5, marginLeft: 3 }} source={{ uri: feed.user.avatar }} defaultSource={require('../resource/user_default_image.png')} />
                             <View style={{ marginLeft: 10 }}>
                                 <Text style={{ color: 'black', fontSize: 18 }}>{feed.user_name}</Text>
-                                <Text style={{ color: 'gray', fontSize: 18 }}>{feed.action_title}</Text>
+                                <Text style={{ color: 'gray', fontSize: 18 }}>{feed.msg_catalog}</Text>
                             </View>
                         </View>
                         <Image style={{ width: 350, height: 300, marginRight: 30, marginLeft: 5 }} source={{ uri: feed.serv_offer.serv_imges }} defaultSource={require('../resource/img_buzz_detail_default.png')} />
@@ -163,8 +163,8 @@ export default class SysMsgDetail extends Component {
                             justifyContent: 'center',
                             marginTop: 5
                         }}>
-                            <Text style={{ color: 'black', fontSize: 18 }}>{feed.action_desc}</Text>
                             <Text style={{ color: 'gray', fontSize: 18 }}>{feed.action_title}</Text>
+                            <Text style={{ color: 'black', fontSize: 18 }}>{feed.action_desc}</Text>
                         </View>
                         {/*<TouchableHighlight style={[styles.bottomToolBar,{height: 40 }]}>
                         <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: '#81d49c' }}>

@@ -35,7 +35,7 @@ export default class BeforePropose extends Component{
             <View>
                 <Header
                         leftIconAction={() => this.props.navigator.pop()}
-                        title={'Current Proposal'}
+                        title={'当前交易'}
                         leftIcon={require('../resource/ic_back_dark.png')}
                         rightIcon={require('../resource/user_default_image.png')}
                         rightIconSize={26}

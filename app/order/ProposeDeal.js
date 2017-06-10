@@ -83,7 +83,7 @@ export default class ProposeDeal extends Component{
                     />
                 <View style={{justifyContent:'center',alignItems:'center', paddingTop:60}}>
                     <Image source={require('../resource/t_text.png')}/>
-                    <Text style={{fontSize:18,color:'#808080', width:screenW}}>请提出您的方案，包括时间和价格，如果被接受了将产生订单</Text>
+                    <Text style={{fontSize:18,color:'#808080', width:screenW}}>提出交易条件，如果对方接受，交易达成</Text>
                     <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center', width:screenW}}>
                         <Image style={{width:40, height:40}} source={require('../resource/ic_photo_comment.png')}/>
                         <TextInput
@@ -92,7 +92,7 @@ export default class ProposeDeal extends Component{
                         numberOfLines={1}
                         value={this.state.new_price}
                         onChangeText={(val) => {this.setState({ new_price: val})}}
-                        placeholder='我建议本次交易的时间和价格是'
+                        placeholder='我提议本次交易按以下价格及方式进行'
                         />
                     </View>
                     <TouchableOpacity

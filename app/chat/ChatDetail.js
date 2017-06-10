@@ -169,15 +169,15 @@ export default class ChatDetail extends Component {
           <Image source={require('../resource/icon_phone.png')} />
           {
             this.state.order_status =='00A'? 
-            <Text style={{ fontSize: 16, color: 'black' }}>No deals have been proposed yet</Text>:<Text></Text>
+            <Text style={{ fontSize: 16, color: 'black' }}>未提出交易条件</Text>:<Text></Text>
           }
           {
             this.state.order_status =='00B'? 
-            <Text style={{ fontSize: 16, color: 'black' }}>A deal has been proposed</Text>:<Text></Text>
+            <Text style={{ fontSize: 16, color: 'black' }}>已提出交易条件</Text>:<Text></Text>
           }
           {
             this.state.order_status =='00C'? 
-            <Text style={{ fontSize: 16, color: 'black' }}>The deal has been close</Text>:<Text></Text>
+            <Text style={{ fontSize: 16, color: 'black' }}>交易达成！</Text>:<Text></Text>
           }
           
          </TouchableOpacity>
