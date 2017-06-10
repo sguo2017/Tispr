@@ -115,8 +115,6 @@ export default class navpage extends Component {
                     leftIconAction={() => this.props.navigator.resetTo({component: ServIndex, name: 'ServIndex'})}
                     title='选择分类'
                     leftIcon={require('../../resource/ic_back_dark.png')}
-                    rightIconAction={() => { const { navigator } = this.props; navigator.push({ name: "Serv", component: ServOffer }) }}
-                    rightIcon={require('../../resource/ic_contrast_add.png')}
                 />
                 <ScrollableTabView
                     style={{ marginTop: 20, }}
