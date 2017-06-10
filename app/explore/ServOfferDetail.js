@@ -56,8 +56,9 @@ export default class ServOfferDetail extends PureComponent {
                             </View> 
                         </View>
                         <Text style={{color: '#424242', fontSize: 16, lineHeight: 24}}>{feed.serv_detail}</Text>
+                        <Image defaultSource={require('../resource/img_default_home_cover.png')} source={{uri:feed.serv_images}} style={{height: 300, width: 328}}></Image>                                                
                         <Text style={{fontSize: 14, color: '#999999', marginTop: 26, marginBottom: 10}}>远程或附近</Text>
-                        <Image source={require('../resource/img_default_home_cover.png')} style={{height: 128, width: 328}}></Image>
+                        <Image defaultSource={require('../resource/img_default_home_cover.png')} source={{uri:feed.serv_images}} style={{height: 128, width: 328}}></Image>
                         <View style={{flexDirection: 'row', marginTop: 20, height: 48, justifyContent: 'space-between'}}>
                             <Text style={{fontSize: 16, color: 'black'}}>投标&nbsp;&nbsp;&nbsp;4/5</Text>
                             <TouchableOpacity style={{backgroundColor: '#4A90E2', borderRadius: 2, height: 28, width: 72}}>

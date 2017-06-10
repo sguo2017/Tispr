@@ -24,7 +24,7 @@ import UserDefaults from '../../common/UserDefaults';
 import TabBarView from '../../containers/TabBarView';
 
 
-//let serv_imges_url = ["", "", "", "", "", ""];
+//let serv_images_url = ["", "", "", "", "", ""];
 @observer
 export default class ServOfferConfirm extends Component {
 
@@ -33,7 +33,7 @@ export default class ServOfferConfirm extends Component {
 
         this.state = {
             serv_offer: this.props.serv_offer,
-            serv_imges: this.props.serv_imges,
+            serv_images: this.props.serv_images,
             fileName: this.props.fileName,
             avatarSourceArray: this.props.avatarSourceArray,            
             imgBase64: this.props.imgBase64,
@@ -146,7 +146,7 @@ export default class ServOfferConfirm extends Component {
     }
 
     async onServOfferPres() {
-        if(undefined === this.state.serv_offer.serv_imges){
+        if(undefined === this.state.serv_offer.serv_images){
             Alert.alert(
                     '提示',
                     '请至少提交一张图片',
@@ -169,7 +169,7 @@ export default class ServOfferConfirm extends Component {
                     serv_offer: {
                         serv_title: this.state.serv_offer.serv_title,
                         serv_detail: this.state.serv_offer.serv_detail,
-                        serv_imges: this.state.serv_offer.serv_imges,
+                        serv_images: this.state.serv_offer.serv_images,
                         serv_catagory: this.state.serv_offer.goods_tpye,
                         catalog: this.state.serv_offer.goods_catalogs_name,
                         district: global.user.addressComponent.district,
@@ -223,18 +223,17 @@ export default class ServOfferConfirm extends Component {
         })
             .then((response) => response.text())
             .then((responseData) => {
-                console.log('responseData', responseData);
                 let offer = this.state.serv_offer;
-                if (offer.serv_imges === undefined) {
-                    offer.serv_imges = JSON.parse(responseData).images;
+                if (offer.serv_images === undefined) {
+                    offer.serv_images = JSON.parse(responseData).images;
                 }
                 else {
-                    offer.serv_imges = offer.serv_imges + "," + JSON.parse(responseData).images;
+                    offer.serv_images = offer.serv_images + "," + JSON.parse(responseData).images;
                 }
                 this.setState({
                         serv_offer: offer
                     });
-                console.log('this.state.serv_offer.serv_imges：', this.state.serv_offer.serv_imges);
+                console.log('this.state.serv_offer.serv_images：', this.state.serv_offer.serv_images);
 
             })
             .catch((error) => { console.error('error', error) });
