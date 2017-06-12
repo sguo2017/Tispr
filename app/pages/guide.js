@@ -66,6 +66,7 @@ export default class Guide extends React.Component {
                 global.user.addressComponent = _that.state.addressComponent;
                 global.user.addressComponent.latitude = _that.state.latitude;
                 global.user.addressComponent.longitude = _that.state.longitude;
+                UserDefaults.setObject(Constant.storeKeys.ADDRESS_COMPONENT, global.user.addressComponent);
             })
 
 

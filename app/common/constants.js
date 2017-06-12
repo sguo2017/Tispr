@@ -16,6 +16,7 @@ let colors = {
 let storeKeys = {
     SEARCH_HISTORY_KEY: 'SEARCH_HISTORY_KEY',
     ACCESS_TOKEN_TISPR: 'ACCESS_TOKEN_TISPR',
+    ADDRESS_COMPONENT: 'ADDRESS_COMPONENT',
 }
 
 /*
@@ -44,7 +45,9 @@ let serv_qry_type = {
     REQUEST: '2',//我的->需求
 }
 
-
+let default_img={
+    AVATAR:'http://123.56.157.233:8080/group1/M00/00/04/ezid6Vk98BqAFb5QAAAQGOym6eI771.jpg'
+}
 let url = {
      //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
      IMG_SERV_ADDR: "123.56.157.233",
@@ -112,5 +115,6 @@ export default {
     ingredientMapper: mapper,
     sysMsgCatalog: sysMsgCatalog,
     sys_msgs_status: sys_msgs_status,
-    serv_qry_type: serv_qry_type
+    serv_qry_type: serv_qry_type,
+    default_img: default_img,
 }
