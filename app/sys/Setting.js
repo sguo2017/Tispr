@@ -21,7 +21,8 @@ import feedback from './help/feedback';
 import inviteFriend from './help/inviteFriend';
 import aboutQike from './help/aboutQike';
 import others from './others';
-import login from '../user/login'
+import login from '../user/login';
+import Constant from '../common/constants'
 @observer
 export default class Setting extends Component {
 
@@ -40,6 +41,30 @@ export default class Setting extends Component {
 			component: UserAgreement,
 			name:'UserAgreement'
 		})
+	}
+	async logout(){
+		try {
+            let t = global.user.authentication_token;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_LOGIN + '/' + global.user.id+'?token=' + t;
+            let response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+				//console.log('退出登录成功');
+                this.props.navigator.resetTo({component:login}); 
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            console.log(`Fetch evaluating list error: ${error}`)
+        }
 	}
 	render() {
 		return (
@@ -121,7 +146,7 @@ export default class Setting extends Component {
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.rectangle_view} onPress={()=>this.props.navigator.resetTo({component:login})}>
+					<TouchableOpacity style={styles.rectangle_view} onPress={this.logout.bind(this)}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
 								退出登录
