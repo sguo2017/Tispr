@@ -172,15 +172,19 @@ export default class SysMsgDetail extends Component {
                     </TouchableHighlight>*/}
                     </ScrollView>
                 </View>
-                <TouchableOpacity
-                    activeOpacity={0.75}
-                    style={[styles.bottomToolBar, { borderTopWidth: Constant.window.onePR, width: screenW }]}
-                    onPress={() => this._p(feed)}
-                >
-                    <Text style={{ fontSize: 22, color: '#FFF' }}>
-                        联系TA
-                </Text>
-                </TouchableOpacity>
+                {
+                    feed.user_id == global.user.id?
+                    <View></View>:
+                    <TouchableOpacity
+                        activeOpacity={0.75}
+                        style={[styles.bottomToolBar, { borderTopWidth: Constant.window.onePR, width: screenW }]}
+                        onPress={() => this._p(feed)}
+                    >
+                        <Text style={{ fontSize: 22, color: '#FFF' }}>
+                            联系TA
+                        </Text>
+                    </TouchableOpacity>
+                }
             </View>
         )
     }
