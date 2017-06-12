@@ -150,11 +150,12 @@ export default class RequestMsgDetail extends Component {
                         }}>
                             <Image style={{ width: 30, height: 30, marginRight: 5, marginLeft: 3 }} source={{ uri: feed.user.avatar }} defaultSource={require('../../resource/user_default_image.png')} />
                             <View style={{ marginLeft: 10 }}>
-                                <Text style={{ color: 'black', fontSize: 18 }}>{feed.user_name}</Text>
-                                <Text style={{ color: 'gray', fontSize: 18 }}>{feed.action_title}</Text>
+                                <Text style={{ color: 'black', fontSize: 18 }}>{global.user.name}</Text>
+                                <Text style={{ color: 'gray', fontSize: 18 }}>{feed.serv_title}</Text>
+                                <Text style={{ color: 'gray', fontSize: 18 }}>{feed.serv_detail}</Text>
                             </View>
                         </View>
-                        <Image style={{ width: screenW }} source={{ uri: feed.serv_offer.serv_imges }} defaultSource={require('../../resource/img_buzz_detail_default.png')} />
+                        <Image style={{ width: screenW }} source={{ uri: feed.serv_images }} defaultSource={require('../../resource/img_buzz_detail_default.png')} />
                         <View style={{
                             borderColor: '#ccc',
                             borderTopWidth: 0.5,
