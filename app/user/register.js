@@ -46,6 +46,8 @@ export default class Register extends Component {
   }
 
   async onRegisterPressed() {
+    let address = await UserDefaults.cachedObject(Constant.storeKeys.ADDRESS_COMPONENT);
+    global.user.addressComponent = address;
     UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
     this.setState({ showProgress: true })
     try {
@@ -63,16 +65,26 @@ export default class Register extends Component {
             email: this.state.email,
             password: this.state.password,
             password_confirmation: this.state.password_confirmation,
+            avatar: Constant.default_img.AVATAR,
+            district: global.user.addressComponent.district,
+            city: global.user.addressComponent.city,
+            province: global.user.addressComponent.province,
+            country: global.user.addressComponent.country,
+            latitude: global.user.addressComponent.latitude,
+            longitude: global.user.addressComponent.longitude,
           }
         })
       });
       let res = await response.text();
       if (response.status >= 200 && response.status < 300) {
-        let accessToken = res;
-        console.log(accessToken);
-        UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, accessToken.token)
-        console.log("accessToken.token"+accessToken.token)
+        let result = JSON.parse(res);
+        let userdetail =JSON.parse(result.user);    
+        console.log(result);
+        UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
+        console.log("result.token"+result.token)
         console.log('accessToken:'+ UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR));
+        global.user = global.user = userdetail;
+        global.user.authentication_token = result.token;  
         this._navigateHome();
       } else {
         UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);

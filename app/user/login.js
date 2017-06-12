@@ -26,7 +26,7 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "p2@qq.com",
+      email: "p1@qq.com",
       password: "123456",
       error: "",
       showProgress: false,
@@ -79,6 +79,8 @@ export default class Login extends Component {
   }
 
   async onLoginPressed() {
+    let address = await UserDefaults.cachedObject(Constant.storeKeys.ADDRESS_COMPONENT);
+    global.user.addressComponent = address;
     UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
     this.setState({ showProgress: true })
     try {
