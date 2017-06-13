@@ -177,10 +177,14 @@ const HomeItem = ({
                     justifyContent: 'space-around',
                 }}>
                     <Text style={{fontSize: 16, color: 'black'}} numberOfLines={2}>{feed.serv_title}</Text>
-                    <Text>创意艺术</Text>
+                    {
+                        feed.catalog?
+                        <Text>{feed.catalog}</Text>:<Text>其它分类</Text>
+                    }
+                    
                     <View style={{flexDirection:'row'}}>
                         <Image source={require('../resource/g-location-s.png')}/>
-                        <Text style={{fontSize: 12, color: '#B8B8B8'}}>距离100km</Text>
+                        <Text style={{fontSize: 12, color: '#B8B8B8'}}>{feed.district}</Text>
                     </View>
                 </View>
             </View>

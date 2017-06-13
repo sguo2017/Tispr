@@ -48,7 +48,12 @@ export default class ServOfferDetail extends PureComponent {
                                 <Image style={{width: 32, height: 32, borderRadius: 16}} source={{uri: feed.user.avatar}} defaultsource={require('../resource/user_default_image.png')}></Image>
                                 <View style={{marginLeft: 8, marginTop: -5}}>
                                     <Text style={{fontSize: 14, lineHeight: 20}}>{feed.user.name}</Text>
-                                    <Text style={{color: '#999999', fontSize: 12}}>视频</Text>
+                                    {
+                                        feed.catalog?
+                                        <Text style={{color: '#999999', fontSize: 12}}>{feed.catalog}</Text>
+                                        :<Text style={{color: '#999999', fontSize: 12}}>视频</Text>
+                                    }
+                        
                                 </View>
                             </View>
                             <View>

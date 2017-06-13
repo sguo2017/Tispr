@@ -5,10 +5,10 @@ export let fetchFeedList = (category, page, exploreparams) => {
     let URL;
     switch(category){        
         case 0:
-        URL = `http://` + Common.url.SERV_API_ADDR + ':' + Common.url.SERV_API_PORT + Common.url.SERV_API_SERV_OFFER_INDEX + `${global.user.authentication_token}&page=${page}`;  
+        URL = `http://` + Common.url.SERV_API_ADDR + ':' + Common.url.SERV_API_PORT + Common.url.SERV_API_SERV_OFFER_INDEX + `${global.user.authentication_token}&page=${page}&qry_type=${Common.serv_qry_type.OFFER}`;  
         break;
         case 1:
-        URL = `http://` + Common.url.SERV_API_ADDR + ':' + Common.url.SERV_API_PORT + Common.url.SERV_API_SERV_OFFER_INDEX + `${global.user.authentication_token}&page=${page}&user_id=${global.user.id}`;  
+        URL = `http://` + Common.url.SERV_API_ADDR + ':' + Common.url.SERV_API_PORT + Common.url.SERV_API_SERV_OFFER_INDEX + `${global.user.authentication_token}&page=${page}&user_id=${global.user.id}&qry_type=${Common.serv_qry_type.OFFER}`;  
         break;
          case 2:
         URL = `http://` + Common.url.SERV_API_ADDR + ':' + Common.url.SERV_API_PORT + Common.url.SERV_API_SERV_OFFER_INDEX + `${global.user.authentication_token}&page=${page}&user_id=${global.user.id}&serv_catagory=serv_request`;  
