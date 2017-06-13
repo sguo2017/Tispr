@@ -32,7 +32,7 @@ export default class Personinfoedit extends Component {
             errors: this.props.errors,
             fileName: this.props.fileName,
             fileSource: this.props.source,
-            address: this.props.address,
+            addressComponent: global.user.addressComponent,
         }
     }
     componentWillMount(){
@@ -155,7 +155,9 @@ export default class Personinfoedit extends Component {
 
                 body: JSON.stringify({
                     user: {
-                        avatar: this.state.avatar
+                        avatar: this.state.avatar,
+                        name: this.state.name,
+                        profile: this.state.selfintroduce,
                     }
                 })
             });
@@ -166,7 +168,7 @@ export default class Personinfoedit extends Component {
                     '提示',
                     '成功',
                     [
-                        { text: '头像更新成功' , onPress: () => this.SaveBack()},
+                        { text: '个人信息更新成功' , onPress: () => this.SaveBack()},
                     ]
                 )
                 global.user.avatar=this.state.avatar;
@@ -251,7 +253,7 @@ export default class Personinfoedit extends Component {
                             placeholder='介绍下自己，获得更多关注'
                             placeholderTextColor='#CCCCCC'
                             underlineColorAndroid='#CCCCCC'
-                            onChangeText={(val) => {this.setState({ address: val})}}
+                            onChangeText={(val) => {this.setState({ selfintroduce: val})}}
                             />
                             <Text style={styles.text1}>0/200</Text>
                         </View>
