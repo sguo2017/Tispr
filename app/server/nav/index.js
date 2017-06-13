@@ -21,8 +21,8 @@ import Header from '../../components/HomeNavigation';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import Constant from '../../common/constants';
 import ServIndex from '../index';
-import ServOffer from '../offer/index';
-import ServRequest from '../request/index';
+import ServOffer from '../offer/title';
+import ServRequest from '../request/title';
 const screenW = Dimensions.get('window').width;
 
 @observer
