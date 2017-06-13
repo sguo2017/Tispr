@@ -33,7 +33,7 @@ export default class Setting extends Component {
 
 	_onBack = () => {
 		const { navigator } = this.props;
-		navigator.resetTo({ component: PersonalinfoEdit, name: 'PersonalinfoEdit' })
+		navigator.pop();
 	}
 	clickJump =() =>{
 		const { navigator } = this.props;
