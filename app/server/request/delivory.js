@@ -43,7 +43,7 @@ export default class ServOfferDelivory extends Component {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "ServOfferConfirm",
                 component: ServOfferConfirm,
-                params: {
+                passProps: {
                     serv_offer: this.state.serv_offer,
                     getdata: (offer)=>{
                     _this.setState({

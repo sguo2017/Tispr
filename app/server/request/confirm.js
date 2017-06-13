@@ -51,7 +51,7 @@ export default class ServOfferConfirm extends Component {
     clickJump() {
         const { navigator } = this.props;
         if (navigator) {
-            navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+            navigator.resetTo({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "TabBarView",
                 component: TabBarView,
                 params: {

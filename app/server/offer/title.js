@@ -69,7 +69,7 @@ export default class ServOfferTitle extends Component {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "ServOfferDelivory",
                 component: ServOfferDetail,
-                params: {
+                passProps: {
                     serv_offer: this.state.serv_offer,
                     getdata: (offer)=>{
                     _this.setState({
