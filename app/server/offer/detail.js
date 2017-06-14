@@ -61,10 +61,8 @@ export default class ServOfferDetail extends Component {
                 passProps: {
                     serv_offer: this.state.serv_offer,
                     getdata: (offer)=>{
-                    _this.setState({
-                        serv_offer: offer,
-                        })
-                    }
+                     _this.state.serv_offer=offer;
+                    }     
                 }
             });
         }
@@ -73,7 +71,7 @@ export default class ServOfferDetail extends Component {
     _onBack = () => {
         const { navigator } = this.props;
         if (this.props.getdata) {
-            this.props.getdata(this.state.serv_offer);
+            this.props.getdata(this.props.serv_offer);
         }
 
         if (navigator) {

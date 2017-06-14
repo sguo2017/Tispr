@@ -62,7 +62,7 @@ export default class ServOfferConfirm extends Component {
     _onBack = () => {
         const { navigator } = this.props;
         if (this.props.getdata) {
-            this.props.getdata(this.state.serv_offer.offer);
+            this.props.getdata(this.props.serv_offer.offer);
         }
         if (navigator) {
             navigator.pop();

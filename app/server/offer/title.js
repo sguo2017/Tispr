@@ -72,9 +72,7 @@ export default class ServOfferTitle extends Component {
                 passProps: {
                     serv_offer: this.state.serv_offer,
                     getdata: (offer)=>{
-                    _this.setState({
-                        serv_offer: offer,
-                        })
+                    _this.state.serv_offer=offer;
                     }
                 }
             });
