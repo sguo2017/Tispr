@@ -16,7 +16,10 @@ export default function Card({ content, navigator, width, height, update,index }
             <Image style={{borderRadius:20, width:40, height:40}} source={{uri:content.avatar}}/>     
             <View>
               <Text style={{color:'black',fontSize:20}}>{content.user_name}</Text>
-              <Text style={{color:'grey',fontSize:16}}>{content.catalog}</Text>
+              <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                <View><Text style={{color:'grey',fontSize:16}}>{content.catalog}</Text></View>
+                <View><Text style={{color:'grey',fontSize:16}}>{content.created_at}</Text></View>
+              </View>
             </View>
           </View>
           <View style={{flexDirection:'row'}}>
