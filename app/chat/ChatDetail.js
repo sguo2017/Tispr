@@ -159,9 +159,9 @@ export default class ChatDetail extends Component {
           leftIconAction={() => {
             clearInterval(int);
             this.props.navigator.pop()}}
-          title={feed.offer_user}
+          title={feed.offer_user_id == global.user.id?feed.request_user:feed.offer_user}
           leftIcon={require('../resource/ic_back_dark.png')}
-          rightIcon={require('../resource/user_default_image.png')}
+          rightIcon={{uri:feed.offer_user_id == global.user.id?feed.request_user_avatar:feed.offer_user_avatar}}
           rightIconSize={26}
         />
         <View style={[styles.cardImageContent]}>

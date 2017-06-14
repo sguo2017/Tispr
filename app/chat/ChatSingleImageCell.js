@@ -14,7 +14,8 @@ const ChatSingleImageItem = ({
     serv_offer_titile,
     lately_chat_content,
     avatar,
-    onPress
+    onPress,
+    updated_at
 }) => {
     return (
         <TouchableOpacity
@@ -37,7 +38,7 @@ const ChatSingleImageItem = ({
                             <Text style={{fontSize: 18, color:'black', fontWeight:'bold'}}>{user_name}</Text>
                         </Text>
                         <View numberOfLines={2} style={{width: screenW * 0.25, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                            <Text style={{fontSize:13}}>星期五</Text>
+                            <Text style={{fontSize:13}}>{updated_at}</Text>
                         </View>
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
