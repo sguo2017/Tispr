@@ -58,14 +58,18 @@ export default class ServOfferList extends Component {
         //console.log('this.state.exploreparams:'+this.state.exploreparams);
         let exploreparams = this.props.exploreparams;
         let goods_catalog = this.props.cps;
+        let district = this.props.lps;
+        if(district[0])
+            exploreparams.district = "番禺区"
+        if(district[1])
+            exploreparams.district = "海珠区"
         if(goods_catalog[0]){
             goods_catalog.map((item,index,input)=>{input[index]=true});
         }
-        goods_catalog.splice(0,1);
         let goods_catalog_paramas = [];
         goods_catalog.map((item,index,input)=>{
-            if(item){
-                goods_catalog_paramas.push(index+1);
+            if (item&&index>0) {
+                goods_catalog_paramas=goods_catalog_paramas.concat(global.goods_catalogs_II_id[index-1]);
             }
         });
         exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;

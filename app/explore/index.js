@@ -26,6 +26,8 @@ import TabCategoryBar from '../me/TabCategoryBar';
 import Constant from '../common/constants'
 
 const titles = ['远程', '本地',];
+var goods_catalogs_II=[];
+var goods_catalogs_II_id=[];
 class ExploreList extends PureComponent {
     constructor(props) {
         super(props);
@@ -41,7 +43,7 @@ class ExploreList extends PureComponent {
             exploreparams: {},
             exploretitle:'',
             sps: [false, false, false, false],//排序按钮操作
-            cps: [false, false, false, false, false, false],//类型按钮操作
+            cps: [false, false, false, false, false, false, false],//类型按钮操作
             lps: [false, false],//位置按钮操作
             searchText: this.props.searchText
         };
@@ -82,6 +84,16 @@ class ExploreList extends PureComponent {
                     let goods_catalog_I = this.state.goods_catalog_I;
                     goods_catalog_I = JSON.parse(responseData.feeds);
                     global.goods_catalog_I = goods_catalog_I;
+                    for(let i = 0;i< goods_catalog_I.length;i++){
+                        let ids=[];
+                        goods_catalogs_II[i] = JSON.parse(goods_catalog_I[i].goods_catalogs_II);
+                        for(let j=0;j < goods_catalogs_II[i].length;j++){
+                            if(goods_catalogs_II[i][j].id)
+                                ids.push(goods_catalogs_II[i][j].id);
+                        }
+                        goods_catalogs_II_id[i]=ids;
+                    }
+                    global.goods_catalogs_II_id = goods_catalogs_II_id;
                     //console.log("goods_catalog_I:"+JSON.stringify(goods_catalog_I))
                 } else {
                 }
@@ -98,14 +110,18 @@ class ExploreList extends PureComponent {
         page = 1;
         let exploreparams = this.state.exploreparams;
         let goods_catalog = this.state.cps;
+        let district = this.state.lps;
+        if(district[0])
+            exploreparams.district = "番禺区"
+        if(district[1])
+            exploreparams.district = "海珠区"
         if (goods_catalog[0]) {
             goods_catalog.map((item, index, input) => { input[index] = true });
         }
-        goods_catalog.splice(0, 1);
         let goods_catalog_paramas = [];
         goods_catalog.map((item, index, input) => {
-            if (item) {
-                goods_catalog_paramas.push(index + 1);
+            if (item&&index>0) {
+                goods_catalog_paramas=goods_catalog_paramas.concat(goods_catalogs_II_id[index-1]);
             }
         });
         exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
@@ -152,7 +168,7 @@ class ExploreList extends PureComponent {
                         <Text style={styles.whiteText}>{this.state.location}</Text>
                     </TouchableOpacity>
                 </View>
-                <ServOfferList exploreparams={this.state.exploreparams} cps={this.state.cps} {...this.props} />
+                <ServOfferList exploreparams={this.state.exploreparams} cps={this.state.cps} lps={this.state.lps} {...this.props} />
                 <Modal
                     animationType='slide'
                     transparent={true}
@@ -175,7 +191,7 @@ class ExploreList extends PureComponent {
                                                 {() => this.setState({
                                                     sortBy: this.state.transiSortBy,
                                                     classify: this.state.transiClassify,
-                                                    transiLocation: this.state.transiLocation,
+                                                    location: this.state.transiLocation,
                                                     show: false
                                                 })}
                                             >完成</Text>
@@ -298,33 +314,39 @@ class ExploreList extends PureComponent {
                                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 20 }}>
                                         <TouchableHighlight
                                             style={[styles.selectButton, this.state.cps[1] && { backgroundColor: global.gColors.themeColor }]}
-                                            onPress={() => this.setState({ transiClassify: global.goods_catalog_I[0].name, cps: [false, !this.state.cps[1], this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true] })}
+                                            onPress={() => this.setState({ transiClassify: global.goods_catalog_I[0].name, cps: [false, !this.state.cps[1], this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] })}
                                         >
                                             <Text style={[styles.themeColorText, this.state.cps[1] && styles.whiteText]}>{global.goods_catalog_I[0].name}</Text>
                                         </TouchableHighlight>
                                         <TouchableOpacity
                                             style={[styles.selectButton, this.state.cps[2] && { backgroundColor: global.gColors.themeColor }]}
-                                            onPress={() => this.setState({ transiClassify: global.goods_catalog_I[1].name, cps: [false, this.state.cps[1] && true, !this.state.cps[2], this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true] })}
+                                            onPress={() => this.setState({ transiClassify: global.goods_catalog_I[1].name, cps: [false, this.state.cps[1] && true, !this.state.cps[2], this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] })}
                                         >
                                             <Text style={[styles.themeColorText, this.state.cps[2] && styles.whiteText]}>{global.goods_catalog_I[1].name}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             style={[styles.selectButton, this.state.cps[3] && { backgroundColor: global.gColors.themeColor }]}
-                                            onPress={() => this.setState({ transiClassify: global.goods_catalog_I[2].name, cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, !this.state.cps[3], this.state.cps[4] && true, this.state.cps[5] && true] })}
+                                            onPress={() => this.setState({ transiClassify: global.goods_catalog_I[2].name, cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, !this.state.cps[3], this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] })}
                                         >
                                             <Text style={[styles.themeColorText, this.state.cps[3] && styles.whiteText]}>{global.goods_catalog_I[2].name}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             style={[styles.selectButton, this.state.cps[4] && { backgroundColor: global.gColors.themeColor }]}
-                                            onPress={() => this.setState({ transiClassify: global.goods_catalog_I[3].name, cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, !this.state.cps[4], this.state.cps[5] && true] })}
+                                            onPress={() => this.setState({ transiClassify: global.goods_catalog_I[3].name, cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, !this.state.cps[4], this.state.cps[5] && true, this.state.cps[6] && true] })}
                                         >
                                             <Text style={[styles.themeColorText, this.state.cps[4] && styles.whiteText]}>{global.goods_catalog_I[3].name}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             style={[styles.selectButton, this.state.cps[5] && { backgroundColor: global.gColors.themeColor }]}
-                                            onPress={() => this.setState({ transiClassify: global.goods_catalog_I[4].name, cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, !this.state.cps[5]] })}
+                                            onPress={() => this.setState({ transiClassify: global.goods_catalog_I[4].name, cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, !this.state.cps[5], this.state.cps[6] && true] })}
                                         >
                                             <Text style={[styles.themeColorText, this.state.cps[5] && styles.whiteText]}>{global.goods_catalog_I[4].name}</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={[styles.selectButton, this.state.cps[6] && { backgroundColor: global.gColors.themeColor }]}
+                                            onPress={() => this.setState({ transiClassify: global.goods_catalog_I[5].name, cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, !this.state.cps[6]] })}
+                                        >
+                                            <Text style={[styles.themeColorText, this.state.cps[6] && styles.whiteText]}>{global.goods_catalog_I[5].name}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
