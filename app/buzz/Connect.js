@@ -32,7 +32,7 @@ export default class DealConnect extends Component {
         super(props);
         this.state={
             lately_chat_content: '',
-            msg: '你发布的专业服务很棒！'
+            send_default_chat_conteng:true,
         }
     }
     
@@ -64,7 +64,7 @@ export default class DealConnect extends Component {
                     '提示',
                     '成功',
                     [
-                        { text: '已通知到对方' },
+                        { text: '已通知到对方', onPress: () => this.props.navigator.pop() },
                     ]
                 )
             } else {
@@ -89,45 +89,68 @@ export default class DealConnect extends Component {
                     leftIcon={require('../resource/t_header_arrow_left.png')}
                     leftIconAction={() => this.props.navigator.pop()}
                 />
-                <View style={{paddingHorizontal: 20}}>
-                    <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>        
-                    <Text style={{fontSize: 14, color: '#1B2833'}}>{feed.user.name} 您好！{this.state.msg}</Text>
-                    <TouchableHighlight 
-                        style={[styles.selectButton,{width:170, marginTop: 26}]} 
-                        onPress={()=>this.setState({msg:'你发布的专业服务很棒！'})}
-                    >
-                        <Text style={[styles.themeColorText]}>你发布的专业服务很棒！</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight 
-                        style={[styles.selectButton,{width:156}]} 
-                        onPress={()=>this.setState({msg:'请问你是如何收费的？'})}
-                    >
-                        <Text style={[styles.themeColorText]}>请问你是如何收费的？</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight 
-                        style={[styles.selectButton, {width: 184}]} 
-                        onPress={()=>this.setState({msg:'我想看一下你的更多作品。'})}
-                    >
-                        <Text style={[styles.themeColorText]}>我想看一下你的更多作品。</Text>
-                    </TouchableHighlight>
+                {
+                    this.state.send_default_chat_conteng?
+                    <View style={{paddingHorizontal: 20}}>
+                        <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>        
+                        <Text style={{fontSize: 14, color: '#1B2833'}}>{feed.user.name} 您好！{this.state.lately_chat_content}</Text>
+                        <TouchableHighlight 
+                            style={[styles.selectButton,{width:170, marginTop: 26}]} 
+                            onPress={()=>this.setState({lately_chat_content:'你发布的专业服务很棒！'})}
+                        >
+                            <Text style={[styles.themeColorText]}>你发布的专业服务很棒！</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight 
+                            style={[styles.selectButton,{width:156}]} 
+                            onPress={()=>this.setState({lately_chat_content:'请问你是如何收费的？'})}
+                        >
+                            <Text style={[styles.themeColorText]}>请问你是如何收费的？</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight 
+                            style={[styles.selectButton, {width: 184}]} 
+                            onPress={()=>this.setState({lately_chat_content:'我想看一下你的更多作品。'})}
+                        >
+                            <Text style={[styles.themeColorText]}>我想看一下你的更多作品。</Text>
+                        </TouchableHighlight>
 
-                    <View style={{height: 1, backgroundColor: 'rgba(0,0,0,0.12)', marginVertical: 13.7}}></View>
+                        <View style={{height: 1, backgroundColor: 'rgba(0,0,0,0.12)', marginVertical: 13.7}}></View>
 
-                    <TouchableHighlight 
-                        style={[styles.selectButton, {width: 86}]} 
-                    >
-                        <Text style={[styles.themeColorText]}>自定义信息</Text>
-                    </TouchableHighlight>
-                    <View>
-                        <Text style={{color: '#999999', marginVertical: 36}}>获得更多竞标</Text>
+                        <TouchableHighlight 
+                            style={[styles.selectButton, {width: 86}]} 
+                            onPress={()=>this.setState({send_default_chat_conteng:false})}
+                        >
+                            <Text style={[styles.themeColorText]}>自定义信息</Text>
+                        </TouchableHighlight>
+                        <View>
+                            <Text style={{color: '#999999', marginVertical: 36}}>获得更多竞标</Text>
+                        </View>
+                        <View style={{flexDirection: 'row', marginTop: -10, marginBottom: 26}}>
+                            <Text style={{fontSize: 16, color: 'black', marginRight: 162}}>为我找到更多人才</Text>
+                            <Text style={{lineHeight: 20}}>是</Text>
+                            <Image source={require('../resource/g_chevron right.png')} style={{justifyContent: 'flex-end'}}></Image>
+                        </View> 
+                    </View>:          
+                    <View style={{paddingHorizontal: 20}}>
+                        <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>                                
+                        <Text style={{ marginTop:30, color: "#a8a6b9", fontSize: 16}}>联系{feed.user.name}询问服务细节</Text>
+                        <TextInput
+                            multiline={true}
+                            numberOfLines={3}
+                            value ={this.state.lately_chat_content}
+                            placeholder='请输入聊天内容'
+                            onChangeText={(val) => {
+                                this.setState({ lately_chat_content: val })
+                                }}
+                        />
+                        <TouchableHighlight 
+                            onPress={()=>this.setState({send_default_chat_conteng:true})}
+                        >
+                            <Text style={[styles.themeColorText]}>发送默认消息</Text>
+                        </TouchableHighlight>
                     </View>
-                    <View style={{flexDirection: 'row', marginTop: -10, marginBottom: 26}}>
-                        <Text style={{fontSize: 16, color: 'black', marginRight: 162}}>为我找到更多人才</Text>
-                        <Text style={{lineHeight: 20}}>是</Text>
-                        <Image source={require('../resource/g_chevron right.png')} style={{justifyContent: 'flex-end'}}></Image>
-                    </View> 
-                </View>          
-                <TouchableOpacity style={{height: 44, backgroundColor: '#FFC400'}}>
+                }
+                
+                <TouchableOpacity style={{height: 44, backgroundColor: '#FFC400'}}  onPress={this._createDeal.bind(this)}>
                     <Text style={{fontSize: 16, color: 'white', marginVertical: 10, marginHorizontal: 164}}>发送</Text>
                 </TouchableOpacity>
             </View>
