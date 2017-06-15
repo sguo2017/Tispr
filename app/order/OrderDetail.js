@@ -105,10 +105,8 @@ export default class OrderDetail extends Component {
             <View>
                 <Header
                         leftIconAction={() => this.props.navigator.pop()}
-                        title={'Current Proposal'}
-                        leftIcon={require('../resource/ic_back_dark.png')}
-                        rightIcon={{uri: feed.request_user_avatar}}
-                        rightIconSize={26}
+                        title={'交易条件'}
+                        leftIcon={require('../resource/w-back.png')}
                     />
                 <View style={[styles.cardImageContent]}>
                     <ScrollView
@@ -118,38 +116,38 @@ export default class OrderDetail extends Component {
                             contentContainerStyle={{backgroundColor: 'white'}}
                     >
                         <View style={{flexDirection:'row', justifyContent:'flex-start', alignItems:'center',padding:10, width: screenW}}>
-                            <Image style={{width: 50, height: 50, borderRadius:25}} defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.offer_user_avatar}}/>
-                            <View style={{paddingLeft: 10}}>
+                            <Image style={{width: 40, height: 40, borderRadius:20}} defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.offer_user_avatar}}/>
+                            <View style={{paddingLeft: 10, width: 280}}>
                                 <Text style={{fontSize:20, color:'black'}}>{feed.offer_user}</Text>
                                 <Text style={{fontSize: 16}}>{feed.serv}</Text>
                             </View>
                             {
-                                 feed.bidder== feed.offer_user_id ?
-                                <View style={{flexDirection:'row',width:screenW*0.2, justifyContent:'flex-end'}}>
-                                    <Image style={{width:30, height: 30}} source={require('../resource/icon_check_img.png')}/>
+                                 !(feed.bidder== feed.offer_user_id) ?
+                                <View style={{flexDirection:'row', width:20, justifyContent:'flex-end', alignItems: 'center'}}>
+                                    <Image style={{}} source={require('../resource/y-check-r.png')}/>
                                 </View> :
                                 <View></View>
                             }
                         </View>
                         <View style={{flexDirection:'row', justifyContent:'flex-start', alignItems:'center',padding:10, width: screenW,backgroundColor:'white'}}>
-                            <Image style={{width: 50, height: 50, borderRadius:25}} defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.request_user_avatar}}/>
-                            <View style={{paddingLeft: 10}}>
+                            <Image style={{width: 40, height: 40, borderRadius:20}} defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.request_user_avatar}}/>
+                            <View style={{paddingLeft: 10, width: 280}}>
                                 <Text style={{fontSize:20, color:'black'}}>{feed.request_user}</Text>
                                 <Text style={{fontSize: 16}}>{feed.lately_chat_content}</Text>
                             </View>
                             {
-                                 feed.bidder== feed.request_user_id ?
-                                <View style={{flexDirection:'row',width:screenW*0.2, justifyContent:'flex-end'}}>
-                                    <Image style={{width:30, height: 30}} source={require('../resource/icon_check_img.png')}/>
+                                 !(feed.bidder== feed.request_user_id) ?
+                                <View style={{flexDirection:'row',width:20, justifyContent:'flex-end', alignItems: 'center'}}>
+                                    <Image style={{}} source={require('../resource/y-check-r.png')}/>
                                 </View>:
                                 <View></View>
                             }
                         </View>
-                        <View style={{flexDirection:'row',paddingTop: 30, paddingLeft: 10,}}>
-                            <Text style={{fontSize: 16, color:'black', }}>
+                        {/*<View style={{flexDirection:'row',paddingTop: 30, paddingLeft: 10,}}>
+                            <Text style={{fontSize: 16, color:'black' }}>
                                {feed.lately_chat_content}
                             </Text>
-                        </View>
+                        </View>*/}
                     </ScrollView>
                     {
                         global.user.id == feed.signature?
