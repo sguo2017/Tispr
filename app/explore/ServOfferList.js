@@ -146,7 +146,9 @@ const HomeItem = ({
     let offerUser = feed.user;
     // 返回的数据中，头像出现null的情况，所以source仍然做个判断
     let publisherAvatar = require('../resource/img_default_avatar.png');//feed.publisher_avatar ? {uri: feed.publisher_avatar} : require('../resource/img_default_avatar.png');
-    let serv_image = feed.serv_images?{uri:feed.serv_images}:require('../resource/qk_nav_default.png')
+    
+    let img = feed.serv_images.split(',');
+    let serv_image = feed.serv_images?{uri:img[0]}:require('../resource/qk_nav_default.png')
     console.log("135")
     return (
         <TouchableOpacity
