@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     RefreshControl,
     Dimensions,
-    ScrollView
+    ScrollView,
+    Modal
 } from 'react-native'
 import {observer} from 'mobx-react/native'
 import {reaction} from 'mobx'
@@ -26,7 +27,8 @@ export default class ServOfferDetail extends PureComponent {
     state = {
         dataSource: new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
-        })
+        }),
+        show: false
     }
 
     render() {
@@ -39,6 +41,7 @@ export default class ServOfferDetail extends PureComponent {
                     leftIcon={require('../resource/w-back.png')}
                     leftIconAction={() => this.props.navigator.pop()}
                     rightIcon={require('../resource/w-more.png')}
+                    rightIconAction={() => this.setState({show: true})}
                     style={{height: 50}}
                 />
                 <ScrollView>
@@ -90,7 +93,38 @@ export default class ServOfferDetail extends PureComponent {
                     <View style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 12}}>
                         <Text style={{color: '#9E9E9E', fontSize: 14}}>相关服务</Text>
                     </View>
-                </ScrollView> 
+                </ScrollView>
+                <Modal
+                    animationType='slide'
+                    transparent={true}
+                    visible={this.state.show}
+                    onShow={() => { }}
+                    onRequestClose={() => { }}>
+                    <View style={styles.modal}>
+                        <View style={styles.share}>
+                            <TouchableOpacity style={styles.item}>
+                                <Image source={require('../resource/ico-wechat.png')} style={styles.img}></Image>
+                                <Text style={styles.text}>微信</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.item}>
+                                <Image source={require('../resource/ico-friend.png')} style={styles.img}></Image>
+                                <Text style={styles.text}>朋友圈</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.item}>
+                                <Image source={require('../resource/ico-qq.png')} style={styles.img}></Image>
+                                <Text style={styles.text}>QQ</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Image source={require('../resource/ico-weibo.png')} style={styles.img}></Image>
+                                <Text style={styles.text}>新浪微博</Text>
+                            </TouchableOpacity>       
+                        </View>
+                        <TouchableOpacity onPress={() => this.setState({show: false})} style={{height: 57, width: 300, marginTop: 30}}>
+                            <Text style={styles.cancel}>取消</Text> 
+                        </TouchableOpacity>                    
+                    </View>
+
+                </Modal>
             </View>
         )
     }
@@ -101,6 +135,36 @@ export default class ServOfferDetail extends PureComponent {
 const styles = StyleSheet.create({
     listView: {
         flex: 1,
-        backgroundColor: '#f5f5f5'
+        backgroundColor: '#f5f5f5',
     },
+    modal: {
+        marginTop: 350,
+        height: 250,
+        backgroundColor: 'white',
+        padding: 30,
+    },
+    share: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 20
+    },
+    item: {
+        marginRight: 40,
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    img: {
+        height: 48,
+        width: 48,
+    },
+    text: {
+        fontSize: 12,
+        color: '#1B2833',
+    },
+    cancel: {
+        color: '#1B2833',
+        fontSize: 16,
+        marginTop: 30,
+        marginHorizontal: 132
+    }
 })
