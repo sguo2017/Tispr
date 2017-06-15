@@ -148,7 +148,7 @@ export default class SysMsgDetail extends Component {
                             alignItems: 'center',
                             overflow: 'hidden'
                         }}>
-                            <Image style={{ width: 30, height: 30, marginRight: 5, marginLeft: 3 }} source={{ uri: feed.user.avatar }} defaultSource={require('../resource/user_default_image.png')} />
+                            <Image style={{ width: 40, height: 40, marginRight: 5, marginLeft: 3, borderRadius: 20 }} source={{ uri: feed.user.avatar }} defaultSource={require('../resource/user_default_image.png')} />
                             <View style={{ marginLeft: 10 }}>
                                 <Text style={{ color: 'black', fontSize: 18 }}>{feed.user_name}</Text>
                                 <Text style={{ color: 'gray', fontSize: 18 }}>{feed.msg_catalog}</Text>
