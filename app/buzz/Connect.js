@@ -60,6 +60,8 @@ export default class DealConnect extends Component {
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
                 //console.log("line:153");
+                let resObject =JSON.parse(res);
+                this._createChat(resObject.id);
                 Alert.alert(
                     '提示',
                     '成功',
@@ -76,6 +78,39 @@ export default class DealConnect extends Component {
             console.log("error " + error);
             this.setState({ showProgress: false });
 
+        }
+    }
+
+    async _createChat(_deal_id){
+        let chat_content = this.state.lately_chat_content;
+        try {
+            let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + `${global.user.authentication_token}`;
+            let response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                },
+
+                body: JSON.stringify({
+                chat: {
+                    deal_id: _deal_id,
+                    chat_content: chat_content,
+                    user_id: global.user.id,
+                    catalog: 2
+                    }
+                })
+            });
+
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                console.log("line:99");
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            console.log("error " + error);
         }
     }
 
