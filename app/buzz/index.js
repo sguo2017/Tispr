@@ -236,8 +236,11 @@ export default class BussList extends Component {
             });
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
-                if(newStatus == Constant.sys_msgs_status.FINISHED)
-                  alert('已通知对方')
+                if(newStatus == Constant.sys_msgs_status.FINISHED){
+                    let resObject =JSON.parse(res);
+                    this._createChat(resObject.id,lately_chat_content);
+                    alert('已通知对方')
+                } 
                 if(newStatus == Constant.sys_msgs_status.DISCARDED)
                   alert('已忽略，不再显示')
             } else {
@@ -247,7 +250,29 @@ export default class BussList extends Component {
             alert(error)
         } 
     }
-    
+    async _createChat(_deal_id,chat_content){
+        try {            
+            let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
+            let response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                },
+
+                body: JSON.stringify({
+                chat: {
+                    deal_id: _deal_id,
+                    chat_content: chat_content,
+                    user_id: global.user.id,
+                    catalog: 2
+                    }
+                })
+            });
+        } catch (error) {
+            console.log("error " + error);
+        }
+    }
     _updateCard(index, newStatus, id, lately_chat_content){
       let arr=d.state.sys_msgs;
       if((index == arr.length-1) && arr){
