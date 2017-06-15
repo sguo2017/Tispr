@@ -33,6 +33,7 @@ export default class ServOfferDetail extends PureComponent {
 
     render() {
         const { feed } = this.props;
+        let img = feed.serv_images.split(',');
 
         return (
             <View style={styles.listView}>
@@ -60,13 +61,22 @@ export default class ServOfferDetail extends PureComponent {
                                 </View>
                             </View>
                             <View>
-                                <Text style={{color: '#999999', fontSize: 12}}>2017/2/21</Text>
+                                <Text style={{color: '#999999', fontSize: 12}}>{feed.created_at.substring(0,10)}</Text>
                             </View> 
                         </View>
                         <Text style={{color: '#424242', fontSize: 16, lineHeight: 24}}>{feed.serv_detail}</Text>
-                        <Image defaultSource={require('../resource/img_default_home_cover.png')} source={{uri:feed.serv_images}} style={{height: 300, width: 328}}></Image>                                                
+                        
+                        <ListView
+                            dataSource={this.state.dataSource.cloneWithRows(img)}
+                            renderRow={(rowData) =>
+                                <Image defaultSource={require('../resource/img_default_home_cover.png')} source={{uri:rowData}} style={{height: 300, width: 328, marginBottom: 10}}></Image>
+                            }   
+                           
+                        />
+                                                                       
+                        
                         <Text style={{fontSize: 14, color: '#999999', marginTop: 26, marginBottom: 10}}>远程或附近</Text>
-                        <Image defaultSource={require('../resource/img_default_home_cover.png')} source={{uri:feed.serv_images}} style={{height: 128, width: 328}}></Image>
+                        <Image defaultSource={require('../resource/img_default_home_cover.png')} source={{uri:img[0]}} style={{height: 128, width: 328}}></Image>
                         <View style={{flexDirection: 'row', marginTop: 20, height: 48, justifyContent: 'space-between'}}>
                             <Text style={{fontSize: 16, color: 'black'}}>投标&nbsp;&nbsp;&nbsp;4/5</Text>
                             <TouchableOpacity style={{backgroundColor: '#4A90E2', borderRadius: 2, height: 28, width: 72}}>
