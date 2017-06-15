@@ -22,6 +22,7 @@ export default class ProposeDeal extends Component{
         super(props);
         this.state = {
             new_price: this.props.new_price,
+            text: ''
         };
     }
 
@@ -58,7 +59,7 @@ export default class ProposeDeal extends Component{
                     '提示',
                     '已向对方询价，待对方确认',
                     [
-                        { text: '确定' ,  onPress: () => console.log('确定')},
+                        { text: '确定' ,  onPress: () => this.props.navigator.popN(2)}
                     ]
                 )
             } else {
@@ -76,35 +77,29 @@ export default class ProposeDeal extends Component{
             <View>
                 <Header
                         leftIconAction={() => this.props.navigator.pop()}
-                        title={'提出新的交易'}
-                        leftIcon={require('../resource/ic_back_dark.png')}
-                        rightIcon={require('../resource/user_default_image.png')}
-                        rightIconSize={26}
+                        title={'提出交易条件'}
+                        leftIcon={require('../resource/w-back.png')}
                     />
-                <View style={{justifyContent:'center',alignItems:'center', paddingTop:60}}>
-                    <Image source={require('../resource/t_text.png')}/>
-                    <Text style={{fontSize:18,color:'#808080', width:screenW}}>提出交易条件，如果对方接受，交易达成</Text>
-                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center', width:screenW}}>
-                        <Image style={{width:40, height:40}} source={require('../resource/ic_photo_comment.png')}/>
-                        <TextInput
-                        style={{width:screenW,borderBottomWidth:1}}
-                         multiline={true}
-                        numberOfLines={1}
-                        value={this.state.new_price}
-                        onChangeText={(val) => {this.setState({ new_price: val})}}
-                        placeholder='我提议本次交易按以下价格及方式进行'
-                        />
-                    </View>
+                <View style={{justifyContent:'center',alignItems:'center', padding:16}}>
+                    <Image source={require('../resource/b-xuqiu-xl.png')}/>
+                    <Text style={{fontSize:16,color:'black', marginTop: 12, marginBottom: 36}}>提出交易条件，如果对方接受，交易达成!</Text>
+                    <Text style={{color: '#9E9E9E', fontSize: 14}}>我提议本次交易按以下价格及方式进行</Text>
+                    <TextInput
+                        onChangeText={(text) => this.setState({text})}
+                        placeholderTextColor='black'
+                        underlineColorAndroid='#EEEEEE'
+                        style={{width: 330, height: 56, fontSize: 16}}
+                    />
                     <TouchableOpacity
                     activeOpacity={0.75}
                                 style={{flexDirection: 'row',alignItems: 'center',
                                     justifyContent: 'center',
                                     borderTopColor: '#ccc',
-                                    marginTop:5,
+                                    marginTop:271,
                                     backgroundColor: global.gColors.buttonColor,width: screenW,height:44}}
-                    onPress={this.askPrice.bind(this)}
+                    onPress={this.state.text?this.askPrice.bind(this):console.log('dd')}
                     >
-                        <Text style={{fontSize: 20, color: 'white'}}>提出交易</Text>
+                        <Text style={{fontSize: 16, color: 'white'}}>发送</Text>
                     </TouchableOpacity>
                 </View>
             </View>
