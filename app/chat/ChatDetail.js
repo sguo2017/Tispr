@@ -11,7 +11,8 @@ import {
   ScrollView,
   Platform,
   Dimensions,
-  TextInput
+  TextInput,
+  Modal
 } from 'react-native';
 import { reaction } from 'mobx'
 import { GiftedChat } from 'react-native-gifted-chat';
@@ -34,6 +35,7 @@ export default class ChatDetail extends Component {
     this.state = {
       messages: [],
       order_status: this.props.order_status,
+      show: false
     };
     this.onSend = this.onSend.bind(this);
   }
@@ -154,32 +156,33 @@ export default class ChatDetail extends Component {
     const { feed } = this.props;
 
     return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <View style={{ flex: 1, backgroundColor: '#EEEEEE' }}>
         <Header
           leftIconAction={() => {
             clearInterval(int);
             this.props.navigator.pop()}}
           title={feed.offer_user_id == global.user.id?feed.request_user:feed.offer_user}
-          leftIcon={require('../resource/ic_back_dark.png')}
-          rightIcon={{uri:feed.offer_user_id == global.user.id?feed.request_user_avatar:feed.offer_user_avatar}}
-          rightIconSize={26}
+          leftIcon={require('../resource/w-back.png')}
+          rightIcon={{uri:feed.offer_user_id == global.user.id?feed.request_user_avatar:feed.offer_user_avatar} }
+          rightIconSize={32}
+          rightIconAction={() => this.setState({show: true})}
         />
         <View style={[styles.cardImageContent]}>
-          <TouchableOpacity onPress={this.clickJump.bind(this)} style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: 10 }}>
-          <Image source={require('../resource/icon_phone.png')} />
+          <TouchableOpacity onPress={this.clickJump.bind(this)} style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: 10, backgroundColor: 'white' }}>
+          <Image source={require('../resource/b-xuqiu.png')} />
           {
             this.state.order_status =='00A'? 
-            <Text style={{ fontSize: 16, color: 'black' }}>未提出交易条件</Text>:<Text></Text>
+            <Text style={{ fontSize: 16, color: 'black', marginLeft: 15, width: 260 }}>未提出交易条件</Text>:<Text></Text>
           }
           {
             this.state.order_status =='00B'? 
-            <Text style={{ fontSize: 16, color: 'black' }}>已提出交易条件</Text>:<Text></Text>
+            <Text style={{ fontSize: 16, color: 'black', marginLeft: 15 }}>已提出交易条件</Text>:<Text></Text>
           }
           {
             this.state.order_status =='00C'? 
-            <Text style={{ fontSize: 16, color: 'black' }}>交易达成！</Text>:<Text></Text>
+            <Text style={{ fontSize: 16, color: 'black', marginLeft: 15 }}>交易达成！</Text>:<Text></Text>
           }
-          
+          <Image source={require('../resource/g_chevron right.png')} style={{}}/>
          </TouchableOpacity>
           <GiftedChat
             messages={this.state.messages}
@@ -189,6 +192,29 @@ export default class ChatDetail extends Component {
             }}
           />
         </View>
+        <Modal
+          animationType='slide'
+          transparent={true}
+          visible={this.state.show}
+          onShow={() => { }}
+          onRequestClose={() => { }}>
+          <View style={styles.modal}>
+            <TouchableOpacity style={styles.item}>
+              <Text style={styles.text}>查看TA的个人信息</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.item}>
+              <Text  style={styles.text}>查看TA的需求(服务)</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.item, {flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16}]}>
+              <Text  style={styles.text}>举报TA</Text>
+              <Text style={{fontSize: 14, color: '#CCCCCC', lineHeight: 20}}>已举报</Text>
+            </TouchableOpacity>
+            <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
+            <TouchableOpacity onPress={() => this.setState({show: false})} style={{alignItems: 'center', justifyContent: 'center', height: 56}}>
+              <Text style={styles.text}>取消</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     )
   }
@@ -213,5 +239,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row'
+  },
+  modal: {
+    backgroundColor: 'white',
+    paddingHorizontal: 16,
+    marginTop: 350
+  },
+  item: {
+    height: 56,
+    justifyContent: 'center'
+  },
+  text: {
+    fontSize: 16,
+    color: 'black'
   }
 })
