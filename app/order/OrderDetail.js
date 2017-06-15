@@ -50,7 +50,29 @@ export default class OrderDetail extends Component {
         show:!isShow,  
         });  
     }  
+    async _createChat(_deal_id){
+        try {            
+            let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
+            let response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                },
 
+                body: JSON.stringify({
+                chat: {
+                    deal_id: _deal_id,
+                    chat_content: "我同意了您提出的价格",
+                    user_id: global.user.id,
+                    catalog: 2
+                    }
+                })
+            });
+        } catch (error) {
+            console.log("error " + error);
+        }
+    }
     async clickJump() {
         let isShow = this.state.show;  
         try {         
@@ -71,6 +93,7 @@ export default class OrderDetail extends Component {
             });
              let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
+                this._createChat(order_id);
                 this.setState({  
                     show:!isShow,  
                 });

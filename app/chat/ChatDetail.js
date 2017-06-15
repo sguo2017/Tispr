@@ -66,7 +66,6 @@ export default class ChatDetail extends Component {
 
       });
       this.setState({ "messages": messages });
-      console.log("57:" + JSON.stringify(this.state.messages))
     }, (error) => {
       console.log('Fetch category list error: ' + error);
     });
