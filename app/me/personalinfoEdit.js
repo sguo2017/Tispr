@@ -26,7 +26,7 @@ export default class Personinfoedit extends Component {
         super(props);
 
         this.state = {
-            selfintroduce: '',
+            selfintroduce: this.props.info,
             name: global.user.name,
             avatar: global.user.avatar,
             errors: this.props.errors,
@@ -42,7 +42,7 @@ export default class Personinfoedit extends Component {
      _onBack = () => {
         const { navigator } = this.props;
         if (this.props.getdata) {
-            this.props.getdata(global.user.avatar);
+            this.props.getdata(global.user.avatar, this.state.selfintroduce);
         }
         if (navigator) {
             navigator.pop();
@@ -51,7 +51,7 @@ export default class Personinfoedit extends Component {
     SaveBack=()=>{
         const { navigator } = this.props;
         if (this.props.getdata) {
-            this.props.getdata(global.user.avatar);
+            this.props.getdata(global.user.avatar, this.state.selfintroduce);
         }
         if (navigator) {
             navigator.pop();
@@ -164,6 +164,8 @@ export default class Personinfoedit extends Component {
              let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
                 console.log("line:144///res"+res);
+                console.log(this.state.selfintroduce);
+                global.user.profile = this.state.selfintroduce;
                 Alert.alert(
                     '提示',
                     '成功',
@@ -249,7 +251,7 @@ export default class Personinfoedit extends Component {
                             style={styles.textinput}
                             multiline={true}
                             numberOfLines={1}
-                            value ={this.state.address}
+                            value ={this.state.selfintroduce}
                             placeholder='介绍下自己，获得更多关注'
                             placeholderTextColor='#CCCCCC'
                             underlineColorAndroid='#CCCCCC'

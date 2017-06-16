@@ -188,17 +188,18 @@ export default class ServOfferConfirm extends Component {
                 //console.log("line:153");
                 let resObject =JSON.parse(res);
                 if(resObject.status==0){
+                    this.clickJump();
                     Alert.alert(
                         '提示',
-                        '服务发布成功,您今天发布需求的次数剩余'+resObject.avaliable+"次",
+                        '服务发布成功,您今天发布服务的次数剩余'+resObject.avaliable+"次",
                         [
-                            { text: '确定', onPress: () => this.clickJump() },
+                            { text: '确定'},
                         ]
                     )
                }else if(resObject.status==-2){
                     Alert.alert(
                         '提示',
-                        '您今天的沟通机会已用完，请明天再联系',
+                        '您今天的发布服务次数已用完，请明天再发布',
                         [
                             { text: '确定', onPress: () => this.props.navigator.pop() },
                         ]
@@ -348,7 +349,7 @@ export default class ServOfferConfirm extends Component {
 
                 <TouchableHighlight style={{ backgroundColor: global.gColors.buttonColor, marginTop: 60, alignSelf: 'stretch' }} onPress={this.onServOfferPres.bind(this)} >
                     <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor:global.gColors.ButtonColor }}>
-                        下一步
+                        确认
                   </Text>
                 </TouchableHighlight>
             </View>
