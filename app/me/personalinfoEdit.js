@@ -18,6 +18,7 @@ import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import ImagePicker from 'react-native-image-picker';
 import Setting from '../sys/Setting';
+import UserDefaults from '../common/UserDefaults';
 
 const screenW = Dimensions.get('window').width;
 
@@ -33,6 +34,7 @@ export default class Personinfoedit extends Component {
             fileName: this.props.fileName,
             fileSource: this.props.source,
             addressComponent: global.user.addressComponent,
+            address: ''
         }
     }
     componentWillMount(){
@@ -166,6 +168,7 @@ export default class Personinfoedit extends Component {
                 console.log("line:144///res"+res);
                 console.log(this.state.selfintroduce);
                 global.user.profile = this.state.selfintroduce;
+                global.user.addressComponent= this.state.addressComponent;
                 Alert.alert(
                     '提示',
                     '成功',
@@ -192,6 +195,50 @@ export default class Personinfoedit extends Component {
                 component: Setting,
             });
         }
+    }
+
+    async getGeoLocation() {
+        let _that = this;
+        this.setState({ latitude: (JSON.parse(this.state.lastPosition)).coords.latitude })
+        this.setState({ longitude: (JSON.parse(this.state.lastPosition)).coords.longitude })
+        this.setState({ showProgress: true })
+        let url = Constant.url.GEO_LOCATION_ADDR + `&location=${this.state.latitude},${this.state.longitude}`;
+        await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => {
+            return response.json().then(function (json) {
+                //console.log("60:"+JSON.stringify(json.result.addressComponent));
+                var addressComponent = json.result.addressComponent;
+                //console.log("62:"+JSON.stringify(addressComponent));
+                _that.setState({ addressComponent: addressComponent });
+                //console.log("64:"+JSON.stringify(_that.state.addressComponent))
+                global.user.addressComponent = _that.state.addressComponent;
+                global.user.addressComponent.latitude = _that.state.latitude;
+                global.user.addressComponent.longitude = _that.state.longitude;
+                UserDefaults.setObject(Constant.storeKeys.ADDRESS_COMPONENT, global.user.addressComponent);
+            })
+
+
+        }).then(() => {
+            this.existsToken();
+        }).catch((error) => {
+            this.setState({ error: error });
+            //console.log("109 error: " + error);
+            this.setState({ showProgress: false });
+        });
+    }
+
+    onReplay() {
+        this.getGeoLocation();
+        this.setState({
+            address: global.user.addressComponent.country + global.user.addressComponent.province +
+                     global.user.addressComponent.city + global.user.addressComponent.district
+        })
+        console.log('addr');
     }
 
     render(){
@@ -241,7 +288,9 @@ export default class Personinfoedit extends Component {
                             underlineColorAndroid='#CCCCCC'
                             onChangeText={(val) => {this.setState({ address: val})}}
                             />
-                            <Image source={require('../resource/g-replay.png')} style={{position: 'absolute', top: 18, right: 6}}></Image>
+                            <TouchableOpacity style={{position: 'absolute', top: 18, right: 6}} onPress={this.onReplay.bind(this)}>
+                                <Image source={require('../resource/g-replay.png')}></Image>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center', marginBottom: 12}}>
@@ -267,7 +316,7 @@ export default class Personinfoedit extends Component {
                             style={styles.textinput}
                             multiline={true}
                             numberOfLines={1}
-                            value ={this.state.address}
+                            //value ={this.state.address}
                             placeholder='添加网页链接'
                             placeholderTextColor='#CCCCCC'
                             underlineColorAndroid='#CCCCCC'
