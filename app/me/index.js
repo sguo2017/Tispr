@@ -16,6 +16,7 @@ import Header from '../components/HomeNavigation';
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import TabCategoryBar from './TabCategoryBar'
 import Constant from '../common/constants';
+import UserDefaults from '../common/UserDefaults';
 const titles = ['服务', '需求', '收藏'];
 
 import OffersList from './page/offersList'
@@ -38,7 +39,11 @@ export default class MeInfo extends Component {
             fileSource: this.props.source,
             avatar: global.user.avatar,
             errors: this.props.errors,
-            info: global.user.profile
+            info: global.user.profile,
+            country: global.user.addressComponent.country,
+            province: global.user.addressComponent.province,
+            city: global.user.addressComponent.city,
+            district: global.user.addressComponent.district
         }
     }
    
@@ -62,7 +67,7 @@ export default class MeInfo extends Component {
     }
 
 
-     render() {
+    render() {
         return(
 
               <View style={styles.listView}>
@@ -77,7 +82,7 @@ export default class MeInfo extends Component {
                         </View>
                         <View style={{justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
                             <Text style={{fontSize:16, color:'white'}}>{global.user.name}</Text>
-                            <Text style={styles.text}>番禺区，广州市，广东省，中国</Text>
+                            <Text style={styles.text}>{this.state.country} {this.state.province} {this.state.city} {this.state.district}</Text>
                             <Text style={{backgroundColor: 'rgba(255,255,255,0.24)', borderRadius: 10, paddingLeft: 10, paddingRight:10, height: 20}}>
                                 {
                                     global.user.profile?
