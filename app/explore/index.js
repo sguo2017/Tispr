@@ -188,12 +188,14 @@ class ExploreList extends PureComponent {
                                         <TouchableOpacity onPress={() => this.setState({ show: false })}>
                                             <Text style={styles.themeColorText}
                                                 onPress=
-                                                {() => this.setState({
+                                                {() => {this.setState({
                                                     sortBy: this.state.transiSortBy,
                                                     classify: this.state.transiClassify,
                                                     location: this.state.transiLocation,
-                                                    show: false
-                                                })}
+                                                    show: false,
+                                                });
+                                                this.refresh();
+                                                }}
                                             >完成</Text>
                                         </TouchableOpacity>
                                     </View>
