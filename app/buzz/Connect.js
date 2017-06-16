@@ -22,7 +22,7 @@ import Header from '../components/HomeNavigation';
 import UselessTextInput from '../components/UselessTextInput';
 import UserDefaults from '../common/UserDefaults';
 import Constant from '../common/constants';
-import resTimes from './restTimes';
+
 const screenW = Dimensions.get('window').width;
 
 @observer
@@ -49,7 +49,7 @@ export default class DealConnect extends Component {
 
                 body: JSON.stringify({
                     order: {
-                        serv_offer_title: feed.serv_offer.serv_title,
+                        serv_offer_title: feed.serv_title,
                         serv_offer_id: feed.id,
                         offer_user_id: feed.user_id,
                         lately_chat_content: this.state.lately_chat_content,
@@ -58,23 +58,18 @@ export default class DealConnect extends Component {
             });
 
             let res = await response.text();
+            console.log('dd');
             if (response.status >= 200 && response.status < 300) {
                 //console.log("line:153");
                 let resObject =JSON.parse(res);
-                let avaliableTimes =resObject.avaliable;
-                let type = 'offer';
-                if(resObject.status==0){
-                    this._createChat(resObject.id,this.state.lately_chat_content);
-                    this.props.navigator.push({component:resTimes, passProps:{avaliableTimes,type}});
-                }else if(resObject.status==-2){
-                    Alert.alert(
-                        '提示',
-                        '您今天的沟通机会已用完，请明天再联系',
-                        [
-                            { text: '确定', onPress: () => this.props.navigator.pop() },
-                        ]
-                    )
-                }
+                this._createChat(resObject.id);
+                Alert.alert(
+                    '提示',
+                    '成功',
+                    [
+                        { text: '已通知到对方', onPress: () => this.props.navigator.pop() },
+                    ]
+                )
             } else {
                 let error = res;
                 throw error;

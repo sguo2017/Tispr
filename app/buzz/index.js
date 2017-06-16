@@ -9,8 +9,7 @@ import {
     RefreshControl,
     PanResponder,
     ViewPagerAndroid,
-    TouchableHighlight,
-    Alert
+    TouchableHighlight
 } from 'react-native';
 
 import { observer } from 'mobx-react/native'
@@ -239,24 +238,8 @@ export default class BussList extends Component {
             if (response.status >= 200 && response.status < 300) {
                 if(newStatus == Constant.sys_msgs_status.FINISHED){
                     let resObject =JSON.parse(res);
-                    if(resObject.status==0){
-                        this._createChat(resObject.id,lately_chat_content);
-                        Alert.alert(
-                            '提示',
-                            '联系成功！您今天的沟通次数剩余'+resObject.avaliable+"次",
-                            [
-                                { text: '确定', onPress: () => this.props.navigator.pop() },
-                            ]
-                        )
-                    }else if(resObject.status==-2){
-                        Alert.alert(
-                            '提示',
-                            '您今天的沟通机会已用完，请明天再联系',
-                            [
-                                { text: '确定', onPress: () => this.props.navigator.pop() },
-                            ]
-                        )
-                    }                    
+                    this._createChat(resObject.id,lately_chat_content);
+                    alert('已通知对方')
                 } 
                 if(newStatus == Constant.sys_msgs_status.DISCARDED)
                   alert('已忽略，不再显示')
