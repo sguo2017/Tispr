@@ -186,13 +186,24 @@ export default class ServOfferConfirm extends Component {
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
                 //console.log("line:153");
-                Alert.alert(
-                    '提示',
-                    '成功',
-                    [
-                        { text: '服务发布成功', onPress: () => this.clickJump() },
-                    ]
-                )
+                let resObject =JSON.parse(res);
+                if(resObject.status==0){
+                    Alert.alert(
+                        '提示',
+                        '服务发布成功,您今天发布需求的次数剩余'+resObject.avaliable+"次",
+                        [
+                            { text: '确定', onPress: () => this.clickJump() },
+                        ]
+                    )
+               }else if(resObject.status==-2){
+                    Alert.alert(
+                        '提示',
+                        '您今天的沟通机会已用完，请明天再联系',
+                        [
+                            { text: '确定', onPress: () => this.props.navigator.pop() },
+                        ]
+                    )
+               }
             } else {
                 let error = res;
                 throw error;
