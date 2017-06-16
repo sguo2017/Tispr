@@ -38,6 +38,7 @@ export default class MeInfo extends Component {
             fileSource: this.props.source,
             avatar: global.user.avatar,
             errors: this.props.errors,
+            info: global.user.profile
         }
     }
    
@@ -45,15 +46,17 @@ export default class MeInfo extends Component {
     clickJump() {
         let _this = this;
         const { navigator } = this.props;
-        let  getdata=(a)=>{_this.setState({
-                        avatar:a
+        let  getdata=(a, b)=>{_this.setState({
+                        avatar:a,
+                        info: b
                     })}
         let abc='abc';
+        let info = _this.state.info;
         if (navigator) {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "PersonInfo",
                 component: PersonInfo,
-                passProps: {getdata},
+                passProps: {getdata, info},
             });
         }
     }
@@ -76,7 +79,12 @@ export default class MeInfo extends Component {
                             <Text style={{fontSize:16, color:'white'}}>{global.user.name}</Text>
                             <Text style={styles.text}>番禺区，广州市，广东省，中国</Text>
                             <Text style={{backgroundColor: 'rgba(255,255,255,0.24)', borderRadius: 10, paddingLeft: 10, paddingRight:10, height: 20}}>
-                                <Text style={{color: 'white', fontSize: 12, lineHeight: 18}} onPress={this.clickJump.bind(this)}>编辑个人信息</Text>
+                                {
+                                    global.user.profile?
+                                    <Text style={{color: 'white', fontSize: 12, lineHeight: 18}} onPress={this.clickJump.bind(this)}>{global.user.profile}</Text>
+                                    :<Text style={{color: 'white', fontSize: 12, lineHeight: 18}} onPress={this.clickJump.bind(this)}>编辑个人信息</Text>
+                                }      
+                                    
                             </Text>
                         </View>
                         <TouchableOpacity onPress={()=>this.props.navigator.push({component:Setting})}>
