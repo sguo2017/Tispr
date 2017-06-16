@@ -187,11 +187,12 @@ export default class ServOfferConfirm extends Component {
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
                 //console.log("line:153");
+                this.clickJump();
                 Alert.alert(
                     '提示',
                     '成功',
                     [
-                        { text: '服务发布成功', onPress: () => this.clickJump() },
+                        { text: '服务发布成功'},
                     ]
                 )
             } else {
@@ -335,7 +336,7 @@ export default class ServOfferConfirm extends Component {
 
                 <TouchableHighlight style={{ backgroundColor: '#81d49c', marginTop: 90, alignSelf: 'stretch' }} onPress={this.onServOfferPres.bind(this)} >
                     <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: '#81d49c', }}>
-                        下一步
+                        确认
                   </Text>
                 </TouchableHighlight>
             </View>
