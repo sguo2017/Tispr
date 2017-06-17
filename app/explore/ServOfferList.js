@@ -217,8 +217,8 @@ const HomeItem = ({
                     </Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Image style={{height: 20, width: 20}} source={require('../resource/y-chat.png')}/>
-                    <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{feed.user_id}</Text>
+                    <Image style={{height: 24, width: 24}} source={require('../resource/ic_account_favour.png')}/>
+                    <Text style={{fontSize: 12, color: 'gray'}}>{feed.favorites_count?feed.favorites_count:0}</Text>
                 </View>
             </View>
             
