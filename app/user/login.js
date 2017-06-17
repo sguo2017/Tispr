@@ -26,7 +26,7 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "p2@qq.com",
+      email: "p1@qq.com",
       password: "123456",
       error: "",
       showProgress: false,
@@ -109,30 +109,47 @@ export default class Login extends Component {
       });
       let res = await response.text();
       let result = JSON.parse(res);
-      let userdetail = JSON.parse(result.user);
-      if (response.status >= 200 && response.status < 300 && result.token) {
-        UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token);
-        let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
-        console.log("97 accessToken:" + JSON.stringify(t));
-        let address = global.user.addressComponent;
-        global.user = userdetail;
-        global.user.addressComponent = address;
-        global.user.authentication_token = result.token;
-        //console.log(JSON.stringify(global.user))
-        this._navigateHome();
+      if (response.status >= 200 && response.status < 300 ) { 
+        if(result.error){
+            Alert.alert(
+              '登录失败',
+              '账户密码不正确',
+              [
+                { text: '登录失败'},
+              ]
+            )
+        }        
+        if(result.user && result.token){
+          let userdetail = JSON.parse(result.user);
+          UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token);
+          let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
+          let address = global.user.addressComponent;
+          global.user = userdetail;
+          global.user.addressComponent = address;
+          global.user.authentication_token = result.token;
+          //console.log(JSON.stringify(global.user))
+          this._navigateHome();
+        }
       } else {
         UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
         let error = res;
+         Alert.alert(
+          '登录失败',
+          '服务器错误',
+          [
+            { text: '确定', onPress: () => console.log('确定') },
+          ]
+        )
         throw error;
       }
     } catch (error) {
       this.setState({ error: error });
       console.log("error " + error);
       Alert.alert(
-        '提示',
-        '失败',
+        '登录失败',
+        '网络连接错误',
         [
-          { text: '登录失败', onPress: () => console.log('确定') },
+          { text: '确定', onPress: () => console.log('确定') },
         ]
       )
       this.setState({ showProgress: false });

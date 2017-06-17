@@ -76,16 +76,23 @@ export default class Register extends Component {
         })
       });
       let res = await response.text();
+      let result = JSON.parse(res);
       if (response.status >= 200 && response.status < 300) {
-        let result = JSON.parse(res);
-        let userdetail =JSON.parse(result.user);    
-        console.log(result);
-        UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
-        console.log("result.token"+result.token)
-        console.log('accessToken:'+ UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR));
-        global.user = global.user = userdetail;
-        global.user.authentication_token = result.token;  
-        this._navigateHome();
+        if(result.status == -2){
+          Alert.alert(
+            '提示',
+            '邮箱已被注册',
+            [
+              { text: '确定'},
+            ]
+          )
+        }else if(result.user){
+          let userdetail =JSON.parse(result.user);    
+          UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
+          global.user = global.user = userdetail;
+          global.user.authentication_token = result.token;  
+          this._navigateHome();
+        }        
       } else {
         UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
         let error = res;
@@ -98,7 +105,7 @@ export default class Register extends Component {
         '提示',
         '失败',
         [
-          { text: '注册失败', onPress: () => console.log('确定') },
+          { text: '注册失败'},
         ]
       )
       this.setState({ showProgress: false });
