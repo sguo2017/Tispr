@@ -49,7 +49,7 @@ export default class DealConnect extends Component {
 
                 body: JSON.stringify({
                     order: {
-                        serv_offer_title: feed.serv_offer.serv_title,
+                        serv_offer_title: feed.serv_title?feed.serv_title:feed.serv_offer.serv_title,
                         serv_offer_id: feed.id,
                         offer_user_id: feed.user_id,
                         lately_chat_content: this.state.lately_chat_content,

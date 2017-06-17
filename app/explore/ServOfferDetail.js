@@ -18,18 +18,27 @@ import Loading from '../components/Loading'
 import LoadMoreFooter from '../components/LoadMoreFooter'
 import Toast from 'react-native-easy-toast'
 import Header from '../components/HomeNavigation';
+import Connect from '../buzz/Connect'
 const screenW = Dimensions.get('window').width;
 
 
 @observer
 export default class ServOfferDetail extends PureComponent {
-    
-    state = {
-        dataSource: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        }),
-        show: false
-    }
+     constructor(props) {
+         super(props);
+         this.state = {
+            dataSource: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+            show: false
+        }
+     }
+      _p = feed => {
+         this.props.navigator.push({
+             component: Connect,
+             passProps: { feed }
+         })
+      }
 
     render() {
         const { feed } = this.props;
@@ -100,7 +109,9 @@ export default class ServOfferDetail extends PureComponent {
                         }
                     />                 
                     <View style={{backgroundColor: 'white', paddingTop: 23, paddingBottom: 10}}>
-                        <TouchableOpacity style={{backgroundColor: '#FFC400', borderRadius: 4, height: 44, marginHorizontal: 16, paddingHorizontal: 138, paddingVertical: 10}}>
+                        <TouchableOpacity style={{backgroundColor: '#FFC400', borderRadius: 4, height: 44, marginHorizontal: 16, paddingHorizontal: 138, paddingVertical: 10}}
+                            onPress={() => this._p(feed)}
+                        >
                             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>联系TA</Text>
                         </TouchableOpacity>
                     </View>
