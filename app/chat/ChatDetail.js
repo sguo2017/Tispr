@@ -15,7 +15,7 @@ import {
   Modal
 } from 'react-native';
 import { reaction } from 'mobx'
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Composer, Send } from 'react-native-gifted-chat';
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import ShareView from '../components/ShareView';
@@ -55,7 +55,7 @@ export default class ChatDetail extends Component {
         let message = {
           _id: value.id,
           text: value.chat_content,
-          createdAt: new Date(Date.UTC(2016, 7, 30, 17, 20, 0)), //created_at:2017-04-13T07:30:41.000Z
+          createdAt: value.created_at, //created_at:2017-04-13T07:30:41.000Z
           user: {
             _id: value.user_id,
             name: value.name,
@@ -113,7 +113,22 @@ export default class ChatDetail extends Component {
     this.chatSave(messages)
   }
 
-
+  renderComposer(props){
+    return (
+      <Composer
+        {...props}
+         placeholder={'请输入'}
+      />
+    );
+  }
+  renderSend(props){
+    return (
+      <Send
+        {...props}
+         label={'发送'}
+      />
+    );
+  }
   async chatSave(messages) {
     let chat_content = "";
     if (messages.length > 0) {
@@ -189,6 +204,8 @@ export default class ChatDetail extends Component {
             user={{
               _id: global.user.id
             }}
+            renderComposer ={this.renderComposer }
+            renderSend={this.renderSend}
           />
         </View>
         <Modal
