@@ -90,6 +90,7 @@ export default class Register extends Component {
           let userdetail =JSON.parse(result.user);    
           UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
           global.user = global.user = userdetail;
+          global.user.addressComponent = address;
           global.user.authentication_token = result.token;  
           this._navigateHome();
         }        
