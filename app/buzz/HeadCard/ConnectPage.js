@@ -75,6 +75,7 @@ export default class ConnectPage extends Component{
                             placeholder='请输入聊天内容'
                             onChangeText={(val) => {
                                 this.setState({ msg: val })
+
                                 }}
                         />
                         <TouchableHighlight 
