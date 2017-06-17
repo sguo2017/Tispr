@@ -24,7 +24,6 @@ const screenW = Dimensions.get('window').width;
 
 @observer
 export default class ServOfferDetail extends PureComponent {
-<<<<<<< HEAD
      constructor(props) {
          super(props);
          this.state = {
@@ -40,6 +39,7 @@ export default class ServOfferDetail extends PureComponent {
              passProps: { feed }
          })
       }
+
     render() {
         const { feed } = this.props;
         //let img = feed.serv_images.split(',');
