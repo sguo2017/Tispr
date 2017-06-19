@@ -7,7 +7,7 @@ export default class ChatStore {
     @observable errorMsg = ''
     @observable page = 1
     @observable isRefreshing = false
-
+    @observable noResult = false
     constructor(categoryId) {
         this.categoryId = categoryId
         this.fetchFeedList()
@@ -16,17 +16,20 @@ export default class ChatStore {
     @action
     fetchFeedList = async () => {
         try {
-            if (this.isRefreshing) this.page = 1            
+            if (this.isRefreshing) this.page = 1  
             const result = await this._fetchDataFromUrl()
             runInAction(() => {
                 this.isRefreshing = false
                 this.errorMsg = ''
                 if (this.page == 1) {                     
-                    //console.log("26:"+JSON.stringify(result))           
-                    this.feedList.replace(result) 
-                } else {     
-                    console.log("28:"+JSON.stringify(result))              
+                    this.feedList.replace(result)
+                    if(result=='')
+                        this.noResult = true;
+                } else {                   
                     this.feedList.splice(this.feedList.length, 0, ...result);
+                    if(result == ''){
+                        this.noResult = true;
+                    }
                 }
             })
         } catch (error) {
@@ -36,12 +39,12 @@ export default class ChatStore {
 
     @computed
     get isFetching() {
-        return this.feedList.length == 0 && this.errorMsg == ''
+        return this.feedList.length == 0 && this.errorMsg == '' && !this.noResult
     }
 
     @computed
     get isLoadMore() {
-        return this.page != 1
+        return this.page != 1 && !this.noResult
     }
 
     _fetchDataFromUrl() {
@@ -58,13 +61,11 @@ export default class ChatStore {
                 return null
             }).then(responseData => {
                 if (responseData) {
-                    //console.log(JSON.parse(responseData.feeds))
                     resolve(JSON.parse(responseData.feeds))
                 } else {
                     reject('请求出错！')
                 }
             }).catch(error => {
-                // console.log(`Fetch evaluating list error: ${error}`)
                 reject('网络出错！')
             })
         })

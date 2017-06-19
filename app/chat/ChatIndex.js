@@ -74,7 +74,7 @@ export default class ChatList extends PureComponent {
     _renderFooter = () => <LoadMoreFooter />
 
     render() {
-        const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
+        const { feedList, isRefreshing, isFetching, isLoadMore } = this.knowledgeListStore
         return (
             <View style={styles.listView}>
 
@@ -82,7 +82,7 @@ export default class ChatList extends PureComponent {
                     <ListView
                         dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
                         renderRow={this._renderRow}
-                        renderFooter={this._renderFooter}
+                        renderFooter={isLoadMore && this._renderFooter}
                         enableEmptySections
                         initialListSize={3}
                         onScroll={this._onScroll}
