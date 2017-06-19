@@ -163,10 +163,13 @@ const HomeItem = ({
                     justifyContent: 'space-around',
                 }}>
                     <Text style={{fontSize: 16, color: 'black'}} numberOfLines={2}>{feed.serv_title}</Text>
-                    <Text>创意艺术</Text>
+                    {
+                        feed.catalog?
+                        <Text>{feed.catalog}</Text>:<Text>其它分类</Text>
+                    }
                     <View style={{flexDirection:'row'}}>
                         <Image source={require('../../resource/g-location-s.png')}/>
-                        <Text style={{fontSize: 12, color: '#B8B8B8'}}>距离100km</Text>
+                        <Text style={{fontSize: 12, color: '#B8B8B8'}}>{feed.district}</Text>
                     </View>
                 </View>
             </View>
@@ -193,8 +196,8 @@ const HomeItem = ({
                     </Text>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Image style={{height: 20, width: 20}} source={require('../../resource/y-chat.png')}/>
-                    <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{feed.user_id}</Text>
+                    <Image style={{height: 24, width: 24}} source={require('../../resource/ic_account_favour.png')}/>
+                    <Text style={{fontSize: 12, color: 'gray'}}>{feed.favorites_count?feed.favorites_count:0}</Text>
                 </View>
             </View>
             

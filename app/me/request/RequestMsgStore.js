@@ -7,6 +7,7 @@ export default class FeedStore {
     @observable errorMsg = ''
     @observable page = 1
     @observable isRefreshing = false
+    @observable noResult = false
 
     constructor(categoryId) {
         this.categoryId = categoryId
@@ -24,8 +25,13 @@ export default class FeedStore {
                 if (this.page == 1) {                     
                     //console.log("26:"+JSON.stringify(result))           
                     this.feedList.replace(result) 
+                    if(result=='')
+                        this.noResult = true;
                 } else {                
                     this.feedList.splice(this.feedList.length, 0, ...result);
+                    if(result == ''){
+                        this.noResult = true;
+                    }
                 }
             })
         } catch (error) {
@@ -35,12 +41,12 @@ export default class FeedStore {
 
     @computed
     get isFetching() {
-        return this.feedList.length == 0 && this.errorMsg == ''
+        return this.feedList.length == 0 && this.errorMsg == '' && !this.noResult
     }
 
     @computed
     get isLoadMore() {
-        return this.page != 1
+        return this.page != 1 && !this.noResult
     }
 
     _fetchDataFromUrl() {
