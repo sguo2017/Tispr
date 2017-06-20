@@ -18,7 +18,6 @@ import { reaction } from 'mobx'
 import { GiftedChat, Composer, Send } from 'react-native-gifted-chat';
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
-import ShareView from '../components/ShareView';
 import { connect } from 'react-redux';
 import UserDefaults from '../common/UserDefaults';
 import Util from '../common/utils';

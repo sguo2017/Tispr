@@ -1,6 +1,4 @@
-/**
- * Created by ljunb on 16/5/26.
- */
+
 import {Dimensions, PixelRatio} from 'react-native';
 
 let window = {

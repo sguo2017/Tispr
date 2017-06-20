@@ -1,6 +1,4 @@
-/**
- * Created by ljunb on 2017/1/7.
- */
+
 import React, {Component} from 'react'
 import {NetInfo} from 'react-native'
 

@@ -1,7 +1,4 @@
-/**
- * Created by ljunb on 16/5/26.
- */
- import * as types from '../actions/actionTypes';
+import * as types from '../actions/actionTypes';
 import Common from '../common/constants';
 
 const initialState = {
