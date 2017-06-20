@@ -1,6 +1,5 @@
 import {observable, computed, action, runInAction} from 'mobx'
 import Constant from '../../common/constants';
-import UserDefaults from '../../common/UserDefaults';
 
 export default class FeedStore {
     @observable feedList = []

@@ -8,12 +8,7 @@ import {
     TouchableOpacity,
     RefreshControl,
 } from 'react-native'
-import {reaction} from 'mobx'
 import {connect} from 'react-redux';
-import Loading from '../../components/Loading'
-import LoadMoreFooter from '../../components/LoadMoreFooter'
-import Toast from 'react-native-easy-toast'
-import Header from '../../components/HomeNavigation';
 import Marklist from '../mark/marklist';
 
 

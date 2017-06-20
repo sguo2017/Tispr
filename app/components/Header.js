@@ -1,7 +1,4 @@
-/**
- * Created by ljunb on 16/5/8.
- * 导航栏标题
- */
+
 import React from 'react';
 import {
     StyleSheet,

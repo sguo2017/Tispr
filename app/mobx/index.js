@@ -1,6 +1,3 @@
-/**
- * Created by ljunb on 2017/2/22.
- */
 import {observable} from 'mobx'
 
 class RootStore {

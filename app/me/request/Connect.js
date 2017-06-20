@@ -16,11 +16,7 @@ import {
     Alert
 } from 'react-native'
 import { observer } from 'mobx-react/native'
-import { observable, computed, action, runInAction } from 'mobx';
-import ImagePicker from 'react-native-image-picker';
 import Header from '../../components/HomeNavigation';
-import UselessTextInput from '../../components/UselessTextInput';
-import UserDefaults from '../../common/UserDefaults';
 import Constant from '../../common/constants';
 
 const screenW = Dimensions.get('window').width;

@@ -37,7 +37,7 @@ const FeedMultiImageCell = ({
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginLeft: 20}}>
                     <Image
                         style={{width: 14, height: 14, marginRight: 3}}
-                        source={require('../resource/ic_feed_watch.png')}
+                        source={require('../resource/img_news_default.png')}
                     />
                     <Text style={{color: 'rgb(150,150,150)', fontSize: 13}}>{viewCount}</Text>
                 </View>

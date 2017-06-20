@@ -12,18 +12,14 @@ import {
     Alert,
     Navigator,
 } from 'react-native'
-import Header from '../components/HomeNavigation';
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import TabCategoryBar from './TabCategoryBar'
-import Constant from '../common/constants';
-import UserDefaults from '../common/UserDefaults';
 const titles = ['服务', '需求', '收藏'];
 
 import OffersList from './page/offersList'
 import RequestsList from './page/requestsList';
 import BookmarksList from './page/bookmarksList';
 import PersonInfo from './personalinfoEdit';
-import ImagePicker from 'react-native-image-picker';
 import Setting from '../sys/Setting';
 const controllers = [
     {categoryId: 1, controller: OffersList},

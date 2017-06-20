@@ -16,7 +16,6 @@ import RequestMsgSingleImageCell from '../request/RequestMsgSingleImageCell'
 import RequestMsgDetail from '../request/RequestMsgDetail'
 import RequestMsgStore from '../request/RequestMsgStore'
 import Toast from 'react-native-easy-toast'
-import Header from '../../components/HomeNavigation';
 
 const KNOWLEDGE_ID = 3
 

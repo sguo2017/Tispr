@@ -16,7 +16,6 @@ import ChatSingleImageCell from './ChatSingleImageCell'
 import FeedDetail from './ChatDetail'
 import Toast from 'react-native-easy-toast'
 import FeedBaseStore from './ChatStore'
-import Header from '../components/HomeNavigation';
 
 const KNOWLEDGE_ID = 3
 
