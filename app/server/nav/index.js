@@ -66,7 +66,6 @@ export default class navpage extends Component {
                     let goods_catalog_I = this.state.goods_catalog_I;
                     goods_catalog_I = JSON.parse(responseData.feeds);
                     global.goods_catalog_I = goods_catalog_I;
-                    //console.log("goods_catalog_I:"+JSON.stringify(goods_catalog_I))
                     this.setState({goods_catalog_I:goods_catalog_I})
                 } else {
                 }
@@ -125,10 +124,19 @@ export default class navpage extends Component {
                         this.state.goods_catalog_I.map((data, index) => {
                             return (
                                 <View tabLabel={data.name}>
-                                    <Text style={{ color: 'black', padding: 16, fontSize: 16, backgroundColor: '#b0b0b0' }}>
-                                        <Text>{data.goods_count}</Text>
-                                        位客户需要&nbsp;<Text>{data.name}</Text>类&nbsp;专业人士
-                                    </Text>
+                                    {
+                                        this.state.goods_tpye == "serv_request"? 
+                                        <Text style={{ color: 'black', padding: 16, fontSize: 16, backgroundColor: '#b0b0b0' }}>
+                                            <Text>{data.goods_count}</Text>
+                                            位奇客提供&nbsp;<Text>{data.name}</Text>类&nbsp;服务
+                                        </Text>
+                                        :
+                                        <Text style={{ color: 'black', padding: 16, fontSize: 16, backgroundColor: '#b0b0b0' }}>
+                                            <Text>{data.request_count}</Text>
+                                            位客户需要&nbsp;<Text>{data.name}</Text>类&nbsp;专业人士
+                                        </Text>
+                                    }
+                                    
                                     <ScrollView>
                                         {
                                             JSON.parse(data.goods_catalogs_II).map((d, i) => {
