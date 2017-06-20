@@ -78,6 +78,7 @@ export default class SysMsgDetail extends Component {
                   let rmsg = JSON.parse(response._bodyText);
                   this.props.feed.favorite_id = rmsg.favorite_id;
                   this.props.feed.isFavorited= true;
+                  global.user.favorites_count++;
                 this.setState({ isFavorited: true });
             } else {
                 let error = res;
@@ -104,6 +105,7 @@ export default class SysMsgDetail extends Component {
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
                 this.props.feed.isFavorited= false;
+                global.user.favorites_count++;
                 this.setState({isFavorited: false});
             } else {
                 let error = res;

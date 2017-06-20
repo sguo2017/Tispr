@@ -14,8 +14,6 @@ import {
 } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import TabCategoryBar from './TabCategoryBar'
-const titles = ['服务', '需求', '收藏'];
-
 import OffersList from './page/offersList'
 import RequestsList from './page/requestsList';
 import BookmarksList from './page/bookmarksList';
@@ -27,6 +25,7 @@ const controllers = [
     {categoryId: 3, controller: BookmarksList}
 ]
 export default class MeInfo extends Component {
+    
     constructor(props) {
         super(props);
 
@@ -43,7 +42,7 @@ export default class MeInfo extends Component {
         }
     }
    
-
+    
     clickJump() {
         let _this = this;
         const { navigator } = this.props;
@@ -64,6 +63,7 @@ export default class MeInfo extends Component {
 
 
     render() {
+        var titles = ['服务('+global.user.offer_count+')', '需求('+global.user.request_count+')', '收藏('+global.user.favorites_count+')'];
         return(
 
               <View style={styles.listView}>

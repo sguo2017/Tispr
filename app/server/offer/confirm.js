@@ -189,6 +189,7 @@ export default class ServOfferConfirm extends Component {
                 let resObject =JSON.parse(res);
                 if(resObject.status==0){
                     this.clickJump();
+                    global.user.offer_count++;
                     Alert.alert(
                         '提示',
                         '服务发布成功,您今天发布服务的次数剩余'+resObject.avaliable+"次",
