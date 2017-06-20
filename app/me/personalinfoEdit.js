@@ -320,7 +320,6 @@ export default class Personinfoedit extends Component {
                             placeholder='添加网页链接'
                             placeholderTextColor='#CCCCCC'
                             underlineColorAndroid='#CCCCCC'
-                            onChangeText={(val) => {this.setState({ address: val})}}
                             />
                         </View> 
                     </View>

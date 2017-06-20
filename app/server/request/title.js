@@ -118,7 +118,7 @@ export default class ServOfferTitle extends Component {
 
                 <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                     <Text style={{ color: "#a8a6b9" }}>不少于15个字符</Text>
-                    <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.serv_offer.detail_length}</Text>
+                    <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.serv_offer.title_length}</Text>
                 </View>
 
                 <TouchableHighlight style={{ backgroundColor: '#81d49c', marginTop: 20, alignSelf: 'stretch' }} onPress={this.clickJump.bind(this)}>

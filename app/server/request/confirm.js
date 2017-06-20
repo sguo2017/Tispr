@@ -271,8 +271,12 @@ export default class ServOfferConfirm extends Component {
                 <Text style={{ color: "#000", fontSize: 16 }}>向专家描述&nbsp;<Text>{this.state.serv_offer.goods_catalogs_name}</Text>&nbsp;服务需求</Text>
 
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
-                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/t_text.png')} />
+                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b-aixin-xl.png')} />
                     <Text style={{ color: "#000000" }}>{this.state.serv_offer.serv_title}</Text>
+                </View>
+                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
+                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b-zanshi-xl.png')} />
+                    <Text style={{ color: "#000000" }}>{this.state.serv_offer.serv_detail}</Text>
                 </View>
                 <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b_location.png')} />
