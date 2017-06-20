@@ -23,7 +23,7 @@ import { connect } from 'react-redux';
 import UserDefaults from '../common/UserDefaults';
 import Util from '../common/utils';
 import OrderDetail from '../order/OrderDetail'
-import BeforePropose from '../order/BeforePropose'
+import ProposeDeal from '../order/ProposeDeal'
 import CloseDeal from '../order/CloseDeal';
 
 const screenW = Dimensions.get('window').width;
@@ -81,8 +81,8 @@ export default class ChatDetail extends Component {
     if (navigator) {
       if(this.state.order_status =='00A'){
         navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
-          name: "BeforePropose",
-          component: BeforePropose,
+          name: "ProposeDeal",
+          component: ProposeDeal,
           passProps: {feed}
         });
       }
