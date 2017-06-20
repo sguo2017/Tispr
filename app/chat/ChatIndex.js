@@ -141,11 +141,5 @@ const styles = StyleSheet.create({
     listView: {
         flex: 1,
         backgroundColor: '#f5f5f5'
-    },
-    loadingContainer: {
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row'
     }
 })

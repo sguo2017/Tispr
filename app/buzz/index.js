@@ -77,13 +77,11 @@ var styles = StyleSheet.create({
         alignSelf: 'center',
         marginVertical: 16,
         height:20,
-        width:84,
         fontWeight: 'bold',
         color: '#1B2833',
         fontSize: 14,
     },
     text2: {
-        width: 56,
         height: 20,
         color: '#9E9E9E',
         fontSize: 14,

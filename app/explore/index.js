@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
         borderColor: global.gColors.themeColor,
         padding: 5,
         height: 36,
-        width: 80,
+        width: Platform.OS === 'ios' ? 104 : 80,
         marginRight: 20,
         marginBottom: 20
     },

@@ -56,6 +56,7 @@ export default class Chat extends PureComponent {
 const styles = StyleSheet.create({
     listView: {
         flex: 1,
-        backgroundColor: '#f5f5f5'
+        backgroundColor: '#f5f5f5',
+        paddingTop: Platform.OS === 'ios' ? 20 : 0,
     }
 })
