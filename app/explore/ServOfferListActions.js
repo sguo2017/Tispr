@@ -24,7 +24,7 @@ export let fetchFeedList = (category, page, exploreparams) => {
             dispatch(receiveFeedList(JSON.parse(response.feeds), category, page));
         }, (error) => {
             // console.log('Fetch category list error: ' + error);
-            dispatch(receiveFeedList([]));
+            dispatch(receiveFeedList([], category, page));
         },exploreparams);
     }
 }
