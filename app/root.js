@@ -1,7 +1,3 @@
-/**
- * Created by ljunb on 16/5/25.
- */
-import GlobalContants from './common/globalContants'
 import React from 'react';
 import {NetInfo, Animated, StyleSheet, View, Text, Platform} from 'react-native';
 import {Provider} from 'react-redux';

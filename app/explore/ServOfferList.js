@@ -90,7 +90,7 @@ export default class ServOfferList extends Component {
 
         return (
             <View style={{backgroundColor: '#f5f5f5', flex: 1}}>
-                {console.log("79:"+JSON.stringify(feedHome.feedList))}
+                {/*{console.log("79:"+JSON.stringify(feedHome.feedList))}*/}
                 {!feedHome.isLoading &&
                 <ScrollView
                     ref={scrollView => this.scrollView = scrollView}

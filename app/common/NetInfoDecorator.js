@@ -9,7 +9,6 @@ const NetInfoDecorator = WrappedComponent => class extends Component {
             isConnected: true,
         }
     }
-
     componentDidMount() {
         NetInfo.isConnected.addEventListener('change', this._handleNetworkConnectivityChange);
     }
