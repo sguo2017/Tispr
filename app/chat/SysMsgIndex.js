@@ -74,7 +74,7 @@ export default class BussList extends PureComponent {
 
     _renderFooter = () => <LoadMoreFooter/>
     render() {
-        const {feedList, isRefreshing, isFetching} = this.knowledgeListStore
+        const {feedList, isRefreshing, isFetching, isLoadMore} = this.knowledgeListStore
         const {navigator} = this.props;
         return (
             <View style={styles.listView}>
@@ -82,7 +82,7 @@ export default class BussList extends PureComponent {
                 <ListView
                     dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
                     renderRow={this._renderRow}
-                    renderFooter={this._renderFooter}
+                    renderFooter={isLoadMore && this._renderFooter}
                     enableEmptySections
                     initialListSize={3}
                     onScroll={this._onScroll}
@@ -120,8 +120,8 @@ class KnowledgeItem extends PureComponent {
     }
 
     render() {
-        const { feed: { action_title, action_desc,interval,user } } = this.props
-        const cellData = { action_title, action_desc,interval,user }
+        const { feed: { action_title, action_desc,interval,user_name } } = this.props
+        const cellData = { action_title, action_desc,interval,user_name }
         return <SysMsgSingleImageCell {...cellData} onPress={this._onPress} />
     }
 }
