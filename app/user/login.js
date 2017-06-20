@@ -41,7 +41,6 @@ export default class Login extends Component {
   }
 
   componentWillMount() {
-    
   }
   
   _onBack = () => {
@@ -79,6 +78,9 @@ export default class Login extends Component {
   }
 
   async onLoginPressed() {
+    if(global.user == undefined){
+      global.user ={}
+    }
     let address = await UserDefaults.cachedObject(Constant.storeKeys.ADDRESS_COMPONENT);
     if(address)
       global.user.addressComponent = address;

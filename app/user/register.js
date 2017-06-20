@@ -46,6 +46,9 @@ export default class Register extends Component {
   }
 
   async onRegisterPressed() {
+    if(global.user == undefined){
+      global.user ={}
+    }
     let address = await UserDefaults.cachedObject(Constant.storeKeys.ADDRESS_COMPONENT);
     global.user.addressComponent = address;
     UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
