@@ -116,7 +116,7 @@ export default class BussList extends Component {
         super(props);
         d = this;
         UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_SWIPER_USER).then((hasSeenSwiperUser) => {
-          if (hasSeenSwiperUser != null && hasSeenSwiperUser[global.user.id]) {
+          if (hasSeenSwiperUser != null && hasSeenSwiperUser[global.user.id] == true) {
               this.setState({
                 hasSeenSwiperIntroduce: true
               });
@@ -129,10 +129,10 @@ export default class BussList extends Component {
         if (name) {
             alert(name)
         } else {
-            this.props.navigator.push({
-                component: Login,
-                sceneConfig: Navigator.SceneConfigs.FloatFromBottom
-            })
+            // this.props.navigator.push({
+            //     component: Login,
+            //     sceneConfig: Navigator.SceneConfigs.FloatFromBottom
+            // })
         }
     }
 
