@@ -16,6 +16,7 @@ import {
     ScrollView
 } from 'react-native'
 import { observer } from 'mobx-react/native'
+import { CachedImage } from "react-native-img-cache";
 import { observable, computed, action, runInAction } from 'mobx';
 import Header from '../../components/HomeNavigation';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
@@ -123,7 +124,7 @@ export default class navpage extends Component {
                     {
                         this.state.goods_catalog_I.map((data, index) => {
                             return (
-                                <View tabLabel={data.name}>
+                                <View tabLabel={data.name}  key={index}>
                                     {
                                         this.state.goods_tpye == "serv_request"? 
                                         <Text style={{ color: 'black', padding: 16, fontSize: 16, backgroundColor: '#b0b0b0' }}>
@@ -141,15 +142,15 @@ export default class navpage extends Component {
                                         {
                                             JSON.parse(data.goods_catalogs_II).map((d, i) => {
                                                 return (
-                                                    <View style={{ marginBottom: 5 }}>
+                                                    <View style={{ marginBottom: 5 }} key={i}>
                                                         <TouchableOpacity onPress={() => { this.jump(d.id, d.name) }}>
-                                                            <Image style={{
+                                                            <CachedImage style={{
                                                                 width: screenW, height: 150, borderRadius: 10,
                                                                 flexDirection: 'column-reverse'
                                                             }}
                                                                 source={{ uri: d.image }}>
-                                                                <Text style={{ color: 'white', fontSize: 20, margin: 10 }}>{d.name}&nbsp;</Text>
-                                                            </Image>
+                                                                <Text style={{ color: 'white', backgroundColor: 'transparent', fontSize: 20, margin: 10 }}>{d.name}&nbsp;</Text>
+                                                            </CachedImage>
                                                         </TouchableOpacity>
                                                     </View>
                                                 )
