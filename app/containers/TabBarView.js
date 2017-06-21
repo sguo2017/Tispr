@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import RootStore from '../mobx'
 import TabBar from '../components/TabBar'
+import RudderTabBar from '../components/RudderTabBar'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import Server from '../server/index'
 import Buzz from '../buzz/index';
@@ -36,7 +37,7 @@ export default class TabBarView extends PureComponent {
         return (
             <ScrollableTabView
                 renderTabBar={() =>
-                    <TabBar
+                    <RudderTabBar
                         tabNames={tabTitles}
                         tabIconNames={tabIcons}
                         selectedTabIconNames={tabSelectedIcon}
