@@ -117,7 +117,7 @@ export default class navpage extends Component {
                     leftIcon={require('../../resource/ic_back_dark.png')}
                 />
                 <ScrollableTabView
-                    style={{ marginTop: 20, }}
+                    style={{ marginTop: 0, }}
                     initialPage={2}
                     renderTabBar={() => <ScrollableTabBar />}
                 >
