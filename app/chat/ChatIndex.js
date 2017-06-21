@@ -21,17 +21,17 @@ const KNOWLEDGE_ID = 3
 
 @observer
 export default class ChatList extends PureComponent {
-    _pictureAction = () => {
-        const { user: { name } } = RootStore
-        if (name) {
-            alert(name)
-        } else {
-            this.props.navigator.push({
-                component: Login,
-                sceneConfig: Navigator.SceneConfigs.FloatFromBottom
-            })
-        }
-    }
+    // _pictureAction = () => {
+    //     const { user: { name } } = RootStore
+    //     if (name) {
+    //         alert(name)
+    //     } else {
+    //         this.props.navigator.push({
+    //             component: Login,
+    //             sceneConfig: Navigator.SceneConfigs.FloatFromBottom
+    //         })
+    //     }
+    // }
 
     state = {
         dataSource: new ListView.DataSource({
@@ -70,10 +70,17 @@ export default class ChatList extends PureComponent {
 
     _onEndReach = () => this.knowledgeListStore.page++
 
-    _renderFooter = () => <LoadMoreFooter />
+    _renderFooter = () => {
+        const { isLoadMore } = this.knowledgeListStore
+        if (isLoadMore == true) {
+            return <LoadMoreFooter />
+        } else {
+            return null
+        }
+    }
 
     render() {
-        const { feedList, isRefreshing, isFetching, isLoadMore } = this.knowledgeListStore
+        const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
         return (
             <View style={styles.listView}>
 
@@ -81,7 +88,7 @@ export default class ChatList extends PureComponent {
                     <ListView
                         dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
                         renderRow={this._renderRow}
-                        renderFooter={isLoadMore && this._renderFooter}
+                        renderFooter={this._renderFooter}
                         enableEmptySections
                         initialListSize={3}
                         onScroll={this._onScroll}

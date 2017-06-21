@@ -43,7 +43,7 @@ export default class TabCategoryBar extends Component {
     componentDidMount() {
         this.props.scrollValue.addListener(this.setAnimationValue);
     }
-
+    // paddingTop: Platform.OS === 'ios' ? 20 : 0,
     setAnimationValue({value}) {
         console.log(value);
         LayoutAnimation.linear();
@@ -52,7 +52,11 @@ export default class TabCategoryBar extends Component {
 
     render() {
         return (
-            <View style={{backgroundColor:global.gColors.themeColor,padding:5}}>
+            <View style={{
+                backgroundColor:global.gColors.themeColor,
+                padding:5,
+                paddingTop: Platform.OS === 'ios' ? 25 : 5,
+            }}>
                 <View style={styles.tabs}>
                 {this.props.tabs.map((tab, i) => {
                     let color = this.props.activeTab === i ?  global.gColors.themeColor:'white' ;
@@ -64,7 +68,7 @@ export default class TabCategoryBar extends Component {
                             style={[styles.tab,{backgroundColor: bgcolor}]}
                             onPress={() => this.props.goToPage(i)}
                         >
-                            <Text style={{color: color, fontSize: 14, padding: 10}}>
+                            <Text style={{ color: color, fontSize: 14 }}>
                                 {this.props.tabNames[i]}
                             </Text>
                         </TouchableOpacity>

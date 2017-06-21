@@ -63,7 +63,7 @@ export default class TabCategoryBar extends Component {
                             style={[styles.tab,{backgroundColor: bgcolor}]}
                             onPress={() => this.props.goToPage(i)}
                         >
-                            <Text style={{color: color, fontSize: 14, padding: 20}}>
+                            <Text style={{color: color, fontSize: 14 }}>
                                 {this.props.tabNames[i]}
                             </Text>
                         </TouchableOpacity>
