@@ -23,20 +23,30 @@ export default function Card({ content, navigator, width, height, update,index }
             </View>
           </View>
           <View style={{flexDirection:'row'}}>
-            <View style={{width:0,height:0,borderWidth:10,
-                borderRightColor:global.gColors.buttonColor,
-                borderTopColor:global.gColors.buttonColor,borderBottomColor:'transparent',borderLeftColor:'transparent'}}></View>
+            <View style={{
+              width:0,
+              height:0,
+              borderWidth:15,
+              borderRightColor:global.gColors.buttonColor,
+              borderTopColor:global.gColors.buttonColor,
+              borderBottomColor:'transparent',
+              borderLeftColor:'transparent'}}/>
             <View>
-              <TouchableHighlight
+            <TouchableHighlight
               onPress={()=>{navigator.push({component:DiscardPage,name:'DiscardPage',passProps:{feed:content,callback:update,discardIndex:index}})}}
-              style={{ width: 20,height:20,backgroundColor:global.gColors.buttonColor,justifyContent:'center'}}>
-                <Text style={[styles.buttonText]}>
-                  &times;
-                </Text>
-              </TouchableHighlight>
-              <View style={{width:0,height:0,borderWidth:10,
-                  borderRightColor:global.gColors.buttonColor,
-                  borderTopColor:global.gColors.buttonColor,borderBottomColor:'transparent',borderLeftColor:'transparent'}}></View>
+              style={{ width: 30,height:30,backgroundColor:global.gColors.buttonColor,justifyContent:'center'}}>
+              <Text style={[styles.buttonText]}>
+                &times;
+              </Text>
+            </TouchableHighlight>
+            <View style={{
+              width:0,
+              height:0,
+              borderWidth:15,
+              borderRightColor:global.gColors.buttonColor,
+              borderTopColor:global.gColors.buttonColor,
+              borderBottomColor:'transparent',
+              borderLeftColor:'transparent'}} />
             </View>
           </View>
         </View>

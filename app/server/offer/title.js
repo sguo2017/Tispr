@@ -12,11 +12,10 @@ import {
     Navigator,
     AsyncStorage,
     PixelRatio,
+    ProgressViewIOS,
     Alert
 } from 'react-native'
 import { observer } from 'mobx-react/native';
-import { observable, computed, action, runInAction } from 'mobx';
-import ImagePicker from 'react-native-image-picker';
 import Header from '../../components/HomeNavigation';
 import UselessTextInput from '../../components/UselessTextInput';
 import ServOfferDetail from './detail';
@@ -84,6 +83,29 @@ export default class ServOfferTitle extends Component {
         navigator.resetTo({component: NavPage, name: 'NavPage',passProps:{goods_tpye}})
     }
 
+    renderProgressView = () => {
+        if (Platform.OS == 'ios') {
+          return (
+            <ProgressViewIOS
+              progressTintColor="#60d795"
+              style={styles.progressViewIOS}
+              progress={0.3}
+              progressViewStyle="bar"
+            />
+          );
+        } else {
+          return (
+            <ProgressBarAndroid
+              color="#60d795"
+              styleAttr='Horizontal'
+              progress={0.3}
+              indeterminate={false}
+              style={styles.progressViewAndroid}
+            />
+          );
+        }
+    }
+
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -92,8 +114,7 @@ export default class ServOfferTitle extends Component {
                     leftIcon = {require('../../resource/t_header_arrow_left.png')}
                     leftIconAction = {this._onBack.bind(this)}
                 />
-
-                <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.3} indeterminate={false} style={{ marginTop: -10 }} />
+                {this.renderProgressView()}
 
                 <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>30%</Text>
 
@@ -101,9 +122,18 @@ export default class ServOfferTitle extends Component {
 
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>提供什么服务</Text>
 
-                <Text style={{  alignSelf: 'center', color: "#a8a6b9"}}>一句话概括表述您的服务名称 </Text>
+                <Text style={{ alignSelf: 'center', color: "#a8a6b9" }}>一句话概括表述您的服务名称</Text>
 
                 <UselessTextInput
+                    style={{
+                      paddingVertical: 15,
+                      backgroundColor: 'white',
+                      fontSize: 15,
+                      paddingHorizontal: 15,
+                    }}
+                    placeholder="请输入内容"
+                    placeholderTextColor="#a8a6b9"
+                    underlineColorAndroid="transparent"
                     multiline={true}
                     numberOfLines={3}
                     value ={this.state.serv_offer.serv_title}
@@ -115,37 +145,37 @@ export default class ServOfferTitle extends Component {
                         }}
                 />
 
-                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                <View style={{ alignItems: 'center', flexDirection: 'row', paddingHorizontal: 15, }}>
                     <Text style={{ color: "#a8a6b9" }}>不少于16个字符</Text>
                     <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.serv_offer.title_length}</Text>
                 </View>
 
-                <TouchableHighlight style={{ backgroundColor: global.gColors.buttonColor, marginTop: 20, alignSelf: 'stretch' }} onPress={this.clickJump.bind(this)}>
-                    <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: global.gColors.buttonColor, }}>
-                        下一步
-                  </Text>
+                <TouchableHighlight style={styles.nextStepButton} onPress={this.clickJump.bind(this)} >
+                    <Text style={styles.nextStepButtonText}>下一步</Text>
                 </TouchableHighlight>
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
+let styles = StyleSheet.create({
+    nextStepButton: {
+      paddingVertical: 15,
+      backgroundColor: global.gColors.buttonColor,
+      marginTop: 20,
+      alignSelf: 'stretch'
     },
-    avatarContainer: {
-        borderColor: '#9B9B9B',
-        borderWidth: 1 / PixelRatio.get(),
-        justifyContent: 'center',
-        alignItems: 'center'
+    nextStepButtonText: {
+      fontSize: 22,
+        color: '#FFF',
+      alignSelf: 'center',
+      backgroundColor: global.gColors.buttonColor,
     },
-    avatar: {
-        borderRadius: 75,
-        width: 150,
-        height: 150
+    progressViewIOS: {
+      marginTop: 0,
+      backgroundColor: 'transparent',
+    },
+    progressViewAndroid: {
+      marginTop: -10,
     }
 })
