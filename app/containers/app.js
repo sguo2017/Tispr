@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import NavigationExperimental from 'react-native-deprecated-custom-components';
 import {observer} from 'mobx-react/native'
-import TabBarView from '../containers/TabBarView'
 import Splash from '../pages/Splash'
 import RootStore from '../mobx'
 

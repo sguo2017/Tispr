@@ -12,9 +12,11 @@ import {
     TouchableHighlight,
     Alert
 } from 'react-native';
-
 import { observer } from 'mobx-react/native'
 import { reaction } from 'mobx'
+import Swiper from 'react-native-swiper';
+import 'babel-polyfill';
+import UserDefaults from '../common/UserDefaults'
 import Loading from '../components/Loading'
 import LoadMoreFooter from '../components/LoadMoreFooter'
 import SysMsgSingleImageCell from './SysMsgSingleImageCell'
@@ -26,8 +28,7 @@ import Header from '../components/HomeNavigation';
 import Card from './Card'
 import Wrapper from './Wrapper';
 import Constant from '../common/constants';
-import Swiper from 'react-native-swiper';
-import 'babel-polyfill';
+
 const KNOWLEDGE_ID = 3
 const itemWidth = global.gScreen.width - 20;
 const itemHeight = 300;
@@ -39,14 +40,9 @@ var styles = StyleSheet.create({
         backgroundColor: '#f5f5f5'
     },
     wrapper: {
-        width: global.gScreen.width,
-        height: 260,
-        borderRadius: 4,
     },
     cardWrapper:{
-        width: global.gScreen.width,
-        height: 260,
-        borderRadius: 4,
+        flex: 1,
         alignItems:'center'
     },
     CardText:{
@@ -99,14 +95,34 @@ var styles = StyleSheet.create({
         color: '#FFF',
         alignSelf: 'center'
     },
+    swiperBeginButton: {
+      position: 'absolute',
+      bottom: 30,
+      left: 30,
+      backgroundColor: '#ffca28',
+      paddingHorizontal: 15,
+      paddingVertical: 10,
+      borderRadius: 5,
+    },
+    swiperBeginButtonText: {
+      fontSize: 17,
+      color: 'white',
+    }
 })
 
 @observer
 export default class BussList extends Component {
     constructor(props){
-     super(props);
-      d = this;                    
-  }
+        super(props);
+        d = this;
+        UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_SWIPER_USER).then((hasSeenSwiperUser) => {
+          if (hasSeenSwiperUser != null && hasSeenSwiperUser[global.user.id]) {
+              this.setState({
+                hasSeenSwiperIntroduce: true
+              });
+          }
+        })
+    }
 
     _pictureAction = () => {
         const { user: { name } } = RootStore
@@ -126,9 +142,7 @@ export default class BussList extends Component {
         }),
         sys_msgs:this.props.sys_msgs,    
         initCard:0 ,
-        swiper_mutex:true,
-        swiper_1_height:230,
-        swiper_2_height:230
+        hasSeenSwiperIntroduce: false,
     }
 
     knowledgeListStore = new SysMsgStore(KNOWLEDGE_ID)
@@ -138,17 +152,6 @@ export default class BussList extends Component {
             () => this.knowledgeListStore.page,
             () => this.knowledgeListStore.fetchFeedList()
         );
-        setTimeout(()=>{
-            this.setState({
-                swiper_1_height:231,
-            })
-        },100);
-        setTimeout(()=>{
-            this.setState({
-                swiper_2_height:231,
-            })
-        },100);
-
     }
 
     componentWillMount() {
@@ -167,6 +170,19 @@ export default class BussList extends Component {
         this.props.navigator.push({
             component: SysMsgDetail,
             passProps: { feed }
+        })
+    }
+
+    _onPressSwiperBeginButton = () => {
+        this.setState({
+          hasSeenSwiperIntroduce: true
+        });
+        UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_SWIPER_USER).then((hasSeenSwiperUser) => {
+          if (hasSeenSwiperUser == null) {
+            hasSeenSwiperUser = {};
+          }
+          hasSeenSwiperUser[global.user.id] = true
+          UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_SWIPER_USER, hasSeenSwiperUser);
         })
     }
 
@@ -303,53 +319,78 @@ export default class BussList extends Component {
 
       d._changeSysMsgStatus(newStatus,id,lately_chat_content);
     }
+    generateSwiper = () => {
+      const { navigator } = this.props;
+      let cardArray = this.state.sys_msgs;
+      let pushSwiper = (
+        <Swiper
+          index={this.state.initCard}
+          style={styles.wrapper}
+          height={230}
+          showsButtons={false}
+          showsPagination={false}
+        >
+          { cardArray && cardArray.length > 0 ?
+            cardArray.map((data, index) =>
+              <Card
+                key={index}
+                content={data}
+                navigator={navigator}
+                update={this._updateCard}
+                index={index}
+                width={global.gScreen.width}
+              />)
+            : (
+                <View>
+                  <Text>没有推送</Text>
+                </View>
+              )
+          }
+        </Swiper>
+      );
+      let introduceSwiper = (
+        <Swiper
+          style={styles.wrapper}
+          height={230}
+          loop={false}
+          showsButtons={false}
+          showsPagination={false}
+        >
+          <View style={[styles.cardWrapper,{backgroundColor:'#fff'}]}>
+            <Text style={styles.CardText}>欢迎您，{global.user.name}</Text>
+            <Text style={styles.CardText}>这是您的客户需求卡片组，可以向左或</Text>
+            <Text style={styles.CardText}>向右滑动，快试试看！</Text>
+            <Image style={{ width: global.gScreen.width, flex: 1 }} source={require('../resource/card_l_guide_b.png')}/>
+          </View>
+          <View style={styles.cardWrapper}>
+            <Image style={{ flex: 1 }} source={require('../resource/card-l-guide-2.png')}/>
+          </View>
+          <View style={styles.cardWrapper}>
+            <Image style={{ flex: 1, flexDirection: 'row' }} source={require('../resource/card-l-guide-3.png')}>
+              <TouchableOpacity style={styles.swiperBeginButton} onPress={ () => this._onPressSwiperBeginButton() }>
+                <Text style={styles.swiperBeginButtonText}>立即开始</Text>
+              </TouchableOpacity>
+            </Image>
+          </View>
+        </Swiper>
+      );
+
+      if (this.state.hasSeenSwiperIntroduce) {
+        return pushSwiper;
+      } else {
+        return introduceSwiper;
+      }
+    }
     render() {
         const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
-        const { navigator } = this.props;
-        cardArray =this.state.sys_msgs;
         return (
             <View style={styles.listView}>
                 <Header
                     title='Qiker'
                 />
                 <Text style={styles.text1}>您有重要更新</Text>
-
-                {this.state.swiper_mutex?
-                    <Swiper style={styles.wrapper} height={this.state.swiper_1_height} showsButtons={false} showsPagination={false}
-                         onMomentumScrollEnd={(e, state, context) => {if(state.index==2){this.setState({swiper_mutex:false,swiper_2_height:230})}}}
-
-                        >
-                            <View style={[styles.cardWrapper,{backgroundColor:'#fff'}]}>
-                                <Text style={styles.CardText}>欢迎您，{global.user.name}</Text>
-                                <Text style={styles.CardText}>这是您的客户需求卡片组，可以向左或</Text>
-                                <Text style={styles.CardText}>向右滑动，快试试看！</Text>
-                                <Image style={[{alignSelf:'center'},{width:global.gScreen.width,height:140}]} source={require('../resource/card_l_guide_b.png')}/>
-                            </View>
-                            <View style={styles.cardWrapper}>
-                                <Image style={[{alignSelf:'center'}]} source={require('../resource/card-l-guide-2.png')}/>
-                            </View>
-                            <View style={styles.cardWrapper}>
-                                <Image style={[{alignSelf:'center'}]} source={require('../resource/card-l-guide-3.png')}/>
-                            </View>
-                    </Swiper>
-                    :
-                    cardArray?                            
-                        <Swiper style={styles.wrapper} height={this.state.swiper_2_height} showsButtons={false}
-                            showsPagination={false} index={this.state.initCard}
-                        >
-                            { cardArray?
-                            cardArray.map((data, index) => <Card key={index} content={data} navigator={navigator} update={this._updateCard} index={index} width={global.gScreen.width}/>)
-                            :<View></View>   
-                            }
-                        </Swiper>
-                        :<View>
-                            <Text>没有推送</Text>
-                        </View>                      
-
-                }
-
-                    
-                <View style={[styles.view,{marginTop:10}]}>
+                {this.generateSwiper()}
+                <View style={[styles.view, {marginTop:10}]}>
                     <View style={styles.line}></View>
                     <Text style={styles.text2}>奇客动态</Text>
                     <View style={styles.line}></View>
@@ -372,10 +413,7 @@ export default class BussList extends Component {
                                 colors={['rgb(217, 51, 58)']}
                             />
                         }
-
-
                     />
-
                 }
                 <Loading isShow={isFetching} />
                 <Toast ref={toast => this.toast = toast} />

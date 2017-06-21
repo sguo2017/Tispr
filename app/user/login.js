@@ -17,7 +17,6 @@ import Register from '../user/register';
 import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 import TabBarView from '../containers/TabBarView';
-import GlobalContants from '../common/globalContants';
 
 const screenW = Dimensions.get('window').width;
 
