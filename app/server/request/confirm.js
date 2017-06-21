@@ -180,6 +180,7 @@ export default class ServOfferConfirm extends Component {
                         latitude: global.user.addressComponent.latitude,
                         longitude: global.user.addressComponent.longitude,
                         goods_catalog_id: this.state.serv_offer.goods_catalogs_id,
+                        via: this.state.serv_offer.via
                     }
                 })
             });

@@ -31,6 +31,8 @@ export default class ServOfferDelivory extends Component {
 
         this.state = {
             serv_offer: this.props.serv_offer,
+            remoteSwitchIsOn: false,
+            localSwitchIsOn: true
             }
     }
 
@@ -40,6 +42,16 @@ export default class ServOfferDelivory extends Component {
     clickJump() {
         let _this = this;
         const { navigator } = this.props;
+        if(this.state.localSwitchIsOn && this.state.remoteSwitchIsOn){
+            this.state.serv_offer.via = 'all';
+        }else if(this.state.localSwitchIsOn){
+            this.state.serv_offer.via = 'local';
+        }else if(this.state.remoteSwitchIsOn){
+            this.state.serv_offer.via = 'remote';
+        }else{
+            Alert("请选择服务方式");
+            return;
+        }
         if (navigator) {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "ServOfferConfirm",
@@ -89,9 +101,9 @@ export default class ServOfferDelivory extends Component {
                 borderBottomColor: '#a8a6b9', borderBottomWidth:1, marginLeft:5, paddingBottom: 8}}>
                     <Text style={styles.textStyle}>远程/在线</Text>
                     <Switch
-                    onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
+                    onValueChange={(value) => this.setState({remoteSwitchIsOn: value})}
                     style={{marginTop: 15}}
-                    value={this.state.falseSwitchIsOn} />
+                    value={this.state.remoteSwitchIsOn} />
                 </View>
 
                 <View style={{borderBottomColor: '#a8a6b9',borderBottomWidth:1, marginLeft:5, paddingBottom: 8}}>
@@ -100,9 +112,9 @@ export default class ServOfferDelivory extends Component {
                             本地
                         </Text>
                         <Switch
-                        onValueChange={(value) => this.setState({trueSwitchIsOn: value})}                    
+                        onValueChange={(value) => this.setState({localSwitchIsOn: value})}                    
                         style={{marginTop: 15}}
-                        value={this.state.trueSwitchIsOn} />
+                        value={this.state.localSwitchIsOn} />
                     </View>
                     <Text style={{color:'black'}}>
                         <Text>您的服务范围设置在 &nbsp;</Text>
