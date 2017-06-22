@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         alignItems:'center',
-        top:2,
+        top: Platform.OS === 'ios' ? 20 : 0,
     },
 
     buttonTitleFont: {

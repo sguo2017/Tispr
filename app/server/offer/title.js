@@ -87,7 +87,7 @@ export default class ServOfferTitle extends Component {
         if (Platform.OS == 'ios') {
           return (
             <ProgressViewIOS
-              progressTintColor="#60d795"
+              progressTintColor="#ffc400"
               style={styles.progressViewIOS}
               progress={0.3}
               progressViewStyle="bar"
@@ -96,7 +96,7 @@ export default class ServOfferTitle extends Component {
         } else {
           return (
             <ProgressBarAndroid
-              color="#60d795"
+              color="#ffc400"
               styleAttr='Horizontal'
               progress={0.3}
               indeterminate={false}
@@ -111,71 +111,76 @@ export default class ServOfferTitle extends Component {
             <View style={{ flex: 1 }}>
                 <Header
                     title='发布服务'
-                    leftIcon = {require('../../resource/t_header_arrow_left.png')}
-                    leftIconAction = {this._onBack.bind(this)}
+                    leftIcon={require('../../resource/t_header_arrow_left.png')}
+                    leftIconAction={this._onBack.bind(this)}
+                    rightButton='下一步'
+                    rightButtonAction={this.clickJump.bind(this)}
                 />
                 {this.renderProgressView()}
-
-                <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>30%</Text>
-
-                <Image style={{ width: 50, height: 50, alignSelf: 'center' }} source={require('../../resource/b-aixin-xl.png')} />
-
+                <Image style={styles.headIcon} source={require('../../resource/b-aixin-xl.png')} />
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>提供什么服务</Text>
-
-                <Text style={{ alignSelf: 'center', color: "#a8a6b9" }}>一句话概括表述您的服务名称</Text>
-
-                <UselessTextInput
-                    style={{
-                      paddingVertical: 15,
-                      backgroundColor: 'white',
-                      fontSize: 15,
-                      paddingHorizontal: 15,
-                    }}
-                    placeholder="请输入内容"
-                    placeholderTextColor="#a8a6b9"
+                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 14 }}>一句话概括表述您的服务名称</Text>
+                <TextInput
+                    editable = {true}
+                    style={styles.textInput}
+                    maxLength={80}
                     underlineColorAndroid="transparent"
                     multiline={true}
                     numberOfLines={3}
                     value ={this.state.serv_offer.serv_title}
                     onChangeText={(val) => {
-                        let offer=this.state.serv_offer;
-                        offer.serv_title = val;
-                        offer.title_length = val.length;
-                        this.setState({ serv_offer: offer})
-                        }}
+                      let offer=this.state.serv_offer;
+                      offer.serv_title = val;
+                      offer.title_length = val.length;
+                      this.setState({ serv_offer: offer})
+                    }}
                 />
-
-                <View style={{ alignItems: 'center', flexDirection: 'row', paddingHorizontal: 15, }}>
-                    <Text style={{ color: "#a8a6b9" }}>不少于16个字符</Text>
-                    <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.serv_offer.title_length}</Text>
+                <View style={styles.contentRemindText}>
+                    <Text style={{ color: "#a8a6b9", fontSize: 12 }}>不少于16个字符</Text>
+                    <Text style={styles.textLengthText}>
+                      {this.state.serv_offer.title_length?this.state.serv_offer.title_length:'0'}/80
+                    </Text>
                 </View>
-
-                <TouchableHighlight style={styles.nextStepButton} onPress={this.clickJump.bind(this)} >
-                    <Text style={styles.nextStepButtonText}>下一步</Text>
-                </TouchableHighlight>
             </View>
         );
     }
 }
 
 let styles = StyleSheet.create({
-    nextStepButton: {
-      paddingVertical: 15,
-      backgroundColor: global.gColors.buttonColor,
-      marginTop: 20,
-      alignSelf: 'stretch'
-    },
-    nextStepButtonText: {
-      fontSize: 22,
-        color: '#FFF',
-      alignSelf: 'center',
-      backgroundColor: global.gColors.buttonColor,
-    },
-    progressViewIOS: {
-      marginTop: 0,
-      backgroundColor: 'transparent',
-    },
-    progressViewAndroid: {
-      marginTop: -10,
-    }
-})
+  headIcon: {
+    marginTop: 22,
+    width: 40,
+    height: 40,
+    alignSelf: 'center'
+  },
+  progressViewIOS: {
+    marginTop: 0,
+    backgroundColor: 'transparent',
+  },
+  progressViewAndroid: {
+    marginTop: -10,
+  },
+  textLengthText: {
+    alignSelf: 'flex-end',
+    right: 15,
+    justifyContent: 'center',
+    position: 'absolute',
+    color: "#a8a6b9",
+    fontSize: 12
+  },
+  contentRemindText: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 15,
+    marginTop: 8.5,
+  },
+  textInput: {
+    marginTop: 25,
+    backgroundColor: 'white',
+    fontSize: 16,
+    paddingHorizontal: 5,
+    marginHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eeeeee',
+  },
+});

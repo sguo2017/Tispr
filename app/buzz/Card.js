@@ -107,6 +107,11 @@ export default function Card({ content, navigator, width, height, update,index }
           <Text style={{ color: global.gColors.themeColor, fontSize: 16, marginBottom: 8 }}>{content.action_desc}</Text>
           <Text style={{ fontSize: 14 }}>{content.serv_detail}</Text>
         </View>
+        {/*距离*/}
+        <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }}>
+          <Image style={{ width: 18, height: 18 }} source={require('../resource/g-location-s.png')}/>
+          <Text style={{ fontSize: 12, color: '#b8b8b8' }}>12km</Text>
+        </View>
         {/*按钮*/}
         <TouchableOpacity
           style={[styles.button, {backgroundColor:global.gColors.buttonColor,margin:10}]}

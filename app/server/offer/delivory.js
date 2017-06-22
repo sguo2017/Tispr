@@ -13,15 +13,94 @@ import {
     AsyncStorage,
     PixelRatio,
     Alert,
-    Switch
+    Switch,
+    ProgressViewIOS,
 } from 'react-native'
-import { observer } from 'mobx-react/native'
-import { observable, computed, action, runInAction } from 'mobx';
-import ImagePicker from 'react-native-image-picker';
-import Constant from '../../common/constants';
+import { observer } from 'mobx-react/native';
 import Header from '../../components/HomeNavigation';
-import UselessTextInput from '../../components/UselessTextInput';
 import ServOfferConfirm from './confirm';
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
+    },
+    avatarContainer: {
+        borderColor: '#9B9B9B',
+        borderWidth: 1 / PixelRatio.get(),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    avatar: {
+        borderRadius: 75,
+        width: 150,
+        height: 150
+    },
+    textStyle:{
+        fontSize: 16,
+        marginTop: 10,
+        color: '#1b2833',
+    },
+    subtext: {
+        fontSize: 14,
+        color: '#999999',
+    },
+    headIcon: {
+        marginTop: 22,
+        width: 40,
+        height: 40,
+        alignSelf: 'center'
+    },
+    progressViewIOS: {
+        marginTop: 0,
+        backgroundColor: 'transparent',
+    },
+    progressViewAndroid: {
+        marginTop: -10,
+    },
+    textLengthText: {
+        alignSelf: 'flex-end',
+        right: 15,
+        justifyContent: 'center',
+        position: 'absolute',
+        color: "#a8a6b9",
+        fontSize: 12
+    },
+    contentRemindText: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingHorizontal: 15,
+        marginTop: 8.5,
+    },
+    textInput: {
+        marginTop: 25,
+        backgroundColor: 'white',
+        fontSize: 16,
+        paddingHorizontal: 5,
+        marginHorizontal: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#eeeeee',
+    },
+    firstRowView: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottomColor: '#a8a6b9',
+        borderBottomWidth:1,
+        height: 56,
+        marginHorizontal: 16,
+    },
+    secondRowView: {
+        height: 76,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottomColor: '#a8a6b9',
+        borderBottomWidth: 1,
+        marginHorizontal: 16,
+    }
+});
 
 @observer
 export default class ServOfferDelivory extends Component {
@@ -34,10 +113,6 @@ export default class ServOfferDelivory extends Component {
             remoteSwitchIsOn: false,
             localSwitchIsOn: true
             }
-    }
-
-    componentDidMount() {
-        
     }
     clickJump() {
         let _this = this;
@@ -78,7 +153,28 @@ export default class ServOfferDelivory extends Component {
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID);
     }
-
+    renderProgressView = () => {
+        if (Platform.OS == 'ios') {
+            return (
+              <ProgressViewIOS
+                progressTintColor="#ffc400"
+                style={styles.progressViewIOS}
+                progress={0.9}
+                progressViewStyle="bar"
+              />
+            );
+        } else {
+            return (
+              <ProgressBarAndroid
+                color="#ffc400"
+                styleAttr='Horizontal'
+                progress={0.9}
+                indeterminate={false}
+                style={styles.progressViewAndroid}
+              />
+            );
+        }
+    }
     render() {
     //    console.log("this.state.avatarSourceArray: "+this.state.avatarSourceArray);
         return (
@@ -87,72 +183,35 @@ export default class ServOfferDelivory extends Component {
                     title='发布服务'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
                     leftIconAction = {this._onBack.bind(this)}
+                    rightButton='下一步'
+                    rightButtonAction={this.clickJump.bind(this)}
                 />
-
-                <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />
-
-                <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>90%</Text>
-
-                <Image style={{ width: 60, height: 60, alignSelf: 'center' }} source={require('../../resource/b_location.png')} />
-
-                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 18, marginTop:5, marginBottom: 10 }}>怎样提供服务</Text>
-
-                <View style={{ alignItems: 'center', flexDirection: 'row',justifyContent: 'space-between', 
-                borderBottomColor: '#a8a6b9', borderBottomWidth:1, marginLeft:5, paddingBottom: 8}}>
+                {this.renderProgressView()}
+                <Image style={styles.headIcon} source={require('../../resource/b_location.png')} />
+                <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>怎样提供服务</Text>
+                <View style={styles.firstRowView}>
                     <Text style={styles.textStyle}>远程/在线</Text>
                     <Switch
-                    onValueChange={(value) => this.setState({remoteSwitchIsOn: value})}
-                    style={{marginTop: 15}}
-                    value={this.state.remoteSwitchIsOn} />
+                        onValueChange={(value) => this.setState({remoteSwitchIsOn: value})}
+                        value={this.state.remoteSwitchIsOn}
+                        onTintColor="#ffc400"
+                    />
                 </View>
-
-                <View style={{borderBottomColor: '#a8a6b9',borderBottomWidth:1, marginLeft:5, paddingBottom: 8}}>
-                    <View style={{ alignItems: 'center', flexDirection: 'row',justifyContent: 'space-between' }}>
-                        <Text style={styles.textStyle}>
-                            本地
+                <View style={styles.secondRowView}>
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.textStyle}>本地</Text>
+                        <Text style={styles.subtext}>
+                            您的服务范围设置在 &nbsp;
+                            <Text>{global.user.addressComponent.district}，{global.user.addressComponent.city}，{global.user.addressComponent.province}，{global.user.addressComponent.country}</Text>
                         </Text>
-                        <Switch
-                        onValueChange={(value) => this.setState({localSwitchIsOn: value})}                    
-                        style={{marginTop: 15}}
-                        value={this.state.localSwitchIsOn} />
                     </View>
-                    <Text style={{color:'black'}}>
-                        <Text>您的服务范围设置在 &nbsp;</Text>
-                        <Text>{global.user.addressComponent.district}，{global.user.addressComponent.city}，{global.user.addressComponent.province}，{global.user.addressComponent.country}</Text>
-                    </Text>
+                    <Switch
+                      onValueChange={(value) => this.setState({localSwitchIsOn: value})}
+                      value={this.state.localSwitchIsOn}
+                      onTintColor="#ffc400"
+                    />
                 </View>
-
-                <TouchableHighlight style={{ backgroundColor: global.gColors.buttonColor, marginTop: 60, alignSelf: 'stretch' }} onPress={this.clickJump.bind(this)}>
-                    <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor:global.gColors.buttonColor}}>
-                        下一步
-                  </Text>
-                </TouchableHighlight>
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-    },
-    avatarContainer: {
-        borderColor: '#9B9B9B',
-        borderWidth: 1 / PixelRatio.get(),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    avatar: {
-        borderRadius: 75,
-        width: 150,
-        height: 150
-    },
-    textStyle:{
-        fontSize: 20,
-        marginTop: 10,
-        color: 'black',
-    }
-})

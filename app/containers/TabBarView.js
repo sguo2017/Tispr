@@ -4,7 +4,6 @@ import {
     Text,
 } from 'react-native'
 import RootStore from '../mobx'
-import TabBar from '../components/TabBar'
 import RudderTabBar from '../components/RudderTabBar'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import Server from '../server/index'
