@@ -26,7 +26,6 @@ import Toast from 'react-native-easy-toast'
 import SysMsgStore from './SysMsgStore'
 import Header from '../components/HomeNavigation';
 import Card from './Card'
-import Wrapper from './Wrapper';
 import Constant from '../common/constants';
 
 const KNOWLEDGE_ID = 3
@@ -143,6 +142,8 @@ export default class BussList extends Component {
         sys_msgs:this.props.sys_msgs,    
         initCard:0 ,
         hasSeenSwiperIntroduce: false,
+        swiper_1_height:230,
+        swiper_2_height:230
     }
 
     knowledgeListStore = new SysMsgStore(KNOWLEDGE_ID)
@@ -152,6 +153,18 @@ export default class BussList extends Component {
             () => this.knowledgeListStore.page,
             () => this.knowledgeListStore.fetchFeedList()
         );
+        
+        setTimeout(()=>{
+            this.setState({
+                swiper_1_height:231,
+            })
+        },100);
+        
+        setTimeout(()=>{
+            this.setState({
+                swiper_2_height:231,
+            })
+        },100);
     }
 
     componentWillMount() {
@@ -326,7 +339,7 @@ export default class BussList extends Component {
         <Swiper
           index={this.state.initCard}
           style={styles.wrapper}
-          height={230}
+          height={this.state.swiper_2_height}
           showsButtons={false}
           showsPagination={false}
         >
@@ -351,7 +364,7 @@ export default class BussList extends Component {
       let introduceSwiper = (
         <Swiper
           style={styles.wrapper}
-          height={230}
+          height={this.state.swiper_1_height}
           loop={false}
           showsButtons={false}
           showsPagination={false}
