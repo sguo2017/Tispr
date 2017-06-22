@@ -20,14 +20,13 @@ import UserDefaults from '../common/UserDefaults'
 import Loading from '../components/Loading'
 import LoadMoreFooter from '../components/LoadMoreFooter'
 import SysMsgSingleImageCell from './SysMsgSingleImageCell'
-import FeedMultiImageCell from './SysMsgMultiImageCell'
 import SysMsgDetail from './SysMsgDetail'
 import Toast from 'react-native-easy-toast'
 import SysMsgStore from './SysMsgStore'
 import Header from '../components/HomeNavigation';
 import Card from './Card'
-import Wrapper from './Wrapper';
 import Constant from '../common/constants';
+import Server from '../server/index'
 
 const KNOWLEDGE_ID = 3
 const itemWidth = global.gScreen.width - 20;
@@ -60,29 +59,26 @@ var styles = StyleSheet.create({
         height: 40,
         flexDirection: 'row',
         marginBottom: -2,
-        paddingLeft: 13.7,
         marginTop: 40
     },
     line: {
-        width: 122.5,
-        height: 2.5,
+        flex: 1,
+        height: 1,
         backgroundColor: '#EEEEEE',
         marginVertical: 20,
+        marginHorizontal: 18,
     },
     text1: {
         alignSelf: 'center',
         marginVertical: 16,
-        height:20,
         fontWeight: 'bold',
         color: '#1B2833',
         fontSize: 14,
     },
     text2: {
-        height: 20,
         color: '#9E9E9E',
         fontSize: 14,
-        marginHorizontal: 13.7,
-        marginVertical: 11
+        marginVertical: 12
     },
     button: {
         height: 50,
@@ -326,11 +322,12 @@ export default class BussList extends Component {
         <Swiper
           index={this.state.initCard}
           style={styles.wrapper}
-          height={230}
+          height={260}
           showsButtons={false}
           showsPagination={false}
         >
-          { cardArray && cardArray.length > 0 ?
+          {
+            cardArray && cardArray.length > 0 ?
             cardArray.map((data, index) =>
               <Card
                 key={index}
@@ -340,18 +337,41 @@ export default class BussList extends Component {
                 index={index}
                 width={global.gScreen.width}
               />)
-            : (
-                <View>
-                  <Text>没有推送</Text>
-                </View>
-              )
+            : (<View />)
           }
         </Swiper>
+      );
+      let pushServer = (
+        <View style={{ height: 75, justifyContent: 'center', alignItems: 'center' }} >
+          <TouchableOpacity
+            onPress={()=>{navigator.push({component:Server, name:'Server',passProps:{}})}}
+            style={{
+              borderRadius: 8,
+              width: 120,
+              height: 40,
+              justifyContent: 'center',
+              backgroundColor:global.gColors.buttonColor,
+              shadowColor: global.gColors.buttonColor,
+              shadowOffset: {
+                width: 0,
+                height: 3
+              },
+              shadowRadius: 5,
+              shadowOpacity: 0.8,
+            }}
+          >
+            <Text style={{
+              fontSize: 20,
+              color: '#FFF',
+              alignSelf: 'center'
+            }}>发布服务</Text>
+          </TouchableOpacity>
+        </View>
       );
       let introduceSwiper = (
         <Swiper
           style={styles.wrapper}
-          height={230}
+          height={260}
           loop={false}
           showsButtons={false}
           showsPagination={false}
@@ -376,19 +396,22 @@ export default class BussList extends Component {
       );
 
       if (this.state.hasSeenSwiperIntroduce) {
-        return pushSwiper;
+        if (cardArray && cardArray.length > 0) {
+          return pushSwiper;
+        } else {
+          return pushServer;
+        }
       } else {
         return introduceSwiper;
       }
     }
     render() {
         const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
+        let cardArray = this.state.sys_msgs;
         return (
             <View style={styles.listView}>
-                <Header
-                    title='Qiker'
-                />
-                <Text style={styles.text1}>您有重要更新</Text>
+                <Header title='Qiker' />
+                <Text style={styles.text1}>{ cardArray && cardArray.length > 0 ? "您有重要更新" : "想要更多机会?" }</Text>
                 {this.generateSwiper()}
                 <View style={[styles.view, {marginTop:10}]}>
                     <View style={styles.line}></View>
