@@ -31,24 +31,17 @@ export default class RudderTabBar extends Component {
           {this.props.tabs.map((tab, i) => {
             let icon = this.props.activeTab == i ? this.props.selectedTabIconNames[i] : this.props.tabIconNames[i];
             let color = this.props.activeTab === i ? global.gColors.themeColor : '#999999';
-            let bgcolor = this.props.activeTab === i ? global.gColors.themeColor : '#999999';
             if (i == 2) {
               return (
                 <TouchableOpacity
                   key={i}
                   activeOpacity={0.8}
-                  style={{
-                    flex: 1.5,
-                    paddingBottom: 10,
-                  }}
+                  style={styles.centerTab}
                   onPress={()=>this.props.goToPage(i)}
                 >
                   <View style={styles.tabItem}>
                     <Image
-                      style={{
-                        width: 60,
-                        height: 60,
-                      }}
+                      style={styles.centerIcon}
                       source={icon}
                     />
                   </View>
@@ -89,22 +82,27 @@ const styles = StyleSheet.create({
     height: 49,
     borderTopColor: global.gColors.themeColor,
   },
-
+  centerTab: {
+    flex: 1,
+    paddingBottom: 10,
+  },
   tab: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   tabItem: {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-around'
   },
-
   icon: {
     width: 26,
     height: 26,
     marginBottom: 2
+  },
+  centerIcon: {
+    width: 60,
+    height: 60,
   }
 })
