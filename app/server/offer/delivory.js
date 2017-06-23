@@ -16,7 +16,6 @@ import {
     Switch,
     ProgressViewIOS,
 } from 'react-native'
-import { observer } from 'mobx-react/native';
 import Header from '../../components/HomeNavigation';
 import ServOfferConfirm from './confirm';
 
@@ -95,6 +94,7 @@ const styles = StyleSheet.create({
     secondRowView: {
         height: 76,
         flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
         borderBottomColor: '#a8a6b9',
         borderBottomWidth: 1,
@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
     }
 });
 
-@observer
 export default class ServOfferDelivory extends Component {
 
     constructor(props) {
@@ -112,7 +111,7 @@ export default class ServOfferDelivory extends Component {
             serv_offer: this.props.serv_offer,
             remoteSwitchIsOn: false,
             localSwitchIsOn: true
-            }
+        }
     }
     clickJump() {
         let _this = this;
@@ -159,7 +158,7 @@ export default class ServOfferDelivory extends Component {
               <ProgressViewIOS
                 progressTintColor="#ffc400"
                 style={styles.progressViewIOS}
-                progress={0.9}
+                progress={0.6}
                 progressViewStyle="bar"
               />
             );
@@ -168,7 +167,7 @@ export default class ServOfferDelivory extends Component {
               <ProgressBarAndroid
                 color="#ffc400"
                 styleAttr='Horizontal'
-                progress={0.9}
+                progress={0.6}
                 indeterminate={false}
                 style={styles.progressViewAndroid}
               />
@@ -178,7 +177,7 @@ export default class ServOfferDelivory extends Component {
     render() {
     //    console.log("this.state.avatarSourceArray: "+this.state.avatarSourceArray);
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
                     title='发布服务'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
@@ -195,6 +194,7 @@ export default class ServOfferDelivory extends Component {
                         onValueChange={(value) => this.setState({remoteSwitchIsOn: value})}
                         value={this.state.remoteSwitchIsOn}
                         onTintColor="#ffc400"
+                        thumbTintColor={Platform.OS == 'ios'?null:'white'}
                     />
                 </View>
                 <View style={styles.secondRowView}>
@@ -209,6 +209,7 @@ export default class ServOfferDelivory extends Component {
                       onValueChange={(value) => this.setState({localSwitchIsOn: value})}
                       value={this.state.localSwitchIsOn}
                       onTintColor="#ffc400"
+                      thumbTintColor={Platform.OS == 'ios'?null:'white'}
                     />
                 </View>
             </View>

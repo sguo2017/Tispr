@@ -14,12 +14,10 @@ import {
     ProgressViewIOS,
     Alert
 } from 'react-native';
-import { observer } from 'mobx-react/native';
 import Header from '../../components/HomeNavigation';
-import UselessTextInput from '../../components/UselessTextInput';
+import AutoTextInput from '../../components/AutoTextInput';
 import ServOfferDelivory from './delivory';
 
-@observer
 export default class ServOfferDetail extends Component {
     constructor(props) {
         super(props);
@@ -73,7 +71,7 @@ export default class ServOfferDetail extends Component {
           <ProgressViewIOS
             progressTintColor="#ffc400"
             style={styles.progressViewIOS}
-            progress={0.6}
+            progress={0.4}
             progressViewStyle="bar"
           />
         );
@@ -82,7 +80,7 @@ export default class ServOfferDetail extends Component {
           <ProgressBarAndroid
             color="#ffc400"
             styleAttr='Horizontal'
-            progress={0.6}
+            progress={0.4}
             indeterminate={false}
             style={styles.progressViewAndroid}
           />
@@ -92,7 +90,7 @@ export default class ServOfferDetail extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
                     title='发布服务'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}                                     
@@ -104,7 +102,7 @@ export default class ServOfferDetail extends Component {
                 <Image style={styles.headIcon} source={require('../../resource/b-zanshi-xl.png')} />
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>服务有什么特点</Text>
                 <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 14, marginHorizontal:16 }}>详细描述服务内容，包括您的优势，专业性，价格以及时间等</Text>
-                <TextInput
+                <AutoTextInput
                   editable = {true}
                   style={styles.textInput}
                   maxLength={1000}

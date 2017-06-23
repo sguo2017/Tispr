@@ -15,13 +15,11 @@ import {
     ProgressViewIOS,
     Alert
 } from 'react-native'
-import { observer } from 'mobx-react/native';
 import Header from '../../components/HomeNavigation';
-import UselessTextInput from '../../components/UselessTextInput';
+import AutoTextInput from '../../components/AutoTextInput';
 import ServOfferDetail from './detail';
 import NavPage from '../nav/index';
 
-@observer
 export default class ServOfferTitle extends Component {
 
     constructor(props) {
@@ -89,7 +87,7 @@ export default class ServOfferTitle extends Component {
             <ProgressViewIOS
               progressTintColor="#ffc400"
               style={styles.progressViewIOS}
-              progress={0.3}
+              progress={0.2}
               progressViewStyle="bar"
             />
           );
@@ -98,7 +96,7 @@ export default class ServOfferTitle extends Component {
             <ProgressBarAndroid
               color="#ffc400"
               styleAttr='Horizontal'
-              progress={0.3}
+              progress={0.2}
               indeterminate={false}
               style={styles.progressViewAndroid}
             />
@@ -108,7 +106,7 @@ export default class ServOfferTitle extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
                     title='发布服务'
                     leftIcon={require('../../resource/t_header_arrow_left.png')}
@@ -120,13 +118,13 @@ export default class ServOfferTitle extends Component {
                 <Image style={styles.headIcon} source={require('../../resource/b-aixin-xl.png')} />
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>提供什么服务</Text>
                 <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 14 }}>一句话概括表述您的服务名称</Text>
-                <TextInput
+                <AutoTextInput
                     editable = {true}
                     style={styles.textInput}
                     maxLength={80}
                     underlineColorAndroid="transparent"
                     multiline={true}
-                    numberOfLines={3}
+                    numberOfLines={0}
                     value ={this.state.serv_offer.serv_title}
                     onChangeText={(val) => {
                       let offer=this.state.serv_offer;

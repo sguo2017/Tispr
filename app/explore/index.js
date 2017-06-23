@@ -459,7 +459,6 @@ const styles = StyleSheet.create({
         backgroundColor: global.gColors.themeColor,
         borderRadius: 2,
         height: 28,
-        width: 72,
         marginLeft: 8,
         paddingHorizontal: 8,
         paddingVertical: 4,

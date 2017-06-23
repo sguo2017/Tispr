@@ -63,6 +63,7 @@ let styles = StyleSheet.create({
     marginHorizontal: 10,
     borderTopWidth : 1,
     borderTopColor: '#f5f5f5',
+    overflow: 'hidden',
   }
 });
 
@@ -81,7 +82,7 @@ export default function Card({ content, navigator, width, height, update,index }
       <View elevation={5} style={styles.wrapper}>
         {/*右上关闭*/}
         <TouchableOpacity
-          style={{ position: 'absolute', top: 0, right: 0, borderTopRightRadius: 5, overflow: 'hidden' }}
+          style={{ position: 'absolute', top: 0, right: 0, borderTopRightRadius: 5, overflow: 'hidden', zIndex: 9999 }}
           onPress={()=>{navigator.push({component:DiscardPage,name:'DiscardPage',passProps:{feed:content,callback:update,discardIndex:index}})}}
         >
           <Image
@@ -105,7 +106,6 @@ export default function Card({ content, navigator, width, height, update,index }
         {/*内容*/}
         <View style={styles.contentView}>
           <Text style={{ color: global.gColors.themeColor, fontSize: 16, marginBottom: 8 }}>{content.action_desc}</Text>
-          <Text style={{ fontSize: 14 }}>{content.serv_detail}</Text>
         </View>
         {/*距离*/}
         <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }}>
