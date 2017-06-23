@@ -10,22 +10,24 @@ import {
     ScrollView,
     Platform,
     Dimensions,
-    Alert
+    Alert,
+    ListView
 } from 'react-native';
-import { observer } from 'mobx-react/native'
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import Connect from './Connect'
 
 const screenW = Dimensions.get('window').width;
 
-@observer
 export default class SysMsgDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isFavorited: this.props.feed.isFavorited,
-            favorite_id: this.props.feed.favorite_id
+            favorite_id: this.props.feed.favorite_id,
+            dataSource: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
         };
     }
 
@@ -135,56 +137,49 @@ export default class SysMsgDetail extends Component {
                 />
 
                 <View style={[styles.cardImageContent]}>
-                    <ScrollView
-                        bounces={false}
-                        showsVerticalScrollIndicator={false}
-                        removeClippedSubviews={true}
-                        contentContainerStyle={{ backgroundColor: 'white' }}
-                    >
-                        <View style={{
-                            flexDirection: 'row',
-                            paddingVertical: 10,
-                            paddingHorizontal: 15,
-                            alignItems: 'center',
-                            overflow: 'hidden'
-                        }}>
-                            <Image style={{ width: 40, height: 40, marginRight: 5, marginLeft: 3, borderRadius: 20 }} source={{ uri: feed.user.avatar }} defaultSource={require('../resource/user_default_image.png')} />
-                            <View style={{ marginLeft: 10 }}>
-                                <Text style={{ color: 'black', fontSize: 18 }}>{feed.user_name}</Text>
-                                <Text style={{ color: 'gray', fontSize: 18 }}>{feed.msg_catalog}</Text>
+                    <ScrollView>
+                        <View style={{paddingHorizontal: 16, justifyContent: 'space-between', backgroundColor: 'white'}}>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, height: 48, }}>
+                                <View style={{justifyContent: 'space-around', flexDirection: 'row',}}>
+                                    <Image style={{width: 32, height: 32, borderRadius: 16}} source={{ uri: feed.user.avatar }} defaultsource={require('../resource/user_default_image.png')}></Image>
+                                    <View style={{marginLeft: 8, marginTop: -5}}>
+                                        <Text style={{fontSize: 14, lineHeight: 20}}>{feed.user_name}</Text>
+                                        {
+                                            feed.serv_offer.catalog?
+                                            <Text style={{color: '#999999', fontSize: 12}}>{feed.serv_offer.catalog}</Text>
+                                            :<Text style={{color: '#999999', fontSize: 12}}>其它分类</Text>
+                                        }
+                            
+                                    </View>
+                                </View>
+                                <View>
+                                    <Text style={{color: '#999999', fontSize: 12}}>{feed.created_at.substring(0,10)}</Text>
+                                </View> 
                             </View>
+                            <Text style={{color: '#424242', fontSize: 16, lineHeight: 24}}>{feed.serv_offer.serv_detail}</Text>
+                            {
+                                feed.serv_offer.serv_images?<ListView
+                                dataSource={this.state.dataSource.cloneWithRows(feed.serv_offer.serv_images.split(','))}
+                                renderRow={(rowData) =>
+                                    <Image defaultSource={require('../resource/img_default_home_cover.png')} source={{uri:rowData}} style={{height: 300, width: 328, marginBottom: 10}}></Image>
+                                }/>: <View></View>
+                            }                                                                     
                         </View>
-                        <View style={{
-                            borderColor: '#ccc',
-                            borderTopWidth: 0.5,
-                            paddingVertical: 20,
-                            paddingHorizontal: 15,
-                            justifyContent: 'center',
-                            marginTop: 5
-                        }}>
-                            <Text style={{ color: 'gray', fontSize: 18 }}>{feed.action_title}</Text>
-                            <Text style={{ color: 'black', fontSize: 18 }}>{feed.action_desc}</Text>
-                        </View>
-                        {/*<TouchableHighlight style={[styles.bottomToolBar,{height: 40 }]}>
-                        <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: '#81d49c' }}>
-                            Connect
-                        </Text>
-                    </TouchableHighlight>*/}
+                
+                            {
+                                feed.user_id == global.user.id?
+                                <View></View>:
+                                <View style={{backgroundColor: 'white', paddingTop: 23, paddingBottom: 10}}>
+                                    <TouchableOpacity style={{backgroundColor: '#FFC400', borderRadius: 4, height: 44, marginHorizontal: 16, paddingHorizontal: 138, paddingVertical: 10}}
+                                        onPress={() => this._p(feed)}
+                                    >
+                                        <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>联系TA</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            }
                     </ScrollView>
                 </View>
-                {
-                    feed.user_id == global.user.id?
-                    <View></View>:
-                    <TouchableOpacity
-                        activeOpacity={0.75}
-                        style={[styles.bottomToolBar, { borderTopWidth: Constant.window.onePR, width: screenW }]}
-                        onPress={() => this._p(feed)}
-                    >
-                        <Text style={{ fontSize: 22, color: '#FFF' }}>
-                            联系TA
-                        </Text>
-                    </TouchableOpacity>
-                }
+                
             </View>
         )
     }

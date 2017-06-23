@@ -23,13 +23,13 @@ export default class offline extends Component{
                     <View style={{flexDirection:'row', justifyContent:'space-between',marginTop:20}}>
                         <TouchableOpacity 
                         style={{borderRadius:5,width:100,height:40,justifyContent:'center',alignItems:'center',backgroundColor:'#f0f0f0',marginRight:40}}
-                        onPress={() => this.props.navigator.pop()}
+                        onPress={() => this.props.navigator.popN(2)}
                         >
                             <Text style={{color:'black'}}>再看看</Text>
                             </TouchableOpacity> 
                         <TouchableOpacity 
                         style={{borderRadius:5,width:100,height:40,justifyContent:'center',alignItems:'center',backgroundColor:global.gColors.buttonColor}}
-                        onPress={() => this.props.navigator.pop()}
+                        onPress={() => this.props.navigator.popN(2)}
                         >
                             <Text style={{color:'white'}}>立即沟通</Text>
                         </TouchableOpacity>

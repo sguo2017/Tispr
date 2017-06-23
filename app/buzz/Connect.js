@@ -15,8 +15,6 @@ import {
     PixelRatio,
     Alert
 } from 'react-native'
-import { observer } from 'mobx-react/native'
-import { observable, computed, action, runInAction } from 'mobx';
 import ImagePicker from 'react-native-image-picker';
 import Header from '../components/HomeNavigation';
 import UselessTextInput from '../components/UselessTextInput';
@@ -24,20 +22,29 @@ import UserDefaults from '../common/UserDefaults';
 import Constant from '../common/constants';
 import resTimes from './restTimes';
 const screenW = Dimensions.get('window').width;
-
-@observer
-export default class DealConnect extends Component {
+const msg1 ='你发布的专业服务很棒！';
+const msg2 ='请问你是如何收费的？';
+const msg3 = '我想看一下你的更多作品。';
+export default class Connect extends Component {
 
     constructor(props) {
         super(props);
         this.state={
             lately_chat_content: '',
             send_default_chat_conteng:true,
+            button1: true,
+            button2: false, 
+            button3: false,
         }
     }
     
     async _createDeal() {
         const { feed } = this.props;
+        if(this.state.send_default_chat_conteng){
+            let default_msg;
+            default_msg =''+ feed.user_name + '，您好！' + this.state.button1&&msg1 + this.state.button2&&msg2 + this.state.button3&&msg3;
+            this.state.lately_chat_content = default_msg;
+        }
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_CREATE + global.user.authentication_token;
             let response = await fetch(url, {
@@ -122,7 +129,6 @@ export default class DealConnect extends Component {
 
     render() {
         const { feed } = this.props;
-
         return (
             <View style={{ flex: 1 }}>
                 <Header
@@ -134,30 +140,30 @@ export default class DealConnect extends Component {
                     this.state.send_default_chat_conteng?
                     <View style={{paddingHorizontal: 20}}>
                         <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>        
-                        <Text style={{fontSize: 14, color: '#1B2833'}}>{feed.user.name} 您好！{this.state.lately_chat_content}</Text>
+                        <Text style={{fontSize: 14, color: '#1B2833'}}>{feed.user.name} 您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
                         <TouchableHighlight 
-                            style={[styles.selectButton,{width:170, marginTop: 26}]} 
-                            onPress={()=>this.setState({lately_chat_content:'你发布的专业服务很棒！'})}
+                            style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton,{width:170, marginTop: 26}]} 
+                            onPress={()=>this.setState({button1: !this.state.button1})}
                         >
-                            <Text style={[styles.themeColorText]}>你发布的专业服务很棒！</Text>
+                            <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
                         </TouchableHighlight>
                         <TouchableHighlight 
-                            style={[styles.selectButton,{width:156}]} 
-                            onPress={()=>this.setState({lately_chat_content:'请问你是如何收费的？'})}
+                            style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton,{width:156}]} 
+                            onPress={()=>this.setState({button2: !this.state.button2})}
                         >
-                            <Text style={[styles.themeColorText]}>请问你是如何收费的？</Text>
+                            <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
                         </TouchableHighlight>
                         <TouchableHighlight 
-                            style={[styles.selectButton, {width: 184}]} 
-                            onPress={()=>this.setState({lately_chat_content:'我想看一下你的更多作品。'})}
+                            style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton, {width: 184}]} 
+                            onPress={()=>this.setState({button3: !this.state.button3})}
                         >
-                            <Text style={[styles.themeColorText]}>我想看一下你的更多作品。</Text>
+                            <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
                         </TouchableHighlight>
 
                         <View style={{height: 1, backgroundColor: 'rgba(0,0,0,0.12)', marginVertical: 13.7}}></View>
 
                         <TouchableHighlight 
-                            style={[styles.selectButton, {width: 86}]} 
+                            style={[styles.notSelectedButton, {width: 86}]} 
                             onPress={()=>this.setState({send_default_chat_conteng:false})}
                         >
                             <Text style={[styles.themeColorText]}>自定义信息</Text>
@@ -219,7 +225,11 @@ const styles = StyleSheet.create({
         color:global.gColors.themeColor,
         fontSize:14
     },
-    selectButton: {
+    whiteText: {
+        color:'#fff',
+        fontSize:14
+    },
+    notSelectedButton: {
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
         padding:5,
@@ -228,6 +238,16 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginBottom: 8,
         borderRadius: 2
+    },
+    selectedButton:{
+        borderWidth: 1,
+        borderColor: global.gColors.themeColor,
+        backgroundColor: global.gColors.themeColor,
+        padding:5,
+        height: 36,
+        width:210,
+        marginRight: 20,
+        marginBottom:20
     },
     cardImageContent: {
         height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,

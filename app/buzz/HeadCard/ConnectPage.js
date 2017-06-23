@@ -11,16 +11,24 @@ import {
 } from 'react-native';
 import Header from '../../components/HomeNavigation';
 import Constant from '../../common/constants';
+const msg1 = '我想我能够帮到您！';
+const msg2 = '能否再说得详细些？';
+const msg3 = '请问需要多长时间内完成？';
 export default class ConnectPage extends Component{
     constructor(props) {  
         super(props);
         this.state={
-            msg:'我想我能够帮到您！',
-            send_default_chat_conteng: true
+            msg:'',
+            send_default_chat_conteng: true,
+            button1: true,
+            button2: false, 
+            button3: false,
         }
     }
+
     render(){
-        const { feed } = this.props;
+        const { feed } = this.props;                               
+        let default_msg = feed.user_name + '您好！' + this.state.button1&&msg1 + this.state.button2&&msg2 + this.state.button3&&msg3;
         return(
             <View>
                 <Header
@@ -35,29 +43,29 @@ export default class ConnectPage extends Component{
                         style={{width:50,height:50,borderRadius:25,alignSelf:'center'}} 
                         defaultSource={require('../../resource/user_default_image.png')}
                         source={{uri: feed.avatar}}/>
-                        <Text style={{color:'black', fontSize:18,marginTop:20,marginBottom:20}}>{feed.user_name} 您好！{this.state.msg}</Text>
+                        <Text style={{color:'black', fontSize:18,marginTop:20,marginBottom:20,height:80}}>{feed.user_name} 您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
                         <TouchableHighlight 
-                            style={[styles.selectButton,{width:160}]} 
-                            onPress={()=>this.setState({msg:'我想我能够帮到您！'})}
+                            style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton,{width:160}]} 
+                            onPress={()=>this.setState({button1: !this.state.button1})}
                         >
-                            <Text style={[styles.themeColorText]}>我想我能够帮到您！</Text>
+                            <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
                         </TouchableHighlight>
                         <TouchableHighlight 
-                            style={[styles.selectButton,{width:160}]} 
-                            onPress={()=>this.setState({msg:'能否再说得详细些？'})}
+                            style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton,{width:160}]} 
+                            onPress={()=>this.setState({button2: !this.state.button2})}
                         >
-                            <Text style={[styles.themeColorText]}>能否再说得详细些？</Text>
+                            <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
                         </TouchableHighlight>
                         <TouchableHighlight 
-                            style={[styles.selectButton]} 
-                            onPress={()=>this.setState({msg:'请问需要多长时间内完成？'})}
+                            style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton]} 
+                            onPress={()=>this.setState({button3: !this.state.button3})}
                         >
-                            <Text style={[styles.themeColorText]}>请问需要多长时间内完成？</Text>
+                            <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
                         </TouchableHighlight>
                         <View style={{height: 1, backgroundColor: 'rgba(0,0,0,0.12)', marginVertical: 13.7}}></View>
 
                         <TouchableHighlight 
-                            style={[styles.selectButton, {width: 90}]} 
+                            style={[styles.notSelectedButton, {width: 90}]} 
                             onPress={()=>this.setState({send_default_chat_conteng:false})}
                         >
                             <Text style={[styles.themeColorText, {width: 86}]}>自定义信息</Text>
@@ -86,7 +94,14 @@ export default class ConnectPage extends Component{
                 }
                 
                     <TouchableHighlight style={[styles.button, {backgroundColor:global.gColors.buttonColor,position:'absolute', top: 506,flexShrink: 0, width: global.gScreen.width}]}
-                        onPress={() =>{this.props.callback(this.props.discardIndex,Constant.sys_msgs_status.FINISHED,this.props.feed.smt_id,this.state.msg); this.props.navigator.pop()}}
+                        onPress={() =>{
+                            this.props.callback(
+                                this.props.discardIndex,
+                                Constant.sys_msgs_status.FINISHED,
+                                this.props.feed.smt_id, 
+                                this.state.send_default_chat_conteng?
+                                default_msg :this.state.msg);
+                            this.props.navigator.pop()}}
 
                     >
                         <Text style={styles.buttonText}
@@ -99,9 +114,19 @@ export default class ConnectPage extends Component{
     }
 }
 const styles = StyleSheet.create({
-    selectButton: {
+    notSelectedButton: {
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
+        padding:5,
+        height: 36,
+        width:210,
+        marginRight: 20,
+        marginBottom:20
+    },
+    selectedButton:{
+        borderWidth: 1,
+        borderColor: global.gColors.themeColor,
+        backgroundColor: global.gColors.themeColor,
         padding:5,
         height: 36,
         width:210,
