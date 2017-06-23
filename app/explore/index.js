@@ -111,6 +111,12 @@ class ExploreList extends PureComponent {
             exploreparams.district = "番禺区"
         if(district[1])
             exploreparams.district = "海珠区"
+        if(this.state.transiSortBy == "最近发布")
+            exploreparams.sort_by = "created_at"
+        if(this.state.transiSortBy == "最多收藏")
+            exploreparams.sort_by = "favorites_count"
+        if(this.state.transiSortBy == "最多联系")
+            exploreparams.sort_by = "order_cnt"
         if (goods_catalog[0]) {
             goods_catalog.map((item, index, input) => { input[index] = true });
         }
@@ -272,14 +278,14 @@ class ExploreList extends PureComponent {
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             style={[styles.selectButton, { width: 100 }, this.state.sps[2] && { backgroundColor: global.gColors.themeColor }]}
-                                            onPress={() => { this.setState({ transiSortBy: '半年内发布', sps: [false, false, true, false] }) }}
+                                            onPress={() => { this.setState({ transiSortBy: '最多收藏', sps: [false, false, true, false] }) }}
                                         >
-                                            <Text style={[styles.themeColorText, this.state.sps[2] && styles.whiteText]}>半年内发布</Text>
+                                            <Text style={[styles.themeColorText, this.state.sps[2] && styles.whiteText]}>最多收藏</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             style={[styles.selectButton, { width: 120 }, this.state.sps[3] && { backgroundColor: global.gColors.themeColor }]}
-                                            onPress={() => this.setState({ transiSortBy: '六周以内发布', sps: [false, false, false, true] })}>
-                                            <Text style={[styles.themeColorText, this.state.sps[3] && styles.whiteText]}>六周以内发布</Text>
+                                            onPress={() => this.setState({ transiSortBy: '最多联系', sps: [false, false, false, true] })}>
+                                            <Text style={[styles.themeColorText, this.state.sps[3] && styles.whiteText]}>最多联系</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
@@ -459,7 +465,7 @@ const styles = StyleSheet.create({
         backgroundColor: global.gColors.themeColor,
         borderRadius: 2,
         height: 28,
-        width: 72,
+        width: Platform.OS === 'ios' ? 104 : 80,
         marginLeft: 8,
         paddingHorizontal: 8,
         paddingVertical: 4,
