@@ -13,7 +13,6 @@ const SysMsgSingleImageItem = ({
     action_title,
     action_desc,
     interval,
-    onPress,
     user_name
 }) => {
         if(action_title){
@@ -28,7 +27,6 @@ const SysMsgSingleImageItem = ({
                     backgroundColor: '#fff',
                     justifyContent: 'space-between'
                 }}
-                onPress={onPress}
             >
             <View style ={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <View style={{justifyContent: 'space-around'}}>
