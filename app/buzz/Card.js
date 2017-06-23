@@ -12,7 +12,7 @@ import {
 import ConnectPage from './HeadCard/ConnectPage';
 import DiscardPage from './HeadCard/DiscardPage';
 import DateUtil from '../common/DateUtil';
-
+import CardDetail from './HeadCard/CardDetail';
 let styles = StyleSheet.create({
   container: {
     backgroundColor: '#f5f5f5',
@@ -110,15 +110,15 @@ export default function Card({ content, navigator, width, height, update,index }
         {/*距离*/}
         <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }}>
           <Image style={{ width: 18, height: 18 }} source={require('../resource/g-location-s.png')}/>
-          <Text style={{ fontSize: 12, color: '#b8b8b8' }}>12km</Text>
+          <Text style={{ fontSize: 12, color: '#b8b8b8' }}>{content.district}</Text>
         </View>
         {/*按钮*/}
         <TouchableOpacity
           style={[styles.button, {backgroundColor:global.gColors.buttonColor,margin:10}]}
-          onPress={()=>{navigator.push({component:ConnectPage,name:'ConnectPage',passProps:{feed:content,callback:update,discardIndex:index}})}}
+          onPress={()=>{navigator.push({component:CardDetail,name:'CardDetail',passProps:{feed:content,callback:update,discardIndex:index}})}}
         >
           <Text style={styles.buttonText}>
-            联系TA
+            查看详情
           </Text>
         </TouchableOpacity>
       </View>

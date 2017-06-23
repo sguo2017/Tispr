@@ -280,6 +280,14 @@ export default class BussList extends Component {
                                 { text: '确定', onPress: () => this.props.navigator.pop() },
                             ]
                         )
+                    }else if(resObject.status == -1){
+                        Alert.alert(
+                            '提示',
+                            '对方的邀标达到上限，无法接单了',
+                            [
+                                { text: '确定', onPress: () => this.props.navigator.pop() },
+                            ]
+                        )
                     }                    
                 } 
                 if(newStatus == Constant.sys_msgs_status.DISCARDED)

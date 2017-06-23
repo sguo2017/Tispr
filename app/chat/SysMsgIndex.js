@@ -14,7 +14,6 @@ import Loading from '../components/Loading'
 import LoadMoreFooter from '../components/LoadMoreFooter'
 import SysMsgSingleImageCell from './SysMsgSingleImageCell'
 import FeedMultiImageCell from './SysMsgMultiImageCell'
-import SysMsgDetail from './SysMsgDetail'
 import Toast from 'react-native-easy-toast'
 import SysMsgStore from './SysMsgStore'
 const KNOWLEDGE_ID = 3
@@ -55,15 +54,7 @@ export default class BussList extends PureComponent {
         errorMsg && this.toast.show(errorMsg)
     }
 
-    _renderRow = feed => <KnowledgeItem onPress={this._onPressCell} feed={feed}/>
-
-
-    _onPressCell = feed => {
-        this.props.navigator.push({
-            component: SysMsgDetail,
-            passProps: {feed}
-        })
-    }   
+    _renderRow = feed => <KnowledgeItem feed={feed}/> 
 
     _onRefresh = () => {
         this.knowledgeListStore.isRefreshing = true
@@ -114,15 +105,10 @@ class KnowledgeItem extends PureComponent {
         onPress: React.PropTypes.func
     }
 
-    _onPress = () => {
-        const {feed, onPress} = this.props
-        onPress && onPress(feed)
-    }
-
     render() {
         const { feed: { action_title, action_desc,interval,user_name } } = this.props
         const cellData = { action_title, action_desc,interval,user_name }
-        return <SysMsgSingleImageCell {...cellData} onPress={this._onPress} />
+        return <SysMsgSingleImageCell {...cellData}/>
     }
 }
 
