@@ -12,18 +12,15 @@ import {
     Navigator,
     AsyncStorage,
     PixelRatio,
-    Alert
+    Alert,
+    ProgressViewIOS,
 } from 'react-native'
-import { observer } from 'mobx-react/native'
-import { observable, computed, action, runInAction } from 'mobx';
-import ImagePicker from 'react-native-image-picker';
+import AutoTextInput from '../../components/AutoTextInput';
 import Header from '../../components/HomeNavigation';
-import UselessTextInput from '../../components/UselessTextInput';
 import ServOfferDetail from './detail';
 import ServOfferDelivory from './delivory';
 import NavPage from '../nav/index';
 
-@observer
 export default class ServOfferTitle extends Component {
 
     constructor(props) {
@@ -62,7 +59,7 @@ export default class ServOfferTitle extends Component {
                 )
             return;
         }
-        console.log("push page 2!!!")
+        // console.log("push page 2!!!")
         let _this = this;
         const { navigator } = this.props;
         if (navigator) {
@@ -85,68 +82,104 @@ export default class ServOfferTitle extends Component {
         navigator.resetTo({component: NavPage, name: 'NavPage',passProps:{goods_tpye}})
     }
 
+    renderProgressView = () => {
+      if (Platform.OS == 'ios') {
+        return (
+          <ProgressViewIOS
+            progressTintColor="#ffc400"
+            style={styles.progressViewIOS}
+            progress={0.2}
+            progressViewStyle="bar"
+          />
+        );
+      } else {
+        return (
+          <ProgressBarAndroid
+            color="#ffc400"
+            styleAttr='Horizontal'
+            progress={0.2}
+            indeterminate={false}
+            style={styles.progressViewAndroid}
+          />
+        );
+      }
+    }
+
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
                     title='发布需求'
                     leftIcon = {require('../../resource/ic_back_white.png')}
                     leftIconAction = {this._onBack.bind(this)}
+                    rightButton='下一步'
+                    rightButtonAction={this.clickJump.bind(this)}
                 />
-
-                <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.3} indeterminate={false} style={{ marginTop: -10 }} />
-
-                <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>30%</Text>
-
-                <Image style={{ width: 50, height: 50, alignSelf: 'center' }} source={require('../../resource/t_text.png')} />
-
-                <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10}}>需要什么服务</Text>
-
-                <Text style={{ alignSelf: 'center', color: "#a8a6b9" }}>一句话概括表述你的服务需要</Text>
-
-                <UselessTextInput
-                    multiline={true}
-                    numberOfLines={3}
-                    value ={this.state.serv_offer.serv_title}
-                    onChangeText={(val) => {
-                        let offer=this.state.serv_offer;
-                        offer.serv_title = val;
-                        offer.title_length = val.length;
-                        this.setState({ serv_offer: offer});
-                        }}
+                {this.renderProgressView()}
+                <Image style={styles.headIcon} source={require('../../resource/b-aixin-xl.png')} />
+                <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>需要什么服务</Text>
+                <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 14 }}>一句话概括表述你的服务需要</Text>
+                <AutoTextInput
+                  editable = {true}
+                  style={styles.textInput}
+                  maxLength={80}
+                  underlineColorAndroid="transparent"
+                  multiline={true}
+                  numberOfLines={0}
+                  value ={this.state.serv_offer.serv_title}
+                  onChangeText={(val) => {
+                    let offer=this.state.serv_offer;
+                    offer.serv_title = val;
+                    offer.title_length = val.length;
+                    this.setState({ serv_offer: offer})
+                  }}
                 />
-
-                <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                    <Text style={{ color: "#a8a6b9" }}>不少于15个字符</Text>
-                    <Text style={{ alignSelf: 'flex-end', right: 5, justifyContent: 'center', position: 'absolute', color: "#a8a6b9" }}>{this.state.serv_offer.title_length}</Text>
-                </View>
-
-                <TouchableHighlight style={{ backgroundColor: '#81d49c', marginTop: 20, alignSelf: 'stretch' }} onPress={this.clickJump.bind(this)}>
-                    <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor: '#81d49c', }}>
-                        下一步
+                <View style={styles.contentRemindText}>
+                  <Text style={{ color: "#a8a6b9", fontSize: 12 }}>不少于15个字符</Text>
+                  <Text style={styles.textLengthText}>
+                    {this.state.serv_offer.title_length?this.state.serv_offer.title_length:'0'}/80
                   </Text>
-                </TouchableHighlight>
+                </View>
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-    },
-    avatarContainer: {
-        borderColor: '#9B9B9B',
-        borderWidth: 1 / PixelRatio.get(),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    avatar: {
-        borderRadius: 75,
-        width: 150,
-        height: 150
-    }
-})
+  headIcon: {
+    marginTop: 22,
+    width: 40,
+    height: 40,
+    alignSelf: 'center'
+  },
+  progressViewIOS: {
+    marginTop: 0,
+    backgroundColor: 'transparent',
+  },
+  progressViewAndroid: {
+    marginTop: -10,
+  },
+  textLengthText: {
+    alignSelf: 'flex-end',
+    right: 15,
+    justifyContent: 'center',
+    position: 'absolute',
+    color: "#a8a6b9",
+    fontSize: 12
+  },
+  contentRemindText: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 15,
+    marginTop: 8.5,
+  },
+  textInput: {
+    marginTop: 25,
+    backgroundColor: 'white',
+    fontSize: 16,
+    paddingHorizontal: 5,
+    marginHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eeeeee',
+  },
+});

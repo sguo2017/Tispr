@@ -144,7 +144,7 @@ export default class ServOfferTitle extends Component {
     }
 }
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   headIcon: {
     marginTop: 22,
     width: 40,

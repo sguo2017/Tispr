@@ -12,7 +12,7 @@ import {
     Navigator,
     PixelRatio,
     ProgressViewIOS,
-    Alert
+    Alert,
 } from 'react-native';
 import Header from '../../components/HomeNavigation';
 import AutoTextInput from '../../components/AutoTextInput';
@@ -129,7 +129,7 @@ export default class ServOfferDetail extends Component {
     }
 }
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   headIcon: {
     marginTop: 22,
     width: 40,
