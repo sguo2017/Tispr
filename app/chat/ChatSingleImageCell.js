@@ -16,7 +16,8 @@ const ChatSingleImageItem = ({
     avatar,
     onPress,
     updated_at,
-    status
+    status,
+    chat_status
 }) => {
     return (
         <TouchableOpacity
@@ -48,6 +49,11 @@ const ChatSingleImageItem = ({
                         </View>
                         
                         <View numberOfLines={2} style={{width: screenW * 0.25, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
+                            {
+                                chat_status == 'unread'?
+                                <View style={{backgroundColor: '#FF5252', borderRadius: 4, height: 8,width:8}}>
+                                </View>:<View style={{width:10}}></View>
+                            }
                             <Text style={{fontSize:12}}>{updated_at}</Text>
                         </View>
                     </View>
@@ -59,9 +65,6 @@ const ChatSingleImageItem = ({
                                 <Text style={{color: 'grey', fontSize: 14, width: screenW*0.65 }}>{serv_offer_titile}</Text>
                             }
                         </Text>
-                        <View style={{width: screenW * 0.05, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                            <Text style={{fontSize:20}}>&gt;</Text>
-                        </View>
                     </View>
                     
                     <Text style={{color: '#4A90E2',marginRight: 5, fontSize: 14}} >&quot;{lately_chat_content}&quot;&nbsp;&nbsp;&nbsp;</Text>

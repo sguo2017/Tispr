@@ -74,7 +74,7 @@ export default class ChatDetail extends Component {
 
   }
 
-    clickJump() {
+  clickJump() {
     const { navigator } = this.props;
     const { feed } = this.props;
     if (navigator) {
