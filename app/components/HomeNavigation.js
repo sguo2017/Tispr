@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontSize: 20,
-        marginLeft: 15,
+        fontSize: 18,
+        // marginLeft: 15,
         color: 'white',
         //fontFamily: '微软雅黑',
         fontWeight: '500'

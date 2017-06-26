@@ -133,7 +133,7 @@ export default class Connect extends Component {
             <View style={{ flex: 1 }}>
                 <Header
                     title='联系TA'
-                    leftIcon={require('../resource/t_header_arrow_left.png')}
+                    leftIcon={require('../resource/ic_back_white.png')}
                     leftIconAction={() => this.props.navigator.pop()}
                 />
                 {

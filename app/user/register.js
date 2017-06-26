@@ -136,7 +136,7 @@ export default class Register extends Component {
       <View style={styles.container}>
         <Header
           title='注册'
-          leftIcon={require('../resource/ic_back_dark.png')}
+          leftIcon={require('../resource/ic_back_white.png')}
           leftIconAction = {this._onBack}
         />
         <TextInput

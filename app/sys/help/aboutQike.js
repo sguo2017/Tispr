@@ -25,7 +25,7 @@ export default class UseHelp extends Component {
 			<View >
 				<Header
 					title='关于奇客'
-					leftIcon={require('../../resource/t_header_arrow_left.png')}
+					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={()=>this.props.navigator.pop()}
 				/>
 				<Text style={{alignSelf: 'center',margin:50, color: global.gColors.themeColor,fontWeight:'bold',fontSize:60}}>Qiker</Text>

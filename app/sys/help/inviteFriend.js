@@ -30,7 +30,7 @@ export default class UseHelp extends Component {
 			<View style={styles.container}>
 				<Header
 					title='邀请好友'
-					leftIcon={require('../../resource/t_header_arrow_left.png')}
+					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={this._onBack.bind(this)}
 				/>
 				<ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>

@@ -127,7 +127,7 @@ export default class RequestMsgDetail extends Component {
                 <Header
                     leftIconAction={() => this.props.navigator.pop()}
                     title='查看详情'
-                    leftIcon={require('../../resource/ic_back_dark.png')}
+                    leftIcon={require('../../resource/ic_back_white.png')}
                     rightIcon={this.state.isFavorited?require('../../resource/ic_account_favour.png'):require('../../resource/ic_news_collect.png')}
                     rightIconSize={16}
                     rightIconAction={() => this._switch(this.state.isFavorited, this.state.favorite_id)}

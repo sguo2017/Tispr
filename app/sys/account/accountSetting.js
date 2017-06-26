@@ -20,7 +20,7 @@ export default class accountSetting extends Component {
             <View>
                 <Header
 					title='输入登录信息'
-					leftIcon={require('../../resource/t_header_arrow_left.png')}
+					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={()=> this.props.navigator.pop()}
 				/>
                 <TouchableOpacity style={styles.rectangle_view} onPress={()=> this.props.navigator.push({component:changePhone,name:'changePhone'})}>

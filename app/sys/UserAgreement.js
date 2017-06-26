@@ -27,7 +27,7 @@ export default class UserAgreement extends Component {
             <View style={{ flex: 1 }}>
                 <Header
                     title='用户协议'
-                    leftIcon = {require('../resource/t_header_arrow_left.png')}
+                    leftIcon = {require('../resource/ic_back_white.png')}
                     leftIconAction = {()=>this.props.navigator.pop()}
                 />
                 <Text style={{color: "#000",margin:20,fontSize:16}}>欢迎使用React Native！这篇文档会帮助你搭建基本的React Native开发环境。如果你已经搭好了环境，那么可以尝试一下编写Hello World。

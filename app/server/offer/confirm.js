@@ -327,7 +327,7 @@ export default class ServOfferConfirm extends Component {
             <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
                   title='确认'
-                  leftIcon={require('../../resource/t_header_arrow_left.png')}
+                  leftIcon={require('../../resource/ic_back_white.png')}
                   leftIconAction={this._onBack.bind(this)}
                 />
                 {this.renderProgressView()}
