@@ -24,7 +24,7 @@ export default class UseHelp extends Component {
 
 	_onBack = () => {
 		const { navigator } = this.props;
-		navigator.resetTo({ component: Setting, name: 'Setting' })
+		navigator.pop()
 	}
 	sendFeedback(){
 		this.props.navigator.push({

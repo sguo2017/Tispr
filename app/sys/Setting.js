@@ -74,7 +74,7 @@ export default class Setting extends Component {
 					leftIcon={require('../resource/t_header_arrow_left.png')}
 					leftIconAction={this._onBack.bind(this)}
 				/>
-				<ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>
+				<ScrollView ref='_scrollView'>
 					<View style={{ height: 40, backgroundColor: '#f7f7f7', justifyContent: 'center', paddingLeft: 20 }}>
 						<Text style={{ color: '#999999' }}>账户</Text>
 					</View>
@@ -165,7 +165,7 @@ export default class Setting extends Component {
 				</ScrollView>
 				<TouchableOpacity
 					style={styles.button}
-					onPress={() => { _scrollView.scrollTo({ y: 0 }); }}>
+					onPress={() => { this.refs._scrollView.scrollTo({ y: 0 }); }}>
 					<Text>回到顶部</Text>
 				</TouchableOpacity>
 			</View>
