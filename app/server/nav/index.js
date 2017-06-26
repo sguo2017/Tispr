@@ -15,9 +15,7 @@ import {
     Dimensions,
     ScrollView
 } from 'react-native'
-import { observer } from 'mobx-react/native'
 import { CachedImage } from "react-native-img-cache";
-import { observable, computed, action, runInAction } from 'mobx';
 import Header from '../../components/HomeNavigation';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import Constant from '../../common/constants';
@@ -26,7 +24,6 @@ import ServOffer from '../offer/title';
 import ServRequest from '../request/title';
 const screenW = Dimensions.get('window').width;
 
-@observer
 export default class navpage extends Component {
 
     constructor(props) {

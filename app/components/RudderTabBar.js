@@ -65,7 +65,8 @@ export default class RudderTabBar extends Component {
     tabs        : React.PropTypes.array,
 
     tabNames    : React.PropTypes.array,
-    tabIconNames: React.PropTypes.array
+    tabIconNames: React.PropTypes.array,
+    centralEvent: React.PropTypes.func,
   };
 
   componentDidMount() {
@@ -89,7 +90,7 @@ export default class RudderTabBar extends Component {
                 key={i}
                 activeOpacity={0.8}
                 style={styles.centerTab}
-                onPress={()=>this.props.goToPage(i)}
+                onPress={()=>this.props.centralEvent()}
               >
                 <Image
                   style={styles.centerIcon}

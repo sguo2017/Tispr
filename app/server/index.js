@@ -13,12 +13,42 @@ import {
     PixelRatio,
     Alert
 } from 'react-native'
-import { observer } from 'mobx-react/native'
-import { observable, computed, action, runInAction } from 'mobx';
 import NavPage from './nav/index';
 import TabBarView from'../containers/TabBarView';
 
-@observer
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: global.gColors.themeColor,
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    titleText: {
+        marginTop: 12,
+        color: '#ffffff',
+        fontSize: 14,
+    },
+    clickItem: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    itemImageContent: {
+        borderRadius: 12,
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowRadius: 5,
+        shadowOpacity: 0.3,
+    },
+    itemImage: {
+        width: 130,
+        height: 130,
+        borderRadius: 12,
+    },
+});
+
 export default class Server extends Component {
 
     constructor(props) {
@@ -47,17 +77,23 @@ export default class Server extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: global.gColors.themeColor }}>
-                <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around', marginTop: 150 }}>
-                    <TouchableOpacity onPress={() => {this.clickNavigationJump("serv_offer")}}>
-                        <Image style={{ width: 150, height: 150, alignSelf: 'center', left: 10 }} source={require('../resource/t_offer_serv.png')} />
+            <View style={styles.container}>
+                <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity style={[styles.clickItem, { marginRight: 35 }]} onPress={() => {this.clickNavigationJump("serv_offer")}}>
+                        <View elevation={5} style={styles.itemImageContent}>
+                            <Image style={styles.itemImage} source={require('../resource/t_offer_serv.png')} />
+                        </View>
+                        <Text style={styles.titleText}>发布服务</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {this.clickNavigationJump("serv_request")}}>
-                        <Image style={{ width: 150, height: 150, alignSelf: 'flex-end', right: 10, justifyContent: 'center' }} source={require('../resource/t_serv_request.png')} />
+                    <TouchableOpacity style={styles.clickItem}  onPress={() => {this.clickNavigationJump("serv_request")}}>
+                        <View elevation={5} style={styles.itemImageContent}>
+                            <Image elevation={5} style={styles.itemImage} source={require('../resource/t_serv_request.png')} />
+                        </View>
+                        <Text style={styles.titleText}>发布需求</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => {this.props.navigator.resetTo({component:TabBarView})}}>
-                <Image style={{ width: 50, height: 50, alignSelf: 'center', marginTop: 150 }} source={require('../resource/t_server_close.png')} />
+                <TouchableOpacity style={{ marginTop: 110, marginBottom: 48 }} onPress={() => {this.props.navigator.resetTo({component: TabBarView})}}>
+                    <Image style={{ width: 48, height: 48 }} source={require('../resource/w-cancel-line-nor.png')} />
                 </TouchableOpacity>
             </View>
         )
