@@ -25,7 +25,7 @@ export default class PasswordConfirm extends Component{
             <View style={{height:global.gScreen.height}}>
                 <Header
 					title='更改手机号码'
-					leftIcon={require('../../resource/t_header_arrow_left.png')}
+					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={()=> this.props.navigator.pop()}
                     rightIcon={require('../../resource/w_question.png')}
                     rightIconAction={()=>this.props.navigator.push({name:'changePhoneHelp',component:changePhoneHelp})}

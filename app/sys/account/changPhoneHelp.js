@@ -20,7 +20,7 @@ export default class changPhoneHelp extends Component{
             <View style={{height:global.gScreen.height}}>
                 <Header
 					title='需要帮助？'
-					leftIcon={require('../../resource/t_header_arrow_left.png')}
+					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={()=> this.props.navigator.pop()}
 				/>
                 <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center',margin:10}}>

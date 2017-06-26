@@ -71,7 +71,7 @@ export default class Setting extends Component {
 			<View style={styles.container}>
 				<Header
 					title='个人设置'
-					leftIcon={require('../resource/t_header_arrow_left.png')}
+					leftIcon={require('../resource/ic_back_white.png')}
 					leftIconAction={this._onBack.bind(this)}
 				/>
 				<ScrollView ref='_scrollView'>

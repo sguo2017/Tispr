@@ -197,7 +197,7 @@ export default class Personinfoedit extends Component {
             <View style={{ flex: 1 }}>
                 <Header
                     title='编辑信息'
-                    leftIcon={require('../../resource/t_header_arrow_left.png')}
+                    leftIcon={require('../../resource/ic_back_white.png')}
                     leftIconAction={this._onBack}
                     rightButton='保存'
                     rightButtonAction={this.updateavatar.bind(this)}

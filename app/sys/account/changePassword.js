@@ -25,7 +25,7 @@ export default class PasswordConfirm extends Component{
             <View style={{height:global.gScreen.height}}>
                 <Header
 					title='修改密码'
-					leftIcon={require('../../resource/t_header_arrow_left.png')}
+					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={()=> this.props.navigator.pop()}
 				/>
                 <View style={{flexDirection:'row',alignItems:'center',paddingLeft:20,paddingRight:20,marginTop:10}}>

@@ -16,7 +16,7 @@ export default class MyFavorite extends Component{
             <View>
                 <Header
 					title='我的存档'
-					leftIcon={require('../../resource/t_header_arrow_left.png')}
+					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={()=> this.props.navigator.pop()}
 				/>
             </View>

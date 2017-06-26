@@ -45,7 +45,7 @@ export default class CardDetail extends Component {
                 <Header
                     leftIconAction={() => this.props.navigator.pop()}
                     title='需求详情'
-                    leftIcon={require('../../resource/ic_back_dark.png')}
+                    leftIcon={require('../../resource/ic_back_white.png')}
                 />
 
                 <View style={[styles.cardImageContent]}>

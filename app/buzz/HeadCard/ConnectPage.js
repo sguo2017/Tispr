@@ -33,7 +33,7 @@ export default class ConnectPage extends Component{
             <View>
                 <Header
                     leftIconAction={() => this.props.navigator.pop()}
-                    leftIcon={require('../../resource/ic_back_dark.png')}
+                    leftIcon={require('../../resource/ic_back_white.png')}
                     title='联系TA'
                 />
                 {

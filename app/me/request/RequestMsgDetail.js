@@ -44,9 +44,8 @@ export default class RequestMsgDetail extends Component {
                 <Header
                     leftIconAction={() => this.props.navigator.pop()}
                     title='查看详情'
-                    leftIcon={require('../../resource/ic_back_dark.png')}
+                    leftIcon={require('../../resource/ic_back_white.png')}
                    />
-
                 <View style={[styles.cardImageContent]}>
                     <ScrollView>
                         <View style={{paddingHorizontal: 16, justifyContent: 'space-between', backgroundColor: 'white'}}>

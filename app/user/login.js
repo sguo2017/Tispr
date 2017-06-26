@@ -252,7 +252,7 @@ export default class Login extends Component {
       <View style={styles.container}>
         <Header
           title='登录'
-          leftIcon={require('../resource/ic_back_dark.png')}
+          leftIcon={require('../resource/ic_back_white.png')}
           leftIconAction={this._onBack}
         />
         {this.state.loginWay == 'email' ?

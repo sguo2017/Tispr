@@ -15,9 +15,7 @@ import {
     Dimensions,
     ScrollView
 } from 'react-native'
-import { observer } from 'mobx-react/native'
 import { CachedImage } from "react-native-img-cache";
-import { observable, computed, action, runInAction } from 'mobx';
 import Header from '../../components/HomeNavigation';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import Constant from '../../common/constants';
@@ -26,7 +24,6 @@ import ServOffer from '../offer/title';
 import ServRequest from '../request/title';
 const screenW = Dimensions.get('window').width;
 
-@observer
 export default class navpage extends Component {
 
     constructor(props) {
@@ -114,10 +111,13 @@ export default class navpage extends Component {
                 <Header
                     leftIconAction={() => this.props.navigator.resetTo({component: ServIndex, name: 'ServIndex'})}
                     title='选择分类'
-                    leftIcon={require('../../resource/ic_back_dark.png')}
+                    leftIcon={require('../../resource/ic_back_white.png')}
                 />
                 <ScrollableTabView
-                    style={{ marginTop: 0, }}
+                    style={{ flex: 1 }}
+                    tabBarActiveTextColor="#4a90e2"
+                    tabBarInactiveTextColor="#9e9e9e"
+                    tabBarUnderlineStyle={{ backgroundColor: '#4a90e2' }}
                     initialPage={2}
                     renderTabBar={() => <ScrollableTabBar />}
                 >
@@ -126,34 +126,38 @@ export default class navpage extends Component {
                             return (
                                 <View tabLabel={data.name}  key={index}>
                                     {
-                                        this.state.goods_tpye == "serv_request"? 
-                                        <Text style={{ color: 'black', padding: 16, fontSize: 16, backgroundColor: '#b0b0b0' }}>
-                                            <Text>{data.goods_count}</Text>
-                                            位奇客提供&nbsp;<Text>{data.name}</Text>类&nbsp;服务
-                                        </Text>
+                                        this.state.goods_tpye == "serv_request" ?
+                                          <View style={styles.conclusionView}>
+                                              <Image style={{ width: 24, height: 24, marginRight: 6 }} source={require('../../resource/b-people@2x.png')} />
+                                              <Text style={{ color: '#1b2833', fontSize: 14, }}>
+                                                  {data.goods_count}位奇客提供&nbsp;{data.name}类&nbsp;服务
+                                              </Text>
+                                          </View>
                                         :
-                                        <Text style={{ color: 'black', padding: 16, fontSize: 16, backgroundColor: '#b0b0b0' }}>
-                                            <Text>{data.request_count}</Text>
-                                            位客户需要&nbsp;<Text>{data.name}</Text>类&nbsp;专业人士
-                                        </Text>
+                                        <View style={styles.conclusionView}>
+                                            <Image style={{ width: 24, height: 24, marginRight: 6 }} source={require('../../resource/b-people@2x.png')} />
+                                            <Text style={{ color: '#1b2833', fontSize: 14, }}>
+                                                {data.request_count}位客户需要&nbsp;{data.name}类&nbsp;专业人士
+                                            </Text>
+                                        </View>
                                     }
                                     
                                     <ScrollView>
                                         {
                                             JSON.parse(data.goods_catalogs_II).map((d, i) => {
                                                 return (
-                                                    <View style={{ marginBottom: 5 }} key={i}>
-                                                        <TouchableOpacity onPress={() => { this.jump(d.id, d.name) }}>
-                                                            <CachedImage style={{
-                                                                width: screenW, height: 150, borderRadius: 10,
-                                                                flexDirection: 'column-reverse'
-                                                            }}
-                                                                source={{ uri: d.image }}>
-                                                                <Text style={{ color: 'white', backgroundColor: 'transparent', fontSize: 20, margin: 10 }}>{d.name}&nbsp;</Text>
-                                                            </CachedImage>
-                                                        </TouchableOpacity>
-                                                    </View>
-                                                )
+                                                    <TouchableOpacity key={i} onPress={() => { this.jump(d.id, d.name) }}>
+                                                        <CachedImage style={{
+                                                            width: screenW,
+                                                            height: 150,
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center',
+                                                        }}
+                                                                     source={{ uri: d.image }}>
+                                                            <Text style={{ color: 'white', backgroundColor: 'transparent', fontSize: 16 }}>{d.name}&nbsp;</Text>
+                                                        </CachedImage>
+                                                    </TouchableOpacity>
+                                                );
                                             })
                                         }
                                     </ScrollView>
@@ -190,4 +194,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 3,
     },
-})
+    conclusionView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+    },
+});

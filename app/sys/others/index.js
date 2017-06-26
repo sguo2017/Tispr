@@ -36,7 +36,7 @@ export default class others extends Component {
 			<View style={styles.container}>
 				<Header
 					title='其它页面'
-					leftIcon={require('../../resource/t_header_arrow_left.png')}
+					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={this._onBack.bind(this)}
 				/>
 				<ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>

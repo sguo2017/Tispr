@@ -40,6 +40,9 @@ export default class TabBarView extends PureComponent {
                         tabNames={tabTitles}
                         tabIconNames={tabIcons}
                         selectedTabIconNames={tabSelectedIcon}
+                        centralEvent={()=>{
+                            this.props.navigator.push({component:Server, name:'Server',passProps:{}})
+                        }}
                     />
                 }
                 tabBarPosition='bottom'
@@ -51,7 +54,8 @@ export default class TabBarView extends PureComponent {
             >
                 <Buzz tabLabel="Buzz" navigator={this.props.navigator}/>
                 <Explore tabLabel="Explore" categoryId={0} navigator={this.props.navigator}/>
-                <Server tabLabel="Server" navigator={this.props.navigator}/>
+                {/*<Server tabLabel="Server" navigator={this.props.navigator}/>*/}
+                <View />
                 <Chat tabLabel="Chat" navigator={this.props.navigator}/>
                 <Me tabLabel="Me" navigator={this.props.navigator}/>       
             </ScrollableTabView>

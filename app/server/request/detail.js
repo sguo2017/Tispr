@@ -80,7 +80,7 @@ export default class ServOfferDetail extends Component {
             <View style={{ flex: 1 }}>
                 <Header
                     title='发布需求'
-                    leftIcon={require('../../resource/t_header_arrow_left.png')}                                     
+                    leftIcon={require('../../resource/ic_back_white.png')}
                     leftIconAction = {this._onBack.bind(this)}
                 />
 

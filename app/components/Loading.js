@@ -9,12 +9,11 @@ import {
 export default class Loading extends React.Component {
     render() {
         if (!this.props.isShow) return null;
-
         return (
             <View style={styles.container}>
                 <View style={styles.loading}>
                     <ActivityIndicator color="white"/>
-                    <Text style={styles.loadingTitle}>加载中……</Text>
+                    <Text style={styles.loadingTitle}>{this.props.text == null ? '加载中……': this.props.text}</Text>
                 </View>
             </View>
         )

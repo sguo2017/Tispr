@@ -6,26 +6,23 @@ import {
     TextInput,
     ProgressBarAndroid,
     TouchableOpacity,
-    TouchableHighlight,
     Platform,
     StyleSheet,
     Navigator,
     AsyncStorage,
     PixelRatio,
-    Alert
+    Alert,
+    ProgressViewIOS,
+    ScrollView,
 } from 'react-native'
-import { observer } from 'mobx-react/native'
-import { observable, computed, action, runInAction } from 'mobx';
+import Toast from 'react-native-easy-toast';
 import ImagePicker from 'react-native-image-picker';
 import Header from '../../components/HomeNavigation';
-import UselessTextInput from '../../components/UselessTextInput';
 import Constant from '../../common/constants';
-import UserDefaults from '../../common/UserDefaults';
 import TabBarView from '../../containers/TabBarView';
+import Loading from '../../components/Loading';
 
 
-//let serv_images_url = ["", "", "", "", "", ""];
-@observer
 export default class ServOfferConfirm extends Component {
 
     constructor(props) {
@@ -40,8 +37,6 @@ export default class ServOfferConfirm extends Component {
         }
     }
 
-
-
     componentWillMount() {
         this.setState({
             imgBase64: this.props.imgBase64,
@@ -54,10 +49,7 @@ export default class ServOfferConfirm extends Component {
             navigator.resetTo({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "TabBarView",
                 component: TabBarView,
-                params: {
-                    //serv_title: this.state.serv_title,
-                    //serv_detail: this.state.serv_detail,
-                }
+                params: {}
             });
         }
     }
@@ -65,14 +57,14 @@ export default class ServOfferConfirm extends Component {
     _onBack = () => {
         const { navigator } = this.props;
         if (this.props.getdata) {
-            this.props.getdata(this.props.serv_offer.offer);
+            this.props.getdata(this.props.serv_offer);
         }
         if (navigator) {
             navigator.pop();
         }
     }
 
-    selectPhotoTapped(index) {
+    selectPhotoTapped() {
         const options = {
             title: '请选择',
             cancelButtonTitle: '取消',
@@ -90,7 +82,7 @@ export default class ServOfferConfirm extends Component {
         };
 
         ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
+            // console.log('Response = ', response);
 
             if (response.didCancel) {
                 console.log('User cancelled photo picker');
@@ -105,14 +97,7 @@ export default class ServOfferConfirm extends Component {
                 var source, temp, fName;
                 let imgArray;
                 if (this.state.serv_offer.avatarSourceArray === undefined) {
-                    imgArray = [
-                        { "uri": "", "isStatic": true },
-                        { "uri": "", "isStatic": true },
-                        { "uri": "", "isStatic": true },
-                        { "uri": "", "isStatic": true },
-                        { "uri": "", "isStatic": true },
-                        { "uri": "", "isStatic": true },
-                    ];
+                    imgArray = [];
                 }
                 else {
                     imgArray = this.state.serv_offer.avatarSourceArray.slice(0);
@@ -128,8 +113,7 @@ export default class ServOfferConfirm extends Component {
                 } else {
                     source = { uri: response.uri.replace('file://', ''), isStatic: true };
                 }
-
-                imgArray[index].uri = source.uri;
+                imgArray.push(source);
                 fName = response.fileName;
                 let offer = this.state.serv_offer;
                 offer.fileName = fName;
@@ -139,24 +123,70 @@ export default class ServOfferConfirm extends Component {
                     imgBase64: temp,
                     serv_offer: offer,
                 });
-                this.uploadImage(index);
-
             }
         });
     }
 
+    deletePhoto = (index) => {
+        Alert.alert(
+          '提示',
+          '确认删除该图片?',
+          [
+              { text: '取消', onPress: () => {} },
+              { text: '确定', onPress: () => {
+                  let imgArray = this.state.serv_offer.avatarSourceArray.slice(0);
+                  if (index == imgArray.length - 1) {
+                      imgArray.pop();
+                  } else if (index == 0) {
+                      imgArray = imgArray.slice(1);
+                  } else {
+                      imgArray = imgArray.slice(0, index).concat(imgArray.slice(index + 1));
+                  }
+                  let offer = this.state.serv_offer;
+                  offer.avatarSourceArray = imgArray;
+                  this.setState({
+                      serv_offer: offer,
+                  });
+              } },
+          ]
+        )
+    }
+
     async onServOfferPres() {
-        if(undefined === this.state.serv_offer.serv_images){
+        if(undefined === this.state.serv_offer.avatarSourceArray || this.state.serv_offer.avatarSourceArray.length <= 0){
             Alert.alert(
                     '提示',
                     '请至少提交一张图片',
                     [
                         { text: '继续编辑', onPress: () => console.log('确定') },
                     ]
-                )
+                );
             return;
         }
+
         this.setState({ showProgress: true })
+
+        //上传图片
+        let imageRequests = [];
+        this.state.serv_offer.avatarSourceArray.map((source, i) => {
+            imageRequests.push(this.uploadImage(source.uri));
+        });
+        let uploadedImages = '';
+        try {
+            const datas = await Promise.all(imageRequests);
+            console.log(datas);
+            if (datas == null || datas.length <= 0) throw new Error();
+            let seperate = '';
+            datas.map((data, i) => {
+                uploadedImages = uploadedImages + seperate + JSON.parse(data).images;
+                seperate = ',';
+            });
+        } catch (error) {
+            this.setState({ showProgress: false });
+            this.toast.show('上传图片失败,请稍后再试');
+            return;
+        }
+
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_ADD + global.user.authentication_token;
             let response = await fetch(url, {
@@ -169,7 +199,7 @@ export default class ServOfferConfirm extends Component {
                     serv_offer: {
                         serv_title: this.state.serv_offer.serv_title,
                         serv_detail: this.state.serv_offer.serv_detail,
-                        serv_images: this.state.serv_offer.serv_images,
+                        serv_images: uploadedImages,
                         serv_catagory: this.state.serv_offer.goods_tpye,
                         catalog: this.state.serv_offer.goods_catalogs_name,
                         district: global.user.addressComponent.district,
@@ -213,147 +243,137 @@ export default class ServOfferConfirm extends Component {
             }
         } catch (error) {
             this.setState({ error: error });
-            console.log("error " + error);
+            // console.log("error " + error);
             this.setState({ showProgress: false });
-
+            this.toast.show('发布失败,请稍后再试');
         }
     }
 
-    uploadImage(index) {
+    uploadImage = (uri) => {
         let formData = new FormData();
         let url = 'http://' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.IMG_SERV_PORT + Constant.url.SERV_API_IMG_UPLOAD_SERVLET;
-        console.log("url:" + url);
-        let file = { uri: this.state.serv_offer.avatarSourceArray[index].uri, type: 'multipart/form-data', name: this.state.serv_offer.fileName };
-
+        // console.log("url:" + url);
+        let file = { uri: uri, type: 'multipart/form-data', name: this.state.serv_offer.fileName };
         formData.append("images", file);
 
-        fetch(url, {
+        return fetch(url, {
             method: 'POST',
             mode: "cors",
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
             body: formData,
-        })
-            .then((response) => response.text())
-            .then((responseData) => {
-                let offer = this.state.serv_offer;
-                if (offer.serv_images === undefined) {
-                    offer.serv_images = JSON.parse(responseData).images;
-                }
-                else {
-                    offer.serv_images = offer.serv_images + "," + JSON.parse(responseData).images;
-                }
-                this.setState({
-                        serv_offer: offer
-                    });
-                console.log('this.state.serv_offer.serv_images：', this.state.serv_offer.serv_images);
+        }).then((response) => response.text());
+    }
 
-            })
-            .catch((error) => { console.error('error', error) });
+    renderProgressView = () => {
+        if (Platform.OS == 'ios') {
+            return (
+              <ProgressViewIOS
+                progressTintColor="#ffc400"
+                style={styles.progressViewIOS}
+                progress={0.8}
+                progressViewStyle="bar"
+              />
+            );
+        } else {
+            return (
+              <ProgressBarAndroid
+                color="#ffc400"
+                styleAttr='Horizontal'
+                progress={0.8}
+                indeterminate={false}
+                style={styles.progressViewAndroid}
+              />
+            );
+        }
+    }
 
+    generateImageContent = () => {
+        const hasImage = this.state.serv_offer.avatarSourceArray != null && this.state.serv_offer.avatarSourceArray.length > 0;
+        const fullImage = this.state.serv_offer.avatarSourceArray != null && this.state.serv_offer.avatarSourceArray.length >= 6;
+        return (
+          <View style={{ marginLeft: 54, flexWrap: 'wrap', flexDirection: 'row', marginTop: 5 }}>
+              {
+                  hasImage ?
+                    this.state.serv_offer.avatarSourceArray.map((source, i) => {
+                        return (
+                          <View key={i} style={[styles.avatar, styles.avatarContainer, {marginBottom: 5, marginLeft: 5,}]}>
+                              <TouchableOpacity style={{ position: 'absolute', right: 0, top: 0, zIndex: 9999, }} onPress={() => {this.deletePhoto(i)}}>
+                                  <Image style={{ width: 20, height: 20, backgroundColor: '#ffc400', borderRadius: 10, }} source={require('../../resource/w-cancel-line-nor.png')} />
+                              </TouchableOpacity>
+                              <Image style={styles.avatar} source={source}/>
+                          </View>
+                        );
+                    }) : null
+              }
+              {
+                  fullImage ?
+                    null :
+                    (
+                      <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                          <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5,  }]}>
+                              <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
+                          </View>
+                      </TouchableOpacity>
+                    )
+              }
+          </View>
+        );
     }
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
-                    title='确认'
-                    leftIcon={require('../../resource/t_header_arrow_left.png')}
-                    leftIconAction={this._onBack.bind(this)}
+                  title='确认'
+                  leftIcon={require('../../resource/ic_back_white.png')}
+                  leftIconAction={this._onBack.bind(this)}
                 />
-
-                <ProgressBarAndroid color="#60d795" styleAttr='Horizontal' progress={0.9} indeterminate={false} style={{ marginTop: -10 }} />
-
-                <Text style={{ alignSelf: 'flex-end', color: "#a8a6b9" }}>90%</Text>
-
-                <Text style={{ color: "#000", fontSize: 16 }}>向客户出售您的&nbsp;<Text>{this.state.serv_offer.goods_catalogs_name}</Text>&nbsp;服务</Text>
-
-                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
-                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b-aixin-xl.png')} />
-                    <Text style={{ color: "#000000" }}>{this.state.serv_offer.serv_title}</Text>
-                </View>
-
-                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
-                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b-zanshi-xl.png')} />
-                    <Text style={{ color: "#000000" }}>{this.state.serv_offer.serv_detail}</Text>
-                </View>
-
-                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
-                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b_location.png')} />
-                    <Text style={{ color: "#000000" }}>{global.user.addressComponent.district}，{global.user.addressComponent.city}，{global.user.addressComponent.province}，{global.user.addressComponent.country}</Text>
-                </View>
-
-                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 20 }}>
-                    <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b-pic.png')} />
-                    <Text style={{ color: "#000" }}>上传作品或相关图片</Text>
-                </View>
-
-                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 5 }}>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 0)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
-                            {
-                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[0].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[0]} /> :
-                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
-                            }
+                {this.renderProgressView()}
+                <ScrollView bounces={false} style={{ flex: 1 }}>
+                    <View style={styles.headerView}>
+                        <Text style={styles.contentText}>
+                            向客户出售您的&nbsp;{this.state.serv_offer.goods_catalogs_name}&nbsp;服务
+                        </Text>
+                    </View>
+                    <View style={styles.rowView}>
+                        <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b-aixin-xl.png')} />
+                        <View style={styles.rowTextView}>
+                            <Text style={styles.contentText}>{this.state.serv_offer.serv_title}</Text>
                         </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 1)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
-                            {
-                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[1].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[1]} /> :
-                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
-                            }
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 2)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
-                            {
-                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[2].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[2]} /> :
-                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
-                            }
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                    </View>
 
-                <View style={{ alignItems: 'center', flexDirection: 'row', marginTop: 5 }}>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 3)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
-                            {
-                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[3].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[3]} /> :
-                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
-                            }
+                    <View style={styles.rowView}>
+                        <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b-zanshi-xl.png')} />
+                        <View style={styles.rowTextView}>
+                            <Text style={styles.contentText}>{this.state.serv_offer.serv_detail}</Text>
                         </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 4)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
-                            {
-                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[4].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[4]} /> :
-                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
-                            }
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.selectPhotoTapped.bind(this, 5)}>
-                        <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, border: 0 }]}>
-                            {
-                                this.state.serv_offer.avatarSourceArray instanceof Array && this.state.serv_offer.avatarSourceArray[5].uri != "" ?
-                                    <Image style={styles.avatar} source={this.state.serv_offer.avatarSourceArray[5]} /> :
-                                    <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
-                            }
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                    </View>
 
-                <TouchableHighlight style={{ backgroundColor: global.gColors.buttonColor, marginTop: 60, alignSelf: 'stretch' }} onPress={this.onServOfferPres.bind(this)} >
-                    <Text style={{ fontSize: 22, color: '#FFF', alignSelf: 'center', backgroundColor:global.gColors.ButtonColor }}>
-                        确认
-                  </Text>
-                </TouchableHighlight>
+                    <View style={styles.rowView}>
+                        <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b_location.png')} />
+                        <View style={styles.rowTextView}>
+                            <Text style={styles.contentText}>{global.user.addressComponent.district}，{global.user.addressComponent.city}，{global.user.addressComponent.province}，{global.user.addressComponent.country}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.rowView}>
+                        <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b-pic.png')} />
+                        <View style={styles.uploadRowTextView}>
+                            <Text style={styles.contentText}>上传作品或相关图片</Text>
+                            <Text style={{ fontSize: 14, color: '#cccccc' }}>
+                                {this.state.serv_offer.avatarSourceArray != null && this.state.serv_offer.avatarSourceArray.length>0 ? this.state.serv_offer.avatarSourceArray.length : '0'}/6
+                            </Text>
+                        </View>
+                    </View>
+                    {this.generateImageContent()}
+                </ScrollView>
+                <TouchableOpacity style={styles.confirmButton} onPress={this.onServOfferPres.bind(this)} >
+                    <Text style={styles.confirmButtonText}>发布</Text>
+                </TouchableOpacity>
+                <Loading text="发布中" isShow={this.state.showProgress} />
+                <Toast ref={toast => this.toast = toast} />
             </View>
         );
     }
@@ -372,8 +392,55 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     avatar: {
-        // borderRadius: 75,
-        width: 100,
-        height: 100
-    }
+        width: 90,
+        height: 90,
+    },
+    rowView: {
+        marginHorizontal: 16,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    rowTextView: {
+        flex: 1,
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#e0e0e0',
+        paddingVertical: 16,
+        marginLeft: 18,
+    },
+    rowTextView: {
+        flex: 1,
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#e0e0e0',
+        paddingVertical: 16,
+        marginLeft: 18,
+    },
+    uploadRowTextView: {
+        flex: 1,
+        flexDirection: 'row',
+        paddingVertical: 16,
+        marginLeft: 18,
+        justifyContent: 'space-between',
+    },
+    headerView: {
+        paddingVertical: 16,
+        marginHorizontal: 16,
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#eeeeee',
+    },
+    contentText: {
+        color: '#1B2833',
+        fontSize: 16,
+    },
+    confirmButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: global.gColors.buttonColor,
+        height: 44,
+
+    },
+    confirmButtonText: {
+        fontSize: 16,
+        color: '#FFF',
+        backgroundColor:global.gColors.ButtonColor,
+    },
 })

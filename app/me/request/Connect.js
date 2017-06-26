@@ -78,7 +78,7 @@ export default class DealConnect extends Component {
             <View style={{ flex: 1 }}>
                 <Header
                     title='Get Connect'
-                    leftIcon={require('../../resource/t_header_arrow_left.png')}
+                    leftIcon={require('../../resource/ic_back_white.png')}
                 />
 
 
