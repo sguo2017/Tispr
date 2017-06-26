@@ -107,7 +107,7 @@ export default class SysMsgDetail extends Component {
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
                 this.props.feed.isFavorited= false;
-                global.user.favorites_count++;
+                global.user.favorites_count--;
                 this.setState({isFavorited: false});
             } else {
                 let error = res;
