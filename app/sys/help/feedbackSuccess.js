@@ -23,7 +23,7 @@ export default class feedbackSuccess extends Component{
                             activeOpacity={0.75}
                             style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',borderTopColor: '#ccc',
                         marginTop: 20, backgroundColor: global.gColors.buttonColor,width: 260,height:44,borderRadius:6}}
-                        onPress={() => this.props.navigator.pop()}
+                        onPress={() => this.props.navigator.popN(2)}
                         >
                             <Text style={{ fontSize: 22, color: '#FFF' }}>
                                 知道了
