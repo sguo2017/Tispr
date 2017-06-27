@@ -22,7 +22,6 @@ import Constant from '../../common/constants';
 import TabBarView from '../../containers/TabBarView';
 import Loading from '../../components/Loading';
 
-
 export default class ServOfferConfirm extends Component {
 
     constructor(props) {
@@ -187,6 +186,7 @@ export default class ServOfferConfirm extends Component {
             return;
         }
 
+        //发布
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_ADD + global.user.authentication_token;
             let response = await fetch(url, {
@@ -242,9 +242,11 @@ export default class ServOfferConfirm extends Component {
                 throw error;
             }
         } catch (error) {
-            this.setState({ error: error });
             // console.log("error " + error);
-            this.setState({ showProgress: false });
+            this.setState({
+                error: error,
+                showProgress: false
+            });
             this.toast.show('发布失败,请稍后再试');
         }
     }
@@ -443,4 +445,4 @@ const styles = StyleSheet.create({
         color: '#FFF',
         backgroundColor:global.gColors.ButtonColor,
     },
-})
+});

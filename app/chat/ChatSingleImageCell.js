@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
 import {
     StyleSheet,
     View,
@@ -7,6 +7,8 @@ import {
     Image,
     Dimensions
 } from 'react-native';
+import DateUtil from '../common/DateUtil';
+
 const screenW = Dimensions.get('window').width;
 
 const ChatSingleImageItem = ({
@@ -19,61 +21,52 @@ const ChatSingleImageItem = ({
     status,
     chat_status
 }) => {
+    var smartTime = DateUtil.dataStrToSmartDate(updated_at);
     return (
         <TouchableOpacity
             activeOpacity={0.75}
             style={{
-                width: screenW,
-                padding: 15,
-                marginTop: 2,
+                paddingHorizontal: 12,
+                paddingVertical: 16,
+                marginTop: 1,
                 flexDirection: 'row',
                 backgroundColor: '#fff',
                 justifyContent: 'space-between'
             }}
             onPress={onPress}
         >
-           <View style ={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Image style={{width: 40, height: 40, marginRight: 5, borderRadius: 20}} source={{uri:avatar}}/>
-                <View style={{justifyContent: 'space-around'}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',paddingBottom:2}}>
-                        <View style={{width: screenW * 0.6, flexDirection: 'row', alignItems: 'center'}}>
-                            <Text numberOfLines={2}>
-                                <Text style={{fontSize: 16, color:'black'}}>{user_name}</Text>
-                            </Text>
-                            {
-                                status=='00C'?
-                                <View style={{backgroundColor: '#FFC400', borderRadius: 2, height: 16}}>
-                                    <Text style={{fontSize: 12, color: 'white'}}>达成协议</Text>
-                                </View>:<View></View>
-                            }
-                        </View>
-                        
-                        <View numberOfLines={2} style={{width: screenW * 0.25, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                            {
-                                chat_status == 'unread'?
-                                <View style={{backgroundColor: '#FF5252', borderRadius: 4, height: 8,width:8}}>
-                                </View>:<View style={{width:10}}></View>
-                            }
-                            <Text style={{fontSize:12}}>{updated_at}</Text>
-                        </View>
-                    </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
-                        <Text numberOfLines={1} style={{width: screenW * 0.7}}>
-                            {
-                                serv_offer_titile === null ? 
-                                <Text style={{color: 'black'}}>Tempe,Arizona, United States, 85281</Text> : 
-                                <Text style={{color: 'grey', fontSize: 14, width: screenW*0.65 }}>{serv_offer_titile}</Text>
-                            }
-                        </Text>
-                    </View>
-                    
-                    <Text style={{color: '#4A90E2',marginRight: 5, fontSize: 14}} >&quot;{lately_chat_content}&quot;&nbsp;&nbsp;&nbsp;</Text>
-                </View>
-                <Image
-                    style={{height: 80, width: (screenW - 15 * 2 - 10 * 2) / 3}}
-                    defaultSource={require('../resource/img_news_default.png')}
-                />
+          <Image style={{width: 40, height: 40, marginRight: 12, borderRadius: 20}} source={{ uri: avatar }}/>
+          <View style={{ flex: 1 }}>
+            <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',paddingBottom:2}}>
+              {/*姓名*/}
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <Text numberOfLines={1} style={{ fontSize: 16, color:'#1b2833' }}>{user_name}</Text>
+                {
+                  status=='00C'?
+                    <View style={{backgroundColor: '#ffc400', borderRadius: 2, height: 16}}>
+                      <Text style={{fontSize: 12, color: 'white'}}>达成协议</Text>
+                    </View> : null
+                }
+              </View>
+              {/*未读/时间*/}
+              <View style={{ flexDirection: 'row', alignItems: 'center'}}>
+                {
+                  chat_status == 'unread'?
+                    <View style={{ backgroundColor: '#FF5252', borderRadius: 4, height: 8, width: 8, marginRight: 4 }} />
+                    : null
+                }
+                <Text numberOfLines={1} style={{ fontSize: 12, color: '#b8b8b8' }}>{smartTime}</Text>
+              </View>
             </View>
+            {/*副标题*/}
+            <Text numberOfLines={1} style={{ marginTop: 2, color: '#999999', fontSize: 14 }}>
+              {
+                serv_offer_titile == null || serv_offer_titile.length <= 0 ? "Tempe,Arizona, United States, 85281" : serv_offer_titile
+              }
+            </Text>
+            {/*内容*/}
+            <Text style={{ color: '#4a90e2',marginRight: 5, fontSize: 14}} >{lately_chat_content}</Text>
+          </View>
         </TouchableOpacity>
     )
 };

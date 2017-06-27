@@ -12,7 +12,7 @@ import {
     Navigator,
     PixelRatio,
     ProgressViewIOS,
-    Alert
+    Alert,
 } from 'react-native';
 import Header from '../../components/HomeNavigation';
 import AutoTextInput from '../../components/AutoTextInput';
@@ -110,6 +110,7 @@ export default class ServOfferDetail extends Component {
                   multiline={true}
                   numberOfLines={3}
                   value ={this.state.serv_offer.serv_detail}
+                  autoFocus
                   onChangeText={(val) => {
                     let offer = this.state.serv_offer;
                     offer.serv_detail = val;
@@ -129,7 +130,7 @@ export default class ServOfferDetail extends Component {
     }
 }
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   headIcon: {
     marginTop: 22,
     width: 40,

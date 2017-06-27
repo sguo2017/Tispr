@@ -126,6 +126,7 @@ export default class ServOfferTitle extends Component {
                     multiline={true}
                     numberOfLines={0}
                     value ={this.state.serv_offer.serv_title}
+                    autoFocus
                     onChangeText={(val) => {
                       let offer=this.state.serv_offer;
                       offer.serv_title = val;
@@ -144,7 +145,7 @@ export default class ServOfferTitle extends Component {
     }
 }
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   headIcon: {
     marginTop: 22,
     width: 40,

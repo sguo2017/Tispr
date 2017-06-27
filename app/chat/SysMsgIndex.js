@@ -22,17 +22,17 @@ const itemHeight =300;
 
 @observer
 export default class BussList extends PureComponent {
-    _pictureAction = () => {
-        const {user: {name}} = RootStore
-        if (name) {
-            alert(name)
-        } else {
-            this.props.navigator.push({
-                component: Login,
-                sceneConfig: Navigator.SceneConfigs.FloatFromBottom
-            })
-        }
-    }
+    // _pictureAction = () => {
+    //     const {user: {name}} = RootStore
+    //     if (name) {
+    //         alert(name)
+    //     } else {
+    //         this.props.navigator.push({
+    //             component: Login,
+    //             sceneConfig: Navigator.SceneConfigs.FloatFromBottom
+    //         })
+    //     }
+    // }
 
     state = {
         dataSource: new ListView.DataSource({
@@ -73,7 +73,13 @@ export default class BussList extends PureComponent {
                 <ListView
                     dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
                     renderRow={this._renderRow}
-                    renderFooter={isLoadMore && this._renderFooter}
+                    renderFooter={() => {
+                        if (isLoadMore) {
+                            return this._renderFooter();
+                        } else {
+                            return null;
+                        }
+                    }}
                     enableEmptySections
                     initialListSize={3}
                     onScroll={this._onScroll}
