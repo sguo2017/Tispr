@@ -19,22 +19,19 @@ export default class Guide extends React.Component {
             addressComponent: { "country": "中国", "country_code": 0, "province": "广东省", "city": "广州市", "district": "番禺区", "adcode": "440113", "street": "石北路", "street_number": "", "direction": "", "distance": "" }
         };
     }
-    watchID: ?number = null;
+    watchID = null;
     componentDidMount() {
         // const { navigator } = this.props;
         // this.timer = setTimeout(() => {
         //      this.existsToken();
         // }, 2000);
-    }
-
-    componentWillMount() {
         navigator.geolocation.getCurrentPosition(
-            (position) => {
-                var initialPosition = JSON.stringify(position);
-                this.setState({ initialPosition });
-            },
-            (error) => alert(JSON.stringify(error)),
-            { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
+          (position) => {
+              var initialPosition = JSON.stringify(position);
+              this.setState({ initialPosition });
+          },
+          (error) => alert(JSON.stringify(error)),
+          { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
         );
         this.watchID = navigator.geolocation.watchPosition((position) => {
             var lastPosition = JSON.stringify(position);
