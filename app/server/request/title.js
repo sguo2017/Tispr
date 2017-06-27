@@ -126,6 +126,7 @@ export default class ServOfferTitle extends Component {
                   underlineColorAndroid="transparent"
                   multiline={true}
                   numberOfLines={0}
+                  autoFocus
                   value ={this.state.serv_offer.serv_title}
                   onChangeText={(val) => {
                     let offer=this.state.serv_offer;

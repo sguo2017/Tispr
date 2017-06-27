@@ -1,5 +1,14 @@
 
 export default class DateUtil {
+  static chineseWeekDay = {
+    0: '星期日',
+    1: '星期一',
+    2: '星期二',
+    3: '星期三',
+    4: '星期四',
+    5: '星期五',
+    6: '星期六',
+  };
   static toDate = (dateStr) => {
     if (dateStr == null) return null;
     const dateComp = dateStr.split('-');
@@ -47,5 +56,31 @@ export default class DateUtil {
     const milliseconds = data.getMilliseconds();
     const millisecondsStr = milliseconds < 100 ? (milliseconds < 10 ? `00${milliseconds}` : `0${milliseconds}`) : `${milliseconds}`;
     return `${year}${monStr}${dayStr}${hourStr}${minutesStr}${secondsStr}${millisecondsStr}`;
+  }
+  static dataStrToSmartDate = (fullDateStr) => { //2017-01-01 14:12:30 -> 下午2:12 / 昨天 / 星期一
+    if (fullDateStr.length >= 19) {
+      const dateStr = fullDateStr.substr(0, 10);
+      if (DateUtil.getCurrentDateStr() == dateStr) { //当天
+        const timeStr = fullDateStr.substr(11);
+        const timeComp = timeStr.split(':');
+        if (parseInt(timeComp[0], 10) >= 12) {
+          return `下午${parseInt(timeComp[0], 10) - 12}:${parseInt(timeComp[1], 10)}`;
+        } else {
+          return `上午${parseInt(timeComp[0], 10)}:${parseInt(timeComp[1], 10)}`;
+        }
+      } else { //非当天
+        const date = DateUtil.toDate(dateStr);
+        var now = new Date();
+        var today = (new Date).setFullYear(now.getFullYear(), now.getMonth(), now.getDate());
+        var numberOfDays = (today - date) / 86400000;
+        if (numberOfDays == 1) {
+          return '昨天';
+        } else if (numberOfDays < 7 && numberOfDays > 1) {
+          const day = date.getDay();
+          return DateUtil.chineseWeekDay[day];
+        }
+      }
+      return fullDateStr;
+    }
   }
 }

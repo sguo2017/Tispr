@@ -45,7 +45,7 @@ export default class TabCategoryBar extends Component {
     }
     // paddingTop: Platform.OS === 'ios' ? 20 : 0,
     setAnimationValue({value}) {
-        console.log(value);
+        // console.log(value);
         LayoutAnimation.linear();
         this.setState({indicatorPosition: value * Constants.window.width / 4})
     }
@@ -83,12 +83,13 @@ export default class TabCategoryBar extends Component {
 const styles = StyleSheet.create({
     tabs: {
         flexDirection: 'row',
-        height: 34,
+        height: 28,
         borderWidth: 1,
         margin: 6,
-        borderColor:  '#fff',
+        borderColor: '#fff',
         backgroundColor:global.gColors.themeColor,
-        borderRadius:5
+        borderRadius: 5,
+        overflow: 'hidden',
     },
     tab: {
         flex: 1,

@@ -68,15 +68,7 @@ let styles = StyleSheet.create({
 });
 
 export default function Card({ content, navigator, width, height, update,index }) {
-  var time = content.created_at;
-  if (time.length >= 19) {
-    var dateStr = time.substr(0,11);
-    if (DateUtil.getCurrentDateStr() == dateStr) {
-      time = time.substr(12);
-    } else {
-      time = dateStr;
-    }
-  }
+  const time = DateUtil.dataStrToSmartDate(content.created_at);
   return (
     <View style={[styles.container,{ width, height }]}>
       <View elevation={5} style={styles.wrapper}>

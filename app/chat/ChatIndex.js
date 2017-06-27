@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react'
 import {
-    StyleSheet,
-    View,
-    Text,
-    Image,
-    ListView,
-    TouchableOpacity,
-    RefreshControl,
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  ListView,
+  TouchableOpacity,
+  RefreshControl,
 } from 'react-native'
 import { observer } from 'mobx-react/native'
 import { reaction } from 'mobx'
@@ -43,8 +43,8 @@ export default class ChatList extends PureComponent {
 
     componentDidMount() {
         reaction(
-            () => this.knowledgeListStore.page,
-            () => this.knowledgeListStore.fetchFeedList()
+          () => this.knowledgeListStore.page,
+          () => this.knowledgeListStore.fetchFeedList()
         )
     }
 
@@ -82,33 +82,29 @@ export default class ChatList extends PureComponent {
     render() {
         const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
         return (
-            <View style={styles.listView}>
-
-                {!isFetching &&
-                    <ListView
-                        dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
-                        renderRow={this._renderRow}
-                        renderFooter={this._renderFooter}
-                        enableEmptySections
-                        initialListSize={3}
-                        onScroll={this._onScroll}
-                        onEndReached={this._onEndReach}
-                        onEndReachedThreshold={30}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={isRefreshing}
-                                onRefresh={this._onRefresh}
-                                colors={['rgb(217, 51, 58)']}
-                            />
-                        }
-
-
-                    />
-
-                }
-                <Loading isShow={isFetching} />
-                <Toast ref={toast => this.toast = toast} />
-            </View>
+          <View style={styles.listView}>
+              {!isFetching &&
+                  <ListView
+                    dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
+                    renderRow={this._renderRow}
+                    renderFooter={this._renderFooter}
+                    enableEmptySections
+                    initialListSize={3}
+                    onScroll={this._onScroll}
+                    onEndReached={this._onEndReach}
+                    onEndReachedThreshold={30}
+                    refreshControl={
+                        <RefreshControl
+                          refreshing={isRefreshing}
+                          onRefresh={this._onRefresh}
+                          colors={['rgb(217, 51, 58)']}
+                        />
+                    }
+                  />
+              }
+              <Loading isShow={isFetching} />
+              <Toast ref={toast => this.toast = toast} />
+          </View>
         )
     }
 }
@@ -139,7 +135,7 @@ class KnowledgeItem extends PureComponent {
             avatar = this.props.feed.offer_user_avatar;
         }
         const cellData = { user_name, serv_offer_titile, lately_chat_content, deal_id, avatar, updated_at, status, chat_status }
-        //return (<Text>1234</Text>)
+        // return (<Text>1234</Text>)
         return <ChatSingleImageCell {...cellData} onPress={this._onPress} />
     }
 }

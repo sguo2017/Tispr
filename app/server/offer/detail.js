@@ -110,6 +110,7 @@ export default class ServOfferDetail extends Component {
                   multiline={true}
                   numberOfLines={3}
                   value ={this.state.serv_offer.serv_detail}
+                  autoFocus
                   onChangeText={(val) => {
                     let offer = this.state.serv_offer;
                     offer.serv_detail = val;

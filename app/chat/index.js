@@ -13,8 +13,6 @@ import {
     Navigator,
 } from 'react-native'
 import { observer } from 'mobx-react/native'
-import { reaction } from 'mobx'
-import Header from '../components/HomeNavigation';
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import ChatList from './ChatIndex';
 import BuzzList from './SysMsgIndex';

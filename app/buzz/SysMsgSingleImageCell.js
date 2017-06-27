@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
@@ -21,33 +21,22 @@ const SysMsgSingleImageItem = ({
             <TouchableOpacity
                 activeOpacity={0.75}
                 style={{
-                    width: screenW,
-                    padding: 15,
+                    paddingHorizontal: 12,
+                    paddingVertical: 16,
                     marginTop: 1,
                     flexDirection: 'row',
                     backgroundColor: '#fff',
-                    justifyContent: 'space-between'
                 }}
                 onPress={onPress}
             >
-                <View style ={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <Image style={{width: 40, height: 40, marginRight: 8, borderRadius: 20}} defaultSource={require('../resource/user_default_image.png')} source={{uri: user.avatar}}/>
-                    <View style={{justifyContent: 'space-around'}}>
-                        <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
-                            <Text numberOfLines={2} style={{width: screenW * 0.7, fontSize: 16, flexShrink: 0}}>
-                                <Text style={{color: '#1B2833', marginRight: 4, fontSize: 16}} >{user.name}&nbsp;&nbsp;&nbsp;</Text>
-                                <Text>{action_title}</Text>
-                            </Text>
-                            <View numberOfLines={2} style={{width: screenW * 0.1,flexShrink: 0, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                                <Text style={{fontSize:14}}>{interval}</Text>
-                            </View>
-                        </View>
-                        <Text style={{color: '#4A90E2', fontSize: 14, paddingRight: 90}}>{action_desc}</Text>
-                    </View>
-                    <Image
-                        style={{height: 80, width: (screenW - 15 * 2 - 10 * 2) / 3}}
-                        defaultSource={require('../resource/img_news_default.png')}
-                    />
+                <Image style={{ width: 40, height: 40, marginLeft: 12, marginRight: 8, borderRadius: 20 }} defaultSource={require('../resource/user_default_image.png')} source={{ uri: user.avatar }}/>
+                <View style={{ flex: 1 }} >
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text numberOfLines={1} style={{ color: '#1b2833', marginRight: 4, fontSize: 16 }} >{user.name}</Text>
+                    <Text numberOfLines={1} style={{ flex: 1, color: '#999999', fontSize: 16 }}>{action_title}</Text>
+                    <Text numberOfLines={1} style={{ fontSize:12, color: '#b8b8b8' }}>{interval}</Text>
+                  </View>
+                  <Text numberOfLines={2} style={{ flex: 1, color: '#4a90e2', fontSize: 14 }}>{action_desc}</Text>
                 </View>
             </TouchableOpacity>
         )

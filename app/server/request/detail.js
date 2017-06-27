@@ -117,6 +117,7 @@ export default class ServOfferDetail extends Component {
                   value ={this.state.serv_offer.serv_detail}
                   placeholder="详细描述您的需求，如要求，偏好，预算及完成周期等"
                   placeholderTextColor="#cccccc"
+                  autoFocus
                   onChangeText={(val) => {
                     let offer = this.state.serv_offer;
                     offer.serv_detail = val;

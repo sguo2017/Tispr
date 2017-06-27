@@ -29,8 +29,6 @@ import Constant from '../common/constants';
 import Server from '../server/index'
 
 const KNOWLEDGE_ID = 3
-const itemWidth = global.gScreen.width - 20;
-const itemHeight = 300;
 
 var cardArray=[];
 var styles = StyleSheet.create({
@@ -56,10 +54,8 @@ var styles = StyleSheet.create({
     },
     view: {
         backgroundColor: '#FFFFFF',
-        height: 40,
         flexDirection: 'row',
         marginBottom: -2,
-        marginTop: 40
     },
     line: {
         flex: 1,
@@ -199,6 +195,7 @@ export default class BussList extends Component {
     _onRefresh = () => {
         this.knowledgeListStore.isRefreshing = true
         this.knowledgeListStore.fetchFeedList();
+        this._getSysMsgs();
     }
 
     _onEndReach = () => this.knowledgeListStore.page++
@@ -435,13 +432,14 @@ export default class BussList extends Component {
                 <Header title='Qiker' />
                 <Text style={styles.text1}>{ cardArray && cardArray.length > 0 ? "您有重要更新" : "想要更多机会?" }</Text>
                 {this.generateSwiper()}
-                <View style={[styles.view, {marginTop:10}]}>
+                <View style={styles.view}>
                     <View style={styles.line}></View>
                     <Text style={styles.text2}>奇客动态</Text>
                     <View style={styles.line}></View>
                 </View>
                 {!isFetching &&
                     <ListView
+                        style={{ flex: 1 }}
                         dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
                         renderRow={this._renderRow}
                         renderFooter={this._renderFooter}
