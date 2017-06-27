@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   TextInput,
-  TouchableHighlight,
   TouchableOpacity,
   ActivityIndicatorIOS,
   AsyncStorage,
@@ -17,8 +16,9 @@ import Register from '../user/register';
 import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 import TabBarView from '../containers/TabBarView';
+import AutoTextInput from '../components/AutoTextInput';
+import Loading from '../components/Loading';
 import forgetPassword from './forgetPassword';
-const screenW = Dimensions.get('window').width;
 
 export default class Login extends Component {
 
@@ -36,7 +36,7 @@ export default class Login extends Component {
       lastPosition: 'unknown',
       addressComponent: { "country": "中国", "country_code": 0, "province": "广东省", "city": "广州市", "district": "番禺区", "adcode": "440113", "street": "石北路", "street_number": "", "direction": "", "distance": "" },
       seePassword:true,
-  };
+    };
   }
 
   componentWillMount() {
@@ -48,9 +48,6 @@ export default class Login extends Component {
       navigator.pop();
     }
   }
-
-
-
 
   _navigateReg() {
     this._navigate('Register');
@@ -248,6 +245,110 @@ export default class Login extends Component {
   }
 
   render() {
+    const emailView = (
+      <View style={{ flex: 1, padding: 16 }}>
+        <View style={{ justifyContent: 'center', minHeight: 48}}>
+          <AutoTextInput
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            numberOfLines={1}
+            onChangeText={(text) => this.setState({ email: text })}
+            placeholder="邮箱"
+            placeholderTextColor="#cccccc"
+          />
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minHeight: 48}}>
+          <View style={{ flex: 1, justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee',}}>
+            <TextInput
+              style={[styles.input, { borderWidth: 0 }]}
+              underlineColorAndroid="transparent"
+              numberOfLines={1}
+              onChangeText={(text) => this.setState({ password: text })}
+              placeholder="密码"
+              placeholderTextColor="#cccccc"
+              secureTextEntry={this.state.seePassword}
+            />
+          </View>
+          <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword: !this.state.seePassword })}>
+            <Image style={{ width: 25, height: 20 }} source={this.state.seePassword? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => this.setState({ loginWay: 'phonenumber' })}>
+            <Text style={{ color: '#4A90E2'}}>
+              使用手机号登录
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.props.navigator.push({component: forgetPassword})}>
+            <Text style={{ color: '#4A90E2'}}>
+              忘记密码？
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity onPress={this.onLoginPressed.bind(this)} style={styles.loginButton}>
+          <Text style={styles.loginButtonText}>
+            登录
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+    const smsView = (
+      <View style={{ flex: 1, padding: 16 }}>
+        <Text style={{ color: '#1b2833', fontSize: 14, fontWeight: 'bold' }}>使用手机号码登录</Text>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 16, minHeight: 48 }}>
+          <TouchableOpacity style={styles.countryButton} onPress={()=>{
+            Alert.alert(
+              '提示',
+              '奇客目前只开通中国地区注册，将很快开通其它国家注册服务。',
+              [
+                { text: '确定', onPress: () => {} }
+              ]
+            );
+          }}>
+            <Image style={{ height: 12, width: 18, marginRight: 9 }} source={require('../resource/qk_china_flag.png')} />
+            <Text style={{ fontSize: 16, color: '#1b2833' }}>+86</Text>
+            <Image style={{ height: 24, width: 24 }} source={require('../resource/g-arrow-drop-down.png')} />
+          </TouchableOpacity>
+          <View style={{ flex: 1, justifyContent: 'center'}}>
+            <AutoTextInput
+              style={styles.input}
+              underlineColorAndroid="transparent"
+              numberOfLines={1}
+              onChangeText={(text) => this.setState({ num: text })}
+              placeholder="输入您的手机号"
+              placeholderTextColor="#cccccc"
+            />
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, minHeight: 48 }}>
+          <View style={{ flex: 1, justifyContent: 'center'}}>
+            <AutoTextInput
+              style={styles.input}
+              underlineColorAndroid="transparent"
+              numberOfLines={1}
+              maxLength={6}
+              onChangeText={(text) => this.setState({ code: text })}
+              placeholder="输入短信验证码"
+              placeholderTextColor="#cccccc"
+            />
+          </View>
+          <TouchableOpacity onPress={this._smsSend.bind(this)} style={styles.smsCodeButton}>
+            <Text style={styles.smsCodeButtonText}>获取短信验证码</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity onPress={() => this.setState({ loginWay: 'email' })}>
+          <Text style={{ color: '#4A90E2'}}>
+            使用邮箱登录
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this._smsCodeLogin.bind(this)} style={styles.loginButton}>
+          <Text style={styles.loginButtonText}>登录</Text>
+        </TouchableOpacity>
+      </View>
+    );
     return (
       <View style={styles.container}>
         <Header
@@ -255,93 +356,8 @@ export default class Login extends Component {
           leftIcon={require('../resource/ic_back_white.png')}
           leftIconAction={this._onBack}
         />
-        {this.state.loginWay == 'email' ?
-          <View style={{ padding: 15 }}>
-            <TextInput
-              onChangeText={(text) => this.setState({ email: text })}
-
-              style={styles.input} placeholder="邮箱">
-            </TextInput>
-            <View style={{flexDirection:'row'}}>
-              <TextInput
-                onChangeText={(text) => this.setState({ password: text })}
-                style={[styles.input,{width:screenW*0.8}]}
-                placeholder="密码"
-                secureTextEntry={this.state.seePassword}>
-              </TextInput>
-              {
-                this.state.seePassword?
-                <TouchableOpacity onPress={()=>this.setState({seePassword:false})}>
-                  <Image style={{ marginLeft: 5, marginRight: 8,marginTop:25, width: 25, height: 20,    
-        resizeMode: 'stretch'}} source={require('../resource/g_eyes_close.png')}/>
-                </TouchableOpacity>:
-                <TouchableOpacity onPress={()=>this.setState({seePassword:true})}>
-                  <Image style={{ marginLeft: 5, marginRight: 8,marginTop:25, width: 25, height: 20,    
-        resizeMode: 'stretch'}} source={require('../resource/g_eyes_open.png')}/>
-                </TouchableOpacity>
-              }
-              
-            </View>
-            <TouchableHighlight onPress={()=>this.props.navigator.push({component: forgetPassword})}>
-              <Text style={{ color: '#4A90E2'}}>
-                忘记密码？
-            </Text>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={this.onLoginPressed.bind(this)} style={styles.button}>
-              <Text style={styles.buttonText}>
-                登录
-            </Text>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={this._navigateReg.bind(this)} style={styles.button}>
-              <Text style={styles.buttonText}>
-                注册
-            </Text>
-            </TouchableHighlight>
-
-            <TouchableHighlight onPress={() => this.setState({ loginWay: 'phonenumber' })}>
-              <Text style={{ color: '#4A90E2'}}>
-                使用手机号登录
-            </Text>
-            </TouchableHighlight>
-          </View> :
-
-          <View style={{ padding: 15 }}>
-            <Text style={{ color: 'black', fontSize: 16, fontWeight: 'bold' }}>使用手机号码动态登录</Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-              <Image style={{ height: 30, width: 40 }} source={require('../resource/qk_china_flag.png')} />
-              <Text style={{ fontSize: 20, color: 'black' }}>+86</Text>
-              <TextInput
-                onChangeText={(text) => this.setState({ num: text })}
-                style={[styles.input, { width: 250 }]}
-                placeholder="输入您的手机号">
-              </TextInput>
-            </View>
-
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-              <TextInput
-                onChangeText={(text) => this.setState({ code: text })}
-                style={[styles.input, { width: 160 }]}
-                placeholder="输入短信验证码">
-              </TextInput>
-              <TouchableHighlight onPress={this._smsSend.bind(this)} style={[styles.button, { height: 34, borderRadius: 5, padding: 10 }]}>
-                <Text style={styles.buttonText}>
-                  获取短信验证码
-              </Text>
-              </TouchableHighlight>
-            </View>
-
-            <TouchableHighlight onPress={() => this.setState({ loginWay: 'email' })}>
-              <Text style={{ color: '#4A90E2'}}>
-                使用邮箱登录
-            </Text>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={this._smsCodeLogin.bind(this)} style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', top: 506, flexShrink: 0, width: screenW }]}>
-              <Text style={styles.buttonText}>
-                登录
-            </Text>
-            </TouchableHighlight>
-          </View>
-        }
+        {this.state.loginWay == 'email' ? emailView : smsView}
+        <Loading text="登陆中" isShow={this.state.showProgress} />
       </View>
     );
   }
@@ -353,27 +369,41 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     //alignItems: 'center',
     backgroundColor: global.gColors.bgColor,
-
   },
   input: {
-    height: 50,
-    marginTop: 10,
-    //padding: 4,
-    fontSize: 18,
-    borderWidth: 0,
-    // borderColor: '#48bbec'
+    flex: 1,
+    maxHeight: 32,
+    padding: 0,
+    fontSize: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eeeeee',
   },
-  button: {
-    height: 50,
-    backgroundColor: global.gColors.themeColor,
-    alignSelf: 'stretch',
-    marginTop: 10,
-    justifyContent: 'center'
+  loginButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: global.gColors.buttonColor,
+    position: 'absolute',
+    bottom: 0,
+    right:0,
+    left: 0,
+    height: 44,
   },
-  buttonText: {
-    fontSize: 22,
-    color: '#FFF',
-    alignSelf: 'center'
+  loginButtonText: {
+    fontSize: 16,
+    color: '#ffffff',
+  },
+  smsCodeButton: {
+    position: 'absolute',
+    height: 48,
+    right: 0,
+    top: 0,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  smsCodeButtonText: {
+    fontSize: 14,
+    color: '#4990e2',
   },
   heading: {
     fontSize: 30,
@@ -388,6 +418,14 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginTop: 20
-  }
-
+  },
+  countryButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor: '#eeeeee',
+    borderBottomWidth: 1,
+    height: 32,
+    marginRight: 18,
+  },
 });
