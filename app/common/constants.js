@@ -57,6 +57,7 @@ let url = {
      SERV_API_PORT: `8082`,
      SERV_API_USER_LOGIN: `/api/users/sessions`,//登录接口
      SERV_API_USER_REGI: `/api/users/registrations`, //注册接口
+     SERV_API_USER_PASSWORD: `/api/users/passwords`,//忘记密码接口
      SERV_API_SERV_OFFER_ADD: `/api/goods/serv_offers?token=`,//服务提供的新增接口
      SERV_API_SERV_OFFER_INDEX: `/api/goods/serv_offers?token=`,//服务提供的list接口
 	   SERV_API_SERV_OFFER_MARKS: `/api/me/favorites.json?token=`,//服务提供的收藏展示接口
@@ -75,6 +76,7 @@ let url = {
      SERV_API_GOODS_CATALOG:`/api/goods/goods_catalogs?token=`,//商品分类
      SERV_API_SYS_MSGS_QUERIES:`/api/sys_msgs_timelines/sys_msgs_queries?token=`,//系统消息查询API
      SSRV_API_SYS_MSGS_TIMELINES:`/api/sys_msgs_timelines/sys_msgs_timelines/`,//系统消息操作API
+     SERV_API_SUGGESTION:`/api/suggestion/suggestions?token=`,//反馈意见API
      //////////////////<<<<   GEOAPI服务器  >>>>>//////////////////////////////
      GEO_LOCATION_ADDR: "http://api.map.baidu.com/geocoder/v2/?output=json&pois=1&ak=ZFFEI4cl338WSpoGsGSuHhpxiQpuEnfe"
      

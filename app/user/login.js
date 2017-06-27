@@ -18,13 +18,14 @@ import UserDefaults from '../common/UserDefaults';
 import TabBarView from '../containers/TabBarView';
 import AutoTextInput from '../components/AutoTextInput';
 import Loading from '../components/Loading';
+import forgetPassword from './forgetPassword';
 
 export default class Login extends Component {
 
   constructor() {
     super();
     this.state = {
-      email: "lin@qq.com",
+      email: "a1@qq.com",
       password: "123456",
       error: "",
       showProgress: false,
@@ -272,11 +273,18 @@ export default class Login extends Component {
             <Image style={{ width: 25, height: 20 }} source={this.state.seePassword? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => this.setState({ loginWay: 'phonenumber' })}>
-          <Text style={{ color: '#4A90E2'}}>
-            使用手机号登录
-          </Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => this.setState({ loginWay: 'phonenumber' })}>
+            <Text style={{ color: '#4A90E2'}}>
+              使用手机号登录
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.props.navigator.push({component: forgetPassword})}>
+            <Text style={{ color: '#4A90E2'}}>
+              忘记密码？
+            </Text>
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity onPress={this.onLoginPressed.bind(this)} style={styles.loginButton}>
           <Text style={styles.loginButtonText}>
             登录

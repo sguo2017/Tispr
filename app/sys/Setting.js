@@ -8,8 +8,6 @@ import {
 	TouchableOpacity,
 	TouchableHighlight
 } from 'react-native'
-import { observer } from 'mobx-react/native';
-import { observable, computed, action, runInAction } from 'mobx';
 import Header from '../components/HomeNavigation';
 import PersonalinfoEdit from '../me/personalinfoEdit';
 import UserAgreement from './UserAgreement';
@@ -23,7 +21,7 @@ import aboutQike from './help/aboutQike';
 import others from './others';
 import login from '../user/login';
 import Constant from '../common/constants'
-@observer
+
 export default class Setting extends Component {
 
 	constructor(props) {

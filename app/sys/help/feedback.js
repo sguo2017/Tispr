@@ -7,18 +7,20 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	TouchableHighlight,
-	TextInput
+	TextInput,
+	Alert
 } from 'react-native'
-import { observer } from 'mobx-react/native';
-import { observable, computed, action, runInAction } from 'mobx';
 import Header from '../../components/HomeNavigation';
 import Setting from '../Setting';
 import feedbackSuccess from './feedbackSuccess';
-
-export default class UseHelp extends Component {
+import Constant from '../../common/constants'
+export default class feedback extends Component {
 
 	constructor(props) {
 		super(props);
+		this.state =({
+			suggestion: '',
+		});
 
 	}
 
@@ -26,11 +28,38 @@ export default class UseHelp extends Component {
 		const { navigator } = this.props;
 		navigator.pop()
 	}
-	sendFeedback(){
-		this.props.navigator.push({
-			name:'feedbackSuccess',
-			component:feedbackSuccess
-		});
+	async sendFeedback(){
+		if(this.state.suggestion == ''){
+			return;
+		}
+		try{
+			let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SUGGESTION + global.user.authentication_token;
+			let response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    suggestion: {
+                        user_id : global.user.id,
+						content: this.state.suggestion,
+                    }
+                })
+            });
+			let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                this.props.navigator.push({
+					name:'feedbackSuccess',
+					component:feedbackSuccess
+				});
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            console.log("error " + error);
+        }
 	}
 
 	render() {
@@ -47,6 +76,10 @@ export default class UseHelp extends Component {
                     multiline={true}
                     numberOfLines={1}
 					placeholder='输入您的意见和建议'
+					val={this.state.suggestion}
+					onChangeText={(val) => {
+                      this.setState({ suggestion: val});
+                    }}
                     />
                 </View>
 				<TouchableHighlight onPress={this.sendFeedback.bind(this)} style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:22, flexShrink: 0, width: global.gScreen.width }]}>
