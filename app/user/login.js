@@ -17,7 +17,7 @@ import Register from '../user/register';
 import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 import TabBarView from '../containers/TabBarView';
-
+import forgetPassword from './forgetPassword';
 const screenW = Dimensions.get('window').width;
 
 export default class Login extends Component {
@@ -25,7 +25,7 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "lin@qq.com",
+      email: "a1@qq.com",
       password: "123456",
       error: "",
       showProgress: false,
@@ -282,6 +282,11 @@ export default class Login extends Component {
               }
               
             </View>
+            <TouchableHighlight onPress={()=>this.props.navigator.push({component: forgetPassword})}>
+              <Text style={{ color: '#4A90E2'}}>
+                忘记密码？
+            </Text>
+            </TouchableHighlight>
             <TouchableHighlight onPress={this.onLoginPressed.bind(this)} style={styles.button}>
               <Text style={styles.buttonText}>
                 登录
