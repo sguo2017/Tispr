@@ -25,7 +25,7 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "a1@qq.com",
+      email: "lin@qq.com",
       password: "123456",
       error: "",
       showProgress: false,
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     //alignItems: 'center',
-    backgroundColor: global.gColors.bgColor,
+    backgroundColor: 'white',
   },
   input: {
     flex: 1,

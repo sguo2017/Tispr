@@ -1,42 +1,193 @@
-import React, {PureComponent} from 'react'
+import React, { PureComponent } from 'react'
 import {
-    StyleSheet,
-    View,
-    Text,
-    Image,
-    ListView,
-    TouchableOpacity,
-    RefreshControl,
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  InteractionManager,
+  TouchableOpacity,
+  ScrollView,
+  Platform,
+  ActivityIndicator,
+  RefreshControl,
 } from 'react-native'
-import {reaction} from 'mobx'
 import {connect} from 'react-redux';
-import ServOfferList from '../offer/offerlist';
-
-
+import { fetchOfferList } from '../../actions/MeOfferListActions';
+import ServOfferDetail from '../../explore/ServOfferDetail';
+import Common from '../../common/constants';
+import Loading from '../../components/Loading';
 
 class OffersList extends PureComponent {
+  constructor(props) {
+    super(props);
+    this._onMomentumScrollEnd = this._onMomentumScrollEnd.bind(this);
+    this._onRefresh = this._onRefresh.bind(this);
+  }
 
-     render() {
-        return(
+  componentDidMount() {
+    const { dispatch, userId } = this.props;
+    dispatch(fetchOfferList(1, userId));
+  }
 
-              <View style={styles.listView}>
-                <ServOfferList {...this.props} />
-               </View>
-        )
-    
-     }
+  _onMomentumScrollEnd(event) {
+    const {dispatch, MeOfferList, userId} = this.props;
+    if ( !MeOfferList.canLoadMore || MeOfferList.isLoadMore ) return;
 
+    const {contentOffset, layoutMeasurement, contentSize} = event.nativeEvent;
+    let contentSizeH = contentSize.height;
+    let viewBottomY = contentOffset.y + layoutMeasurement.height;
 
+    if (Math.abs(viewBottomY - contentSizeH) <= 40) {
+      dispatch(fetchOfferList(MeOfferList.page + 1, userId));
+    }
+  }
+
+  _onRefresh() {
+    const { dispatch, userId } = this.props;
+    dispatch(fetchOfferList(1, userId));
+  }
+
+  _onPressCell(feed) {
+    this.props.navigator.push({
+      component: ServOfferDetail,
+      passProps: { feed },
+    })
+  }
+
+  render() {
+    const {MeOfferList} = this.props;
+    return(
+      <View style={styles.container}>
+        {!MeOfferList.isLoading &&
+        <ScrollView
+          ref={scrollView => this.scrollView = scrollView}
+          style={{ flex: 1 }}
+          automaticallyAdjustContentInsets={false}
+          removeClippedSubviews={true}
+          scrollEventThrottle={16}
+          onMomentumScrollEnd={this._onMomentumScrollEnd}
+          bounces={true}
+          refreshControl={
+            <RefreshControl
+              refreshing={MeOfferList.isLoading}
+              onRefresh={this._onRefresh}
+              colors={['rgb(217, 51, 58)']}
+            />
+          }
+        >
+          <View style={styles.contentContainer}>
+            {MeOfferList.meOfferList.map((offer, i) => {
+              return (
+                <OfferItem
+                  key={`${offer.id}-${i}`}
+                  offer={offer}
+                  onPress={() => this._onPressCell(offer)}
+                />
+              );
+            })}
+          </View>
+          {
+            MeOfferList.isLoadMore ? (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator />
+                <Text style={{fontSize: 14, marginLeft: 5}}>正在加载更多的数据...</Text>
+              </View>
+            ) : null
+          }
+        </ScrollView>
+        }
+        <Loading isShow={MeOfferList.isLoading}/>
+      </View>
+    );
+  }
 }
 
-
+const OfferItem = ({
+  offer,
+  onPress
+}) => {
+  let width = (Common.window.width - 24) / 2;
+  let imageH = 120;
+  let offerUser = offer.user;
+  let serv_image = offer.serv_images && offer.serv_images != 'undefined' ? {uri: offer.serv_images.split(',')[0]} : require('../../resource/qk_nav_default.png');
+  return (
+    <TouchableOpacity
+      activeOpacity={0.75}
+      style={{
+        width: (Common.window.width - 24) / 2,
+        margin: 4,
+        backgroundColor: '#fff',
+        borderRadius: 4,
+        overflow: 'hidden',
+      }}
+      onPress={onPress}
+    >
+      <Image
+        style={{ width: width, height: imageH }}
+        defaultSource={require('../../resource/qk_nav_default.png')}
+        source={serv_image}
+      />
+      <View style={{
+        width: width,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+      }}>
+        <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }} numberOfLines={2}>{offer.serv_title}</Text>
+        <Text style={{ fontSize: 12, color: '#999999', marginBottom: 4 }}>{offer.catalog}</Text>
+        <View style={{ flexDirection:'row' }}>
+          <Image style={{ width: 12, height: 12 }} source={require('../../resource/g-location-s.png')}/>
+          <Text style={{ fontSize: 12, color: '#b8b8b8' }}>{offer.district}</Text>
+        </View>
+      </View>
+      <View style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        borderTopWidth: 0.5,
+        borderColor: '#eeeeee',
+      }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image
+            style={{height: 22, width: 22, borderRadius: 15}}
+            source={{uri: offerUser.avatar}}
+            defaultSource={require('../../resource/img_default_avatar.png')}
+          />
+          <Text
+            style={{fontSize: 14, color: 'gray', marginLeft: 8, width: width * 0.4}}
+            numberOfLines={1}
+          >
+            {offerUser.name}
+          </Text>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image style={{height: 24, width: 24}} source={require('../../resource/ic_account_favour.png')}/>
+          <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{offer.favorites_count ? offer.favorites_count : 0}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+}
 
 const styles = StyleSheet.create({
-    listView: {
-        flex: 1,
-        backgroundColor: '#f5f5f5'
-    }
-})
+  contentContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    overflow: 'hidden',
+    padding: 4,
+  },
+  loadingContainer: {
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5'
+  }
+});
 
 export default connect((state) => {
     const {MeOfferList} = state;

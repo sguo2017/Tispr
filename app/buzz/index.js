@@ -10,7 +10,8 @@ import {
     PanResponder,
     ViewPagerAndroid,
     TouchableHighlight,
-    Alert
+    Alert,
+    Dimensions,
 } from 'react-native';
 import { observer } from 'mobx-react/native'
 import { reaction } from 'mobx'
@@ -30,7 +31,6 @@ import Server from '../server/index'
 
 const KNOWLEDGE_ID = 3
 
-var cardArray=[];
 var styles = StyleSheet.create({
     listView: {
         flex: 1,
@@ -40,7 +40,8 @@ var styles = StyleSheet.create({
     },
     cardWrapper:{
         flex: 1,
-        alignItems:'center'
+        alignItems: 'center',
+        padding: 8,
     },
     CardText:{
         fontSize:16,
@@ -391,23 +392,24 @@ export default class BussList extends Component {
       );
       let introduceSwiper = (
         <Swiper
-          style={styles.wrapper}
           height={this.state.swiper_1_height}
           loop={false}
           showsButtons={false}
           showsPagination={false}
         >
-          <View style={[styles.cardWrapper,{backgroundColor:'#fff'}]}>
-            <Text style={styles.CardText}>欢迎您，{global.user.name}</Text>
-            <Text style={styles.CardText}>这是您的客户需求卡片组，可以向左或</Text>
-            <Text style={styles.CardText}>向右滑动，快试试看！</Text>
-            <Image style={{ width: global.gScreen.width, flex: 1 }} source={require('../resource/card_l_guide_b.png')}/>
+          <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiper_1_height }]}>
+            <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
+              <Text style={styles.CardText}>欢迎您，{global.user.name}</Text>
+              <Text style={styles.CardText}>这是您的客户需求卡片组，可以向左或</Text>
+              <Text style={styles.CardText}>向右滑动，快试试看！</Text>
+              <Image style={{ width: global.gScreen.width - 16, flex: 1 }} source={require('../resource/card_l_guide_b.png')}/>
+            </View>
           </View>
-          <View style={styles.cardWrapper}>
-            <Image style={{ flex: 1 }} source={require('../resource/card-l-guide-2.png')}/>
+          <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiper_1_height }]}>
+            <Image resizeMode='stretch' style={{ flex: 1, width: global.gScreen.width - 16 }} source={require('../resource/card-l-guide-2.png')}/>
           </View>
-          <View style={styles.cardWrapper}>
-            <Image style={{ flex: 1, flexDirection: 'row' }} source={require('../resource/card-l-guide-3.png')}>
+          <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiper_1_height }]}>
+            <Image resizeMode='stretch' style={{ flex: 1, flexDirection: 'row', width: global.gScreen.width - 16 }} source={require('../resource/card-l-guide-3.png')}>
               <TouchableOpacity style={styles.swiperBeginButton} onPress={ () => this._onPressSwiperBeginButton() }>
                 <Text style={styles.swiperBeginButtonText}>立即开始</Text>
               </TouchableOpacity>
