@@ -6,7 +6,8 @@ import {
     TextInput,
     StyleSheet,
     Navigator,
-    TouchableHighlight
+    TouchableHighlight,
+    Alert
 } from 'react-native'
 import Header from '../../components/HomeNavigation';
 import accountSetting from './accountSetting';
@@ -24,7 +25,7 @@ export default class PasswordConfirm extends Component{
 
     async _smsSend() {
         try {
-        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SMS_SEND_ADD;
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SMS_SEND_CHANGE_PHONE;
         let response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -35,13 +36,22 @@ export default class PasswordConfirm extends Component{
             sms_send: {
                 recv_num: this.state.phoneNumber,
                 sms_type: "code",
+                user_id: global.user.id
             }
             })
         });
         let res = await response.text();
         let result = JSON.parse(res);
         if (response.status >= 200 && response.status < 300) {
-
+            if (result.status && result.status==-1) {
+                Alert.alert(
+                    '提示',
+                    '此号码已经被绑定过了',
+                    [
+                    { text: '确定'},
+                    ]
+                )                
+            }
         } else {
             let error = res;
             throw error;
@@ -85,6 +95,14 @@ export default class PasswordConfirm extends Component{
                     { text: '确定', onPress: () => this.props.navigator.pop() },
                     ]
                 )                
+            }else{
+                Alert.alert(
+                    '提示',
+                    '验证码不正确',
+                    [
+                    { text: '确定'},
+                    ]
+                ) 
             }
         } else {
             let error = res;

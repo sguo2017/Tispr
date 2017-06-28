@@ -71,7 +71,8 @@ let url = {
      SERV_API_SERV_OFFER_COLLECT:`/api/me/favorites?token=`,//收藏服务提供的接口
      SERV_API_SERV_OFFER_COLLECT_CANCEL:`/api/me/favorites`,//取消收藏服务提供的接口
      SERV_API_ORDER_UPDATE:`/api/orders/orders`,//订单询价更新状态接口
-     SERV_API_SMS_SEND_ADD:`/api/sys/sms_sends.json`,//生成短信验证码
+     SERV_API_SMS_SEND_ADD:`/api/sys/sms_sends.json`,//登录生成短信验证码
+     SERV_API_SMS_SEND_CHANGE_PHONE:`/api/sys/sms_sends?change_phone=1`,//登录生成短信验证码
      SERV_API_SMS_LOGIN:`/api/users/sms_login`,//短信验证码登录
      SERV_API_CHANGE_PHONE:`/api/users/sms_login?change_phone=1`,//更换手机号码接口
      SERV_API_TOKEN_LOGIN: `/api/users/token_login?token=`,//token登录
