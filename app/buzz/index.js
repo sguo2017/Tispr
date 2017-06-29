@@ -28,7 +28,8 @@ import SysMsgStore from './SysMsgStore'
 import Header from '../components/HomeNavigation';
 import Card from './Card'
 import Constant from '../common/constants';
-import Server from '../server/index'
+import Server from '../server/index';
+import Me from '../me/index';
 
 const KNOWLEDGE_ID = 3
 
@@ -174,13 +175,24 @@ export default class BussList extends Component {
     }
 
     _renderRow = feed => <KnowledgeItem onPress={this._onPressCell} feed={feed} />
-
-
+  
     _onPressCell = feed => {
+      if (feed.serv_offer == null || feed.serv_offer == undefined){
         this.props.navigator.push({
-            component: SysMsgDetail,
-            passProps: { feed }
-        })
+          component: Me,
+          passProps: {
+            isBrowseMode: true,
+            close: () => {
+              this.props.navigator.pop();
+            },
+          }
+        });
+      } else {
+        this.props.navigator.push({
+          component: SysMsgDetail,
+          passProps: { feed }
+        });
+      }
     }
 
     _onPressSwiperBeginButton = () => {
