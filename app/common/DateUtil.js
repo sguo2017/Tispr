@@ -78,6 +78,8 @@ export default class DateUtil {
         } else if (numberOfDays < 7 && numberOfDays > 1) {
           const day = date.getDay();
           return DateUtil.chineseWeekDay[day];
+        } else {
+          return dateStr;
         }
       }
       return fullDateStr;

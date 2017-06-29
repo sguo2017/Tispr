@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
-    View,
-    Text,
-    Image,
-    ListView,
-    TouchableOpacity,
-    RefreshControl,
-    PanResponder,
-    ViewPagerAndroid,
-    TouchableHighlight,
-    Alert,
-    Dimensions,
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  ListView,
+  TouchableOpacity,
+  RefreshControl,
+  PanResponder,
+  ViewPagerAndroid,
+  TouchableHighlight,
+  Alert,
+  Dimensions,
+  InteractionManager,
 } from 'react-native';
 import { observer } from 'mobx-react/native'
 import { reaction } from 'mobx'
@@ -198,7 +199,7 @@ export default class BussList extends Component {
     _onRefresh = () => {
         this.knowledgeListStore.isRefreshing = true
         this.knowledgeListStore.fetchFeedList();
-        _getSysMsgs
+        this._getSysMsgs();
     }
 
     _onEndReach = () => this.knowledgeListStore.page++
@@ -323,19 +324,22 @@ export default class BussList extends Component {
         }
     }
     _updateCard(index, newStatus, id, lately_chat_content){
-      let arr=d.state.sys_msgs;
-      if((index == arr.length-1) && arr){
+      let arr = d.state.sys_msgs;
+      if (!arr || arr== undefined || arr.length < 1) { return }
+      if (index == arr.length - 1) {
         arr.pop();
-      } else if(arr){
-        arr.copyWithin(index,index+1);
-        arr.pop();
-      } 
+      } else if (index == 0) {
+        arr = arr.slice(1);
+      } else {
+        arr = arr.slice(0, index).concat(arr.slice(index + 1));
+      }
       d.setState({
-          sys_msgs:arr,
-          initCard:index
-      })
-
-      d._changeSysMsgStatus(newStatus,id,lately_chat_content);
+        sys_msgs: arr,
+        initCard: index,
+      });
+      InteractionManager.runAfterInteractions(() => {
+        d._changeSysMsgStatus(newStatus, id, lately_chat_content);
+      });
     }
     generateSwiper = () => {
       const { navigator } = this.props;

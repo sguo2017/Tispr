@@ -57,7 +57,7 @@ export default class TabBarView extends PureComponent {
                 {/*<Server tabLabel="Server" navigator={this.props.navigator}/>*/}
                 <View />
                 <Chat tabLabel="Chat" navigator={this.props.navigator}/>
-                <Me tabLabel="Me" navigator={this.props.navigator}/>       
+                <Me tabLabel="Me" isBrowseMode={false} navigator={this.props.navigator}/>
             </ScrollableTabView>
         )
     }

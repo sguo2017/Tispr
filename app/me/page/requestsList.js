@@ -21,98 +21,80 @@ const KNOWLEDGE_ID = 3
 
 @observer
 export default class RequestsList extends PureComponent {
-    // _pictureAction = () => {
-    //     const {user: {name}} = RootStore
-    //     if (name) {
-    //         alert(name)
-    //     } else {
-    //         this.props.navigator.push({
-    //             component: Login,
-    //             sceneConfig: Navigator.SceneConfigs.FloatFromBottom
-    //         })
-    //     }
-    // }
+  state = {
+      dataSource: new ListView.DataSource({
+          rowHasChanged: (row1, row2) => row1 !== row2,
+      }),
+  };
 
-    state = {
-        dataSource: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        })
-    }
+  knowledgeListStore = new RequestMsgStore(KNOWLEDGE_ID, this.props.userId);
 
-    knowledgeListStore = new RequestMsgStore(KNOWLEDGE_ID)
+  componentDidMount() {
+      reaction(
+          () => this.knowledgeListStore.page,
+          () => this.knowledgeListStore.fetchFeedList()
+      )
+  }
 
-    componentDidMount() {
-        reaction(
-            () => this.knowledgeListStore.page,
-            () => this.knowledgeListStore.fetchFeedList()
-        )
-    }
+  componentWillReact() {
+      const {errorMsg} = this.knowledgeListStore;
+      errorMsg && this.toast.show(errorMsg);
+  }
 
-    componentWillReact() {
-        const {errorMsg} = this.knowledgeListStore
-        errorMsg && this.toast.show(errorMsg)
-    }
-
-    _renderRow = feed => <KnowledgeItem onPress={this._onPressCell} feed={feed}/>
+  _renderRow = feed => <KnowledgeItem onPress={this._onPressCell} feed={feed}/>
 
 
-    _onPressCell = feed => {
-        this.props.navigator.push({
-            component: RequestMsgDetail,
-            passProps: {feed}
-        })
-    }
+  _onPressCell = feed => {
+      this.props.navigator.push({
+          component: RequestMsgDetail,
+          passProps: {feed}
+      })
+  }
 
-    _onRefresh = () => {
-        this.knowledgeListStore.isRefreshing = true
-        this.knowledgeListStore.fetchFeedList()
-    }
+  _onRefresh = () => {
+      this.knowledgeListStore.isRefreshing = true;
+      this.knowledgeListStore.fetchFeedList();
+  }
 
-    _onEndReach = () => this.knowledgeListStore.page ++
+  _onEndReach = () => this.knowledgeListStore.page ++;
 
-    _renderFooter = () => {
-        const { isLoadMore } = this.knowledgeListStore
-        if (isLoadMore == true) {
-            return <LoadMoreFooter />
-        } else {
-            return null
-        }
-    }
+  _renderFooter = () => {
+      const { isLoadMore } = this.knowledgeListStore;
+      if (isLoadMore == true) {
+          return <LoadMoreFooter />
+      } else {
+          return null
+      }
+  }
 
-     render() {
-         const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
-        return(
-
-            <View style={styles.listView}>
-                {!isFetching &&
-                    <ListView
-                        dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
-                        renderRow={this._renderRow}
-                        renderFooter={this._renderFooter}
-                        enableEmptySections
-                        initialListSize={3}
-                        onScroll={this._onScroll}
-                        onEndReached={this._onEndReach}
-                        onEndReachedThreshold={30}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={isRefreshing}
-                                onRefresh={this._onRefresh}
-                                colors={['rgb(217, 51, 58)']}
-                            />
-                        }
-
-
-                    />
-
-                }
-                <Loading isShow={isFetching} />
-                <Toast ref={toast => this.toast = toast} />
-            </View>
-        )
-    
-     }
-
+  render() {
+    const { feedList, isRefreshing, isFetching } = this.knowledgeListStore;
+    return(
+        <View style={styles.listView}>
+            {!isFetching &&
+                <ListView
+                    dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
+                    renderRow={this._renderRow}
+                    renderFooter={this._renderFooter}
+                    enableEmptySections
+                    initialListSize={3}
+                    onScroll={this._onScroll}
+                    onEndReached={this._onEndReach}
+                    onEndReachedThreshold={30}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isRefreshing}
+                            onRefresh={this._onRefresh}
+                            colors={['rgb(217, 51, 58)']}
+                        />
+                    }
+                />
+            }
+            <Loading isShow={isFetching} />
+            <Toast ref={toast => this.toast = toast} />
+        </View>
+    );
+  }
 
 }
 class KnowledgeItem extends PureComponent {
@@ -120,16 +102,16 @@ class KnowledgeItem extends PureComponent {
     static propTypes = {
         feed: React.PropTypes.object,
         onPress: React.PropTypes.func
-    }
+    };
 
     _onPress = () => {
-        const {feed, onPress} = this.props
+        const {feed, onPress} = this.props;
         onPress && onPress(feed)
-    }
+    };
 
     render() {
-        const {feed: {serv_title,serv_detail,user}} = this.props
-        const cellData = {serv_title,serv_detail,user}
+        const {feed: { serv_detail, created_at, catalog }} = this.props;
+        const cellData = { serv_detail, created_at, catalog };
         return <RequestMsgSingleImageCell {...cellData} onPress={this._onPress}/>
     }
 }
@@ -145,4 +127,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row'
     }
-})
+});

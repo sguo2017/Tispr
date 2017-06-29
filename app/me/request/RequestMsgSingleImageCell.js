@@ -7,47 +7,60 @@ import {
     Image,
     Dimensions
 } from 'react-native';
+import DateUtil from '../../common/DateUtil';
 const screenW = Dimensions.get('window').width;
 
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  cardContainer: {
+    padding: 15,
+    backgroundColor: '#fff',
+    borderRadius: 4,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.3,
+  },
+  dot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#999999',
+    marginHorizontal: 8,
+  },
+});
+
 const RequestMsgSingleImageItem = ({
-    serv_title,
-    serv_detail,
-    user,
-    onPress
+  serv_detail,
+  created_at,
+  catalog,
+  onPress,
 }) => {
-    return (
-        <TouchableOpacity
-            activeOpacity={0.75}
-            style={{
-                width: screenW,
-                padding: 15,
-                marginTop: 2,
-                flexDirection: 'row',
-                backgroundColor: '#fff',
-                justifyContent: 'space-between'
-            }}
-            onPress={onPress}
-        >
-           <View style ={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                <View style={{justifyContent: 'space-around'}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
-                        <Text numberOfLines={2} style={{width: screenW * 0.55, fontSize: 15, flexShrink: 0}}>
-                            <Text style={{fontWeight: 'bold', color: 'black',marginRight: 5}} >{user.name}&nbsp;&nbsp;&nbsp;</Text>
-                            <Text>{serv_title}</Text>
-                        </Text>
-                        <View numberOfLines={2} style={{width: screenW * 0.25,flexShrink: 0, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                            <Text style={{fontSize:13}}>1h</Text>
-                        </View>
-                    </View>
-                   <Text style={{color: 'green', fontSize: 15}}>{serv_detail}</Text>
-                </View>
-                <Image
-                    style={{height: 80, width: (screenW - 15 * 2 - 10 * 2) / 3}}
-                    defaultSource={require('../../resource/img_news_default.png')}
-                />
-            </View>
-        </TouchableOpacity>
-    )
+  const createDate = DateUtil.dataStrToSmartDate(created_at);
+  return (
+    <View style={styles.container} >
+      <TouchableOpacity
+        elevation={5}
+        activeOpacity={0.75}
+        style={styles.cardContainer}
+        onPress={onPress}
+      >
+        <Text style={{ color: '#1b2833', fontSize: 14 }}>{serv_detail}</Text>
+        <View style ={{ marginTop: 8, flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontSize: 12, color: '#999999' }}>{createDate}</Text>
+          <View style={styles.dot} />
+          <Text style={{ fontSize: 12, color: '#999999' }}>{catalog}</Text>
+        </View>
+      </TouchableOpacity>
+  </View>
+  )
 };
 
 export default RequestMsgSingleImageItem;

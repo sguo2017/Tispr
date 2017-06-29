@@ -10,8 +10,9 @@ import {
   Platform,
   ActivityIndicator,
   RefreshControl,
-} from 'react-native'
+} from 'react-native';
 import {connect} from 'react-redux';
+import { CachedImage } from "react-native-img-cache";
 import { fetchOfferList } from '../../actions/MeOfferListActions';
 import ServOfferDetail from '../../explore/ServOfferDetail';
 import Common from '../../common/constants';
@@ -113,16 +114,10 @@ const OfferItem = ({
   return (
     <TouchableOpacity
       activeOpacity={0.75}
-      style={{
-        width: (Common.window.width - 24) / 2,
-        margin: 4,
-        backgroundColor: '#fff',
-        borderRadius: 4,
-        overflow: 'hidden',
-      }}
+      style={styles.cardContainer}
       onPress={onPress}
     >
-      <Image
+      <CachedImage
         style={{ width: width, height: imageH }}
         defaultSource={require('../../resource/qk_nav_default.png')}
         source={serv_image}
@@ -139,17 +134,9 @@ const OfferItem = ({
           <Text style={{ fontSize: 12, color: '#b8b8b8' }}>{offer.district}</Text>
         </View>
       </View>
-      <View style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 15,
-        paddingVertical: 8,
-        borderTopWidth: 0.5,
-        borderColor: '#eeeeee',
-      }}>
+      <View style={styles.cardUserInfoView}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
+          <CachedImage
             style={{height: 22, width: 22, borderRadius: 15}}
             source={{uri: offerUser.avatar}}
             defaultSource={require('../../resource/img_default_avatar.png')}
@@ -186,7 +173,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5'
-  }
+  },
+  cardContainer: {
+    width: (Common.window.width - 24) / 2,
+    margin: 4,
+    backgroundColor: '#fff',
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  cardUserInfoView: {
+    flexDirection: 'row',
+      justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderTopWidth: 0.5,
+    borderColor: '#eeeeee',
+  },
 });
 
 export default connect((state) => {

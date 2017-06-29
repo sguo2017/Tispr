@@ -14,21 +14,17 @@ import {
     Linking,
 } from 'react-native'
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
+import Constant from '../common/constants';
+import { CachedImage } from "react-native-img-cache";
 import OffersList from './page/offersList';
 import RequestsList from './page/requestsList';
 import BookmarksList from './page/bookmarksList';
 import PersonInfo from './personalinfoEdit';
 import Setting from '../sys/Setting';
-const controllers = [
-    {categoryId: 1, controller: OffersList},
-    {categoryId: 2, controller: RequestsList},
-    {categoryId: 3, controller: BookmarksList}
-]
+
 export default class MeInfo extends Component {
-    
     constructor(props) {
       super(props);
-
       this.state = {
         fileName: this.props.fileName,
         fileSource: this.props.source,
@@ -44,11 +40,12 @@ export default class MeInfo extends Component {
     clickJump() {
         let _this = this;
         const { navigator } = this.props;
-        let  getdata=(a, b)=>{_this.setState({
-                        avatar:a,
-                        info: b
-                    })}
-        let abc='abc';
+        let getdata = (a, b)=>{
+          _this.setState({
+            avatar:a,
+            info: b,
+          });
+        };
         let info = _this.state.info;
         if (navigator) {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
@@ -89,66 +86,98 @@ export default class MeInfo extends Component {
       });
     }
     render() {
-        var titles = ['服务('+global.user.offer_count+')', '需求('+global.user.request_count+')', '收藏('+global.user.favorites_count+')'];
-        return(
-          <View style={styles.container}>
-            <View style={styles.headerView}>
-                <View style={{ flexDirection:'row', justifyContent:'flex-start' }}>
+      let titles;
+      let controllers;
+      if (!this.props.isBrowseMode) {
+        titles = ['服务('+global.user.offer_count+')', '需求('+global.user.request_count+')', '收藏('+global.user.favorites_count+')'];
+        controllers = [
+          {categoryId: 1, controller: OffersList},
+          {categoryId: 2, controller: RequestsList},
+          {categoryId: 3, controller: BookmarksList},
+        ];
+      } else {
+        titles = ['服务('+global.user.offer_count+')', '需求('+global.user.request_count+')'];
+        controllers = [
+          {categoryId: 1, controller: OffersList},
+          {categoryId: 2, controller: RequestsList},
+        ];
+      }
+      return(
+        <View style={styles.container}>
+          <View style={styles.headerView}>
+              <View style={{ flexDirection:'row', justifyContent:'flex-start' }}>
+                <View>
+                  <CachedImage style={{width: 72, height:72, borderRadius: 36 }} source={{ uri: this.state.avatar }} />
+                  {
+                    this.props.isBrowseMode ?
+                      <TouchableOpacity style={{ borderRadius: 10, position: 'absolute', right: 0, bottom: 0 }} onPress={() => {this.clickCall('10000', global.user.name)}}>
+                        <Image style={{ width:20, height:20 }}  source={require('../resource/y-call-tx3x.png')}/>
+                      </TouchableOpacity>
+                      : null
+                  }
+                </View>
+                <View style={{ flex: 1, justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
                   <View>
-                    <Image style={{width: 72, height:72, borderRadius: 36 }} source={{uri:this.state.avatar}} />
-                    <TouchableOpacity style={{ borderRadius: 10, position: 'absolute', right: 0, bottom: 0 }} onPress={() => {this.clickCall('10000', global.user.name)}}>
-                      <Image style={{ width:20, height:20 }}  source={require('../resource/y-call-tx3x.png')}/>
-                    </TouchableOpacity>
+                    <Text style={{ fontSize:16, color:'white' }}>{global.user.name}</Text>
+                    <Text style={ styles.text }>{this.state.country} {this.state.province} {this.state.city} {this.state.district}</Text>
                   </View>
-                  <View style={{ flex: 1, justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
-                    <View>
-                      <Text style={{ fontSize:16, color:'white' }}>{global.user.name}</Text>
-                      <Text style={ styles.text }>{this.state.country} {this.state.province} {this.state.city} {this.state.district}</Text>
-                    </View>
-                    <TouchableOpacity style={styles.editButton} onPress={this.clickJump.bind(this)} >
-                      <Text style={{ fontSize: 12, color: 'white' }}>
-                        编辑个人信息
-                      </Text>
+                  {
+                    this.props.isBrowseMode ? null :
+                      <TouchableOpacity style={styles.editButton} onPress={this.clickJump.bind(this)} >
+                        <Text style={{ fontSize: 12, color: 'white' }}>
+                          编辑个人信息
+                        </Text>
+                      </TouchableOpacity>
+                  }
+                </View>
+                {
+                  this.props.isBrowseMode ?
+                    <TouchableOpacity onPress={()=>{
+                      if (this.props.close != null) {
+                        this.props.close();
+                      }
+                    }}>
+                      <Image style={{ width: 18, height: 18 }} source={require('../resource/w-cancel-line-nor.png')}></Image>
                     </TouchableOpacity>
-                  </View>
-                  <TouchableOpacity onPress={()=>this.props.navigator.push({ component: Setting })}>
-                    <Image style={{ width: 18, height: 18, marginLeft: 26}} source={require('../resource/w-setting.png')}></Image>
-                  </TouchableOpacity>
-                </View>
-                <View style={{marginHorizontal: 16}}>
-                    <Text style={styles.text}>{global.user.profile}</Text>
-                </View>
-                <View style={{marginLeft: 16, marginVertical: 16, flexDirection: 'row'}}>
-                    <Image style={{ marginRight: 11 }} source={require('../resource/w-earth.png')}></Image>
-                    <Text style={styles.text}>www.straphoto.com</Text>
-                </View>
-            </View>
-            <ScrollableTabView
-                renderTabBar={() => <ScrollableTabBar tabNames={titles} style={{ height: 44 }}/>}
-                tabBarPosition='top'
-                scrollWithoutAnimation={false}
-                tabBarActiveTextColor="#4a90e2"
-                tabBarInactiveTextColor="#1b2833"
-                tabBarUnderlineStyle={{ backgroundColor: '#4a90e2', height: 2 }}
-                tabBarTextStyle={{ fontSize: 14 }}
-            >
-                {controllers.map((data, index) => {
-                    let Component = data.controller;
-                    return (
-                        <Component
-                            key={titles[index]}
-                            tabLabel={titles[index]}
-                            categoryId={data.categoryId}
-                            userId={global.user.id}
-                            navigator={this.props.navigator}
-                        />
-                    )
-                })}
-            </ScrollableTabView>
+                    :
+                    <TouchableOpacity onPress={()=>this.props.navigator.push({ component: Setting })}>
+                      <Image style={{ width: 18, height: 18 }} source={require('../resource/w-setting.png')}></Image>
+                    </TouchableOpacity>
+                }
+              </View>
+              <View style={{marginHorizontal: 16}}>
+                  <Text style={styles.text}>{global.user.profile}</Text>
+              </View>
+              <View style={{marginVertical: 16, flexDirection: 'row', alignItems: 'center' }}>
+                  <Image style={{ marginRight: 11 }} source={require('../resource/w-earth.png')}></Image>
+                  <Text style={styles.text}>www.straphoto.com</Text>
+              </View>
           </View>
-        )
-    
-     }
+          <ScrollableTabView
+              renderTabBar={() => <ScrollableTabBar tabNames={titles} style={{ height: 44 }}/>}
+              tabBarPosition='top'
+              scrollWithoutAnimation={false}
+              tabBarActiveTextColor="#4a90e2"
+              tabBarInactiveTextColor="#1b2833"
+              tabBarUnderlineStyle={{ backgroundColor: '#4a90e2', height: 2 }}
+              tabBarTextStyle={{ fontSize: 14 }}
+          >
+              {controllers.map((data, index) => {
+                  let Component = data.controller;
+                  return (
+                      <Component
+                          key={titles[index]}
+                          tabLabel={titles[index]}
+                          categoryId={data.categoryId}
+                          userId={global.user.id}
+                          navigator={this.props.navigator}
+                      />
+                  )
+              })}
+          </ScrollableTabView>
+        </View>
+      );
+    }
 
 
 }
