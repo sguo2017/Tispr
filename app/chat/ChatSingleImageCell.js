@@ -13,7 +13,7 @@ const screenW = Dimensions.get('window').width;
 
 const ChatSingleImageItem = ({
     user_name,
-    serv_offer_titile,
+    serv_offer_title,
     lately_chat_content,
     avatar,
     onPress,
@@ -61,7 +61,7 @@ const ChatSingleImageItem = ({
             {/*副标题*/}
             <Text numberOfLines={1} style={{ marginTop: 2, color: '#999999', fontSize: 14 }}>
               {
-                serv_offer_titile == null || serv_offer_titile.length <= 0 ? "Tempe,Arizona, United States, 85281" : serv_offer_titile
+                serv_offer_title == null || serv_offer_title.length <= 0 ? "Tempe,Arizona, United States, 85281" : serv_offer_title
               }
             </Text>
             {/*内容*/}

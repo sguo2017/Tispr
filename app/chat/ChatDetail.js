@@ -24,6 +24,7 @@ import Util from '../common/utils';
 import OrderDetail from '../order/OrderDetail'
 import ProposeDeal from '../order/ProposeDeal'
 import CloseDeal from '../order/CloseDeal';
+import Report from '../sys/others/report';
 
 const screenW = Dimensions.get('window').width;
 let int;
@@ -167,7 +168,9 @@ export default class ChatDetail extends Component {
 
   render() {
     const { feed } = this.props;
-
+    let obj = {};
+    obj.id = feed.offer_user_id == global.user.id?feed.request_user_id:feed.offer_user_id;
+    obj.type = "user";
     return (
       <View style={{ flex: 1, backgroundColor: '#EEEEEE' }}>
         <Header
@@ -220,7 +223,9 @@ export default class ChatDetail extends Component {
             <TouchableOpacity style={styles.item}>
               <Text  style={styles.text}>查看TA的需求(服务)</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.item, {flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16}]}>
+            <TouchableOpacity style={[styles.item, {flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16}]}
+            onPress = {()=> {this.setState({show: false});this.props.navigator.push({component:Report,passProps:{obj}})}}
+            >
               <Text  style={styles.text}>举报TA</Text>
               <Text style={{fontSize: 14, color: '#CCCCCC', lineHeight: 20}}>已举报</Text>
             </TouchableOpacity>

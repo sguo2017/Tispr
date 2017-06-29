@@ -198,7 +198,7 @@ export default class BussList extends Component {
     _onRefresh = () => {
         this.knowledgeListStore.isRefreshing = true
         this.knowledgeListStore.fetchFeedList();
-        _getSysMsgs
+        this._getSysMsgs
     }
 
     _onEndReach = () => this.knowledgeListStore.page++
