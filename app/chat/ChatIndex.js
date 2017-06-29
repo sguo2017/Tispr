@@ -122,8 +122,8 @@ class KnowledgeItem extends PureComponent {
     }
 
     render() {
-        //chats:[{"id":6,"deal_id":28,"serv_offer_id":76,"serv_offer_user_name":null,"serv_offer_titile":null,"lately_chat_content":"your offer is awesome","created_at":"2017-04-16T08:00:21.000Z","updated_at":"2017-04-17T07:00:44.000Z","offer_user_id":5,"request_user_id":4,"request_user":"p2t","offer_user":"Jim","serv":"p0 测试123456"}]
-        const { feed: { serv_offer_user_name, serv_offer_titile, lately_chat_content, deal_id, updated_at, status, chat_status} } = this.props;
+        //chats:[{"id":6,"deal_id":28,"serv_offer_id":76,"serv_offer_user_name":null,"serv_offer_title":null,"lately_chat_content":"your offer is awesome","created_at":"2017-04-16T08:00:21.000Z","updated_at":"2017-04-17T07:00:44.000Z","offer_user_id":5,"request_user_id":4,"request_user":"p2t","offer_user":"Jim","serv":"p0 测试123456"}]
+        const { feed: { serv_offer_user_name, serv_offer_title, lately_chat_content, deal_id, updated_at, status, chat_status} } = this.props;
         let avatar;
         let user_name;
         if (global.user.name == this.props.feed.offer_user) {
@@ -134,7 +134,7 @@ class KnowledgeItem extends PureComponent {
             user_name = this.props.feed.offer_user;
             avatar = this.props.feed.offer_user_avatar;
         }
-        const cellData = { user_name, serv_offer_titile, lately_chat_content, deal_id, avatar, updated_at, status, chat_status }
+        const cellData = { user_name, serv_offer_title, lately_chat_content, deal_id, avatar, updated_at, status, chat_status }
         // return (<Text>1234</Text>)
         return <ChatSingleImageCell {...cellData} onPress={this._onPress} />
     }
