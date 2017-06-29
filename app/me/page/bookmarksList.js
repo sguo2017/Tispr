@@ -227,7 +227,7 @@ const MarkItem = ({
       </View>
     </TouchableOpacity>
   )
-}
+};
 
 export default connect((state) => {
     const {MeMarkList} = state;

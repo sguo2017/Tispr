@@ -11,13 +11,11 @@ import {
   Platform,
   Modal,
   TouchableHighlight
-} from 'react-native'
-import {
-  fetchFeedList
-} from './ServOfferListActions';
+} from 'react-native';
+import { fetchExploreList } from '../actions/ServOfferListActions';
 import { connect } from 'react-redux';
 import ServOfferList from './ServOfferList';
-import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TabCategoryBar from '../me/TabCategoryBar';
 import Constant from '../common/constants'
 
@@ -127,7 +125,7 @@ class ExploreList extends PureComponent {
             }
         });
         exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
-        dispatch(fetchFeedList(categoryId, page, exploreparams));
+        dispatch(fetchExploreList(page, exploreparams));
     }
 
     render() {
@@ -136,29 +134,25 @@ class ExploreList extends PureComponent {
               <View style={styles.container}>
                   <View style={styles.searchBox}>
                       <Image source={require('../resource/w-search.png')} style={styles.searchIcon} />
-                      <TextInput style={styles.inputText} underlineColorAndroid='transparent'
-                                 keyboardType='web-search' value={this.state.exploretitle}
-                        //onChangeText={(val)=>this.setState({searchText:val})}
-                                 placeholder='搜索'
-                                 placeholderTextColor='white'
-                                 onChangeText={(val) => {
-                                     let explore = this.state.exploreparams;
-                                     explore.title = val;
-                                     this.setState({ exploreparams: explore, exploretitle:val })
-                                 }} />
-                      <TouchableOpacity onPress={() => {
-                          let explore = this.state.exploreparams;
-                          explore.title = '';
-                          this.setState({ exploreparams: explore,exploretitle:'' });
-                      }}>
-
-                      </TouchableOpacity>
+                      <TextInput style={styles.inputText}
+                         underlineColorAndroid='transparent'
+                         keyboardType='web-search'
+                         value={this.state.exploretitle}
+                //onChangeText={(val)=>this.setState({searchText:val})}
+                         placeholder='搜索'
+                         placeholderTextColor='white'
+                         onChangeText={(val) => {
+                             let explore = this.state.exploreparams;
+                             explore.title = val;
+                             this.setState({ exploreparams: explore, exploretitle:val })
+                         }}
+                      />
                   </View>
-                  <TouchableOpacity onPress={() => this.refresh()}>
+                  <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} onPress={() => this.refresh()}>
                       <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
                   </TouchableOpacity>
               </View>
-              <View style={{ flexDirection: 'row', paddingVertical: 10, backgroundColor: 'rgba(0,0,0,0.16)'}}>
+              <View style={{ flexDirection: 'row', paddingVertical: 6, backgroundColor: 'rgba(0,0,0,0.16)'}}>
                   <TouchableOpacity style={styles.filterButton} onPress={() => this.setState({ tabName: 'index', show: true })}>
                       <Text style={styles.whiteText}>{this.state.sortBy}</Text>
                   </TouchableOpacity>
@@ -166,7 +160,7 @@ class ExploreList extends PureComponent {
                       <Text style={styles.whiteText}>{this.state.classify}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.filterButton} onPress={() => this.setState({ tabName: 'index', show: true })}>
-                      <Image source={require('../resource/w-location.png')} style={{marginTop: -2}}></Image>
+                      <Image source={require('../resource/w-location.png')} style={{ width: 14, height: 14 }}></Image>
                       <Text style={styles.whiteText}>{this.state.location}</Text>
                   </TouchableOpacity>
               </View>
@@ -408,10 +402,9 @@ const styles = StyleSheet.create({
     },
     container: {
         flexDirection: 'row',   // 水平排布
-        paddingLeft: 8,
-        paddingRight: 8,
+        paddingHorizontal: 8,
         paddingTop: Platform.OS === 'ios' ? 20 : 0,  // 处理iOS状态栏
-        height: Platform.OS === 'ios' ? 68 : 48,   // 处理iOS状态栏
+        height: Platform.OS === 'ios' ? 64 : 44,   // 处理iOS状态栏
         backgroundColor: global.gColors.themeColor,
         alignItems: 'center'  // 使元素垂直居中排布, 当flexDirection为column时, 为水平居中
     },
@@ -430,8 +423,8 @@ const styles = StyleSheet.create({
         height: 32,
     },
     searchIcon: {//搜索图标
-        height: 20,
-        width: 20,
+        height: 24,
+        width: 24,
         marginLeft: 5,
         resizeMode: 'stretch'
     },
@@ -450,8 +443,8 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch'
     },
     scanIcon: {//搜索图标
-        height: 26.7,
-        width: 26.7,
+        height: 22,
+        width: 22,
         resizeMode: 'stretch'
     },
 
@@ -468,7 +461,8 @@ const styles = StyleSheet.create({
         marginLeft: 8,
         paddingHorizontal: 8,
         paddingVertical: 4,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     filterRow: {
         flexDirection: 'row',
@@ -493,7 +487,7 @@ const styles = StyleSheet.create({
     },
     whiteText: {
         color: '#fff',
-        fontSize: 14
+        fontSize: 14,
     },
     selectButton: {
         borderWidth: 1,
@@ -528,6 +522,6 @@ const styles = StyleSheet.create({
 
 
 export default connect((state) => {
-    const { feedHome } = state;
-    return { feedHome }
+    const { ServOfferList } = state;
+    return { ServOfferList }
 })(ExploreList);
