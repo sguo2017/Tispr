@@ -7,9 +7,7 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	TouchableHighlight
-} from 'react-native'
-import { observer } from 'mobx-react/native';
-import { observable, computed, action, runInAction } from 'mobx';
+} from 'react-native';
 import Header from '../../components/HomeNavigation';
 import Setting from '../Setting';
 import breakdown from './breakdown';

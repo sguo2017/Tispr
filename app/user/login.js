@@ -19,6 +19,7 @@ import TabBarView from '../containers/TabBarView';
 import AutoTextInput from '../components/AutoTextInput';
 import Loading from '../components/Loading';
 import forgetPassword from './forgetPassword';
+import nationWarning from '../sys/others/nationWarning';
 
 export default class Login extends Component {
 
@@ -297,15 +298,7 @@ export default class Login extends Component {
         <Text style={{ color: '#1b2833', fontSize: 14, fontWeight: 'bold' }}>使用手机号码登录</Text>
 
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 16, minHeight: 48 }}>
-          <TouchableOpacity style={styles.countryButton} onPress={()=>{
-            Alert.alert(
-              '提示',
-              '奇客目前只开通中国地区注册，将很快开通其它国家注册服务。',
-              [
-                { text: '确定', onPress: () => {} }
-              ]
-            );
-          }}>
+          <TouchableOpacity style={styles.countryButton} onPress={()=>this.props.navigator.push({component:nationWarning,name:'nationWarning'})}>
             <Image style={{ height: 12, width: 18, marginRight: 9 }} source={require('../resource/qk_china_flag.png')} />
             <Text style={{ fontSize: 16, color: '#1b2833' }}>+86</Text>
             <Image style={{ height: 24, width: 24 }} source={require('../resource/g-arrow-drop-down.png')} />

@@ -12,7 +12,7 @@ import Header from '../components/HomeNavigation';
 import PersonalinfoEdit from '../me/personalinfoEdit';
 import UserAgreement from './UserAgreement';
 import PasswordConfirm from './account/PasswordConfirm';
-import userMsg from './account/userMsg';
+import userMsg from '../me/personalinfoEdit';
 import MyFavorite from './account/MyFavorite';
 import UseHelp from './help/UseHelp';
 import feedback from './help/feedback';
@@ -76,15 +76,13 @@ export default class Setting extends Component {
 					<View style={{ height: 40, backgroundColor: '#f7f7f7', justifyContent: 'center', paddingLeft: 20 }}>
 						<Text style={{ color: '#999999' }}>账户</Text>
 					</View>
-					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:PasswordConfirm,name:'PasswordConfirm'})}>
+					<TouchableOpacity style={[styles.rectangle_view, { borderTopColor: '#dedfe0', borderTopWidth: 0.5 }]} onPress={() => this.props.navigator.push({component:PasswordConfirm,name:'PasswordConfirm'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Text style={styles.rectangle_text} >
-								账户
-			  				</Text>
+							<Text style={styles.rectangle_text}>账户</Text>
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:userMsg,name:'userMsg'})}>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:userMsg,name:'userMsg', passProps: { info: global.user.profile }})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
 								个人信息
@@ -103,11 +101,9 @@ export default class Setting extends Component {
 					<View style={{ height: 40, backgroundColor: '#f7f7f7',justifyContent:'center',paddingLeft:20 }}>
 						<Text style={{color:'#999999'}}>帮助</Text>
 					</View>
-					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:UseHelp,name:'UseHelp'})}>
+					<TouchableOpacity style={[styles.rectangle_view, { borderTopColor: '#dedfe0', borderTopWidth: 0.5 }]} onPress={() => this.props.navigator.push({component:UseHelp,name:'UseHelp'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Text style={styles.rectangle_text} >
-								如何使用
-			        		</Text>
+							<Text style={styles.rectangle_text} >如何使用</Text>
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
@@ -144,14 +140,7 @@ export default class Setting extends Component {
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.rectangle_view} onPress={this.logout.bind(this)}>
-						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Text style={styles.rectangle_text} >
-								退出登录
-			  				</Text>
-						</View>
-						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</TouchableOpacity>
+
 					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:others,name:'others'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
@@ -160,12 +149,16 @@ export default class Setting extends Component {
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
+					{/*<View style={{ height: 16, backgroundColor: '#f7f7f7' }} />*/}
+					<TouchableOpacity style={[styles.rectangle_view, { marginTop: 16, borderTopColor: '#dedfe0', borderTopWidth: 0.5 }]} onPress={this.logout.bind(this)}>
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<Text style={styles.rectangle_text} >
+								退出登录
+							</Text>
+						</View>
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>
 				</ScrollView>
-				<TouchableOpacity
-					style={styles.button}
-					onPress={() => { this.refs._scrollView.scrollTo({ y: 0 }); }}>
-					<Text>回到顶部</Text>
-				</TouchableOpacity>
 			</View>
 		);
 	}
@@ -174,7 +167,7 @@ export default class Setting extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: 'white',
+		backgroundColor: '#f7f7f7',
 	},
 	three_image_view: {
 		paddingTop: 15,
@@ -205,11 +198,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: 'white',
 		borderBottomColor: '#dedfe0',
-		borderBottomWidth: 1,
+		borderBottomWidth: 0.5,
 		height:50
 	},
 	rectangle_text: {
-		color: 'black',
+		color: '#1b2833',
 		fontSize: 16,
 		textAlign: 'center',
 		paddingLeft: 8,

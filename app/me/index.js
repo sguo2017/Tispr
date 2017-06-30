@@ -14,7 +14,6 @@ import {
     Linking,
 } from 'react-native'
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
-import Constant from '../common/constants';
 import { CachedImage } from "react-native-img-cache";
 import OffersList from './page/offersList';
 import RequestsList from './page/requestsList';

@@ -43,7 +43,7 @@ const ChatSingleImageItem = ({
                 <Text numberOfLines={1} style={{ fontSize: 16, color:'#1b2833' }}>{user_name}</Text>
                 {
                   status=='00C'?
-                    <View style={{backgroundColor: '#ffc400', borderRadius: 2, height: 16}}>
+                    <View style={{ backgroundColor: '#ffc400', borderRadius: 2, paddingVertical: 2, paddingHorizontal: 4, marginLeft: 8 }}>
                       <Text style={{fontSize: 12, color: 'white'}}>达成协议</Text>
                     </View> : null
                 }

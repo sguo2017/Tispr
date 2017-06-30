@@ -54,7 +54,7 @@ export default class HomeNavigation extends Component {
                     style={styles.rightIcon}
                     onPress={this.props.rightIconAction}
                 >
-                    <Image style={{height: this.props.rightIconSize || 20, width: this.props.rightIconSize || 20}} source={this.props.rightIcon} resizeMode={'contain'}/>
+                    <Image style={{height: this.props.rightIconSize || 20, width: this.props.rightIconSize || 20, borderRadius: this.props.rightIconRadius || 20 }} source={this.props.rightIcon} resizeMode={'contain'}/>
                 </TouchableOpacity>
             )
         }

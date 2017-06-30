@@ -13,7 +13,8 @@ import {
     Alert,
     Navigator,
     Dimensions
-} from 'react-native'
+} from 'react-native';
+import AutoTextInput from '../components/AutoTextInput';
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import ImagePicker from 'react-native-image-picker';
@@ -243,7 +244,7 @@ export default class Personinfoedit extends Component {
 
     render(){
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
                     title='编辑信息'
                     leftIcon={require('../resource/w-back.png')}
@@ -251,77 +252,68 @@ export default class Personinfoedit extends Component {
                     rightButton='保存'
                     rightButtonAction={this.updateavatar.bind(this)}
                 />
-                <View style={{justifyContent:'flex-start',margin: 20}}>
-                    <View style={{flexDirection: 'row', justifyContent:'center', marginBottom: 26}}>
+                <View style={{ flex: 1, padding: 16 }}>
+                    <View style={{ alignItems: 'center', marginBottom: 16 }}>
                         <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                        <Image style={{width:80, height:80, borderRadius: 40, justifyContent:'flex-end', alignItems:'flex-end'}} source={{uri:this.state.avatar}}>
-                        </Image>
+                            <Image style={{ width: 60, height:60, borderRadius: 30 }} source={{uri:this.state.avatar}} />
                         </TouchableOpacity>
                     </View>
-                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center', marginBottom: 12}}>
-                        <Image source={require('../resource/g_name.png')}/>
-                        <View style={{marginLeft: 16}}>
-                            <TextInput
-                            style={styles.textinput}
-                            multiline={true}
-                            numberOfLines={1}
-                            value ={this.state.name}
-                            placeholder='请填写您的真实姓名'
-                            placeholderTextColor='#CCCCCC'
-                            underlineColorAndroid='#CCCCCC'
-                            onChangeText={(val) => {this.setState({ name: val})}}
-                            />       
-                            <Text style={styles.text}>2-4个汉字，或10个英文字符</Text>
-                        </View> 
+                    <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
+                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_name.png')}/>
+                        <TextInput
+                          placeholder='请填写您的真实姓名'
+                          placeholderTextColor='#CCCCCC'
+                          style={styles.textInput}
+                          underlineColorAndroid="transparent"
+                          numberOfLines={1}
+                          multiline={true}
+                          value ={this.state.name}
+                          onChangeText={(val) => {this.setState({ name: val})}}
+                        />
                     </View>
-                    
-                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center', marginBottom: 12}}>
-                        <Image source={require('../resource/g_location.png')}/>
-                        <View style={{marginLeft: 16, flexDirection: 'row'}}>
-                            <TextInput
-                            style={styles.textinput}
-                            multiline={true}
-                            numberOfLines={1}
-                            value ={this.state.address}
-                            placeholder='获取当前地址'
-                            placeholderTextColor='#CCCCCC'
-                            underlineColorAndroid='#CCCCCC'
-                            onChangeText={(val) => {this.setState({ address: val})}}
-                            />
-                            <TouchableOpacity style={{position: 'absolute', top: 18, right: 6}} onPress={this.onReplay.bind(this)}>
-                                <Image source={require('../resource/g-replay.png')}></Image>
-                            </TouchableOpacity>
-                        </View>
+                    <Text style={styles.text}>2-4个汉字，或10个英文字符</Text>
+                    <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 16 }}>
+                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_location.png')}/>
+                        <TextInput
+                          placeholder='获取当前地址'
+                          placeholderTextColor='#CCCCCC'
+                          style={styles.textInput}
+                          underlineColorAndroid="transparent"
+                          numberOfLines={1}
+                          multiline={true}
+                          value ={this.state.address}
+                          onChangeText={(val) => {this.setState({ address: val })}}
+                        />
+                        <TouchableOpacity style={{ zIndex: 999, position: 'absolute', right: 8 }} onPress={this.onReplay.bind(this)}>
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/g-replay.png')}></Image>
+                        </TouchableOpacity>
                     </View>
-                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center', marginBottom: 12}}>
-                        <Image source={require('../resource/g_info.png')}/>
-                        <View style={{marginLeft: 16}}>
-                            <TextInput
-                            style={styles.textinput}
-                            multiline={true}
-                            numberOfLines={1}
-                            value ={this.state.selfintroduce}
-                            placeholder='介绍下自己，获得更多关注'
-                            placeholderTextColor='#CCCCCC'
-                            underlineColorAndroid='#CCCCCC'
-                            onChangeText={(val) => {this.setState({ selfintroduce: val})}}
-                            />
-                            <Text style={styles.text1}>0/200</Text>
-                        </View>
+                    <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
+                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_info.png')}/>
+                        <TextInput
+                          placeholder='介绍下自己，获得更多关注'
+                          placeholderTextColor='#CCCCCC'
+                          style={styles.textInput}
+                          underlineColorAndroid="transparent"
+                          numberOfLines={1}
+                          multiline={true}
+                          value={this.state.selfintroduce}
+                          onChangeText={(val) => {this.setState({ selfintroduce: val})}}
+                        />
                     </View>
-                    <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                        <Image source={require('../resource/g_earth_nor.png')}/>
-                        <View style={{marginLeft: 16}}>
-                            <TextInput
-                            style={styles.textinput}
-                            multiline={true}
-                            numberOfLines={1}
-                            //value ={this.state.address}
-                            placeholder='添加网页链接'
-                            placeholderTextColor='#CCCCCC'
-                            underlineColorAndroid='#CCCCCC'
-                            />
-                        </View> 
+                    <View style={{ flexDirection:'row', justifyContent: 'flex-end', marginBottom: 8 }}>
+                        <Text style={styles.lengthText}>{this.state.selfintroduce.length?this.state.selfintroduce.length:'0'}/200</Text>
+                    </View>
+                    <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
+                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_earth_nor.png')}/>
+                        <TextInput
+                          placeholder='添加网页链接'
+                          placeholderTextColor='#CCCCCC'
+                          style={styles.textInput}
+                          underlineColorAndroid="transparent"
+                          numberOfLines={1}
+                          multiline={true}
+                        />
                     </View>
                 </View>
             </View>
@@ -331,24 +323,25 @@ export default class Personinfoedit extends Component {
 
 
 const styles = StyleSheet.create({
-    textinput: {
+    textInput: {
+        flex: 1,
+        paddingVertical: 12,
+        paddingHorizontal: 0,
+        backgroundColor: 'white',
         fontSize: 16,
-        width: screenW*0.8,
-        height: 56,
-        flexDirection: 'row'
+        borderBottomWidth: 1,
+        borderBottomColor: '#eeeeee',
+        marginLeft: 16,
     },
     text: {
-        color: '#B8B8B8',
+        marginLeft: 40,
+        color: '#b8b8b8',
         fontSize: 12,
-        position: 'absolute',
-        top: 50,
-        left: 3
+        marginBottom: 14,
     },
-    text1: {
-        position: 'absolute',
-        right: 5,
-        top: 50,
-        color: '#B8B8B8',
+    lengthText: {
+        marginLeft: 40,
+        color: '#b8b8b8',
         fontSize: 12,
     }
-})
+});
