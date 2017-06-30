@@ -81,6 +81,7 @@ let url = {
      SSRV_API_SYS_MSGS_TIMELINES:`/api/sys_msgs_timelines/sys_msgs_timelines/`,//系统消息操作API
      SERV_API_SUGGESTION:`/api/suggestion/suggestions?token=`,//反馈意见API
      SERV_API_REPORT:`/api/suggestion/reports?token=`,//举报API
+     SERV_API_PHONE_SETTING: `/api/users/phone_call/`,//接听电话时间设置API
      //////////////////<<<<   GEOAPI服务器  >>>>>//////////////////////////////
      GEO_LOCATION_ADDR: "http://api.map.baidu.com/geocoder/v2/?output=json&pois=1&ak=ZFFEI4cl338WSpoGsGSuHhpxiQpuEnfe"
      

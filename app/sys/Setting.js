@@ -21,7 +21,7 @@ import aboutQike from './help/aboutQike';
 import others from './others';
 import login from '../user/login';
 import Constant from '../common/constants'
-
+import PhoneSetting from './account/PhoneSetting';
 export default class Setting extends Component {
 
 	constructor(props) {
@@ -95,6 +95,14 @@ export default class Setting extends Component {
 							<Text style={styles.rectangle_text} >
 								我的存档
 			  				</Text>
+						</View>
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:PhoneSetting,name:'PhoneSetting'})}>
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<Text style={styles.rectangle_text} >
+								电话设置
+			  			</Text>
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
