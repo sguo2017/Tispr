@@ -12,13 +12,14 @@ import {
   RefreshControl,
   Linking,
   Alert,
+  Modal,
 } from 'react-native';
 import { CachedImage } from "react-native-img-cache";
 import { fetchExploreList } from '../actions/ServOfferListActions';
 import Common from '../common/constants';
 import Loading from '../components/Loading';
 import ServOfferDetail from './ServOfferDetail';
-
+import Constant from '../common/constants';
 const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: 'row',
@@ -52,6 +53,56 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.5,
     borderColor: '#eeeeee',
   },
+   // modal的样式
+    modalStyle: {
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        flex: 1,
+    },
+    // modal上子View的样式
+    subView: {
+        alignSelf: 'stretch',
+        justifyContent: 'flex-start',
+        borderWidth: 0.5,
+        backgroundColor: '#fff',
+        height: 300,
+    },
+    // 标题
+    modalHead: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10
+    },
+        themeColorText: {
+        color: global.gColors.themeColor,
+        fontSize: 16
+    },
+    blackText: {
+        color: '#000',
+        padding: 5,
+        borderRadius: 3,
+        fontSize: 18
+    },
+    whiteText: {
+        color: '#fff',
+        fontSize: 16,
+    },
+    selectButton: {
+        borderWidth: 1,
+        borderColor: global.gColors.themeColor,
+        padding: 5,
+        height: 36,
+        width: Platform.OS === 'ios' ? 104 : 80,
+        marginRight: 20,
+        marginBottom: 20
+    },
+    avatar: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        marginHorizontal: 130,
+        marginVertical: 20
+    }
 });
 
 export default class ServOfferList extends Component {
@@ -59,6 +110,14 @@ export default class ServOfferList extends Component {
       super(props);
       this._onMomentumScrollEnd = this._onMomentumScrollEnd.bind(this);
       this._onRefresh = this._onRefresh.bind(this);
+      this.state = {
+        show: false,
+        sms: [true, false, false],
+        defaultMsg: '你发表的专业服务很棒！',
+        connectUserName: '',
+        connectUserAvatar: '',
+        connectServ: ''
+      }
   }
 
   componentDidMount() {
@@ -109,36 +168,105 @@ export default class ServOfferList extends Component {
     });
   }
 
-  clickCall = (phoneNum, username) => {
-    Linking.canOpenURL(`tel:${phoneNum}`).then(supported => {
-      if (!supported) {
-        Alert.alert(
-          '提示',
-          '该设备暂不支持拨打功能',
-          [
-            { text: '确定', onPress: null },
-          ]
-        )
-      } else {
-        Alert.alert(
-          null,
-          `是否呼叫${username}`,
-          [
-            { text: '否', onPress: null },
-            { text: '是', onPress: () => {Linking.openURL(`tel:${phoneNum}`)} },
-          ]
-        )
-      }
-    }).catch(err => {
-      Alert.alert(
-        null,
-        '拨打出错,请重试',
-        [
-          { text: '确定', onPress: null },
-        ]
-      );
-    });
+  _selectMessage = (feed) =>{
+    let connectUser = feed.user
+    this.setState({
+      connectUserAvatar: connectUser.avatar,
+      connectUserName: connectUser.name,
+      show: true,
+      connectServ: feed,
+    })
   }
+
+  async _sendMessage(){
+    this.setState({
+      show:false
+    });
+    let feed = this.state.connectServ;
+    try {
+      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_CREATE + global.user.authentication_token;
+      let response = await fetch(url, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+
+          body: JSON.stringify({
+              order: {
+                  serv_offer_title: feed.serv_title,
+                  serv_offer_id: feed.id,
+                  offer_user_id: feed.user_id,
+                  lately_chat_content: this.state.defaultMsg,
+              }
+          })
+      });
+
+      let res = await response.text();
+      if (response.status >= 200 && response.status < 300) {
+          //console.log("line:153");
+          let resObject =JSON.parse(res);
+          let avaliableTimes =resObject.avaliable;
+          let type = 'offer';
+          if(resObject.status==0){
+              this._createChat(resObject.id,this.state.lately_chat_content);
+              Alert.alert(
+                  '提示',
+                  '联系成功！你今天还可以联系'+avaliableTimes+ '位奇客',
+                  [
+                      { text: '确定'},
+                  ]
+              )
+          }else if(resObject.status==-2){
+              Alert.alert(
+                  '提示',
+                  '您今天的沟通机会已用完，请明天再联系',
+                  [
+                      { text: '确定'},
+                  ]
+              )
+          }
+      } else {
+          let error = res;
+          throw error;
+      }
+    } catch (error) {
+        console.log("error " + error);
+    }
+  }
+
+  async _createChat(_deal_id){
+        let chat_content = this.state.lately_chat_content;
+        try {
+            let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + `${global.user.authentication_token}`;
+            let response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                },
+
+                body: JSON.stringify({
+                chat: {
+                    deal_id: _deal_id,
+                    chat_content: this.state.defaultMsg,
+                    user_id: global.user.id,
+                    catalog: 2
+                    }
+                })
+            });
+
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                console.log("line:99");
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            console.log("error " + error);
+        }
+    }
 
   render() {
     const { ServOfferList } = this.props;
@@ -168,7 +296,7 @@ export default class ServOfferList extends Component {
                   key={`${serv.id}-${i}`}
                   serv={serv}
                   onPress={() => this._onPressCell(serv)}
-                  onCall={() => this.clickCall('10000', serv.user.name)}
+                  onCall={() => this._selectMessage(serv)}
                 />
               );
             })}
@@ -184,6 +312,48 @@ export default class ServOfferList extends Component {
         </ScrollView>
         }
         <Loading isShow={ServOfferList.isLoading}/>
+        <Modal
+          animationType='slide'
+          transparent={true}
+          visible={this.state.show}
+        >
+          <View style={styles.modalStyle}>
+            <View style={[styles.subView, {height: 400}]}>
+                <View style={styles.modalHead}>
+                    <TouchableOpacity onPress={() => this.setState({ show: false })}>
+                        <Text style={styles.themeColorText}>取消</Text>
+                    </TouchableOpacity>
+                    <Text style={{ color: 'black', fontSize: 16 }}>快捷回复</Text>
+                    <TouchableOpacity onPress={this._sendMessage.bind(this)}>
+                        <Text style={styles.themeColorText}>发送</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{ marginLeft: 20 }}>
+                    <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: this.state.connectUserAvatar}} style={styles.avatar}></Image>
+                    <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.defaultMsg}</Text>
+                    <View style={{height:30}}></View>
+                    <TouchableOpacity
+                      style={[styles.selectButton, this.state.sms[0] && { backgroundColor: global.gColors.themeColor},{width: Platform.OS === 'ios' ? 250 : 200, }]}
+                      onPress={()=>this.setState({sms:[true, false, false], defaultMsg: '你发布的专业服务很棒！'})}
+                    >
+                        <Text style={[styles.themeColorText, this.state.sms[0] && styles.whiteText]}>你发布的专业服务很棒！</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.selectButton, this.state.sms[1] && { backgroundColor: global.gColors.themeColor},{width: Platform.OS === 'ios' ? 240 : 180, }]}
+                        onPress={()=>this.setState({sms:[false, true, false], defaultMsg: '请问你是如何收费的？'})}
+                    >
+                        <Text style={[styles.themeColorText, this.state.sms[1] && styles.whiteText]}>请问你是如何收费的？</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.selectButton, this.state.sms[2] && { backgroundColor: global.gColors.themeColor},{width: Platform.OS === 'ios' ? 260 : 210, }]}
+                        onPress={()=>this.setState({sms:[false, false, true], defaultMsg: '我想看一下你的更多作品。'})}
+                    >
+                        <Text style={[styles.themeColorText, this.state.sms[2] && styles.whiteText]}>我想看一下你的更多作品。</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>
+        </Modal>
       </View>
     );
   }
