@@ -17,7 +17,6 @@ import { observer } from 'mobx-react/native'
 import Header from '../../components/HomeNavigation';
 import Constant from '../../common/constants';
 import UserDefaults from '../../common/UserDefaults';
-import Connect from './Connect'
 
 const screenW = Dimensions.get('window').width;
 

@@ -140,8 +140,7 @@ export default class BussList extends Component {
         sys_msgs:this.props.sys_msgs,    
         initCard:0 ,
         hasSeenSwiperIntroduce: false,
-        swiper_1_height:230,
-        swiper_2_height:230
+        swiperHeight:230,
     }
 
     knowledgeListStore = new SysMsgStore(KNOWLEDGE_ID)
@@ -151,18 +150,6 @@ export default class BussList extends Component {
             () => this.knowledgeListStore.page,
             () => this.knowledgeListStore.fetchFeedList()
         );
-        
-        setTimeout(()=>{
-            this.setState({
-                swiper_1_height:231,
-            })
-        },100);
-        
-        setTimeout(()=>{
-            this.setState({
-                swiper_2_height:231,
-            })
-        },100);
     }
 
     componentWillMount() {
@@ -175,7 +162,7 @@ export default class BussList extends Component {
     }
 
     _renderRow = feed => <KnowledgeItem onPress={this._onPressCell} feed={feed} />
-  
+
     _onPressCell = feed => {
       if (feed.serv_offer == null || feed.serv_offer == undefined){
         this.props.navigator.push({
@@ -360,7 +347,7 @@ export default class BussList extends Component {
         <Swiper
           index={this.state.initCard}
           style={styles.wrapper}
-          height={this.state.swiper_2_height}
+          height={this.state.swiperHeight}
           showsButtons={false}
           showsPagination={false}
         >
@@ -382,7 +369,7 @@ export default class BussList extends Component {
       let pushServer = (
         <View style={{ height: 75, justifyContent: 'center', alignItems: 'center' }} >
           <TouchableOpacity
-            onPress={()=>{navigator.push({component:Server, name:'Server',passProps:{}})}}
+            onPress={()=>{navigator.resetTo({component:Server, name:'Server',passProps:{}})}}
             style={{
               borderRadius: 8,
               width: 120,
@@ -408,12 +395,12 @@ export default class BussList extends Component {
       );
       let introduceSwiper = (
         <Swiper
-          height={this.state.swiper_1_height}
+          height={this.state.swiperHeight}
           loop={false}
           showsButtons={false}
           showsPagination={false}
         >
-          <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiper_1_height }]}>
+          <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiperHeight }]}>
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
               <Text style={styles.CardText}>欢迎您，{global.user.name}</Text>
               <Text style={styles.CardText}>这是您的客户需求卡片组，可以向左或</Text>
@@ -421,10 +408,10 @@ export default class BussList extends Component {
               <Image style={{ width: global.gScreen.width - 16, flex: 1 }} source={require('../resource/card_l_guide_b.png')}/>
             </View>
           </View>
-          <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiper_1_height }]}>
+          <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiperHeight }]}>
             <Image resizeMode='stretch' style={{ flex: 1, width: global.gScreen.width - 16 }} source={require('../resource/card-l-guide-2.png')}/>
           </View>
-          <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiper_1_height }]}>
+          <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiperHeight }]}>
             <Image resizeMode='stretch' style={{ flex: 1, flexDirection: 'row', width: global.gScreen.width - 16 }} source={require('../resource/card-l-guide-3.png')}>
               <TouchableOpacity style={styles.swiperBeginButton} onPress={ () => this._onPressSwiperBeginButton() }>
                 <Text style={styles.swiperBeginButtonText}>立即开始</Text>

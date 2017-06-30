@@ -34,31 +34,31 @@ export default class TabBarView extends PureComponent {
 
     render() {
         return (
-            <ScrollableTabView
-                renderTabBar={() =>
-                    <RudderTabBar
-                        tabNames={tabTitles}
-                        tabIconNames={tabIcons}
-                        selectedTabIconNames={tabSelectedIcon}
-                        centralEvent={()=>{
-                            this.props.navigator.push({component:Server, name:'Server',passProps:{}})
-                        }}
-                    />
-                }
-                tabBarPosition='bottom'
-                tabBarActiveTextColor={global.gColors.themeColor}
-                tabBarTextStyle={{fontSize: 18}}
-                locked
-                scrollWithoutAnimation
-                onChangeTab={this._onChangeTab}
-            >
-                <Buzz tabLabel="Buzz" navigator={this.props.navigator}/>
-                <Explore tabLabel="Explore" categoryId={0} navigator={this.props.navigator}/>
-                {/*<Server tabLabel="Server" navigator={this.props.navigator}/>*/}
-                <View />
-                <Chat tabLabel="Chat" navigator={this.props.navigator}/>
-                <Me tabLabel="Me" isBrowseMode={false} navigator={this.props.navigator}/>
-            </ScrollableTabView>
+          <ScrollableTabView
+            renderTabBar={() =>
+              <RudderTabBar
+                tabNames={tabTitles}
+                tabIconNames={tabIcons}
+                selectedTabIconNames={tabSelectedIcon}
+                centralEvent={()=>{
+                    this.props.navigator.resetTo({component:Server, name:'Server',passProps:{}})
+                }}
+              />
+            }
+            tabBarPosition='bottom'
+            tabBarActiveTextColor={global.gColors.themeColor}
+            tabBarTextStyle={{fontSize: 18}}
+            locked
+            scrollWithoutAnimation
+            onChangeTab={this._onChangeTab}
+          >
+              <Buzz tabLabel="Buzz" navigator={this.props.navigator}/>
+              <Explore tabLabel="Explore" categoryId={0} navigator={this.props.navigator}/>
+              {/*<Server tabLabel="Server" navigator={this.props.navigator}/>*/}
+              <View />
+              <Chat tabLabel="Chat" navigator={this.props.navigator}/>
+              <Me tabLabel="Me" isBrowseMode={false} navigator={this.props.navigator}/>
+          </ScrollableTabView>
         )
     }
 }

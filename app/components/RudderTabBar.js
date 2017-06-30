@@ -10,14 +10,14 @@ import GlobalContants from '../common/globalContants';
 
 const styles = StyleSheet.create({
   container: {
-    height: 70,
+    height: 60,
     backgroundColor: 'transparent',
     flexDirection: 'row',
     marginTop: -20,
     alignItems: 'flex-end',
   },
   centerTab: {
-    height: 70,
+    height: 60,
     width: gScreen.width / 5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -86,17 +86,41 @@ export default class RudderTabBar extends Component {
           let color = this.props.activeTab === i ? global.gColors.themeColor : '#999999';
           if (i == 2) {
             return (
-              <TouchableOpacity
-                key={i}
-                activeOpacity={0.8}
-                style={styles.centerTab}
-                onPress={()=>this.props.centralEvent()}
-              >
-                <Image
-                  style={styles.centerIcon}
-                  source={icon}
-                />
-              </TouchableOpacity>
+              <View key={i} style={styles.centerTab}>
+                <TouchableOpacity
+                  style={{ zIndex: 999 }}
+                  activeOpacity={0.8}
+                  onPress={()=>this.props.centralEvent()}
+                >
+                  <Image
+                    style={{ height: 50, width: 50 }}
+                    source={icon}
+                  />
+                </TouchableOpacity>
+                <View style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  right: (gScreen.width / 5 - 60) / 2,
+                  zIndex: 0,
+                  width: 60,
+                  height: 60,
+                  borderRadius: 30,
+                  backgroundColor: 'white',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderWidth: 0.5,
+                  borderColor: global.gColors.themeColor,
+                }} />
+                <View style={{
+                  position: 'absolute',
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                  zIndex: 1,
+                  height: 49.5,
+                  backgroundColor: 'white',
+                }}/>
+              </View>
             )
           } else {
             return (

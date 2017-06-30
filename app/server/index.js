@@ -11,7 +11,8 @@ import {
     StyleSheet,
     Navigator,
     PixelRatio,
-    Alert
+    Alert,
+    Animated,
 } from 'react-native'
 import NavPage from './nav/index';
 import TabBarView from'../containers/TabBarView';
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: global.gColors.themeColor,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     titleText: {
@@ -58,14 +59,46 @@ export default class Server extends Component {
             user: this.props.user,
             pwd: this.props.pwd,
             goods_tpye:this.props.goods_tpye,
+            itemsSpacing: new Animated.Value(gScreen.width),
+            buttonBottom: new Animated.Value(10),
+            rotateAngle: new Animated.Value(0.25),
+            buttonColor: new Animated.Value(0),
         };  
+    }
+    componentDidMount() {
+        Animated.parallel([
+            Animated.timing(
+              this.state.itemsSpacing,
+              {
+                  toValue: 35,
+              }
+            ).start(),
+            Animated.timing(
+              this.state.buttonBottom,
+              {
+                  toValue: 48,
+              }
+            ),
+            Animated.timing(
+              this.state.rotateAngle,
+              {
+                  toValue: 1,
+              }
+            ),
+            Animated.timing(
+              this.state.buttonColor,
+              {
+                  toValue: 1,
+              }
+            ),
+        ]).start();
     }
 
     clickNavigationJump(serv) {        
         const { navigator } = this.props; 
         this.state.goods_tpye= serv;
         let goods_tpye =this.state.goods_tpye;
-        console.log("goods_tpye:"+this.state.goods_tpye);
+        // console.log("goods_tpye:"+this.state.goods_tpye);
         if (navigator&&goods_tpye) {
             navigator.resetTo({
                 name: 'NavPage',  
@@ -76,15 +109,25 @@ export default class Server extends Component {
     }
 
     render() {
+        const rotateAngle = this.state.rotateAngle.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg', '360deg']
+        });
+        const buttonColor = this.state.buttonColor.interpolate({
+            inputRange: [0, 1],
+            outputRange: [global.gColors.buttonColor, 'transparent']
+        });
         return (
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity style={[styles.clickItem, { marginRight: 35 }]} onPress={() => {this.clickNavigationJump("serv_offer")}}>
-                        <View elevation={5} style={styles.itemImageContent}>
-                            <Image style={styles.itemImage} source={require('../resource/t_offer_serv.png')} />
-                        </View>
-                        <Text style={styles.titleText}>发布服务</Text>
-                    </TouchableOpacity>
+                    <Animated.View style={{ marginRight: this.state.itemsSpacing }}>
+                        <TouchableOpacity style={styles.clickItem} onPress={() => {this.clickNavigationJump("serv_offer")}}>
+                            <View elevation={5} style={styles.itemImageContent}>
+                                <Image style={styles.itemImage} source={require('../resource/t_offer_serv.png')} />
+                            </View>
+                            <Text style={styles.titleText}>发布服务</Text>
+                        </TouchableOpacity>
+                    </Animated.View>
                     <TouchableOpacity style={styles.clickItem}  onPress={() => {this.clickNavigationJump("serv_request")}}>
                         <View elevation={5} style={styles.itemImageContent}>
                             <Image elevation={5} style={styles.itemImage} source={require('../resource/t_serv_request.png')} />
@@ -92,9 +135,11 @@ export default class Server extends Component {
                         <Text style={styles.titleText}>发布需求</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={{ marginTop: 110, marginBottom: 48 }} onPress={() => {this.props.navigator.resetTo({component: TabBarView})}}>
-                    <Image style={{ width: 48, height: 48 }} source={require('../resource/w-cancel-line-nor.png')} />
-                </TouchableOpacity>
+                <Animated.View style={{ position: 'absolute', borderRadius: 25, backgroundColor: buttonColor, bottom: this.state.buttonBottom, transform: [{ rotate: rotateAngle }] }} >
+                    <TouchableOpacity onPress={() => {this.props.navigator.resetTo({component: TabBarView})}}>
+                        <Image style={{ width: 50, height: 50 }} source={require('../resource/w-cancel-line-nor.png')} />
+                    </TouchableOpacity>
+                </Animated.View>
             </View>
         )
     }
