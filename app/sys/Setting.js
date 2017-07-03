@@ -19,7 +19,7 @@ import feedback from './help/feedback';
 import inviteFriend from './help/inviteFriend';
 import aboutQike from './help/aboutQike';
 import others from './others';
-import login from '../user/login';
+import signup from '../pages/signup';
 import Constant from '../common/constants'
 import PhoneSetting from './account/PhoneSetting';
 export default class Setting extends Component {
@@ -55,7 +55,7 @@ export default class Setting extends Component {
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
 				//console.log('退出登录成功');
-                this.props.navigator.resetTo({component:login}); 
+                this.props.navigator.resetTo({component:signup}); 
             } else {
                 let error = res;
                 throw error;
