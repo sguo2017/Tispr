@@ -3,18 +3,22 @@ import {
   StyleSheet,
   TextInput,
   TouchableHighlight,
+  TouchableOpacity,
   AsyncStorage,
   ActivityIndicatorIOS,
   Text,
   View,
-  Alert
+  Alert,
+  Image
 } from 'react-native';
 
 import TabBarView from '../containers/TabBarView';
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
-
+import AutoTextInput from '../components/AutoTextInput';
+import nationWarning from '../sys/others/nationWarning';
+import personalinfoEdit from '../me/personalinfoEdit';
 export default class Register extends Component {
   constructor() {
     super();
@@ -26,6 +30,9 @@ export default class Register extends Component {
       password_confirmation: "",
       errors: [],
       showProgress: false,
+      firstPage: true,
+      num: "",
+      code: "",
     }
   }
   _navigate(routeName) {
@@ -42,6 +49,12 @@ export default class Register extends Component {
         component: TabBarView,
         name: 'TabBarView'
       });
+    } else if (routeName == 'personalinfoEdit'){
+      navigator.push({
+        component: personalinfoEdit,
+        name: 'personalinfoEdit',
+        passProps: {newUser: true}
+      })
     }
   }
 
@@ -68,6 +81,8 @@ export default class Register extends Component {
             email: this.state.email,
             password: this.state.password,
             password_confirmation: this.state.password_confirmation,
+            num: this.state.num,
+            code: this.state.code,
             avatar: Constant.default_img.AVATAR,
             district: global.user.addressComponent.district,
             city: global.user.addressComponent.city,
@@ -89,13 +104,21 @@ export default class Register extends Component {
               { text: '确定'},
             ]
           )
+        }else if(result.status == -1){
+          Alert.alert(
+            '提示',
+            '验证码不正确',
+            [
+              { text: '确定'},
+            ]
+          )
         }else if(result.user){
           let userdetail =JSON.parse(result.user);    
           UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
           global.user = global.user = userdetail;
           global.user.addressComponent = address;
           global.user.authentication_token = result.token;  
-          this._navigateHome();
+          this._navigatePerInfo();
         }        
       } else {
         UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
@@ -107,9 +130,54 @@ export default class Register extends Component {
       console.log("error " + error);
       Alert.alert(
         '提示',
-        '失败',
+        '失败'+error,
         [
           { text: '注册失败'},
+        ]
+      )
+      this.setState({ showProgress: false });
+    }
+  }
+
+  async _smsSend() {
+    try {
+      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_SPI_SMS_SEND_REGISTER_PHONE;
+      let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sms_send: {
+            recv_num: this.state.num,
+            sms_type: "code",
+          }
+        })
+      });
+      let res = await response.text();
+      let result = JSON.parse(res);
+      if (response.status >= 200 && response.status < 300) {
+        if(result.status == -1){
+          Alert.alert(
+            '提示',
+            '手机号已被注册',
+            [
+              { text: '确定'},
+            ]
+          )
+        }
+      } else {
+        let error = res;
+        throw error;
+      }
+    } catch (error) {
+      this.setState({ error: error });
+      Alert.alert(
+        '提示',
+        '失败',
+        [
+          { text: '短信验证发送失败', onPress: () => console.log('确定') },
         ]
       )
       this.setState({ showProgress: false });
@@ -123,7 +191,9 @@ export default class Register extends Component {
   _navigateHome() {
     this._navigate('TabBarView');
   }
-
+  _navigatePerInfo(){
+    this._navigate('personalinfoEdit');
+  }
   _onBack = () => {        
         const { navigator } = this.props;
         if (navigator) {
@@ -132,40 +202,97 @@ export default class Register extends Component {
  }
 
   render() {
-    return (
-      <View style={styles.container}>
+    const mailRegister = (
+      <View>
         <Header
           title='注册'
           leftIcon={require('../resource/ic_back_white.png')}
           leftIconAction = {this._onBack}
+          rightButton='下一步'
+          rightButtonAction={()=>this.setState({firstPage: false})}
         />
-        <TextInput
-          onChangeText={(text) => this.setState({ email: text })}
-          style={styles.input} placeholder="邮箱">
-        </TextInput>
-        <TextInput
-          onChangeText={(text) => this.setState({ name: text })}
-          style={styles.input} placeholder="姓名">
-        </TextInput>
-        <TextInput
-          onChangeText={(text) => this.setState({ password: text })}
-          style={styles.input}
-          placeholder="密码"
-          secureTextEntry={true}>
-        </TextInput>
-        <TextInput
-          onChangeText={(text) => this.setState({ password_confirmation: text })}
-          style={styles.input}
-          placeholder="确认密码"
-          secureTextEntry={true}>
-        </TextInput>
-        <TouchableHighlight onPress={this.onRegisterPressed.bind(this)} style={styles.button}>
-          <Text style={styles.buttonText}>
-            注册
-          </Text>
-        </TouchableHighlight>
+        <View style={{ flex: 1, padding: 16 }}>
+          <TextInput
+            onChangeText={(text) => this.setState({ email: text })}
+            style={styles.input} placeholder="邮箱">
+          </TextInput>
+          <TextInput
+            onChangeText={(text) => this.setState({ name: text })}
+            style={styles.input} placeholder="姓名">
+          </TextInput>
+          <TextInput
+            onChangeText={(text) => this.setState({ password: text })}
+            style={styles.input}
+            placeholder="密码"
+            secureTextEntry={true}>
+          </TextInput>
+          <TextInput
+            onChangeText={(text) => this.setState({ password_confirmation: text })}
+            style={styles.input}
+            placeholder="确认密码"
+            secureTextEntry={true}>
+          </TextInput>
+        </View>
+      </View>
+    );
+    const phoneVerify = (
+      <View>
+        <Header
+          title='注册'
+          leftIcon={require('../resource/ic_back_white.png')}
+          leftIconAction = {()=>this.setState({firstPage: true})}
+        />
+        <View style ={{ flex: 1, padding: 16}}>
+          <Text style={{ color: '#1b2833', fontSize: 14, fontWeight: 'bold' }}>请输入你的手机号码验证账号</Text>
 
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 16, minHeight: 48 }}>
+            <TouchableOpacity style={styles.countryButton} onPress={()=>this.props.navigator.push({component:nationWarning,name:'nationWarning'})}>
+              <Image style={{ height: 12, width: 18, marginRight: 9 }} source={require('../resource/qk_china_flag.png')} />
+              <Text style={{ fontSize: 16, color: '#1b2833' }}>+86</Text>
+              <Image style={{ height: 24, width: 24 }} source={require('../resource/g-arrow-drop-down.png')} />
+            </TouchableOpacity>
+            <View style={{ flex: 1, justifyContent: 'center'}}>
+              <AutoTextInput
+                style={styles.input2}
+                underlineColorAndroid="transparent"
+                numberOfLines={1}
+                onChangeText={(text) => this.setState({ num: text })}
+                placeholder="输入您的手机号"
+                placeholderTextColor="#cccccc"
+              />
+            </View>
+          </View>
 
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, minHeight: 48 }}>
+            <View style={{ flex: 1, justifyContent: 'center'}}>
+              <AutoTextInput
+                style={styles.input2}
+                underlineColorAndroid="transparent"
+                numberOfLines={1}
+                maxLength={6}
+                onChangeText={(text) => this.setState({ code: text })}
+                placeholder="输入短信验证码"
+                placeholderTextColor="#cccccc"
+              />
+            </View>
+            <TouchableOpacity onPress={this._smsSend.bind(this)} style={styles.smsCodeButton}>
+              <Text style={styles.smsCodeButtonText}>获取短信验证码</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity onPress={() => this.setState({ firstPage: true })}>
+            <Text style={{ color: '#4A90E2'}}>
+              上一步
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.onRegisterPressed.bind(this)} style={styles.loginButton}>
+            <Text style={styles.loginButtonText}>注册</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+    return (
+      <View style={styles.container}>
+        {this.state.firstPage? mailRegister : phoneVerify}
       </View>
     );
   }
@@ -181,6 +308,15 @@ const styles = StyleSheet.create({
     // paddingTop: 80
   },
   input: {
+    marginTop: 25,
+    backgroundColor: 'white',
+    fontSize: 16,
+    paddingHorizontal: 5,
+    marginHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eeeeee',
+  },
+  input2: {
     height: 50,
     marginTop: 10,
     padding: 4,
@@ -209,5 +345,34 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginTop: 20
-  }
+  },
+  countryButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor: '#eeeeee',
+    borderBottomWidth: 1,
+    height: 32,
+    marginRight: 18,
+  },
+  smsCodeButton: {
+    position: 'absolute',
+    height: 48,
+    right: 0,
+    top: 0,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loginButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: global.gColors.buttonColor,
+    position: 'absolute',
+    top: 200,
+    bottom: 0,
+    right:0,
+    left: 0,
+    height: 44,
+  },
 });

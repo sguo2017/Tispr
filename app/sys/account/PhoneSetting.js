@@ -30,7 +30,7 @@ export default class PhoneSetting extends Component {
 	constructor(props) {
 		super(props);
         this.state={
-            allDaySwitch: true,
+            allDaySwitch: false,
             startTime: global.user.call_from,
             endTime: global.user.call_to,
             startHour: 0,
@@ -96,6 +96,15 @@ export default class PhoneSetting extends Component {
                 this.state.endMinute = parseInt(time.substr(3,2));
             }
         }
+        if(global.user.switch_to == true){
+            this.state.startHour = 0
+            this.state.startMinute = 0
+            this.state.startTime = "0:00"
+            this.state.endHour = 23
+            this.state.endMinute = 59
+            this.state.endTime = "23:59"
+            this.state.allDaySwitch = true
+        }
     }
     async saveSetting(){
         try {
@@ -117,7 +126,10 @@ export default class PhoneSetting extends Component {
             });
              let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
-                ToastAndroid.show('保存成功',ToastAndroid.SHORT);
+                ToastAndroid.show('保存成功',ToastAndroid.LONG);
+                global.user.call_from = this.state.startTime;
+                global.user.call_to = this.state.endTime;
+                global.user.switch_to = this.state.allDaySwitch;
             } else {
                 let error = res;
                 throw error;
@@ -152,7 +164,7 @@ export default class PhoneSetting extends Component {
                     </Text>
 
                     <CustomButton 
-                    text="开始时间"
+                     text={"开始时间 "+this.state.startTime}
                     onPress={this.showPicker.bind(this,{
                         hour: this.state.startHour,
                         minute: this.state.startMinute,
@@ -160,7 +172,7 @@ export default class PhoneSetting extends Component {
                     },'start')}
                     />
                     <CustomButton 
-                    text="结束时间"
+                    text={"结束时间 "+this.state.endTime}
                     onPress={this.showPicker.bind(this,{
                         hour: this.state.endHour,
                         minute: this.state.endMinute,
@@ -195,5 +207,7 @@ const styles = StyleSheet.create({
         padding: 15,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#cdcdcd',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     }
 });

@@ -20,7 +20,7 @@ import Constant from '../common/constants';
 import ImagePicker from 'react-native-image-picker';
 import Setting from '../sys/Setting';
 import UserDefaults from '../common/UserDefaults';
-
+import TabBarView from '../containers/TabBarView';
 const screenW = Dimensions.get('window').width;
 
 export default class Personinfoedit extends Component {
@@ -28,7 +28,7 @@ export default class Personinfoedit extends Component {
         super(props);
 
         this.state = {
-            selfintroduce: this.props.info,
+            selfintroduce: '',
             name: global.user.name,
             avatar: global.user.avatar,
             errors: this.props.errors,
@@ -62,7 +62,26 @@ export default class Personinfoedit extends Component {
     }
 
     _save(){
-
+        const { navigator } = this.props;
+        if(this.props.newUser){
+            navigator.resetTo({
+                component: TabBarView,
+                name: 'TabBarView'
+            });
+        }else{
+            this.SaveBack;
+        }
+    }
+    _back(){
+        const { navigator } = this.props;
+        if(this.props.newUser){
+            navigator.resetTo({
+                component: TabBarView,
+                name: 'TabBarView'
+            });
+        }else{
+            this._onBack;
+        }
     }
     selectPhotoTapped() {
         const options = {
@@ -174,7 +193,7 @@ export default class Personinfoedit extends Component {
                     '提示',
                     '成功',
                     [
-                        { text: '个人信息更新成功' , onPress: () => this.SaveBack()},
+                        { text: '个人信息更新成功' , onPress: () => this._save()},
                     ]
                 )
                 global.user.avatar=this.state.avatar;
@@ -248,7 +267,7 @@ export default class Personinfoedit extends Component {
                 <Header
                     title='编辑信息'
                     leftIcon={require('../resource/w-back.png')}
-                    leftIconAction={this._onBack}
+                    leftIconAction={this._back}
                     rightButton='保存'
                     rightButtonAction={this.updateavatar.bind(this)}
                 />
