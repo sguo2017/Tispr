@@ -80,7 +80,7 @@ export default class Register extends Component {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
-            password_confirmation: this.state.password_confirmation,
+            password_confirmation: this.state.password,
             num: this.state.num,
             code: this.state.code,
             avatar: Constant.default_img.AVATAR,
@@ -167,6 +167,15 @@ export default class Register extends Component {
             ]
           )
         }
+        if(result.status == 0){
+          Alert.alert(
+            '提示',
+            '短信验证码发送成功（验证码为'+ result.send_content + '测试临时通知)',
+            [
+              { text: '确定'},
+            ]
+          )
+        }
       } else {
         let error = res;
         throw error;
@@ -214,23 +223,22 @@ export default class Register extends Component {
         <View style={{ flex: 1, padding: 16 }}>
           <TextInput
             onChangeText={(text) => this.setState({ email: text })}
-            style={styles.input} placeholder="邮箱">
+            style={styles.input} placeholder="邮箱"
+            value={this.state.email}>
           </TextInput>
           <TextInput
             onChangeText={(text) => this.setState({ name: text })}
-            style={styles.input} placeholder="姓名">
+            style={styles.input} placeholder="姓名"
+            value={this.state.name}
+            >
           </TextInput>
           <TextInput
             onChangeText={(text) => this.setState({ password: text })}
             style={styles.input}
             placeholder="密码"
-            secureTextEntry={true}>
-          </TextInput>
-          <TextInput
-            onChangeText={(text) => this.setState({ password_confirmation: text })}
-            style={styles.input}
-            placeholder="确认密码"
-            secureTextEntry={true}>
+            secureTextEntry={true}
+            value={this.state.password}
+            >
           </TextInput>
         </View>
       </View>
