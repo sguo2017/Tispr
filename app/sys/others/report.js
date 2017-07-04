@@ -57,7 +57,7 @@ export default class PasswordConfirm extends Component{
 
     render(){
         return(
-            <View style={{height:global.gScreen.height}}>
+            <View style={{height:global.gScreen.height, backgroundColor: 'white'}}>
                 <Header
 					title='举报'
 					leftIcon={require('../../resource/ic_back_white.png')}

@@ -65,6 +65,7 @@ export default class Connect extends Component {
                         serv_offer_title: feed.serv_title?feed.serv_title:feed.serv_offer.serv_title,
                         serv_offer_id: feed.id,
                         offer_user_id: feed.user_id,
+                        serv_catagory: feed.serv_catagory,
                         lately_chat_content: this.state.lately_chat_content,
                     }
                 })
@@ -136,7 +137,7 @@ export default class Connect extends Component {
     render() {
         const { feed } = this.props;
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
                     title='联系TA'
                     leftIcon={require('../resource/ic_back_white.png')}

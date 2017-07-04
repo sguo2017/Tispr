@@ -44,7 +44,7 @@ export default class ProposeDeal extends Component{
                 },
                 body: JSON.stringify({
                     order: {
-                        status: '00B',
+                        status: Constant.orderStatus.OFFERED,
                         lately_chat_content: this.state.new_price,
                         bidder: bidder_id,
                         signature :signature_id,
@@ -98,7 +98,7 @@ export default class ProposeDeal extends Component{
 
     render(){
         return(
-            <View>
+            <View style={{backgroundColor: 'white'}}>
                 <Header
                         leftIconAction={() => this.props.navigator.pop()}
                         title={'提出交易条件'}

@@ -44,7 +44,7 @@ export default class CardDetail extends Component {
             <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
                     leftIconAction={() => this.props.navigator.pop()}
-                    title='需求详情'
+                    title='需求'
                     leftIcon={require('../../resource/ic_back_white.png')}
                 />
 

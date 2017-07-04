@@ -18,6 +18,11 @@ let storeKeys = {
     HAS_SEEN_SWIPER_USER: 'HAS_SEEN_SWIPER_USER',
 }
 
+let orderStatus = {
+    INQUIRIED : "inquiried",
+    OFFERED : "offered",
+    CONFIRMED : "confirmed"
+}
 /*
     A|a|1 ：对应场景00A 某人新增goods[serv_catagory=serv_request]，由系统向同城人新建一条此类型的数据,user_id=新增人，accept_user_id=推送同城人；
     B|b|2 ：对应场景00B 在pc端由管理员新建消息，发布范围：所有人、按区域选择接受人
@@ -124,4 +129,5 @@ export default {
     sys_msgs_status: sys_msgs_status,
     serv_qry_type: serv_qry_type,
     default_img: default_img,
+    orderStatus: orderStatus
 }

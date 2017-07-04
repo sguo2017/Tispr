@@ -87,7 +87,7 @@ export default class OrderDetail extends Component {
                 },
                 body: JSON.stringify({
                     order: {
-                        status: '00C',
+                        status: Constant.orderStatus.CONFIRMED,
                     }
                 })
             });

@@ -79,21 +79,21 @@ export default class ChatDetail extends Component {
     const { navigator } = this.props;
     const { feed } = this.props;
     if (navigator) {
-      if(this.state.order_status =='00A'){
+      if(this.state.order_status == Constant.orderStatus.INQUIRIED){
         navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
           name: "ProposeDeal",
           component: ProposeDeal,
           passProps: {feed}
         });
       }
-      if(this.state.order_status =='00B'){
+      if(this.state.order_status == Constant.orderStatus.OFFERED){
         navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
           name: "OrderDetail",
           component: OrderDetail,
           passProps: {feed}
         });
       }
-      if(this.state.order_status =='00C'){
+      if(this.state.order_status == Constant.orderStatus.CONFIRMED){
         navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
           name: "CloseDeal",
           component: CloseDeal,
@@ -188,15 +188,15 @@ export default class ChatDetail extends Component {
           <TouchableOpacity onPress={this.clickJump.bind(this)} style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: 10, backgroundColor: 'white' }}>
           <Image source={require('../resource/b-xuqiu.png')} />
           {
-            this.state.order_status =='00A'? 
+            this.state.order_status == Constant.orderStatus.INQUIRIED? 
             <Text style={{ fontSize: 16, color: 'black', marginLeft: 15, width: 260 }}>未提出交易条件</Text>:<Text></Text>
           }
           {
-            this.state.order_status =='00B'? 
+            this.state.order_status == Constant.orderStatus.OFFERED? 
             <Text style={{ fontSize: 16, color: 'black', marginLeft: 15 }}>已提出交易条件</Text>:<Text></Text>
           }
           {
-            this.state.order_status =='00C'? 
+            this.state.order_status == Constant.orderStatus.CONFIRMED? 
             <Text style={{ fontSize: 16, color: 'black', marginLeft: 15 }}>交易达成！</Text>:<Text></Text>
           }
           <Image source={require('../resource/g_chevron right.png')} style={{}}/>

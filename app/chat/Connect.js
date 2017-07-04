@@ -47,6 +47,7 @@ export default class DealConnect extends Component {
                     order: {
                         serv_offer_title: feed.serv_offer.serv_title,
                         serv_offer_id: feed.id,
+                        serv_catagory: feed.serv_catagory,
                         offer_user_id: feed.user_id,
                     }
                 })
@@ -78,7 +79,7 @@ export default class DealConnect extends Component {
         const { feed } = this.props;
 
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
                     title='Get Connect'
                     leftIcon={require('../resource/ic_back_white.png')}

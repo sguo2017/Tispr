@@ -220,6 +220,7 @@ export default class ServOfferList extends Component {
                   serv_offer_title: feed.serv_title,
                   serv_offer_id: feed.id,
                   offer_user_id: feed.user_id,
+                  serv_catagory: feed.serv_catagory,
                   lately_chat_content: default_msg,
               }
           })

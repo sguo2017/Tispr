@@ -357,13 +357,19 @@ export default class Login extends Component {
           <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword2: !this.state.seePassword2 })}>
             <Image style={{ width: 25, height: 20 }} source={this.state.seePassword2? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
           </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity onPress={() => this.setState({ loginWay: 'email' })}>
+        </View>       
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => this.setState({ loginWay: 'email' })}>
           <Text style={{ color: '#4A90E2'}}>
             使用邮箱登录
           </Text>
         </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.props.navigator.push({component: forgetPassword})}>
+            <Text style={{ color: '#4A90E2'}}>
+              忘记密码？
+            </Text>
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity onPress={this._smsCodeLogin.bind(this)} style={styles.loginButton}>
           <Text style={styles.loginButtonText}>登录</Text>
         </TouchableOpacity>

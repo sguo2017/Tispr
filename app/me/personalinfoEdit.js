@@ -28,7 +28,7 @@ export default class Personinfoedit extends Component {
         super(props);
 
         this.state = {
-            selfintroduce: '',
+            selfintroduce: global.user.profile,
             name: global.user.name,
             avatar: global.user.avatar,
             errors: this.props.errors,
