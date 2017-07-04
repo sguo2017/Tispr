@@ -6,6 +6,7 @@ import {
   Image,
   InteractionManager,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
   Platform,
   ActivityIndicator,
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 10
     },
-        themeColorText: {
+    themeColorText: {
         color: global.gColors.themeColor,
         fontSize: 16
     },
@@ -87,14 +88,25 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
     },
-    selectButton: {
+    notSelectedButton: {
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
-        padding: 5,
+        padding:5,
         height: 36,
-        width: Platform.OS === 'ios' ? 104 : 80,
+        width:210,
         marginRight: 20,
-        marginBottom: 20
+        marginBottom: 8,
+        borderRadius: 2
+    },
+    selectedButton:{
+        borderWidth: 1,
+        borderColor: global.gColors.themeColor,
+        backgroundColor: global.gColors.themeColor,
+        padding:5,
+        height: 36,
+        width:210,
+        marginRight: 20,
+        marginBottom:20
     },
     avatar: {
         width: 60,
@@ -104,7 +116,9 @@ const styles = StyleSheet.create({
         marginVertical: 20
     }
 });
-
+const msg1 ='你发布的专业服务很棒！';
+const msg2 ='请问你是如何收费的？';
+const msg3 = '我想看一下你的更多作品。';
 export default class ServOfferList extends Component {
   constructor(props) {
       super(props);
@@ -112,11 +126,12 @@ export default class ServOfferList extends Component {
       this._onRefresh = this._onRefresh.bind(this);
       this.state = {
         show: false,
-        sms: [true, false, false],
-        defaultMsg: '你发表的专业服务很棒！',
+        button1: true,
+        button2: false, 
+        button3: false,
         connectUserName: '',
         connectUserAvatar: '',
-        connectServ: ''
+        connectServ: '',
       }
   }
 
@@ -182,7 +197,15 @@ export default class ServOfferList extends Component {
     this.setState({
       show:false
     });
-    let feed = this.state.connectServ;
+    let feed = this.state.connectServ;    
+    let default_msg;
+    default_msg =`${feed.user.name}` + '您好！';
+    if(this.state.button1)
+        default_msg += msg1;
+    if(this.state.button2)
+        default_msg += msg2;
+    if(this.state.button3)
+        default_msg += msg3;
     try {
       let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_CREATE + global.user.authentication_token;
       let response = await fetch(url, {
@@ -197,7 +220,7 @@ export default class ServOfferList extends Component {
                   serv_offer_title: feed.serv_title,
                   serv_offer_id: feed.id,
                   offer_user_id: feed.user_id,
-                  lately_chat_content: this.state.defaultMsg,
+                  lately_chat_content: default_msg,
               }
           })
       });
@@ -209,7 +232,7 @@ export default class ServOfferList extends Component {
           let avaliableTimes =resObject.avaliable;
           let type = 'offer';
           if(resObject.status==0){
-              this._createChat(resObject.id,this.state.lately_chat_content);
+              this._createChat(resObject.id, default_msg);
               Alert.alert(
                   '提示',
                   '联系成功！你今天还可以联系'+avaliableTimes+ '位奇客',
@@ -235,8 +258,7 @@ export default class ServOfferList extends Component {
     }
   }
 
-  async _createChat(_deal_id){
-        let chat_content = this.state.lately_chat_content;
+  async _createChat(_deal_id, chat_content){
         try {
             let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + `${global.user.authentication_token}`;
             let response = await fetch(URL, {
@@ -249,7 +271,7 @@ export default class ServOfferList extends Component {
                 body: JSON.stringify({
                 chat: {
                     deal_id: _deal_id,
-                    chat_content: this.state.defaultMsg,
+                    chat_content: chat_content,
                     user_id: global.user.id,
                     catalog: 2
                     }
@@ -330,26 +352,28 @@ export default class ServOfferList extends Component {
                 </View>
                 <View style={{ marginLeft: 20 }}>
                     <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: this.state.connectUserAvatar}} style={styles.avatar}></Image>
-                    <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.defaultMsg}</Text>
+                    <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
                     <View style={{height:30}}></View>
-                    <TouchableOpacity
-                      style={[styles.selectButton, this.state.sms[0] && { backgroundColor: global.gColors.themeColor},{width: Platform.OS === 'ios' ? 250 : 200, }]}
-                      onPress={()=>this.setState({sms:[true, false, false], defaultMsg: '你发布的专业服务很棒！'})}
+
+                    <TouchableHighlight 
+                        style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton,{width:170, marginTop: 26}]} 
+                        onPress={()=>this.setState({button1: !this.state.button1})}
                     >
-                        <Text style={[styles.themeColorText, this.state.sms[0] && styles.whiteText]}>你发布的专业服务很棒！</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[styles.selectButton, this.state.sms[1] && { backgroundColor: global.gColors.themeColor},{width: Platform.OS === 'ios' ? 240 : 180, }]}
-                        onPress={()=>this.setState({sms:[false, true, false], defaultMsg: '请问你是如何收费的？'})}
+                        <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight 
+                        style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton,{width:156}]} 
+                        onPress={()=>this.setState({button2: !this.state.button2})}
                     >
-                        <Text style={[styles.themeColorText, this.state.sms[1] && styles.whiteText]}>请问你是如何收费的？</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[styles.selectButton, this.state.sms[2] && { backgroundColor: global.gColors.themeColor},{width: Platform.OS === 'ios' ? 260 : 210, }]}
-                        onPress={()=>this.setState({sms:[false, false, true], defaultMsg: '我想看一下你的更多作品。'})}
+                        <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight 
+                        style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton, {width: 184}]} 
+                        onPress={()=>this.setState({button3: !this.state.button3})}
                     >
-                        <Text style={[styles.themeColorText, this.state.sms[2] && styles.whiteText]}>我想看一下你的更多作品。</Text>
-                    </TouchableOpacity>
+                        <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
+                    </TouchableHighlight>
+
                 </View>
             </View>
         </View>

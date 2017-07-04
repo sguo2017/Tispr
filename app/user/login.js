@@ -29,9 +29,11 @@ export default class Login extends Component {
     this.state = {
       email: "a1@qq.com",
       password: "123456",
+      password2: '123456',
       error: "",
       showProgress: false,
-      num: "",
+      seePassword2 : true,
+      num: "18210034398",
       code: "",
       loginWay: 'phonenumber',
       initialPosition: 'unknown',
@@ -195,7 +197,7 @@ export default class Login extends Component {
 
   async _smsCodeLogin() {
     try {
-      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SMS_LOGIN;
+      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_PHONE_LOGIN;
       let response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -204,7 +206,7 @@ export default class Login extends Component {
         },
         body: JSON.stringify({
           user: {
-            code: this.state.code,
+            password: this.state.password2,
             num: this.state.num,
             district: global.user.addressComponent.district,
             city: global.user.addressComponent.city,
@@ -258,6 +260,7 @@ export default class Login extends Component {
             placeholder="邮箱"
             placeholderTextColor="#cccccc"
             returnKeyType = 'next'
+            value ={this.state.email}
           />
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minHeight: 48}}>
@@ -270,6 +273,7 @@ export default class Login extends Component {
               placeholder="密码"
               placeholderTextColor="#cccccc"
               secureTextEntry={this.state.seePassword}
+              value ={this.state.password}
             />
           </View>
           <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword: !this.state.seePassword })}>
@@ -313,24 +317,26 @@ export default class Login extends Component {
               onChangeText={(text) => this.setState({ num: text })}
               placeholder="输入您的手机号"
               placeholderTextColor="#cccccc"
+              value ={this.state.num}
             />
           </View>
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, minHeight: 48 }}>
           <View style={{ flex: 1, justifyContent: 'center'}}>
-            <AutoTextInput
-              style={styles.input}
+            <TextInput
+              style={[styles.input, { borderWidth: 0 }]}
               underlineColorAndroid="transparent"
               numberOfLines={1}
-              maxLength={6}
-              onChangeText={(text) => this.setState({ code: text })}
-              placeholder="输入短信验证码"
+              onChangeText={(text) => this.setState({ password2: text })}
+              placeholder="密码"
               placeholderTextColor="#cccccc"
+              secureTextEntry={this.state.seePassword2}
+              value ={ this.state.password2}
             />
           </View>
-          <TouchableOpacity onPress={this._smsSend.bind(this)} style={styles.smsCodeButton}>
-            <Text style={styles.smsCodeButtonText}>获取短信验证码</Text>
+          <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword2: !this.state.seePassword2 })}>
+            <Image style={{ width: 25, height: 20 }} source={this.state.seePassword2? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
           </TouchableOpacity>
         </View>
 

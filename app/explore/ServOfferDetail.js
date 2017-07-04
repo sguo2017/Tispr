@@ -47,7 +47,7 @@ export default class ServOfferDetail extends PureComponent {
         return (
             <View style={styles.listView}>
                 <Header
-                    title='需求'
+                    title='服务'
                     leftIcon={require('../resource/w-back.png')}
                     leftIconAction={() => this.props.navigator.pop()}
                     rightIcon={require('../resource/w-more.png')}

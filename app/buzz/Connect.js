@@ -42,7 +42,13 @@ export default class Connect extends Component {
         const { feed } = this.props;
         if(this.state.send_default_chat_conteng){
             let default_msg;
-            default_msg =''+ feed.user_name + '，您好！' + this.state.button1&&msg1 + this.state.button2&&msg2 + this.state.button3&&msg3;
+            default_msg =`${feed.user.name}` + '您好！';
+            if(this.state.button1)
+                default_msg += msg1;
+            if(this.state.button2)
+                default_msg += msg2;
+            if(this.state.button3)
+                default_msg += msg3;
             this.state.lately_chat_content = default_msg;
         }
         try {

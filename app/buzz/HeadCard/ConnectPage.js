@@ -27,8 +27,15 @@ export default class ConnectPage extends Component{
     }
 
     render(){
-        const { feed } = this.props;                               
-        let default_msg = feed.user_name + '您好！' + this.state.button1&&msg1 + this.state.button2&&msg2 + this.state.button3&&msg3;
+        const { feed } = this.props;                                       
+        let default_msg;
+        default_msg =`${feed.user_name}` + '您好！';
+        if(this.state.button1)
+            default_msg += msg1;
+        if(this.state.button2)
+            default_msg += msg2;
+        if(this.state.button3)
+            default_msg += msg3;
         return(
             <View>
                 <Header
@@ -99,8 +106,7 @@ export default class ConnectPage extends Component{
                                 this.props.discardIndex,
                                 Constant.sys_msgs_status.FINISHED,
                                 this.props.feed.smt_id, 
-                                this.state.send_default_chat_conteng?
-                                default_msg :this.state.msg);
+                                this.state.send_default_chat_conteng?default_msg :this.state.msg);
                             this.props.navigator.pop()}}
 
                     >
