@@ -10,6 +10,7 @@ import {
   Alert,
   Image,
   Dimensions,
+  Platform
 } from 'react-native';
 import Header from '../components/HomeNavigation';
 import Register from '../user/register';
@@ -256,6 +257,7 @@ export default class Login extends Component {
             onChangeText={(text) => this.setState({ email: text })}
             placeholder="邮箱"
             placeholderTextColor="#cccccc"
+            returnKeyType = 'next'
           />
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minHeight: 48}}>
