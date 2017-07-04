@@ -63,11 +63,13 @@ export default class forgetPassword extends Component {
                 <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center',margin:10}}>
                     <TextInput
                     style={{flexDirection:'row',width: global.gScreen.width*0.8}}
-                    multiline={true}
-                    numberOfLines={1}
+                    multiline={false}
                     placeholder='mail@examlple.com'
                     value={this.state.email}
                     onChangeText={(val)=>this.setState({ email: val})}
+                    returnKeyType = 'done'
+                    returnKeyLabel = 'done'
+                    onSubmitEditing = {this.sendEmail.bind(this)}
                     />
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',marginLeft:10 }}>

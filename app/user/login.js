@@ -248,32 +248,43 @@ export default class Login extends Component {
     }
   }
 
+  focusNextField = (nextField) => {
+    this.refs[nextField].focus();
+  };
+
   render() {
     const emailView = (
       <View style={{ flex: 1, padding: 16 }}>
         <View style={{ justifyContent: 'center', minHeight: 48}}>
           <AutoTextInput
+            ref="1"
             style={styles.input}
             underlineColorAndroid="transparent"
-            numberOfLines={1}
             onChangeText={(text) => this.setState({ email: text })}
-            placeholder="邮箱"
+            placeholder="邮箱11"
             placeholderTextColor="#cccccc"
             returnKeyType = 'next'
+            returnKeyLabel = 'next'
             value ={this.state.email}
+            multiline = {false}
+            onSubmitEditing={() => this.focusNextField('2')}
           />
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minHeight: 48}}>
           <View style={{ flex: 1, justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee',}}>
             <TextInput
+              ref="2"
               style={[styles.input, { borderWidth: 0 }]}
               underlineColorAndroid="transparent"
-              numberOfLines={1}
+              multiline = {false}
               onChangeText={(text) => this.setState({ password: text })}
               placeholder="密码"
               placeholderTextColor="#cccccc"
               secureTextEntry={this.state.seePassword}
               value ={this.state.password}
+              returnKeyType = 'done'
+              returnKeyLabel = 'done'
+              onSubmitEditing={this.onLoginPressed.bind(this)}
             />
           </View>
           <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword: !this.state.seePassword })}>
@@ -293,7 +304,7 @@ export default class Login extends Component {
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={this.onLoginPressed.bind(this)} style={styles.loginButton}>
-          <Text style={styles.loginButtonText}>
+          <Text  style={styles.loginButtonText}>
             登录
           </Text>
         </TouchableOpacity>
@@ -311,13 +322,17 @@ export default class Login extends Component {
           </TouchableOpacity>
           <View style={{ flex: 1, justifyContent: 'center'}}>
             <AutoTextInput
+              ref = "3"
               style={styles.input}
               underlineColorAndroid="transparent"
-              numberOfLines={1}
+              multiline = {false}
               onChangeText={(text) => this.setState({ num: text })}
               placeholder="输入您的手机号"
               placeholderTextColor="#cccccc"
               value ={this.state.num}
+              returnKeyType = 'next'
+              returnKeyLabel = 'next'
+              onSubmitEditing={() => this.focusNextField('4')}
             />
           </View>
         </View>
@@ -325,14 +340,18 @@ export default class Login extends Component {
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, minHeight: 48 }}>
           <View style={{ flex: 1, justifyContent: 'center'}}>
             <TextInput
+              ref = "4"
               style={[styles.input, { borderWidth: 0 }]}
               underlineColorAndroid="transparent"
-              numberOfLines={1}
+              multiline = {false}
               onChangeText={(text) => this.setState({ password2: text })}
               placeholder="密码"
               placeholderTextColor="#cccccc"
               secureTextEntry={this.state.seePassword2}
               value ={ this.state.password2}
+              returnKeyType = 'done'
+              returnKeyLabel = 'done'
+              onSubmitEditing = {this._smsCodeLogin.bind(this)}
             />
           </View>
           <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword2: !this.state.seePassword2 })}>

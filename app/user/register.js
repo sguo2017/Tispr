@@ -209,6 +209,9 @@ export default class Register extends Component {
             navigator.pop();
         }
  }
+  focusNextField = (nextField) => {
+    this.refs[nextField].focus();
+  };
 
   render() {
     const mailRegister = (
@@ -222,22 +225,38 @@ export default class Register extends Component {
         />
         <View style={{ flex: 1, padding: 16 }}>
           <TextInput
+            ref = "1"
             onChangeText={(text) => this.setState({ email: text })}
             style={styles.input} placeholder="邮箱"
-            value={this.state.email}>
+            value={this.state.email}
+            returnKeyType = 'next'
+            returnKeyLabel = 'next'
+            multiline = {false}
+            onSubmitEditing={() => this.focusNextField('2')}  
+          >
           </TextInput>
           <TextInput
+            ref = "2"
             onChangeText={(text) => this.setState({ name: text })}
             style={styles.input} placeholder="姓名"
             value={this.state.name}
+            returnKeyType = 'next'
+            returnKeyLabel = 'next'
+            multiline = {false}
+            onSubmitEditing={() => this.focusNextField('3')}
             >
           </TextInput>
           <TextInput
+            ref = "3"
             onChangeText={(text) => this.setState({ password: text })}
             style={styles.input}
             placeholder="密码"
             secureTextEntry={true}
             value={this.state.password}
+            returnKeyType = 'done'
+            returnKeyLabel = 'done'
+            multiline = {false}
+            onSubmitEditing={()=>this.setState({firstPage: false})}
             >
           </TextInput>
         </View>
@@ -261,12 +280,16 @@ export default class Register extends Component {
             </TouchableOpacity>
             <View style={{ flex: 1, justifyContent: 'center'}}>
               <AutoTextInput
+                ref = "4"
                 style={styles.input2}
                 underlineColorAndroid="transparent"
-                numberOfLines={1}
                 onChangeText={(text) => this.setState({ num: text })}
                 placeholder="输入您的手机号"
                 placeholderTextColor="#cccccc"
+                returnKeyType = 'next'
+                returnKeyLabel = 'next'
+                multiline = {false}
+                onSubmitEditing={this._smsSend.bind(this)}
               />
             </View>
           </View>
@@ -274,6 +297,7 @@ export default class Register extends Component {
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, minHeight: 48 }}>
             <View style={{ flex: 1, justifyContent: 'center'}}>
               <AutoTextInput
+                ref = "5"
                 style={styles.input2}
                 underlineColorAndroid="transparent"
                 numberOfLines={1}
@@ -281,6 +305,10 @@ export default class Register extends Component {
                 onChangeText={(text) => this.setState({ code: text })}
                 placeholder="输入短信验证码"
                 placeholderTextColor="#cccccc"
+                returnKeyType = 'done'
+                returnKeyLabel = 'done'
+                multiline = {false}
+                onSubmitEditing={this.onRegisterPressed.bind(this)}
               />
             </View>
             <TouchableOpacity onPress={this._smsSend.bind(this)} style={styles.smsCodeButton}>
