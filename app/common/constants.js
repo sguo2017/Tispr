@@ -49,6 +49,12 @@ let serv_qry_type = {
     REQUEST: '2',//我的->需求
 }
 
+let order_qry_type = {
+    PERSONAL: 'personal', //消息->消息
+    BIDDER: 'bidder',//动态->卡片->邀标列表
+}
+
+
 let default_img={
     AVATAR:'http://123.56.157.233:8080/group1/M00/00/04/ezid6Vk98BqAFb5QAAAQGOym6eI771.jpg'
 }
@@ -129,5 +135,6 @@ export default {
     sys_msgs_status: sys_msgs_status,
     serv_qry_type: serv_qry_type,
     default_img: default_img,
-    orderStatus: orderStatus
+    orderStatus: orderStatus,
+    order_qry_type: order_qry_type
 }

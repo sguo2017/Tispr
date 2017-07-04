@@ -75,9 +75,24 @@ export default class CardDetail extends Component {
                             renderRow={(rowData) =>
                                 <Image defaultSource={require('../../resource/img_default_home_cover.png')} source={{uri:rowData}} style={{height: 300, width: 328, marginBottom: 10}}></Image>
                             }/>: <View></View>
-                        }                                                                     
+                        } 
+                        <View style={{flexDirection: 'row', marginTop: 20, height: 48, justifyContent: 'space-between'}}>
+                            <Text style={{fontSize: 16, color: 'black'}}>投标&nbsp;&nbsp;&nbsp;4/5</Text>
+                            <TouchableOpacity style={{backgroundColor: '#4A90E2', borderRadius: 2, height: 28, width: 72}}>
+                                <Text style={{color: 'white', marginHorizontal: 8, marginVertical: 4}}>增加投标</Text>
+                            </TouchableOpacity>
+                        </View>                                                                    
                     </View>
-               
+                    <ListView
+                        dataSource={this.state.dataSource.cloneWithRows(['row1', 'row2', 'row3', 'row4'])}
+                        renderRow={(rowData) => 
+                            <View style={{backgroundColor: '#FFFFFF', height: 64, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12}}>
+                                <Image source={require('../../resource/user_default_image.png')} style={{borderRadius: 20, width: 40, height: 40}}></Image>
+                                <Text style={{color: '#1B2833', fontSize: 16, flexShrink: 0, marginLeft: 12}}>Frank Gardner</Text>
+                                <Image source={require('../../resource/g_chevron right.png')} style={{position: 'absolute', right: 16}}></Image>
+                            </View>
+                        }
+                    />
                     <View style={{backgroundColor: 'white', paddingTop: 23, paddingBottom: 10}}>
                         <TouchableOpacity style={{backgroundColor: '#FFC400', borderRadius: 4, height: 44, marginHorizontal: 16, paddingHorizontal: 138, paddingVertical: 10}}
                             onPress={() => this._p(feed)}

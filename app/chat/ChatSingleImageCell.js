@@ -8,7 +8,7 @@ import {
     Dimensions
 } from 'react-native';
 import DateUtil from '../common/DateUtil';
-
+import Constant from '../common/constants';
 const screenW = Dimensions.get('window').width;
 
 const ChatSingleImageItem = ({
@@ -42,7 +42,7 @@ const ChatSingleImageItem = ({
               <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                 <Text numberOfLines={1} style={{ fontSize: 16, color:'#1b2833' }}>{user_name}</Text>
                 {
-                  status=='00C'?
+                  status== Constant.orderStatus.CONFIRMED?
                     <View style={{ backgroundColor: '#ffc400', borderRadius: 2, paddingVertical: 2, paddingHorizontal: 4, marginLeft: 8 }}>
                       <Text style={{fontSize: 12, color: 'white'}}>达成协议</Text>
                     </View> : null

@@ -49,7 +49,7 @@ export default class ChatStore {
 
     _fetchDataFromUrl() {
         return new Promise((resolve, reject) => {
-            const URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_LIST + `${global.user.authentication_token}&page=${this.page}`;
+            const URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_LIST + `${global.user.authentication_token}&scence=${Constant.order_qry_type.PERSONAL}&page=${this.page}`;
             fetch(URL, {
                 method: 'GET',
                 headers: {

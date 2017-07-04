@@ -60,7 +60,7 @@ export default class ServOfferDetail extends PureComponent {
                             <View style={{justifyContent: 'space-around', flexDirection: 'row',}}>
                                 <Image style={{width: 32, height: 32, borderRadius: 16}} source={{uri: feed.user.avatar}} defaultsource={require('../resource/user_default_image.png')}></Image>
                                 <View style={{marginLeft: 8, marginTop: -5}}>
-                                    <Text style={{fontSize: 14, lineHeight: 20}}>{feed.user.name}</Text>
+                                    <Text style={{fontSize: 14, lineHeight: 20 ,color: '#000'}}>{feed.user.name}</Text>
                                     {
                                         feed.catalog?
                                         <Text style={{color: '#999999', fontSize: 12}}>{feed.catalog}</Text>
@@ -73,7 +73,8 @@ export default class ServOfferDetail extends PureComponent {
                                 <Text style={{color: '#999999', fontSize: 12}}>{feed.created_at.substring(0,10)}</Text>
                             </View> 
                         </View>
-                        <Text style={{color: '#424242', fontSize: 16, lineHeight: 24}}>{feed.serv_detail}</Text>
+                        <Text style={{color: '#000', fontSize: 18, lineHeight: 24}}>{feed.serv_title}</Text>
+                        <Text style={{color: '#999999', fontSize: 14, lineHeight: 24}}>{feed.serv_detail}</Text>
                         {
                             feed.serv_images?<ListView
                             dataSource={this.state.dataSource.cloneWithRows(feed.serv_images.split(','))}
