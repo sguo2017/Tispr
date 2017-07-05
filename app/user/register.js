@@ -9,7 +9,8 @@ import {
   Text,
   View,
   Alert,
-  Image
+  Image,
+  Platform,
 } from 'react-native';
 
 import TabBarView from '../containers/TabBarView';
@@ -33,6 +34,9 @@ export default class Register extends Component {
       firstPage: true,
       num: "",
       code: "",
+      isEmail: true,
+      nameValid: true,
+      passwordValid: true
     }
   }
   _navigate(routeName) {
@@ -221,7 +225,7 @@ export default class Register extends Component {
           leftIcon={require('../resource/ic_back_white.png')}
           leftIconAction = {this._onBack}
           rightButton='下一步'
-          rightButtonAction={()=>this.setState({firstPage: false})}
+          rightButtonAction={()=> {if(this.state.isEmail && this.state.name && this.state.password){this.setState({firstPage: false});}}}
         />
         <View style={{ flex: 1, padding: 16 }}>
           <TextInput
@@ -229,23 +233,30 @@ export default class Register extends Component {
             onChangeText={(text) => this.setState({ email: text })}
             style={styles.input} placeholder="邮箱"
             value={this.state.email}
+            underlineColorAndroid="transparent"
             returnKeyType = 'next'
-            returnKeyLabel = 'next'
             multiline = {false}
-            onSubmitEditing={() => this.focusNextField('2')}  
+            onSubmitEditing={() => this.focusNextField('2')}
+            onBlur = {
+              ()=>{let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+              this.setState({isEmail: reg.test(this.state.email)});
+            }}  
           >
           </TextInput>
+          {this.state.isEmail?<Text></Text>:<Text style ={styles.redText}>邮箱格式不正确</Text>}
           <TextInput
             ref = "2"
             onChangeText={(text) => this.setState({ name: text })}
             style={styles.input} placeholder="姓名"
             value={this.state.name}
+            underlineColorAndroid="transparent"
             returnKeyType = 'next'
-            returnKeyLabel = 'next'
             multiline = {false}
             onSubmitEditing={() => this.focusNextField('3')}
+            onBlur ={()=>{if(this.state.name){this.setState({nameValid: true})}else{this.setState({nameValid: false})}}}
             >
           </TextInput>
+          {this.state.nameValid? <Text></Text>:<Text style ={styles.redText}>姓名不能为空</Text>}
           <TextInput
             ref = "3"
             onChangeText={(text) => this.setState({ password: text })}
@@ -253,12 +264,14 @@ export default class Register extends Component {
             placeholder="密码"
             secureTextEntry={true}
             value={this.state.password}
+            underlineColorAndroid="transparent"
             returnKeyType = 'done'
-            returnKeyLabel = 'done'
             multiline = {false}
-            onSubmitEditing={()=>this.setState({firstPage: false})}
+            onSubmitEditing={()=> {if(this.state.isEmail && this.state.name && this.state.password){this.setState({firstPage: false});}}}
+            onBlur ={()=>{if(this.state.password){this.setState({passwordValid: true})}else{this.setState({passwordValid: false})}}}
             >
           </TextInput>
+          {this.state.passwordValid? <Text></Text>:<Text style ={styles.redText}>密码不能为空</Text>}
         </View>
       </View>
     );
@@ -281,7 +294,7 @@ export default class Register extends Component {
             <View style={{ flex: 1, justifyContent: 'center'}}>
               <AutoTextInput
                 ref = "4"
-                style={styles.input2}
+                style={styles.input}
                 underlineColorAndroid="transparent"
                 onChangeText={(text) => this.setState({ num: text })}
                 placeholder="输入您的手机号"
@@ -298,7 +311,7 @@ export default class Register extends Component {
             <View style={{ flex: 1, justifyContent: 'center'}}>
               <AutoTextInput
                 ref = "5"
-                style={styles.input2}
+                style={styles.input}
                 underlineColorAndroid="transparent"
                 numberOfLines={1}
                 maxLength={6}
@@ -344,21 +357,14 @@ const styles = StyleSheet.create({
     // paddingTop: 80
   },
   input: {
-    marginTop: 25,
-    backgroundColor: 'white',
-    fontSize: 16,
-    paddingHorizontal: 5,
-    marginHorizontal: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eeeeee',
-  },
-  input2: {
     height: 50,
     marginTop: 10,
     padding: 4,
     fontSize: 18,
     // borderWidth: 1,
-    borderColor: '#48bbec'
+    borderColor: '#48bbec',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eeeeee',
   },
   button: {
     height: 50,
@@ -411,4 +417,7 @@ const styles = StyleSheet.create({
     left: 0,
     height: 44,
   },
+  redText: {
+    color: 'red'
+  }
 });
