@@ -226,7 +226,6 @@ export default class BussList extends Component {
                     'Content-Type': 'application/json',
                 },
             }).then(response => {
-                console.log("156:"+JSON.stringify(response))
                 if (response.status == 200) return response.json()
                 return null
             }).then(responseData => {                

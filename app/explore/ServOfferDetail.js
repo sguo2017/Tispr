@@ -11,14 +11,16 @@ import {
     ScrollView,
     Modal
 } from 'react-native'
-import {observer} from 'mobx-react/native'
-import {reaction} from 'mobx'
-import {connect} from 'react-redux';
+import { observer } from 'mobx-react/native'
+import { reaction } from 'mobx'
+import { connect } from 'react-redux';
+import { CachedImage } from "react-native-img-cache";
 import Loading from '../components/Loading'
 import LoadMoreFooter from '../components/LoadMoreFooter'
 import Toast from 'react-native-easy-toast'
 import Header from '../components/HomeNavigation';
 import Connect from '../buzz/Connect'
+import Constant from '../common/constants';
 const screenW = Dimensions.get('window').width;
 
 
@@ -30,7 +32,8 @@ export default class ServOfferDetail extends PureComponent {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
-            show: false
+            show: false,
+            offerList:[],
         }
      }
       _p = feed => {
@@ -39,11 +42,42 @@ export default class ServOfferDetail extends PureComponent {
              passProps: { feed }
          })
       }
+    componentWillMount() {
+        this._getSameTypeOffer();
+    }
+
+    async _getSameTypeOffer(){
+        let catalog_id =this.props.feed.goods_catalog_id
+        console.log("51:"+catalog_id)
+        try {
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_INDEX +global.user.authentication_token + `&catalog_id=`+`${catalog_id}`;
+            // console.log("148:"+url)
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            }).then(response => {
+                // console.log("156:"+JSON.stringify(response))
+                if (response.status == 200) return response.json()
+                return null
+            }).then(responseData => {      
+                let offerList =this.state.offerList          
+                offerList = JSON.parse(responseData.feeds);
+                this.setState({
+                    offerList:offerList,
+                });
+            }).catch(error => {
+                console.log(`Fetch evaluating list error: ${error}`)             
+            })
+        } catch (error) {
+            console.log(`Fetch evaluating list error: ${error}`)
+        }      
+    }
 
     render() {
         const { feed } = this.props;
-        //let img = feed.serv_images.split(',');
-
         return (
             <View style={styles.listView}>
                 <Header
@@ -94,6 +128,24 @@ export default class ServOfferDetail extends PureComponent {
                             </TouchableOpacity>
                         </View>
                     }
+
+                    <View style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 12}}>
+                       <Text style={{color: '#9E9E9E', fontSize: 14}}>相关服务</Text>
+                    </View>
+                    <View style ={{flexDirection: 'row', flexWrap:'wrap'}}>
+                    {
+                        
+                        this.state.offerList.map((data,index)=>{
+                            return(
+                                <OfferItem 
+                                    key={`${data.id}-${index}` }
+                                    offer={data}                                  
+                                />
+                            )                      
+                        })
+                        
+                    }
+                    </View>
                 </ScrollView>
                 <Modal
                     animationType='slide'
@@ -131,8 +183,6 @@ export default class ServOfferDetail extends PureComponent {
     }
 }
 
-
-
 const styles = StyleSheet.create({
     listView: {
         flex: 1,
@@ -167,5 +217,75 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginTop: 30,
         marginHorizontal: 132
-    }
+    },
+    cardContainer: {
+        width: (screenW - 24) / 2,
+        margin: 4,
+        backgroundColor: '#fff',
+        borderRadius: 4,
+        overflow: 'hidden',
+    },
+    cardUserInfoView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        borderTopWidth: 0.5,
+        borderColor: '#eeeeee',
+    },
 })
+
+const OfferItem = ({
+  offer
+}) => {
+  let width = (screenW - 24) / 2;
+  let imageH = 120;
+  let offerUser = offer.user;
+  let serv_image = offer.serv_images && offer.serv_images != 'undefined' ? {uri: offer.serv_images.split(',')[0]} : require('../resource/qk_nav_default.png');
+  return (
+    <TouchableOpacity
+      activeOpacity={0.75}
+      style={styles.cardContainer}
+    >
+      <CachedImage
+        style={{ width: width, height: imageH }}
+        defaultSource={require('../resource/qk_nav_default.png')}
+        source={serv_image}
+      />
+      <View style={{
+        width: width,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+      }}>
+        <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }} numberOfLines={2}>{offer.serv_title}</Text>
+        <Text style={{ fontSize: 12, color: '#999999', marginBottom: 4 }}>{offer.catalog}</Text>
+        <View style={{ flexDirection:'row' }}>
+          <Image style={{ width: 12, height: 12 }} source={require('../resource/g-location-s.png')}/>
+          <Text style={{ fontSize: 12, color: '#b8b8b8' }}>{offer.district}</Text>
+        </View>
+      </View>
+      <View style={styles.cardUserInfoView}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <CachedImage
+            style={{height: 22, width: 22, borderRadius: 15}}
+            source={{uri: offerUser.avatar}}
+            defaultSource={require('../resource/img_default_avatar.png')}
+          />
+          <Text
+            style={{fontSize: 14, color: 'gray', marginLeft: 8, width: width * 0.4}}
+            numberOfLines={1}
+          >
+            {offerUser.name}
+          </Text>
+        </View>
+        <TouchableOpacity
+          activeOpacity={0.75}
+        >
+          <Image style={{height: 18, width: 18}} source={require('../resource/y-chat.png')}/>
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
+  );
+}
+
