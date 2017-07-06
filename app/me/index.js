@@ -20,7 +20,7 @@ import RequestsList from './page/requestsList';
 import BookmarksList from './page/bookmarksList';
 import PersonInfo from './personalinfoEdit';
 import Setting from '../sys/Setting';
-
+import Constant from '../common/constants';
 export default class MeInfo extends Component {
     constructor(props) {
       super(props);
@@ -28,13 +28,61 @@ export default class MeInfo extends Component {
         fileName: this.props.fileName,
         fileSource: this.props.source,
         avatar: global.user.avatar,
+        name: global.user.name,
         errors: this.props.errors,
         info: global.user.profile,
         country: global.user.addressComponent.country,
         province: global.user.addressComponent.province,
         city: global.user.addressComponent.city,
-        district: global.user.addressComponent.district
+        district: global.user.addressComponent.district,
+        offer_count: global.user.offer_count,
+        request_count: global.user.request_count,
+        favorites_count: global.user.favorites_count,
       }
+    }
+
+    componentWillMount(){
+      if(this.props.isBrowseMode && this.props.id){
+        this._getUserInfo();
+      }
+    }
+    async _getUserInfo(){
+      try {
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_PERSON_INFO + `/${this.props.id}?token=${global.user.authentication_token}`
+
+        fetch(url, {
+          method: 'GET',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+        }).then(response => {
+          if (response.status == 200) return response.json()
+          return null
+        }).then(responseData => {
+          if (responseData) {
+              let thisUser = JSON.parse(responseData.user);
+              console.log("用户信息"+JSON.stringify(thisUser));
+              this.setState({
+                avatar: thisUser.avatar,
+                info: thisUser.profile,
+                country: thisUser.country,
+                province: thisUser.province,
+                city: thisUser.city,
+                district: thisUser.district,
+                name: thisUser.name,
+                offer_count: thisUser.offer_count,
+                request_count: thisUser.request_count,
+                favorites_count: thisUser.favorites_count,
+              });
+          } else {
+          }
+        }).catch(error => {
+          console.log(`Fetch evaluating list error: ${error}`)         
+        })
+      } catch (error) {
+        console.log(`Fetch evaluating list error: ${error}`)
+      }      
     }
     clickJump() {
         let _this = this;
@@ -95,7 +143,7 @@ export default class MeInfo extends Component {
           {categoryId: 3, controller: BookmarksList},
         ];
       } else {
-        titles = ['服务('+global.user.offer_count+')', '需求('+global.user.request_count+')'];
+        titles = ['服务('+this.state.offer_count+')', '需求('+this.state.request_count+')'];
         controllers = [
           {categoryId: 1, controller: OffersList},
           {categoryId: 2, controller: RequestsList},
@@ -117,7 +165,7 @@ export default class MeInfo extends Component {
                 </View>
                 <View style={{ flex: 1, justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
                   <View>
-                    <Text style={{ fontSize:16, color:'white' }}>{global.user.name}</Text>
+                    <Text style={{ fontSize:16, color:'white' }}>{this.state.name}</Text>
                     <Text style={ styles.text }>{this.state.country} {this.state.province} {this.state.city} {this.state.district}</Text>
                   </View>
                   {
@@ -145,7 +193,7 @@ export default class MeInfo extends Component {
                 }
               </View>
               <View style={{marginHorizontal: 16}}>
-                  <Text style={styles.text}>{global.user.profile}</Text>
+                  <Text style={styles.text}>{this.state.info}</Text>
               </View>
               <View style={{marginVertical: 16, flexDirection: 'row', alignItems: 'center' }}>
                   <Image style={{ marginRight: 11 }} source={require('../resource/w-earth.png')}></Image>
@@ -168,7 +216,7 @@ export default class MeInfo extends Component {
                           key={titles[index]}
                           tabLabel={titles[index]}
                           categoryId={data.categoryId}
-                          userId={global.user.id}
+                          userId={this.props.id}
                           navigator={this.props.navigator}
                       />
                   )

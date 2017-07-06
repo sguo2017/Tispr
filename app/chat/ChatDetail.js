@@ -77,7 +77,7 @@ export default class ChatDetail extends Component {
   }
 
   /*查看对方信息*/
-  jumpInfo(){
+  jumpInfo(id){
     const { navigator } = this.props;
     this.setState({
       show: false
@@ -90,6 +90,7 @@ export default class ChatDetail extends Component {
             close: () => {
               this.props.navigator.pop();
             },
+            id: id,
           }
         });
     }
@@ -251,10 +252,10 @@ export default class ChatDetail extends Component {
           onShow={() => { }}
           onRequestClose={() => { }}>
           <View style={styles.modal}>
-            <TouchableOpacity style={styles.item} onPress={this.jumpInfo.bind(this)}>
+            <TouchableOpacity style={styles.item} onPress={this.jumpInfo.bind(this, obj.id)}>
               <Text style={styles.text}>查看TA的个人信息</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.item} onPress={this.jumpInfo.bind(this)}>
+            <TouchableOpacity style={styles.item} onPress={this.jumpInfo.bind(this, obj.id)}>
               <Text  style={styles.text}>查看TA的需求(服务)</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.item, {flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16}]}

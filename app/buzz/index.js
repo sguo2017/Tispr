@@ -184,6 +184,7 @@ export default class BussList extends Component {
             close: () => {
               this.props.navigator.pop();
             },
+            id: feed.user_id
           }
         });
       } else {
