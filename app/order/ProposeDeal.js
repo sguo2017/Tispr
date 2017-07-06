@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
+import AutoTextInput from '../components/AutoTextInput';
 const screenW = Dimensions.get('window').width;
 
 export default class ProposeDeal extends Component{
@@ -98,29 +99,24 @@ export default class ProposeDeal extends Component{
 
     render(){
         return(
-            <View style={{backgroundColor: 'white'}}>
+            <View style={{flex: 1, backgroundColor: 'white'}}>
                 <Header
                         leftIconAction={() => this.props.navigator.pop()}
                         title={'提出交易条件'}
                         leftIcon={require('../resource/w-back.png')}
                     />
-                <View style={{justifyContent:'center',alignItems:'center', padding:16}}>
+                <View style={{alignItems:'center', padding:16,flex: 1,}}>
                     <Image source={require('../resource/b-xuqiu-xl.png')}/>
                     <Text style={{fontSize:16,color:'black', marginTop: 12, marginBottom: 36}}>提出交易条件，如果对方接受，交易达成!</Text>
                     <Text style={{color: '#9E9E9E', fontSize: 14}}>我提议本次交易按以下价格及方式进行</Text>
-                    <TextInput
+                    <AutoTextInput
                         onChangeText={(val) => this.setState({new_price:val})}
                         placeholderTextColor='black'
-                        underlineColorAndroid='#EEEEEE'
-                        style={{width: 330, height: 56, fontSize: 16}}
+                        underlineColorAndroid="transparent"
+                        style={styles.input}
                     />
                     <TouchableOpacity
-                    activeOpacity={0.75}
-                                style={{flexDirection: 'row',alignItems: 'center',
-                                    justifyContent: 'center',
-                                    borderTopColor: '#ccc',
-                                    marginTop:271,
-                                    backgroundColor: global.gColors.buttonColor,width: screenW,height:44}}
+                    style ={styles.button}
                     onPress={this.state.new_price?this.askPrice.bind(this):console.log('dd')}
                     >
                         <Text style={{fontSize: 16, color: 'white'}}>发送</Text>
@@ -130,3 +126,27 @@ export default class ProposeDeal extends Component{
         )
     }
 }
+
+styles = StyleSheet.create({
+    input: {
+        height: 50,
+        margin: 10,
+        padding: 4,
+        fontSize: 18,
+        width: screenW - 40,
+        // borderWidth: 1,
+        borderColor: '#48bbec',
+        borderBottomWidth: 1,
+        borderBottomColor: '#eeeeee',
+    },
+    button: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: global.gColors.buttonColor,
+        position: 'absolute',
+        bottom: 0,
+        right:0,
+        left: 0,
+        height: 44,
+    },
+})

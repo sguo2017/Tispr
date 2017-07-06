@@ -57,7 +57,7 @@ export default class PasswordConfirm extends Component{
 
     render(){
         return(
-            <View style={{height:global.gScreen.height, backgroundColor: 'white'}}>
+            <View style={{ backgroundColor: 'white',flex: 1}}>
                 <Header
 					title='举报'
 					leftIcon={require('../../resource/ic_back_white.png')}
@@ -65,7 +65,7 @@ export default class PasswordConfirm extends Component{
 				/>
                 <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center',margin:10}}>
                     <TextInput
-                    style={{flexDirection:'row',width: global.gScreen.width*0.8}}
+                    style={styles.input}
                     multiline={true}
                     numberOfLines={1}
                     value = {this.state.content}
@@ -85,25 +85,29 @@ export default class PasswordConfirm extends Component{
     }
 }
 const styles = StyleSheet.create({
-
-  input: {
-    height: 50,
-    marginTop: 10,
-    //padding: 4,
-    fontSize: 18,
-    borderWidth: 0,
-    // borderColor: '#48bbec'
-  },
   button: {
     height: 50,
     backgroundColor: global.gColors.themeColor,
     alignSelf: 'stretch',
     marginTop: 10,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0,
   },
   buttonText: {
     fontSize: 22,
     color: '#FFF',
     alignSelf: 'center'
   },
+  input: {
+    height: 50,
+    margin: 10,
+    padding: 4,
+    fontSize: 18,
+    width: global.gScreen.width - 40,
+    // borderWidth: 1,
+    borderColor: '#48bbec',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eeeeee',
+},
 })
