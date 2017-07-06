@@ -6,10 +6,13 @@ import {
     Image,
     ListView,
     TouchableOpacity,
+    TouchableHighlight,
     RefreshControl,
     Dimensions,
     ScrollView,
-    Modal
+    Modal,
+    Alert,
+    Platform
 } from 'react-native'
 import { observer } from 'mobx-react/native'
 import { reaction } from 'mobx'
@@ -23,7 +26,9 @@ import Connect from '../buzz/Connect'
 import Constant from '../common/constants';
 const screenW = Dimensions.get('window').width;
 
-
+const msg1 ='你发布的专业服务很棒！';
+const msg2 ='请问你是如何收费的？';
+const msg3 = '我想看一下你的更多作品。';
 @observer
 export default class ServOfferDetail extends PureComponent {
      constructor(props) {
@@ -32,8 +37,15 @@ export default class ServOfferDetail extends PureComponent {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
-            show: false,
+            show_share: false,
             offerList:[],
+            show: false,
+            button1: true,
+            button2: false, 
+            button3: false,
+            connectUserName: '',
+            connectUserAvatar: '',
+            connectServ: '',
         }
      }
       _p = feed => {
@@ -76,6 +88,121 @@ export default class ServOfferDetail extends PureComponent {
         }      
     }
 
+    async _sendMessage(){
+        this.setState({
+            show:false
+        });
+        let feed = this.state.connectServ;    
+        let default_msg;
+        default_msg =`${feed.user.name}` + '您好！';
+        if(this.state.button1)
+            default_msg += msg1;
+        if(this.state.button2)
+            default_msg += msg2;
+        if(this.state.button3)
+            default_msg += msg3;
+        try {
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_CREATE + global.user.authentication_token;
+        let response = await fetch(url, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+
+          body: JSON.stringify({
+              order: {
+                  serv_offer_title: feed.serv_title,
+                  serv_offer_id: feed.id,
+                  offer_user_id: feed.user_id,
+                  serv_catagory: feed.serv_catagory,
+                  lately_chat_content: default_msg,
+              }
+          })
+      });
+
+      let res = await response.text();
+      if (response.status >= 200 && response.status < 300) {
+          //console.log("line:153");
+          let resObject =JSON.parse(res);
+          let avaliableTimes =resObject.avaliable;
+          let type = 'offer';
+          if(resObject.status==0){
+              this._createChat(resObject.id, default_msg);
+              Alert.alert(
+                  '提示',
+                  '联系成功！你今天还可以联系'+avaliableTimes+ '位奇客',
+                  [
+                      { text: '确定'},
+                  ]
+              )
+          }else if(resObject.status==-2){
+              Alert.alert(
+                  '提示',
+                  '您今天的沟通机会已用完，请明天再联系',
+                  [
+                      { text: '确定'},
+                  ]
+              )
+          }
+      } else {
+          let error = res;
+          throw error;
+      }
+    } catch (error) {
+        console.log("error " + error);
+    }
+  }
+
+  async _createChat(_deal_id, chat_content){
+        try {
+            let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + `${global.user.authentication_token}`;
+            let response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                },
+
+                body: JSON.stringify({
+                chat: {
+                    deal_id: _deal_id,
+                    chat_content: chat_content,
+                    user_id: global.user.id,
+                    catalog: 2
+                    }
+                })
+            });
+
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                console.log("line:99");
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            console.log("error " + error);
+        }
+    }
+
+    _onPressCell(feed) {
+        this.props.navigator.push({
+            component: ServOfferDetail,
+            passProps: {feed}
+        });
+    }
+
+    _selectMessage = (feed) =>{
+        let connectUser = feed.user
+        this.setState({
+            connectUserAvatar: connectUser.avatar,
+            connectUserName: connectUser.name,
+            show: true,
+            connectServ: feed,
+        })
+    }
+
     render() {
         const { feed } = this.props;
         return (
@@ -85,7 +212,7 @@ export default class ServOfferDetail extends PureComponent {
                     leftIcon={require('../resource/w-back.png')}
                     leftIconAction={() => this.props.navigator.pop()}
                     rightIcon={require('../resource/w-more.png')}
-                    rightIconAction={() => this.setState({show: true})}
+                    rightIconAction={() => this.setState({show_share: true})}
                     style={{height: 50}}
                 />
                 <ScrollView>
@@ -139,7 +266,9 @@ export default class ServOfferDetail extends PureComponent {
                             return(
                                 <OfferItem 
                                     key={`${data.id}-${index}` }
-                                    offer={data}                                  
+                                    offer={data}  
+                                    onPress={() => this._onPressCell(data)}
+                                    onCall={() => this._selectMessage(data)}                                
                                 />
                             )                      
                         })
@@ -147,10 +276,11 @@ export default class ServOfferDetail extends PureComponent {
                     }
                     </View>
                 </ScrollView>
+                {/*分享弹窗*/}
                 <Modal
                     animationType='slide'
                     transparent={true}
-                    visible={this.state.show}
+                    visible={this.state.show_share}
                     onShow={() => { }}
                     onRequestClose={() => { }}>
                     <View style={styles.modal}>
@@ -172,12 +302,57 @@ export default class ServOfferDetail extends PureComponent {
                                 <Text style={styles.text}>新浪微博</Text>
                             </TouchableOpacity>       
                         </View>
-                        <TouchableOpacity onPress={() => this.setState({show: false})} style={{height: 57, width: 300, marginTop: 30}}>
+                        <TouchableOpacity onPress={() => this.setState({show_share: false})} style={{height: 57, width: 300, marginTop: 30}}>
                             <Text style={styles.cancel}>取消</Text> 
                         </TouchableOpacity>                    
                     </View>
 
                 </Modal>
+                {/*相关服务列表快捷回复弹窗*/}
+                <Modal
+                    animationType='slide'
+                    transparent={true}
+                    visible={this.state.show}
+                    >
+                    <View style={styles.modalStyle}>
+                        <View style={[styles.subView, {height: 400}]}>
+                            <View style={styles.modalHead}>
+                                <TouchableOpacity onPress={() => this.setState({ show: false })}>
+                                    <Text style={styles.themeColorText}>取消</Text>
+                                </TouchableOpacity>
+                                <Text style={{ color: 'black', fontSize: 16 }}>快捷回复</Text>
+                                <TouchableOpacity onPress={this._sendMessage.bind(this)}>
+                                    <Text style={styles.themeColorText}>发送</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ marginLeft: 20 }}>
+                                <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: this.state.connectUserAvatar}} style={styles.avatar}></Image>
+                                <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
+                                <View style={{height:30}}></View>
+
+                                <TouchableHighlight 
+                                    style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton,{width:Platform.OS == 'ios'? 250 : 200, marginTop: 26}]} 
+                                    onPress={()=>this.setState({button1: !this.state.button1})}
+                                >
+                                    <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight 
+                                    style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton,{width:Platform.OS == 'ios'? 250 : 200}]} 
+                                    onPress={()=>this.setState({button2: !this.state.button2})}
+                                >
+                                    <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight 
+                                    style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton, {width: Platform.OS == 'ios'? 250 : 200}]} 
+                                    onPress={()=>this.setState({button3: !this.state.button3})}
+                                >
+                                    <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
+                                </TouchableHighlight>
+
+                            </View>
+                        </View>
+                    </View>
+                    </Modal>
             </View>
         )
     }
@@ -234,10 +409,74 @@ const styles = StyleSheet.create({
         borderTopWidth: 0.5,
         borderColor: '#eeeeee',
     },
+
+       // modal的样式
+    modalStyle: {
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        flex: 1,
+    },
+    // modal上子View的样式
+    subView: {
+        alignSelf: 'stretch',
+        justifyContent: 'flex-start',
+        borderWidth: 0.5,
+        backgroundColor: '#fff',
+        height: 300,
+    },
+    // 标题
+    modalHead: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10
+    },
+    themeColorText: {
+        color: global.gColors.themeColor,
+        fontSize: 16
+    },
+    blackText: {
+        color: '#000',
+        padding: 5,
+        borderRadius: 3,
+        fontSize: 18
+    },
+    whiteText: {
+        color: '#fff',
+        fontSize: 16,
+    },
+    notSelectedButton: {
+        borderWidth: 1,
+        borderColor: global.gColors.themeColor,
+        padding:5,
+        height: 36,
+        width:210,
+        marginRight: 20,
+        marginBottom: 8,
+        borderRadius: 2
+    },
+    selectedButton:{
+        borderWidth: 1,
+        borderColor: global.gColors.themeColor,
+        backgroundColor: global.gColors.themeColor,
+        padding:5,
+        height: 36,
+        width:210,
+        marginRight: 20,
+        marginBottom:20
+    },
+    avatar: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        marginHorizontal: 130,
+        marginVertical: 20
+    }
 })
 
 const OfferItem = ({
-  offer
+  offer,
+  onPress,
+  onCall
 }) => {
   let width = (screenW - 24) / 2;
   let imageH = 120;
@@ -247,6 +486,7 @@ const OfferItem = ({
     <TouchableOpacity
       activeOpacity={0.75}
       style={styles.cardContainer}
+      onPress ={onPress}
     >
       <CachedImage
         style={{ width: width, height: imageH }}
@@ -281,6 +521,7 @@ const OfferItem = ({
         </View>
         <TouchableOpacity
           activeOpacity={0.75}
+          onPress = {onCall}
         >
           <Image style={{height: 18, width: 18}} source={require('../resource/y-chat.png')}/>
         </TouchableOpacity>
