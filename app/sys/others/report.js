@@ -66,6 +66,7 @@ export default class PasswordConfirm extends Component{
                 <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center',margin:10}}>
                     <TextInput
                     style={styles.input}
+                    underlineColorAndroid="transparent"
                     multiline={true}
                     numberOfLines={1}
                     value = {this.state.content}

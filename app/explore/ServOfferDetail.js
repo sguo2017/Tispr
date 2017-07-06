@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react'
+import React, {Component} from 'react'
 import {
     StyleSheet,
     View,
@@ -18,19 +18,21 @@ import { observer } from 'mobx-react/native'
 import { reaction } from 'mobx'
 import { connect } from 'react-redux';
 import { CachedImage } from "react-native-img-cache";
+import Swiper from 'react-native-swiper';
 import Loading from '../components/Loading'
 import LoadMoreFooter from '../components/LoadMoreFooter'
 import Toast from 'react-native-easy-toast'
 import Header from '../components/HomeNavigation';
 import Connect from '../buzz/Connect'
 import Constant from '../common/constants';
+import Report from '../sys/others/report';
 const screenW = Dimensions.get('window').width;
 
 const msg1 ='你发布的专业服务很棒！';
 const msg2 ='请问你是如何收费的？';
 const msg3 = '我想看一下你的更多作品。';
 @observer
-export default class ServOfferDetail extends PureComponent {
+export default class ServOfferDetail extends Component {
      constructor(props) {
          super(props);
          this.state = {
@@ -38,7 +40,9 @@ export default class ServOfferDetail extends PureComponent {
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
             show_share: false,
+            show_report: false,
             offerList:[],
+            /*相关服务列表快捷回复 */
             show: false,
             button1: true,
             button2: false, 
@@ -46,6 +50,9 @@ export default class ServOfferDetail extends PureComponent {
             connectUserName: '',
             connectUserAvatar: '',
             connectServ: '',
+            /*收藏*/
+            isFavorited: this.props.feed.isFavorited,
+            favorite_id: this.props.feed.favorite_id,
         }
      }
       _p = feed => {
@@ -203,8 +210,92 @@ export default class ServOfferDetail extends PureComponent {
         })
     }
 
+    _switch() {
+        if (this.state.isFavorited) {
+            this.cancelCollect()
+        } else {
+            this.collect()
+        }
+    }
+
+    async collect() {
+        try {
+            let t = global.user.authentication_token;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_COLLECT + t;
+            console.log("69")
+            let response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    favorite: {
+                        obj_id: this.props.feed.id,
+                        obj_type: 'serv_offer',
+                        user_id: global.user.id,
+                    }
+                })
+            });
+
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                  let rmsg = JSON.parse(response._bodyText);
+                  this.props.feed.favorite_id = rmsg.favorite_id;
+                  this.props.feed.isFavorited= true;
+                  global.user.favorites_count++;
+                this.setState({ isFavorited: true });
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            console.log(`Fetch evaluating list error: ${error}`)
+        }
+    }
+
+    async cancelCollect() {
+        try {
+            let t = global.user.authentication_token;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_COLLECT_CANCEL + '/' + this.props.feed.favorite_id + '?token=' + t;
+            console.log("101")
+            let response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                this.props.feed.isFavorited= false;
+                global.user.favorites_count--;
+                this.setState({isFavorited: false});
+            } else {
+                let error = res;
+                throw error;
+            }
+        } catch (error) {
+            console.log(`Fetch evaluating list error: ${error}`)
+        }
+    }
+    reportOffer(id){
+        this.setState({
+            show_report:false,
+        })
+        let obj ={
+            id: id,
+            type: 'good'
+        };
+        this.props.navigator.push({
+            component: Report,
+            passProps: {obj}
+        });
+    }
     render() {
         const { feed } = this.props;
+        let _images = feed.serv_images.split(',');
         return (
             <View style={styles.listView}>
                 <Header
@@ -212,7 +303,12 @@ export default class ServOfferDetail extends PureComponent {
                     leftIcon={require('../resource/w-back.png')}
                     leftIconAction={() => this.props.navigator.pop()}
                     rightIcon={require('../resource/w-more.png')}
-                    rightIconAction={() => this.setState({show_share: true})}
+                    rightIconAction={() => this.setState({show_report: true})}
+                    rightIcon2={this.state.isFavorited?require('../resource/ic_account_favour.png'):require('../resource/ic_news_collect.png')}
+                    rightIcon2Action={() => this._switch(this.state.isFavorited, this.state.favorite_id)}
+                    rightIcon2Size={30}
+                    rightIcon3={require('../resource/b_info.png')}
+                    rightIcon3Action={() => this.setState({show_share: true})}
                     style={{height: 50}}
                 />
                 <ScrollView>
@@ -234,15 +330,22 @@ export default class ServOfferDetail extends PureComponent {
                                 <Text style={{color: '#999999', fontSize: 12}}>{feed.created_at.substring(0,10)}</Text>
                             </View> 
                         </View>
+                        {
+                            _images.length == 1?
+                            <Image style={{height: 300, width: 328, marginBottom: 10}} defaultSource={require('../resource/img_default_home_cover.png')} source={{uri: _images[0]}}></Image>
+                            :
+                            <Swiper height={320} paginationStyle={{alignSelf:'center'}}>
+                                {
+                                     _images.map((data, index)=> {
+                                         return(
+                                            <Image style={{height: 300, width: 328, marginBottom: 10}} defaultSource={require('../resource/img_default_home_cover.png')} key={index} source={{uri: data}}></Image>
+                                     )
+                                    })   
+                                }                                                               
+                            </Swiper>
+                        }
                         <Text style={{color: '#000', fontSize: 18, lineHeight: 24}}>{feed.serv_title}</Text>
                         <Text style={{color: '#999999', fontSize: 14, lineHeight: 24}}>{feed.serv_detail}</Text>
-                        {
-                            feed.serv_images?<ListView
-                            dataSource={this.state.dataSource.cloneWithRows(feed.serv_images.split(','))}
-                            renderRow={(rowData) =>
-                                <Image defaultSource={require('../resource/img_default_home_cover.png')} source={{uri:rowData}} style={{height: 300, width: 328, marginBottom: 10}}></Image>
-                            }/>: <View></View>
-                        }
                     </View>
                     {
                         feed.user_id == global.user.id?
@@ -353,6 +456,23 @@ export default class ServOfferDetail extends PureComponent {
                         </View>
                     </View>
                     </Modal>
+                    <Modal
+                        animationType='slide'
+                        transparent={true}
+                        visible={this.state.show_report}
+                    >
+                        <View style={styles.modal}>
+                            <TouchableOpacity style={[styles.modalItem, {flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16}]}
+                            onPress = {this.reportOffer.bind(this, feed.id)}
+                            >
+                                <Text  style={styles.modalText}>举报</Text>
+                            </TouchableOpacity>
+                                <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
+                            <TouchableOpacity onPress={() => this.setState({show_report: false})} style={{alignItems: 'center', justifyContent: 'center', height: 56}}>
+                                <Text style={styles.modalText}>取消</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>   
             </View>
         )
     }
@@ -386,6 +506,14 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 12,
         color: '#1B2833',
+    },
+    modalItem: {
+        height: 56,
+        justifyContent: 'center'
+    },
+    modalText: {
+        fontSize: 16,
+        color: 'black'
     },
     cancel: {
         color: '#1B2833',
@@ -470,7 +598,13 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         marginHorizontal: 130,
         marginVertical: 20
-    }
+    },
+    SwiperSlide: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#9DD6EB',
+    },
 })
 
 const OfferItem = ({

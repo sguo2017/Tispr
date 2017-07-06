@@ -14,6 +14,7 @@ import {
     ListView
 } from 'react-native';
 import Header from '../../components/HomeNavigation';
+import Swiper from 'react-native-swiper';
 import Constant from '../../common/constants';
 import ConnectPage from './ConnectPage'
 import { CachedImage } from "react-native-img-cache";
@@ -108,6 +109,7 @@ export default class CardDetail extends Component {
 
     render() {
         const { feed } = this.props;
+        let _images = feed.serv_images.split(',');
         let platformMargin = Platform.OS === 'ios' ? -40 : -30;
         return (
             <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -137,14 +139,21 @@ export default class CardDetail extends Component {
                                 <Text style={{color: '#999999', fontSize: 12}}>{feed.created_at.substring(0,10)}</Text>
                             </View> 
                         </View>
-                        <Text style={{color: '#424242', fontSize: 16, lineHeight: 24}}>{feed.serv_detail}</Text>
-                        {
-                            feed.serv_images?<ListView
-                            dataSource={this.state.dataSource.cloneWithRows(feed.serv_images.split(','))}
-                            renderRow={(rowData) =>
-                                <Image defaultSource={require('../../resource/img_default_home_cover.png')} source={{uri:rowData}} style={{height: 300, width: 328, marginBottom: 10}}></Image>
-                            }/>: <View></View>
-                        } 
+                         {
+                            _images.length == 1?
+                            <Image style={{height: 300, width: 328, marginBottom: 10}} defaultSource={require('../../resource/img_default_home_cover.png')} source={{uri: _images[0]}}></Image>
+                            :
+                            <Swiper height={320} paginationStyle={{alignSelf:'center'}}>
+                                {
+                                     _images.map((data, index)=> {
+                                         return(
+                                            <Image style={{height: 300, width: 328, marginBottom: 10}} defaultSource={require('../../resource/img_default_home_cover.png')} key={index} source={{uri: data}}></Image>
+                                     )
+                                    })   
+                                }                                                               
+                            </Swiper>
+                        }
+                        <Text style={{color: '#424242', fontSize: 16, lineHeight: 24}}>{feed.serv_detail}</Text> 
                         <View style={{flexDirection: 'row', marginTop: 20, height: 48, justifyContent: 'space-between'}}>
                             <Text style={{fontSize: 16, color: 'black'}}>投标&nbsp;&nbsp;&nbsp;{this.state.bidderListLength}/5</Text>
                             <TouchableOpacity style={{backgroundColor: '#4A90E2', borderRadius: 2, height: Platform === 'ios'?35:28, width: 72}}>

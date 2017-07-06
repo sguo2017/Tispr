@@ -59,6 +59,31 @@ export default class HomeNavigation extends Component {
             )
         }
 
+        if(this.props.rightIcon2 != undefined ){
+            NavigationBar.push(
+                <TouchableOpacity
+                    key={'rightIcon2'}
+                    activeOpacity={0.75}
+                    style={styles.rightIcon2}
+                    onPress={this.props.rightIcon2Action}
+                >
+                    <Image style={{height: this.props.rightIcon2Size || 20, width: this.props.rightIcon2Size || 20, borderRadius: this.props.rightIcon2Radius || 20 }} source={this.props.rightIcon2} resizeMode={'contain'}/>
+                </TouchableOpacity>
+            )
+        }
+        if(this.props.rightIcon3 != undefined ){
+            NavigationBar.push(
+                <TouchableOpacity
+                    key={'rightIcon3'}
+                    activeOpacity={0.75}
+                    style={styles.rightIcon3}
+                    onPress={this.props.rightIcon3Action}
+                >
+                    <Image style={{height: this.props.rightIcon3Size || 20, width: this.props.rightIcon3Size || 20, borderRadius: this.props.rightIcon3Radius || 20 }} source={this.props.rightIcon3} resizeMode={'contain'}/>
+                </TouchableOpacity>
+            )
+        }
+
         // 右边文字按钮
         if (this.props.rightButton != undefined) {
             NavigationBar.push(
@@ -121,7 +146,24 @@ const styles = StyleSheet.create({
         top: Platform.OS === 'ios' ? 20 : 0,
         right: 0
     },
-
+    rightIcon2: {
+        height: Platform.OS === 'ios' ? 44 : 50,
+        width: Platform.OS === 'ios' ? 44 : 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: Platform.OS === 'ios' ? 20 : 0,
+        right: Platform.OS === 'ios' ? 44 : 50,
+    },
+    rightIcon3: {
+        height: Platform.OS === 'ios' ? 44 : 50,
+        width: Platform.OS === 'ios' ? 44 : 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: Platform.OS === 'ios' ? 20 : 0,
+        right: Platform.OS === 'ios' ? 88 : 100,
+    },
     rightButton: {
         position: 'absolute',
         right: 10,
