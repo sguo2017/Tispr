@@ -15,7 +15,7 @@ import {
   Modal
 } from 'react-native';
 import { reaction } from 'mobx'
-import { GiftedChat, Composer, Send } from 'react-native-gifted-chat';
+import { GiftedChat, Composer, Send, Bubble, Message, Avatar } from 'react-native-gifted-chat';
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import { connect } from 'react-redux';
@@ -25,6 +25,7 @@ import OrderDetail from '../order/OrderDetail'
 import ProposeDeal from '../order/ProposeDeal'
 import CloseDeal from '../order/CloseDeal';
 import Report from '../sys/others/report';
+import Me from '../me/index';
 
 const screenW = Dimensions.get('window').width;
 let int;
@@ -75,6 +76,25 @@ export default class ChatDetail extends Component {
 
   }
 
+  /*查看对方信息*/
+  jumpInfo(){
+    const { navigator } = this.props;
+    this.setState({
+      show: false
+    })
+    if (navigator) {
+      navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+          component: Me,
+          passProps: {
+            isBrowseMode: true,
+            close: () => {
+              this.props.navigator.pop();
+            },
+          }
+        });
+    }
+  }
+  /*调整到订单流程*/
   clickJump() {
     const { navigator } = this.props;
     const { feed } = this.props;
@@ -129,6 +149,17 @@ export default class ChatDetail extends Component {
       />
     );
   }
+
+  renderBubble(props) { return ( <Bubble {...props} 
+      wrapperStyle={{
+          left: {
+            backgroundColor: '#fff',
+          },
+          right: {
+            backgroundColor: '#FFC400'
+          }
+        }} />
+  )}
   async chatSave(messages) {
     let chat_content = "";
     if (messages.length > 0) {
@@ -209,6 +240,8 @@ export default class ChatDetail extends Component {
             }}
             renderComposer ={this.renderComposer }
             renderSend={this.renderSend}
+            renderBubble ={this.renderBubble}
+            renderMessage={props => <CustomMessage {...props} />}
           />
         </View>
         <Modal
@@ -218,10 +251,10 @@ export default class ChatDetail extends Component {
           onShow={() => { }}
           onRequestClose={() => { }}>
           <View style={styles.modal}>
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity style={styles.item} onPress={this.jumpInfo.bind(this)}>
               <Text style={styles.text}>查看TA的个人信息</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity style={styles.item} onPress={this.jumpInfo.bind(this)}>
               <Text  style={styles.text}>查看TA的需求(服务)</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.item, {flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16}]}
@@ -240,7 +273,13 @@ export default class ChatDetail extends Component {
     )
   }
 }
-
+class CustomMessage extends Message {
+  renderAvatar() {
+    return (
+      <Avatar {...this.getInnerComponentProps()} />
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   cardImageContent: {
