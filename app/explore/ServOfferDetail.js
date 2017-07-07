@@ -327,7 +327,7 @@ export default class ServOfferDetail extends Component {
                                 </View>
                             </View>
                             <View>
-                                <Text style={{color: '#999999', fontSize: 12}}>{feed.created_at.substring(0,10)}</Text>
+                                <Text style={{color: '#999999', fontSize: 12}}>{feed.created_at.substring(0,4)+'/'+feed.created_at.substring(5,7)+'/'+feed.created_at.substring(8,10)}</Text>
                             </View> 
                         </View>
                         {
@@ -349,8 +349,8 @@ export default class ServOfferDetail extends Component {
                     </View>
                     {
                         feed.user_id == global.user.id?
-                        <View></View>:
-                        <View style={{backgroundColor: 'white', paddingTop: 23, paddingBottom: 10}}>
+                        <View style={{paddingBottom: 16, backgroundColor: 'white'}}></View>:
+                        <View style={{backgroundColor: 'white', paddingTop: 23, paddingBottom: 16}}>
                             <TouchableOpacity style={{backgroundColor: '#FFC400', borderRadius: 4, height: 44, marginHorizontal: 16, paddingHorizontal: 138, paddingVertical: 10}}
                                 onPress={() => this._p(feed)}
                             >
@@ -359,8 +359,8 @@ export default class ServOfferDetail extends Component {
                         </View>
                     }
 
-                    <View style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 12}}>
-                       <Text style={{color: '#9E9E9E', fontSize: 14}}>相关服务</Text>
+                    <View style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 2}}>
+                       <Text style={{color: '#9E9E9E', fontSize: 14, paddingVertical: 20}}>相关服务</Text>
                     </View>
                     <View style ={{flexDirection: 'row', flexWrap:'wrap'}}>
                     {
