@@ -23,7 +23,6 @@ import ServIndex from '../index';
 import ServOffer from '../offer/title';
 import ServRequest from '../request/title';
 const screenW = Dimensions.get('window').width;
-
 export default class navpage extends Component {
 
     constructor(props) {
@@ -35,6 +34,7 @@ export default class navpage extends Component {
             user: this.props.user,  
             pwd: this.props.pwd,
             goods_tpye: this.props.goods_tpye,
+            page: 0
         }
     }
 
@@ -65,6 +65,7 @@ export default class navpage extends Component {
                     goods_catalog_I = JSON.parse(responseData.feeds);
                     global.goods_catalog_I = goods_catalog_I;
                     this.setState({goods_catalog_I:goods_catalog_I})
+                    console.log(global.goods_catalog_I)
                 } else {
                 }
             }).catch(error => {
@@ -106,19 +107,28 @@ export default class navpage extends Component {
     }
 
     render() {
+        let param = global.goods_catalog_I;
+        let max = 0;
+        this.state.page = (param) => { 
+            for (let i = 0; i < param.length; i++) {
+                if (param[i].goods_count > max) max = param[i].goods_count;
+            }
+            return max;
+        }
+        this.state.page = max;
         return (
             <View style={styles.listView}>
                 <Header
                     leftIconAction={() => this.props.navigator.resetTo({component: ServIndex, name: 'ServIndex'})}
                     title='选择分类'
                     leftIcon={require('../../resource/ic_back_white.png')}
-                />
+                /> 
                 <ScrollableTabView
                     style={{ flex: 1 }}
                     tabBarActiveTextColor="#4a90e2"
                     tabBarInactiveTextColor="#9e9e9e"
                     tabBarUnderlineStyle={{ backgroundColor: '#4a90e2' }}
-                    initialPage={2}
+                    initialPage={this.state.page}
                     renderTabBar={() => <ScrollableTabBar />}
                 >
                     {
@@ -128,14 +138,14 @@ export default class navpage extends Component {
                                     {
                                         this.state.goods_tpye == "serv_request" ?
                                           <View style={styles.conclusionView}>
-                                              <Image style={{ width: 24, height: 24, marginRight: 6 }} source={require('../../resource/b-people@2x.png')} />
+                                              <Image style={{ width: 24, height: 24, marginRight: 6 }} source={require('../../resource/b-people.png')} />
                                               <Text style={{ color: '#1b2833', fontSize: 14, }}>
                                                   {data.goods_count}位奇客提供&nbsp;{data.name}类&nbsp;服务
                                               </Text>
                                           </View>
                                         :
                                         <View style={styles.conclusionView}>
-                                            <Image style={{ width: 24, height: 24, marginRight: 6 }} source={require('../../resource/b-people@2x.png')} />
+                                            <Image style={{ width: 24, height: 24, marginRight: 6 }} source={require('../../resource/b-people.png')} />
                                             <Text style={{ color: '#1b2833', fontSize: 14, }}>
                                                 {data.request_count}位客户需要&nbsp;{data.name}类&nbsp;专业人士
                                             </Text>
