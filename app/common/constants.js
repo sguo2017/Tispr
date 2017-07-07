@@ -72,7 +72,7 @@ let url = {
      SERV_API_CHECK_PASSWORD: `/api/users/sessions?check_password=1`,//验证密码接口
      SERV_API_SERV_OFFER_ADD: `/api/goods/serv_offers?token=`,//服务提供的新增接口
      SERV_API_SERV_OFFER_INDEX: `/api/goods/serv_offers?token=`,//服务提供的list接口
-	   SERV_API_SERV_OFFER_MARKS: `/api/me/favorites.json?token=`,//服务提供的收藏展示接口
+	 SERV_API_SERV_OFFER_MARKS: `/api/me/favorites.json?token=`,//服务提供的收藏展示接口
      SERV_API_AVAT_UPDATE: `/api/users/registrations/`,//头像更新接口
      SERV_API_SYS_MSG: `/api/sys/sys_msgs?token=`,//系统消息接口
      SERV_API_ORDER_CREATE: `/api/orders/orders.json?token=`,//订单新增接口
