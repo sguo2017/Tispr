@@ -96,10 +96,8 @@ export default class ServOfferDetail extends Component {
     }
     async _getSameTypeOffer(){
         let catalog_id =this.props.feed.goods_catalog_id
-        console.log("51:"+catalog_id)
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_INDEX +global.user.authentication_token + `&catalog_id=`+`${catalog_id}`;
-            // console.log("148:"+url)
             fetch(url, {
                 method: 'GET',
                 headers: {
@@ -111,7 +109,7 @@ export default class ServOfferDetail extends Component {
                 if (response.status == 200) return response.json()
                 return null
             }).then(responseData => {      
-                let offerList =this.state.offerList          
+                let offerList =this.state.offerList         
                 offerList = JSON.parse(responseData.feeds);
                 this.setState({
                     offerList:offerList,
@@ -387,23 +385,29 @@ export default class ServOfferDetail extends Component {
                             </TouchableOpacity>
                         </View>
                     }
-
-                    <MapView 
-                        trafficEnabled={this.state.trafficEnabled}
-                        baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
-                        zoom={this.state.zoom}
-                        mapType={this.state.mapType}
-                        center={this.state.center}
-                        marker={this.state.marker}
-                        markers={this.state.markers}
-                        style={styles.map}
-                        onMarkerClick={(e) => {
-                            console.warn(JSON.stringify(e));
-                        }}
-                        onMapClick={(e) => {
-                        }}
-                        >
-                    </MapView>
+                    {
+                        Platform.OS === 'ios' 
+                        ?  
+                        <View></View>
+                        : 
+                        <MapView 
+                            trafficEnabled={this.state.trafficEnabled}
+                            baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
+                            zoom={this.state.zoom}
+                            mapType={this.state.mapType}
+                            center={this.state.center}
+                            marker={this.state.marker}
+                            markers={this.state.markers}
+                            style={styles.map}
+                            onMarkerClick={(e) => {
+                                console.warn(JSON.stringify(e));
+                            }}
+                            onMapClick={(e) => {
+                            }}
+                            >
+                        </MapView>
+                    }
+                    
 
                     <View style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 2}}>
                        <Text style={{color: '#9E9E9E', fontSize: 14, paddingVertical: 20}}>相关服务</Text>
