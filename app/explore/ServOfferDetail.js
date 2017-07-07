@@ -14,6 +14,7 @@ import {
     Alert,
     Platform
 } from 'react-native'
+import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
 import { observer } from 'mobx-react/native'
 import { reaction } from 'mobx'
 import { connect } from 'react-redux';
@@ -64,7 +65,35 @@ export default class ServOfferDetail extends Component {
     componentWillMount() {
         this._getSameTypeOffer();
     }
+    componentDidMount() {
+        let longitude = 116.406568, latitude = 39.915156 //缺省是天安门位置
+        if(this.props.feed.latitude != undefined || this.props.feed.longitude != undefined){
+            longitude = Number(this.props.feed.longitude), latitude = Number(this.props.feed.latitude)
+        }
+        Geolocation.getCurrentPosition().then(
+            (data) => {
+                this.setState({
+                    zoom:18,
+                    markers:[{
+                        latitude:data.latitude,
+                        longitude:data.longitude,
+                        title:'我的位置'
+                    },{
+                        longitude: longitude,
+                        latitude: latitude,
+                        title: "对方位置"
+                    }],
+                    center:{
+                        latitude:latitude,
+                        longitude:longitude,
+                    }
+                })
+            }
+        ).catch(error => {
+            console.warn(error,'error')
+        })
 
+    }
     async _getSameTypeOffer(){
         let catalog_id =this.props.feed.goods_catalog_id
         console.log("51:"+catalog_id)
@@ -359,6 +388,23 @@ export default class ServOfferDetail extends Component {
                         </View>
                     }
 
+                    <MapView 
+                        trafficEnabled={this.state.trafficEnabled}
+                        baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
+                        zoom={this.state.zoom}
+                        mapType={this.state.mapType}
+                        center={this.state.center}
+                        marker={this.state.marker}
+                        markers={this.state.markers}
+                        style={styles.map}
+                        onMarkerClick={(e) => {
+                            console.warn(JSON.stringify(e));
+                        }}
+                        onMapClick={(e) => {
+                        }}
+                        >
+                    </MapView>
+
                     <View style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 2}}>
                        <Text style={{color: '#9E9E9E', fontSize: 14, paddingVertical: 20}}>相关服务</Text>
                     </View>
@@ -605,6 +651,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#9DD6EB',
     },
+    map: {
+        width: Dimensions.get('window').width - 40,
+        height: Dimensions.get('window').height - 500,
+        marginBottom: 10,
+        marginLeft: 20,
+    },   
 })
 
 const OfferItem = ({
