@@ -19,7 +19,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TabCategoryBar from '../me/TabCategoryBar';
 import Constant from '../common/constants'
 
-const titles = ['远程', '本地',];
+const titles = ['本地','远程', ];
 var goods_catalogs_II=[];
 var goods_catalogs_II_id=[];
 class ExploreList extends PureComponent {
@@ -48,7 +48,7 @@ class ExploreList extends PureComponent {
             show: false,
             tabName: this.props.tabName,
             sortBy: '综合排序',
-            transiSortBy: '最近发布',
+            transiSortBy: '综合排序',
             classify: '全部人才',
             transiClassify: '全部人才',
             location: '广州',
@@ -201,25 +201,36 @@ class ExploreList extends PureComponent {
                                   renderTabBar={() => <TabCategoryBar tabNames={titles} />}
                                   tabBarPosition='top'
                                   scrollWithoutAnimation={false}
-                                  tabBarBackgroundColor={global.gColors.themeColor}
+                                  tabBarBackgroundColor= '#1B2833'
                                 >
                                     <View tabLabel='本地'>
                                         <View style={{ flexDirection: 'row' }}>
                                             <TouchableOpacity onPress={() => this.setState({ tabName: 'recentPublish' })} style={styles.filterRow}>
                                                 <Text style={styles.blackText}>排序</Text>
-                                                <Text style={styles.greyText}>{this.state.transiSortBy}&nbsp;&gt;</Text>
+                                                <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                                    <Text style={styles.greyText}>{this.state.transiSortBy}</Text>
+                                                    <Image source={require('../resource/g_chevron right.png')} />
+                                                </View>
                                             </TouchableOpacity>
                                         </View>
+                                        <View style={{borderTopWidth: 1, borderTopColor: '#f0f0f0'}}></View>
                                         <View style={{ flexDirection: 'row' }}>
                                             <TouchableOpacity onPress={() => this.setState({ tabName: 'allTalentedPeople' })} style={styles.filterRow}>
                                                 <Text style={styles.blackText}>类型</Text>
-                                                <Text style={styles.greyText}>{this.state.transiClassify}&nbsp;&gt;</Text>
+                                                <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                                    <Text style={styles.greyText}>{this.state.transiClassify}</Text>
+                                                    <Image source={require('../resource/g_chevron right.png')} />
+                                                </View>
                                             </TouchableOpacity>
                                         </View>
+                                        <View style={{borderTopWidth: 1, borderTopColor: '#f0f0f0'}}></View>
                                         <View style={{ flexDirection: 'row' }}>
                                             <TouchableOpacity onPress={() => this.setState({ tabName: 'guangzhou' })} style={styles.filterRow}>
                                                 <Text style={styles.blackText}>位置</Text>
-                                                <Text style={styles.greyText}>{this.state.transiLocation}&nbsp;&gt;</Text>
+                                                <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                                    <Text style={styles.greyText}>{this.state.transiLocation}</Text>
+                                                    <Image source={require('../resource/g_chevron right.png')} />
+                                                </View>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
@@ -227,13 +238,20 @@ class ExploreList extends PureComponent {
                                         <View style={{ flexDirection: 'row' }}>
                                             <TouchableOpacity onPress={() => this.setState({ tabName: 'recentPublish' })} style={styles.filterRow}>
                                                 <Text style={styles.blackText}>排序</Text>
-                                                <Text style={styles.greyText}>{this.state.transiSortBy}&nbsp;&gt;</Text>
+                                                <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                                    <Text style={styles.greyText}>{this.state.transiSortBy}</Text>
+                                                    <Image source={require('../resource/g_chevron right.png')} />
+                                                </View>
                                             </TouchableOpacity>
                                         </View>
+                                        <View style={{borderTopWidth: 1, borderTopColor: '#f0f0f0'}}></View>
                                         <View style={{ flexDirection: 'row' }}>
                                             <TouchableOpacity onPress={() => this.setState({ tabName: 'allTalentedPeople' })} style={styles.filterRow}>
                                                 <Text style={styles.blackText}>类型</Text>
-                                                <Text style={styles.greyText}>{this.state.transiClassify}&nbsp;&gt;</Text>
+                                                <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                                                    <Text style={styles.greyText}>{this.state.transiClassify}</Text>
+                                                    <Image source={require('../resource/g_chevron right.png')} />
+                                                </View>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
@@ -256,14 +274,14 @@ class ExploreList extends PureComponent {
                                         <Text style={styles.themeColorText}>确定</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 20 }}>
+                                <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 12 }}>
                                     <TouchableOpacity
                                       style={[styles.selectButton, { backgroundColor: global.gColors.themeColor }]}
                                     >
                                         <Text style={[styles.whiteText]}>全部排序</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft: 20 }}>
+                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 12 }}>
                                     <TouchableOpacity
                                       style={[styles.selectButton, this.state.sps[1] && { backgroundColor: global.gColors.themeColor }]}
                                       onPress={() => { this.setState({ transiSortBy: '最近发布', sps: [false, true, false, false] }) }}
@@ -271,13 +289,13 @@ class ExploreList extends PureComponent {
                                         <Text style={[styles.themeColorText, this.state.sps[1] && styles.whiteText]}>最近发布</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                      style={[styles.selectButton, { width: 100 }, this.state.sps[2] && { backgroundColor: global.gColors.themeColor }]}
+                                      style={[styles.selectButton, this.state.sps[2] && { backgroundColor: global.gColors.themeColor }]}
                                       onPress={() => { this.setState({ transiSortBy: '最多收藏', sps: [false, false, true, false] }) }}
                                     >
                                         <Text style={[styles.themeColorText, this.state.sps[2] && styles.whiteText]}>最多收藏</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                      style={[styles.selectButton, { width: 120 }, this.state.sps[3] && { backgroundColor: global.gColors.themeColor }]}
+                                      style={[styles.selectButton, this.state.sps[3] && { backgroundColor: global.gColors.themeColor }]}
                                       onPress={() => this.setState({ transiSortBy: '最多联系', sps: [false, false, false, true] })}>
                                         <Text style={[styles.themeColorText, this.state.sps[3] && styles.whiteText]}>最多联系</Text>
                                     </TouchableOpacity>
@@ -301,15 +319,15 @@ class ExploreList extends PureComponent {
                                     </TouchableOpacity>
 
                                 </View>
-                                <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 20 }}>
+                                <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 12 }}>
                                     <TouchableOpacity
                                       style={[styles.selectButton, this.state.cps[0] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiClassify: '全部分类', cps: [!this.state.cps[0], false, false, false, false, false] })}
+                                      onPress={() => this.setState({ transiClassify: '全部人才', cps: [!this.state.cps[0], false, false, false, false, false] })}
                                     >
                                         <Text style={[styles.themeColorText, this.state.cps[0] && styles.whiteText]}>全部分类</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 20 }}>
+                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 12 }}>
                                     <TouchableHighlight
                                       style={[styles.selectButton, this.state.cps[1] && { backgroundColor: global.gColors.themeColor }]}
                                       onPress={() => this.setState({ transiClassify: global.goods_catalog_I[0].name, cps: [false, !this.state.cps[1], this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] })}
@@ -364,12 +382,12 @@ class ExploreList extends PureComponent {
                                         <Text style={styles.themeColorText}>确定</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 20 }}>
+                                <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 12 }}>
                                     <TouchableOpacity style={styles.selectButton}>
                                         <Text style={styles.themeColorText}>全部范围</Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={{ flexDirection: 'row', marginLeft: 20 }}>
+                                <View style={{ flexDirection: 'row', marginLeft: 12 }}>
                                     <TouchableOpacity
                                       style={[styles.selectButton, this.state.lps[0] && { backgroundColor: global.gColors.themeColor }]}
                                       onPress={() => this.setState({ transiLocation: '番禺区', lps: [true, false] })}
@@ -452,7 +470,7 @@ const styles = StyleSheet.create({
         color: '#000',
         padding: 5,
         borderRadius: 3,
-        fontSize: 18
+        fontSize: 16
     },
     filterButton: {
         backgroundColor: global.gColors.themeColor,
@@ -472,18 +490,17 @@ const styles = StyleSheet.create({
         marginRight: 10,
         paddingBottom: 10,
         paddingTop: 10,
-        borderTopWidth: 1,
-        borderTopColor: '#f0f0f0'
-
+        
     },
     themeColorText: {
         color: global.gColors.themeColor,
         fontSize: 16
     },
     greyText: {
-        color: '#808080',
-        fontSize: 18,
-        marginRight: 20
+        color: '#CCCCCC',
+        fontSize: 14,
+        lineHeight: 20,
+        
     },
     whiteText: {
         color: '#fff',
@@ -492,31 +509,36 @@ const styles = StyleSheet.create({
     selectButton: {
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
-        padding: 5,
-        height: 36,
+        height: 28,
+        alignItems: 'center',
+        borderRadius: 2,
         width: Platform.OS === 'ios' ? 104 : 80,
-        marginRight: 20,
-        marginBottom: 20
+        marginRight: 8,
+        marginBottom: 20,
+        justifyContent: 'center'
     },
     // modal的样式
     modalStyle: {
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
         flex: 1,
+        
     },
     // modal上子View的样式
     subView: {
         alignSelf: 'stretch',
         justifyContent: 'flex-start',
         borderWidth: 0.5,
+        borderColor: '#4990E2',
         backgroundColor: '#fff',
         height: 300,
+        paddingTop: 12
     },
     // 标题
     modalHead: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10
+        paddingHorizontal: 12
     }
 })
 
