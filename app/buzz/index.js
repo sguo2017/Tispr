@@ -189,19 +189,22 @@ export default class BussList extends Component {
 
     _onPressOffer = feed => {  
         let offer = feed.serv_offer;
-        /*产生动态消息的用户是提供offer的人时*/
-        if(offer.user_id == feed.user_id)
-            offer.user = feed.user;  
-        /*存在被动接触的用户时，offer用户是被接触用户*/
-        else if(feed.link_user){
-            offer.user = feed.link_user;  
-        }else{
-            offer.user = feed.user;  
-        }
-        this.props.navigator.push({
-            component: ServOfferDetail,
-            passProps: { feed: offer }
-        });
+         /*加入奇客的动态offer为空*/
+        if(offer){          
+            /*产生动态消息的用户是提供offer的人时*/
+            if( offer.user_id == feed.user_id)
+                offer.user = feed.user;  
+            /*存在被动接触的用户时，offer用户是被接触用户*/
+            else if(feed.link_user){
+                offer.user = feed.link_user;  
+            }else{
+                offer.user = feed.user;  
+            }
+            this.props.navigator.push({
+                component: ServOfferDetail,
+                passProps: { feed: offer }
+            });
+        }         
     }
 
     _onPressSwiperBeginButton = () => {
