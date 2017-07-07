@@ -216,7 +216,7 @@ export default class MeInfo extends Component {
                           key={titles[index]}
                           tabLabel={titles[index]}
                           categoryId={data.categoryId}
-                          userId={this.props.id}
+                          userId={this.props.isBrowseMode ? this.props.id : global.user.id}
                           navigator={this.props.navigator}
                       />
                   )
