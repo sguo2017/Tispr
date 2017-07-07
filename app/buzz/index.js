@@ -514,8 +514,8 @@ class KnowledgeItem extends Component {
         onPressOffer && onPressOffer(feed)
     }
     render() {
-        const { feed: { action_title, action_desc, interval, user } } = this.props
-        const cellData = { action_title, action_desc, interval, user }
+        const { feed: { action_title, action_desc, interval, user, link_user } } = this.props
+        const cellData = { action_title, action_desc, interval, user, link_user }
         return <SysMsgSingleImageCell {...cellData} onPressAvatar={this._pressAvatar} onPressAvatar2={this._pressAvatar2} onPressOffer={this._pressOffer} />
     }
 }

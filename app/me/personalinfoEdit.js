@@ -11,7 +11,6 @@ import {
     Platform,
     RefreshControl,
     Alert,
-    Navigator,
     Dimensions
 } from 'react-native';
 import AutoTextInput from '../components/AutoTextInput';
@@ -38,49 +37,37 @@ export default class Personinfoedit extends Component {
             address: ''
         }
     }
-    componentWillMount(){
-        //
-    }
-
-     _onBack = () => {
-        const { navigator } = this.props;
-        if (this.props.getdata) {
-            this.props.getdata(global.user.avatar, this.state.selfintroduce);
-        }
-        if (navigator) {
-            navigator.pop();
-        }
-    }
-    SaveBack=()=>{
-        const { navigator } = this.props;
-        if (this.props.getdata) {
-            this.props.getdata(global.user.avatar, this.state.selfintroduce);
-        }
-        if (navigator) {
-            navigator.pop();
-        }
-    }
-
+  
     _save(){
-        const { navigator } = this.props;
+        let { navigator } = this.props;
         if(this.props.newUser){
             navigator.resetTo({
                 component: TabBarView,
                 name: 'TabBarView'
             });
         }else{
-            this.SaveBack;
+            if (this.props.getdata) {
+                this.props.getdata(global.user.avatar, this.state.selfintroduce);
+            }
+            if (navigator) {
+                navigator.pop();
+            }
         }
     }
     _back(){
-        const { navigator } = this.props;
+        let { navigator } = this.props;
         if(this.props.newUser){
             navigator.resetTo({
                 component: TabBarView,
                 name: 'TabBarView'
             });
         }else{
-            this._onBack;
+            if (this.props.getdata) {
+                this.props.getdata(global.user.avatar, this.state.selfintroduce);
+            }
+            if (navigator) {
+                navigator.pop();
+            }
         }
     }
     selectPhotoTapped() {
@@ -193,7 +180,7 @@ export default class Personinfoedit extends Component {
                     '提示',
                     '成功',
                     [
-                        { text: '个人信息更新成功' , onPress: () => this._save()},
+                        { text: '个人信息更新成功' , onPress: () => this._save.bind(this)},
                     ]
                 )
                 global.user.avatar=this.state.avatar;
@@ -267,7 +254,7 @@ export default class Personinfoedit extends Component {
                 <Header
                     title='编辑信息'
                     leftIcon={require('../resource/w-back.png')}
-                    leftIconAction={this._back}
+                    leftIconAction={this._back.bind(this)}
                     rightButton='保存'
                     rightButtonAction={this.updateavatar.bind(this)}
                 />

@@ -14,6 +14,7 @@ const SysMsgSingleImageItem = ({
     action_desc,
     interval,
     user,
+    link_user,
     onPressAvatar,
     onPressAvatar2,
     onPressOffer
@@ -45,7 +46,7 @@ const SysMsgSingleImageItem = ({
                                     {action_title_arry[0]}
                                 </Text>
                                 <Text onPress={onPressAvatar2} numberOfLines={1} style={{ flex: 1, color: '#000000', fontSize: 16 }}>
-                                    {action_title_arry[1]}
+                                    {link_user?link_user.name:action_title_arry[1]}
                                 </Text>
                                 <Text numberOfLines={1} style={{ flex: 1, color: '#999999', fontSize: 16 }}>
                                     {action_title_arry[2]}
