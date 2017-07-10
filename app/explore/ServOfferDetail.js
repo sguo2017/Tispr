@@ -386,10 +386,6 @@ export default class ServOfferDetail extends Component {
                         </View>
                     }
                     {
-                        Platform.OS === 'ios' 
-                        ?  
-                        <View></View>
-                        : 
                         <MapView 
                             trafficEnabled={this.state.trafficEnabled}
                             baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
