@@ -325,7 +325,7 @@ export default class ServOfferConfirm extends Component {
     }
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
                     title='确认发布'
                     leftIcon={require('../../resource/ic_back_white.png')}

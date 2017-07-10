@@ -60,7 +60,7 @@ export default class TabCategoryBar extends Component {
                 <View style={styles.tabs}>
                 {this.props.tabs.map((tab, i) => {
                     let color = this.props.activeTab === i ?  global.gColors.themeColor:'white' ;
-                    let bgcolor = this.props.activeTab === i ? 'white': global.gColors.themeColor ;
+                    let bgcolor = this.props.activeTab === i ? 'white': 'transparent' ;
                     return (
                         <TouchableOpacity
                             key={i}
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         margin: 6,
         borderColor: '#fff',
         backgroundColor:global.gColors.themeColor,
-        borderRadius: 5,
+        borderRadius: 3,
         overflow: 'hidden',
     },
     tab: {

@@ -11,7 +11,8 @@ import {
     Platform,
     RefreshControl,
     Alert,
-    Dimensions
+    Dimensions,
+    ScrollView
 } from 'react-native';
 import AutoTextInput from '../components/AutoTextInput';
 import Header from '../components/HomeNavigation';
@@ -258,15 +259,17 @@ export default class Personinfoedit extends Component {
                     rightButton='保存'
                     rightButtonAction={this.updateavatar.bind(this)}
                 />
-                <View style={{ flex: 1, padding: 16 }}>
+                <ScrollView style={{ flex: 1, padding: 16 }}>
                     <View style={{ alignItems: 'center', marginBottom: 16 }}>
                         <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                             <Image style={{ width: 60, height:60, borderRadius: 30 }} source={{uri:this.state.avatar}} />
                         </TouchableOpacity>
                     </View>
+                    
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
                         <Image style={{ width: 24, height: 24 }} source={require('../resource/g_name.png')}/>
                         <TextInput
+                          maxLength={10}
                           placeholder='请填写您的真实姓名'
                           placeholderTextColor='#CCCCCC'
                           style={styles.textInput}
@@ -277,6 +280,7 @@ export default class Personinfoedit extends Component {
                           onChangeText={(val) => {this.setState({ name: val})}}
                         />
                     </View>
+                    
                     <Text style={styles.text}>2-4个汉字，或10个英文字符</Text>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 16 }}>
                         <Image style={{ width: 24, height: 24 }} source={require('../resource/g_location.png')}/>
@@ -321,7 +325,9 @@ export default class Personinfoedit extends Component {
                           multiline={true}
                         />
                     </View>
-                </View>
+                    
+                </ScrollView>
+                {/*</KeyboardAvoidingView>*/}
             </View>
         )
     }

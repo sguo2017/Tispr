@@ -49,10 +49,10 @@ export default class ServOfferTitle extends Component {
     }
 
     clickJump() {
-        if(undefined === this.state.serv_offer.serv_title || this.state.serv_offer.title_length<16){
+        if(undefined === this.state.serv_offer.serv_title || this.state.serv_offer.title_length<8){
             Alert.alert(
                     '提示',
-                    '请输入不少于16个字符',
+                    '请输入不少于8个字符',
                     [
                         { text: '继续输入', onPress: () => console.log('确定') },
                     ]
@@ -135,7 +135,7 @@ export default class ServOfferTitle extends Component {
                     }}
                 />
                 <View style={styles.contentRemindText}>
-                    <Text style={{ color: "#a8a6b9", fontSize: 12 }}>不少于16个字符</Text>
+                    <Text style={{ color: "#a8a6b9", fontSize: 12 }}>不少于8个字符</Text>
                     <Text style={styles.textLengthText}>
                       {this.state.serv_offer.title_length?this.state.serv_offer.title_length:'0'}/80
                     </Text>
