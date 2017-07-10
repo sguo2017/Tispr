@@ -269,7 +269,7 @@ export default class Personinfoedit extends Component {
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
                         <Image style={{ width: 24, height: 24 }} source={require('../resource/g_name.png')}/>
                         <TextInput
-                          maxLength={10}
+                          maxLength={20}
                           placeholder='请填写您的真实姓名'
                           placeholderTextColor='#CCCCCC'
                           style={styles.textInput}
@@ -281,7 +281,7 @@ export default class Personinfoedit extends Component {
                         />
                     </View>
                     
-                    <Text style={styles.text}>2-4个汉字，或10个英文字符</Text>
+                    <Text style={styles.text}>1-20个字符</Text>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 16 }}>
                         <Image style={{ width: 24, height: 24 }} source={require('../resource/g_location.png')}/>
                         <TextInput
@@ -312,7 +312,7 @@ export default class Personinfoedit extends Component {
                         />
                     </View>
                     <View style={{ flexDirection:'row', justifyContent: 'flex-end', marginBottom: 8 }}>
-                        <Text style={styles.lengthText}>{this.state.selfintroduce.length?this.state.selfintroduce.length:'0'}/200</Text>
+                        <Text style={styles.lengthText}>{this.state.selfintroduce?this.state.selfintroduce.length:'0'}/200</Text>
                     </View>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
                         <Image style={{ width: 24, height: 24 }} source={require('../resource/g_earth_nor.png')}/>
