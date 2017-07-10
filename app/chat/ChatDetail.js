@@ -304,7 +304,8 @@ const styles = StyleSheet.create({
   modal: {
     backgroundColor: 'white',
     paddingHorizontal: 16,
-    marginTop: 350
+    position:'relative',
+    top: screenW
   },
   item: {
     height: 56,

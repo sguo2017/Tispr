@@ -10,6 +10,7 @@ import {
   Platform,
   ActivityIndicator,
   RefreshControl,
+  Linking,
 } from 'react-native';
 import {connect} from 'react-redux';
 import { CachedImage } from "react-native-img-cache";
@@ -105,7 +106,8 @@ class OffersList extends PureComponent {
 
 const OfferItem = ({
   offer,
-  onPress
+  onPress,
+  onCall
 }) => {
   let width = (Common.window.width - 24) / 2;
   let imageH = 120;
@@ -149,8 +151,14 @@ const OfferItem = ({
           </Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image style={{height: 24, width: 24}} source={require('../../resource/ic_account_favour.png')}/>
-          <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{offer.favorites_count ? offer.favorites_count : 0}</Text>
+          <TouchableOpacity
+            activeOpacity={0.75}
+            onPress={onCall}
+          >
+            <Image style={{height: 18, width: 18}} source={require('../../resource/y-chat.png')}/>
+          </TouchableOpacity>
+          {/*<Image style={{height: 24, width: 24}} source={require('../../resource/ic_account_favour.png')}/>
+          <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{offer.favorites_count ? offer.favorites_count : 0}</Text>*/}
         </View>
       </View>
     </TouchableOpacity>
