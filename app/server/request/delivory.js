@@ -126,7 +126,13 @@ export default class ServOfferDelivory extends Component {
         }else if(this.state.remoteSwitchIsOn){
             this.state.serv_offer.via = 'remote';
         }else{
-            Alert("请选择服务方式");
+            Alert.alert(
+                '提示',
+                '请选择服务方式',
+                [
+                    { text: '确定'},
+                ]
+            )
             return;
         }
         const { navigator } = this.props;
