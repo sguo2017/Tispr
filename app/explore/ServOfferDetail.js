@@ -373,6 +373,9 @@ export default class ServOfferDetail extends Component {
                         }
                         <Text style={{color: '#000', fontSize: 18, lineHeight: 24}}>{feed.serv_title}</Text>
                         <Text style={{color: '#999999', fontSize: 14, lineHeight: 24}}>{feed.serv_detail}</Text>
+                        <View style={{backgroundColor: '#FFC400', height: 18, width: 68, borderRadius: 2, justifyContent: 'center', alignItems: 'center', marginTop: 8}}>
+                            <Text style={{color: 'white', fontsize: 12}}>发布成功</Text>
+                        </View>
                     </View>
                     {
                         feed.user_id == global.user.id?
@@ -386,6 +389,10 @@ export default class ServOfferDetail extends Component {
                         </View>
                     }
                     {
+                        Platform.OS === 'ios' 
+                        ?  
+                        <View></View>
+                        : 
                         <MapView 
                             trafficEnabled={this.state.trafficEnabled}
                             baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
@@ -509,9 +516,24 @@ export default class ServOfferDetail extends Component {
                     >
                         <View style={styles.modal}>
                             <TouchableOpacity style={[styles.modalItem, {flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16}]}
+                            >
+                                <View style={{flexDirection: 'row'}}>
+                                    <Image source={require('../resource/b-archive.png')}/>
+                                    <Text  style={styles.modalText}>存档</Text>
+                                </View>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Image source={require('../resource/y-check-r.png')}/>
+                                    <Text style={{lineHeight: 21}}>已存档</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.modalItem, {flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16}]}
                             onPress = {this.reportOffer.bind(this, feed.id)}
                             >
-                                <Text  style={styles.modalText}>举报</Text>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Image source={require('../resource/y-jubao.png')}/>
+                                    <Text  style={styles.modalText}>举报</Text>
+                                </View>
+                                <Text style={{fontSize: 14, lineHeight: 20}}>已举报</Text>
                             </TouchableOpacity>
                                 <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
                             <TouchableOpacity onPress={() => this.setState({show_report: false})} style={{alignItems: 'center', justifyContent: 'center', height: 56}}>
@@ -530,10 +552,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
     },
     modal: {
-        marginTop: 350,
-        height: 250,
+        marginTop: 400,
+        height: 200,
         backgroundColor: 'white',
-        padding: 30,
     },
     share: {
         flexDirection: 'row',
@@ -555,11 +576,13 @@ const styles = StyleSheet.create({
     },
     modalItem: {
         height: 56,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginHorizontal: 22
     },
     modalText: {
         fontSize: 16,
-        color: 'black'
+        color: 'black',
+        marginLeft: 24
     },
     cancel: {
         color: '#1B2833',
