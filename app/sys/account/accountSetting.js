@@ -17,7 +17,7 @@ import changePassword from './changePassword';
 export default class accountSetting extends Component {
     render(){
         return(
-            <View>
+            <View style={{backgroundColor: '#fff'}}>
                 <Header
 					title='输入登录信息'
 					leftIcon={require('../../resource/ic_back_white.png')}

@@ -552,9 +552,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
     },
     modal: {
-        marginTop: 400,
+        marginTop: 300,
         height: 200,
+        width: global.gScreen.width,
         backgroundColor: 'white',
+        position: 'absolute',
+        bottom: 0,
+        borderTopWidth: 1,
+        borderColor: '#000'
+
     },
     share: {
         flexDirection: 'row',
@@ -582,7 +588,6 @@ const styles = StyleSheet.create({
     modalText: {
         fontSize: 16,
         color: 'black',
-        marginLeft: 24
     },
     cancel: {
         color: '#1B2833',

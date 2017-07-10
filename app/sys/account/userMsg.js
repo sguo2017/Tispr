@@ -194,7 +194,7 @@ export default class Personinfoedit extends Component {
 
     render(){
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{flex: 1, backgroundColor: '#fff'}}>
                 <Header
                     title='编辑信息'
                     leftIcon={require('../../resource/ic_back_white.png')}

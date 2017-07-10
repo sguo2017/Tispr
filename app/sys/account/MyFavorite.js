@@ -13,7 +13,7 @@ import Header from '../../components/HomeNavigation';
 export default class MyFavorite extends Component{
     render(){
         return(
-            <View>
+            <View style={{backgroundColor: '#fff'}}>
                 <Header
 					title='我的存档'
 					leftIcon={require('../../resource/ic_back_white.png')}

@@ -125,7 +125,7 @@ export default class OrderDetail extends Component {
     render(){
         const { feed } = this.props;
         return (
-            <View>
+            <View style={{backgroundColor: '#fff'}}>
                 <Header
                         leftIconAction={() => this.props.navigator.pop()}
                         title={'交易条件'}

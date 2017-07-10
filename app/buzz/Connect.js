@@ -146,22 +146,24 @@ export default class Connect extends Component {
                 {
                     this.state.send_default_chat_conteng?
                     <View style={{paddingHorizontal: 20}}>
-                        <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>        
-                        <Text style={{fontSize: 14, color: '#1B2833'}}>{feed.user.name} 您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
+                        <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>                                
+                        <View style={{height:80}}>
+                            <Text style={{fontSize: 16, color: '#1B2833'}}>{feed.user.name} 您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
+                        </View>                       
                         <TouchableHighlight 
-                            style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton,{width:170, marginTop: 26}]} 
+                            style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
                             onPress={()=>this.setState({button1: !this.state.button1})}
                         >
                             <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
                         </TouchableHighlight>
                         <TouchableHighlight 
-                            style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton,{width:156}]} 
+                            style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton]} 
                             onPress={()=>this.setState({button2: !this.state.button2})}
                         >
                             <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
                         </TouchableHighlight>
                         <TouchableHighlight 
-                            style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton, {width: 184}]} 
+                            style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton]} 
                             onPress={()=>this.setState({button3: !this.state.button3})}
                         >
                             <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
@@ -170,7 +172,7 @@ export default class Connect extends Component {
                         <View style={{height: 1, backgroundColor: 'rgba(0,0,0,0.12)', marginVertical: 13.7}}></View>
 
                         <TouchableHighlight 
-                            style={[styles.notSelectedButton, {width: 86}]} 
+                            style={[styles.notSelectedButton, {width:Platform.OS ==='ios'?120:100}]} 
                             onPress={()=>this.setState({send_default_chat_conteng:false})}
                         >
                             <Text style={[styles.themeColorText]}>自定义信息</Text>
@@ -230,18 +232,18 @@ const styles = StyleSheet.create({
     },
     themeColorText:{
         color:global.gColors.themeColor,
-        fontSize:14
+        fontSize:16
     },
     whiteText: {
         color:'#fff',
-        fontSize:14
+        fontSize:16
     },
     notSelectedButton: {
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
         padding:5,
         height: 36,
-        width:210,
+        width:Platform.OS === 'ios'? 260: 210,
         marginRight: 20,
         marginBottom: 8,
         borderRadius: 2
@@ -252,9 +254,10 @@ const styles = StyleSheet.create({
         backgroundColor: global.gColors.themeColor,
         padding:5,
         height: 36,
-        width:210,
+        width:Platform.OS === 'ios'? 260: 210,
         marginRight: 20,
-        marginBottom:20
+        marginBottom: 8,
+        borderRadius: 2
     },
     cardImageContent: {
         height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,

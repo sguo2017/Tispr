@@ -24,7 +24,7 @@ export default class UserAgreement extends Component {
   
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor:'#fff' }}>
                 <Header
                     title='用户协议'
                     leftIcon = {require('../resource/ic_back_white.png')}

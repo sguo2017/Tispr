@@ -7,7 +7,8 @@ import {
   Text,
   TouchableOpacity,
   TouchableHighlight,
-  TextInput
+  TextInput,
+  Platform
 } from 'react-native';
 import Header from '../../components/HomeNavigation';
 import Constant from '../../common/constants';
@@ -37,7 +38,7 @@ export default class ConnectPage extends Component{
         if(this.state.button3)
             default_msg += msg3;
         return(
-            <View>
+            <View style={{backgroundColor: '#fff'}}>
                 <Header
                     leftIconAction={() => this.props.navigator.pop()}
                     leftIcon={require('../../resource/ic_back_white.png')}
@@ -50,15 +51,17 @@ export default class ConnectPage extends Component{
                         style={{width:50,height:50,borderRadius:25,alignSelf:'center'}} 
                         defaultSource={require('../../resource/user_default_image.png')}
                         source={{uri: feed.avatar}}/>
-                        <Text style={{color:'black', fontSize:18,marginTop:20,marginBottom:20,height:80}}>{feed.user_name} 您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
+                        <View style={{height:80}}>
+                            <Text style={{color:'black', fontSize:18,marginTop:20,marginBottom:20,height:80}}>{feed.user_name} 您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
+                        </View>
                         <TouchableHighlight 
-                            style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton,{width:160}]} 
+                            style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
                             onPress={()=>this.setState({button1: !this.state.button1})}
                         >
                             <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
                         </TouchableHighlight>
                         <TouchableHighlight 
-                            style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton,{width:160}]} 
+                            style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton]} 
                             onPress={()=>this.setState({button2: !this.state.button2})}
                         >
                             <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
@@ -72,10 +75,10 @@ export default class ConnectPage extends Component{
                         <View style={{height: 1, backgroundColor: 'rgba(0,0,0,0.12)', marginVertical: 13.7}}></View>
 
                         <TouchableHighlight 
-                            style={[styles.notSelectedButton, {width: 90}]} 
+                            style={[styles.notSelectedButton, {width: Platform.OS === 'ios'? 120:100}]} 
                             onPress={()=>this.setState({send_default_chat_conteng:false})}
                         >
-                            <Text style={[styles.themeColorText, {width: 86}]}>自定义信息</Text>
+                            <Text style={[styles.themeColorText]}>自定义信息</Text>
                         </TouchableHighlight>
                     </View>:
                     <View style={{padding: 20}}>
@@ -125,9 +128,10 @@ const styles = StyleSheet.create({
         borderColor: global.gColors.themeColor,
         padding:5,
         height: 36,
-        width:210,
+        width:Platform.OS === 'ios'? 260: 210,
         marginRight: 20,
-        marginBottom:20
+        marginBottom:20,
+        borderRadius: 4,
     },
     selectedButton:{
         borderWidth: 1,
@@ -135,9 +139,10 @@ const styles = StyleSheet.create({
         backgroundColor: global.gColors.themeColor,
         padding:5,
         height: 36,
-        width:210,
+        width:Platform.OS === 'ios'? 260: 210,
         marginRight: 20,
-        marginBottom:20
+        marginBottom:20,
+        borderRadius: 4,
     },
     themeColorText:{
         color:global.gColors.themeColor,

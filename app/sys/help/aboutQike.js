@@ -22,7 +22,7 @@ export default class UseHelp extends Component {
 
 	render() {
 		return (
-			<View >
+			<View style={{backgroundColor: '#fff'}}>
 				<Header
 					title='关于奇客'
 					leftIcon={require('../../resource/ic_back_white.png')}

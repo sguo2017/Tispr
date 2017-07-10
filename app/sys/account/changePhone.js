@@ -115,7 +115,7 @@ export default class PasswordConfirm extends Component{
 
     render(){
         return(
-            <View style={{height:global.gScreen.height}}>
+            <View style={{height:global.gScreen.height, backgroundColor: '#fff'}}>
                 <Header
 					title='更改手机号码'
 					leftIcon={require('../../resource/ic_back_white.png')}

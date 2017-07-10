@@ -68,7 +68,7 @@ export default class PasswordConfirm extends Component{
 
     render(){
         return(
-            <View style={{height:global.gScreen.height}}>
+            <View style={{height:global.gScreen.height, backgroundColor: '#fff'}}>
                 <Header
 					title='修改密码'
 					leftIcon={require('../../resource/ic_back_white.png')}

@@ -93,10 +93,10 @@ const styles = StyleSheet.create({
         borderColor: global.gColors.themeColor,
         padding:5,
         height: 36,
-        width:210,
         marginRight: 20,
         marginBottom: 8,
-        borderRadius: 2
+        borderRadius: 4,
+        width:Platform.OS === 'ios'? 260: 210
     },
     selectedButton:{
         borderWidth: 1,
@@ -104,9 +104,10 @@ const styles = StyleSheet.create({
         backgroundColor: global.gColors.themeColor,
         padding:5,
         height: 36,
-        width:210,
         marginRight: 20,
-        marginBottom:20
+        marginBottom:8,
+        borderRadius: 4,
+        width:Platform.OS === 'ios'? 260: 210
     },
     avatar: {
         width: 60,
@@ -353,23 +354,24 @@ export default class ServOfferList extends Component {
                 </View>
                 <View style={{ marginLeft: 20 }}>
                     <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: this.state.connectUserAvatar}} style={styles.avatar}></Image>
-                    <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
-                    <View style={{height:30}}></View>
+                    <View style={{height:80}}>
+                        <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
+                    </View>
 
                     <TouchableHighlight 
-                        style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton,{width:170, marginTop: 26}]} 
+                        style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
                         onPress={()=>this.setState({button1: !this.state.button1})}
                     >
                         <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
                     </TouchableHighlight>
                     <TouchableHighlight 
-                        style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton,{width:156}]} 
+                        style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton]} 
                         onPress={()=>this.setState({button2: !this.state.button2})}
                     >
                         <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
                     </TouchableHighlight>
                     <TouchableHighlight 
-                        style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton, {width: 184}]} 
+                        style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton]} 
                         onPress={()=>this.setState({button3: !this.state.button3})}
                     >
                         <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
