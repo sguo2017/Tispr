@@ -30,6 +30,8 @@ import Constant from '../common/constants';
 import Server from '../server/index';
 import Me from '../me/index';
 import ServOfferDetail from '../explore/ServOfferDetail'
+import resTimes from './restTimes';
+import noConnectTimes from './noConnectTimes';
 const KNOWLEDGE_ID = 3
 
 var styles = StyleSheet.create({
@@ -287,23 +289,14 @@ export default class BussList extends Component {
             if (response.status >= 200 && response.status < 300) {
                 if (newStatus == Constant.sys_msgs_status.FINISHED) {
                     let resObject = JSON.parse(res);
+                    let avaliableTimes =resObject.avaliable;
                     if (resObject.status == 0) {
                         this._createChat(resObject.id, lately_chat_content);
-                        Alert.alert(
-                            '提示',
-                            '联系成功！您今天的沟通次数剩余' + resObject.avaliable + "次",
-                            [
-                                { text: '确定', onPress: () => this.props.navigator.pop() },
-                            ]
-                        )
+                        if(avaliableTimes == 5){
+                            this.props.navigator.push({component:resTimes, passProps:{avaliableTimes,type}});
+                    }
                     } else if (resObject.status == -2) {
-                        Alert.alert(
-                            '提示',
-                            '您今天的沟通机会已用完，请明天再联系',
-                            [
-                                { text: '确定', onPress: () => this.props.navigator.pop() },
-                            ]
-                        )
+                        this.props.navigator.push({component: noConnectTimes});
                     } else if (resObject.status == -1) {
                         Alert.alert(
                             '提示',

@@ -40,6 +40,7 @@ export default class TabBarView extends PureComponent {
                 tabNames={tabTitles}
                 tabIconNames={tabIcons}
                 selectedTabIconNames={tabSelectedIcon}
+                activeTab = {this.props.initialPage?this.props.initialPage: 0}
                 centralEvent={()=>{
                     this.props.navigator.resetTo({component:Server, name:'Server',passProps:{}})
                 }}

@@ -21,6 +21,8 @@ import UselessTextInput from '../components/UselessTextInput';
 import UserDefaults from '../common/UserDefaults';
 import Constant from '../common/constants';
 import resTimes from './restTimes';
+import noConnectTimes from './noConnectTimes';
+import TabBarView from'../containers/TabBarView';
 const screenW = Dimensions.get('window').width;
 const msg1 ='你发布的专业服务很棒！';
 const msg2 ='请问你是如何收费的？';
@@ -79,15 +81,13 @@ export default class Connect extends Component {
                 let type = 'offer';
                 if(resObject.status==0){
                     this._createChat(resObject.id,this.state.lately_chat_content);
-                    this.props.navigator.push({component:resTimes, passProps:{avaliableTimes,type}});
+                    if(avaliableTimes == 5){
+                        this.props.navigator.push({component:resTimes, passProps:{avaliableTimes,type}});
+                    }else{
+                        this.props.navigator.resetTo({component:TabBarView, passProps: {initialPage: 3}});
+                    }                   
                 }else if(resObject.status==-2){
-                    Alert.alert(
-                        '提示',
-                        '您今天的沟通机会已用完，请明天再联系',
-                        [
-                            { text: '确定', onPress: () => this.props.navigator.pop() },
-                        ]
-                    )
+                    this.props.navigator.push({component: noConnectTimes})
                 }
             } else {
                 let error = res;

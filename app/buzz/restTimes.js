@@ -13,7 +13,7 @@ export default class offline extends Component{
         return(
             <View style={{width:global.gScreen.width,height:global.gScreen.height,backgroundColor:'#fff',
             justifyContent:'center',alignItems:'center'}}>
-                    <Image style={{width:160,height:160,margin:20}} source={require('../resource/pupop_times25.png')}/>
+                    <Image style={{width:160,height:160,margin:20}} source={require('../resource/pupop-times5.png')}/>
                     <Text style={{color:'black',fontSize:20,margin:20}}>联系成功！</Text>
                     {
                         this.props.type == "offer"?
