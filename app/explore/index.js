@@ -140,7 +140,11 @@ class ExploreList extends PureComponent {
                          value={this.state.exploretitle}
                 //onChangeText={(val)=>this.setState({searchText:val})}
                          placeholder='搜索'
+                         returnKeyType = 'search'
+                         returnKeyLabel = 'search'
                          placeholderTextColor='white'
+                         selectTextOnFocus ={true}
+                         onSubmitEditing = {() => this.refresh()}
                          onChangeText={(val) => {
                              let explore = this.state.exploreparams;
                              explore.title = val;
@@ -148,9 +152,16 @@ class ExploreList extends PureComponent {
                          }}
                       />
                   </View>
-                  <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} onPress={() => this.refresh()}>
-                      <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
-                  </TouchableOpacity>
+                  {
+                      this.state.exploretitle == ''?
+                    <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} onPress={() => this.refresh()}>
+                        <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
+                    </TouchableOpacity>
+                    :
+                    <View style={{ marginLeft: 17, marginRight: 8 }} >
+                        <Text style={{color: '#fff'}} onPress={() =>{this.setState({exploreparams: {},exploretitle: ''});this.state.exploreparams={}; this.refresh()}}>取消</Text>
+                    </View>
+                  }
               </View>
               <View style={{ flexDirection: 'row', paddingVertical: 6, backgroundColor: 'rgba(0,0,0,0.16)'}}>
                   <TouchableOpacity style={styles.filterButton} onPress={() => this.setState({ tabName: 'index', show: true })}>
@@ -176,7 +187,7 @@ class ExploreList extends PureComponent {
                         <View style={styles.modalStyle}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
+                                    <TouchableOpacity onPress={() => this.setState({ cps: [true, false, false, false, false, false, false], lps: [false, false], transiSortBy: '综合排序', transiClassify: '全部分类' })}>
                                         <Text style={styles.themeColorText}>重置</Text>
                                     </TouchableOpacity>
 
