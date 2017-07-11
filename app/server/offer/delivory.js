@@ -109,8 +109,8 @@ export default class ServOfferDelivory extends Component {
 
         this.state = {
             serv_offer: this.props.serv_offer,
-            remoteSwitchIsOn: false,
-            localSwitchIsOn: true
+            remoteSwitchIsOn: this.props.serv_offer.via == 'remote'||this.props.serv_offer.via == 'all'?true:false ,
+            localSwitchIsOn: this.props.serv_offer.via == 'local'||this.props.serv_offer.via == 'all'?true:false ,
         }
     }
     clickJump() {
