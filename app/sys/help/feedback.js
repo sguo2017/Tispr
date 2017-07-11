@@ -64,7 +64,7 @@ export default class feedback extends Component {
 
 	render() {
 		return (
-			<View style={{height:global.gScreen.height, backgroundColor: '#000'}}>
+			<View style={{height:global.gScreen.height, backgroundColor: '#fff'}}>
 				<Header
 					title='意见反馈'
 					leftIcon={require('../../resource/ic_back_white.png')}

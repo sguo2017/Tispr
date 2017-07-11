@@ -111,7 +111,7 @@ export default class Setting extends Component {
 					</View>
 					<TouchableOpacity style={[styles.rectangle_view, { borderTopColor: '#dedfe0', borderTopWidth: 0.5 }]} onPress={() => this.props.navigator.push({component:UseHelp,name:'UseHelp'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Text style={styles.rectangle_text} >如何使用</Text>
+							<Text style={styles.rectangle_text} >使用帮助</Text>
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
