@@ -225,7 +225,7 @@ export default class ServOfferConfirm extends Component {
                     global.user.request_count++;
                     Alert.alert(
                         '提示',
-                        '需求发布成功,您今天发布需求的次数剩余'+resObject.avaliable+"次",
+                        '提交成功，请等待管理员审核',
                         [
                             { text: '确定'},
                         ]

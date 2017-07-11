@@ -223,9 +223,9 @@ export default class ServOfferConfirm extends Component {
                     global.user.offer_count++;
                     Alert.alert(
                         '提示',
-                        '服务发布成功,您今天发布服务的次数剩余'+resObject.avaliable+"次",
+                        '提交成功，请等待管理员审核'
                         [
-                            { text: '确定'},
+                            { text: '确定'}
                         ]
                     )
                }else if(resObject.status==-2){
