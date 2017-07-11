@@ -13,7 +13,8 @@ import {
     AsyncStorage,
     PixelRatio,
     ProgressViewIOS,
-    Alert
+    Alert,
+    ScrollView
 } from 'react-native'
 import Header from '../../components/HomeNavigation';
 import AutoTextInput from '../../components/AutoTextInput';
@@ -114,6 +115,7 @@ export default class ServOfferTitle extends Component {
                     rightButton='下一步'
                     rightButtonAction={this.clickJump.bind(this)}
                 />
+                <ScrollView>
                 {this.renderProgressView()}
                 <Image style={styles.headIcon} source={require('../../resource/b-aixin-xl.png')} />
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>提供什么服务</Text>
@@ -140,6 +142,7 @@ export default class ServOfferTitle extends Component {
                       {this.state.serv_offer.title_length?this.state.serv_offer.title_length:'0'}/80
                     </Text>
                 </View>
+                </ScrollView>
             </View>
         );
     }

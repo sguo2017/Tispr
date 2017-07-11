@@ -10,7 +10,8 @@ import {
   Alert,
   Image,
   Dimensions,
-  Platform
+  Platform,
+  ScrollView
 } from 'react-native';
 import Header from '../components/HomeNavigation';
 import Register from '../user/register';
@@ -255,6 +256,7 @@ export default class Login extends Component {
   render() {
     const emailView = (
       <View style={{ flex: 1, padding: 16 }}>
+        <ScrollView>
         <View style={{ justifyContent: 'center', minHeight: 48}}>
           <AutoTextInput
             ref="1"
@@ -303,6 +305,7 @@ export default class Login extends Component {
             </Text>
           </TouchableOpacity>
         </View>
+        </ScrollView>
         <TouchableOpacity onPress={this.onLoginPressed.bind(this)} style={styles.loginButton}>
           <Text  style={styles.loginButtonText}>
             登录
@@ -311,7 +314,9 @@ export default class Login extends Component {
       </View>
     );
     const smsView = (
+
       <View style={{ flex: 1, padding: 16 }}>
+        <ScrollView>
         <Text style={{ color: '#1b2833', fontSize: 14, fontWeight: 'bold' }}>使用手机号码登录</Text>
 
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 16, minHeight: 48 }}>
@@ -354,6 +359,7 @@ export default class Login extends Component {
               onSubmitEditing = {this._smsCodeLogin.bind(this)}
             />
           </View>
+          
           <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword2: !this.state.seePassword2 })}>
             <Image style={{ width: 25, height: 20 }} source={this.state.seePassword2? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
           </TouchableOpacity>
@@ -370,6 +376,7 @@ export default class Login extends Component {
             </Text>
           </TouchableOpacity>
         </View>
+        </ScrollView>
         <TouchableOpacity onPress={this._smsCodeLogin.bind(this)} style={styles.loginButton}>
           <Text style={styles.loginButtonText}>登录</Text>
         </TouchableOpacity>
@@ -383,7 +390,7 @@ export default class Login extends Component {
           leftIconAction={this._onBack}
         />
         {this.state.loginWay == 'email' ? emailView : smsView}
-        <Loading text="登陆中" isShow={this.state.showProgress} />
+        <Loading text="登陆中" isShow={this.state.showProgress} />    
       </View>
     );
   }

@@ -15,6 +15,7 @@ import {
     Alert,
     Switch,
     ProgressViewIOS,
+    ScrollView
 } from 'react-native'
 import Header from '../../components/HomeNavigation';
 import ServOfferConfirm from './confirm';
@@ -191,6 +192,7 @@ export default class ServOfferDelivory extends Component {
                     rightButton='下一步'
                     rightButtonAction={this.clickJump.bind(this)}
                 />
+                <ScrollView>
                 {this.renderProgressView()}
                 <Image style={styles.headIcon} source={require('../../resource/b_location.png')} />
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>怎样提供服务</Text>
@@ -218,6 +220,7 @@ export default class ServOfferDelivory extends Component {
                       thumbTintColor={Platform.OS == 'ios'?null:'white'}
                     />
                 </View>
+                </ScrollView>
             </View>
         );
     }

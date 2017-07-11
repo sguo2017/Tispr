@@ -13,6 +13,7 @@ import {
     PixelRatio,
     ProgressViewIOS,
     Alert,
+    ScrollView
 } from 'react-native';
 import Header from '../../components/HomeNavigation';
 import AutoTextInput from '../../components/AutoTextInput';
@@ -98,6 +99,7 @@ export default class ServOfferDetail extends Component {
                     rightButton='下一步'
                     rightButtonAction={this.clickJump.bind(this)}
                 />
+                <ScrollView>
                 {this.renderProgressView()}
                 <Image style={styles.headIcon} source={require('../../resource/b-zanshi-xl.png')} />
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>服务有什么特点</Text>
@@ -125,6 +127,7 @@ export default class ServOfferDetail extends Component {
                     {this.state.serv_offer.detail_length?this.state.serv_offer.detail_length:'0'}/1000
                   </Text>
                 </View>
+                </ScrollView>
             </View>
         );
     }

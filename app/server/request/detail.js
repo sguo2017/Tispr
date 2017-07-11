@@ -14,6 +14,7 @@ import {
     PixelRatio,
     Alert,
     ProgressViewIOS,
+    ScrollView
 } from 'react-native'
 import AutoTextInput from '../../components/AutoTextInput';
 import Header from '../../components/HomeNavigation';
@@ -104,6 +105,7 @@ export default class ServOfferDetail extends Component {
                     rightButton='下一步'
                     rightButtonAction={this.clickJump.bind(this)}
                 />
+                <ScrollView>
                 {this.renderProgressView()}
                 <Image style={styles.headIcon} source={require('../../resource/b-xuqiu-xl.png')} />
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>您的具体需求是什么</Text>
@@ -131,6 +133,7 @@ export default class ServOfferDetail extends Component {
                     {this.state.serv_offer.detail_length?this.state.serv_offer.detail_length:'0'}/1000
                   </Text>
                 </View>
+                </ScrollView>
             </View>
         );
     }
