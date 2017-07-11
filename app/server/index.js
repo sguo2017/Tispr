@@ -71,24 +71,28 @@ export default class Server extends Component {
               this.state.itemsSpacing,
               {
                   toValue: 35,
+                  duration: 200,
               }
             ).start(),
             Animated.timing(
               this.state.buttonBottom,
               {
                   toValue: 48,
+                  duration: 200,
               }
             ),
             Animated.timing(
               this.state.rotateAngle,
               {
                   toValue: 1,
+                  duration: 200,
               }
             ),
             Animated.timing(
               this.state.buttonColor,
               {
                   toValue: 1,
+                  duration: 200,
               }
             ),
         ]).start();
@@ -123,7 +127,7 @@ export default class Server extends Component {
                     <Animated.View style={{ marginRight: this.state.itemsSpacing }}>
                         <TouchableOpacity style={styles.clickItem} onPress={() => {this.clickNavigationJump("serv_offer")}}>
                             <View elevation={5} style={styles.itemImageContent}>
-                                <Image style={styles.itemImage} source={require('../resource/t_offer_serv.png')} />
+                                <Image elevation={5} style={styles.itemImage} source={require('../resource/t_offer_serv.png')} />
                             </View>
                             <Text style={styles.titleText}>发布服务</Text>
                         </TouchableOpacity>
