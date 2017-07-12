@@ -299,7 +299,7 @@ class ExploreList extends PureComponent {
                                     >
                                         <Text style={[styles.themeColorText, this.state.sps[1] && styles.whiteText]}>最近发布</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity
+                                    {/*<TouchableOpacity
                                       style={[styles.selectButton, this.state.sps[2] && { backgroundColor: global.gColors.themeColor }]}
                                       onPress={() => { this.setState({ transiSortBy: '最多收藏', sps: [false, false, true, false] }) }}
                                     >
@@ -309,7 +309,7 @@ class ExploreList extends PureComponent {
                                       style={[styles.selectButton, this.state.sps[3] && { backgroundColor: global.gColors.themeColor }]}
                                       onPress={() => this.setState({ transiSortBy: '最多联系', sps: [false, false, false, true] })}>
                                         <Text style={[styles.themeColorText, this.state.sps[3] && styles.whiteText]}>最多联系</Text>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity>*/}
                                 </View>
                             </View>
                         </View>
