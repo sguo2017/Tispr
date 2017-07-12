@@ -8,6 +8,7 @@ import {
 	TouchableOpacity,
 	TouchableHighlight
 } from 'react-native'
+import ChatDetail from '../chat/ChatDetail'
 export default class offline extends Component{
     render(){
         return(
@@ -29,7 +30,7 @@ export default class offline extends Component{
                             </TouchableOpacity> 
                         <TouchableOpacity 
                         style={{borderRadius:5,width:100,height:40,justifyContent:'center',alignItems:'center',backgroundColor:global.gColors.buttonColor}}
-                        onPress={() => this.props.navigator.popN(2)}
+                        onPress={() => this.props.navigator.resetTo({component:ChatDetail, passProps: {feed:this.props.feed, newChat: true}})}
                         >
                             <Text style={{color:'white'}}>立即沟通</Text>
                         </TouchableOpacity>

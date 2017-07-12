@@ -23,7 +23,8 @@ import Constant from '../common/constants';
 import resTimes from './restTimes';
 import totalResTimes from './totalResTimes';
 import noConnectTimes from './noConnectTimes';
-import TabBarView from'../containers/TabBarView';
+import TabBarView from '../containers/TabBarView';
+import ChatDetail from '../chat/ChatDetail'
 const screenW = Dimensions.get('window').width;
 const msg1 ='你发布的专业服务很棒！';
 const msg2 ='请问你是如何收费的？';
@@ -87,24 +88,9 @@ export default class Connect extends Component {
                 //console.log("line:153");
                 let resObject =JSON.parse(res);
                 let avaliableTimes =resObject.avaliable;
-                let type = 'offer';
+                let newOrder = resObject.feed;
                 if(resObject.status==0){
-                    this._createChat(resObject.id,this.state.lately_chat_content);
-                    /*当前用户没有看过每天联系总数量的提示时 */
-                    if (!this.state.hasSeenTotalTimes) {
-                        UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
-                            if (hasSeenTotalRestimesPage == null) {
-                                hasSeenTotalRestimesPage = {};
-                            }
-                            hasSeenTotalRestimesPage[global.user.id] = true
-                            UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
-                        })
-                        this.props.navigator.push({component:totalResTimes, passProps:{avaliableTimes,type}});
-                    }else if(avaliableTimes == 5){
-                        this.props.navigator.push({component:resTimes, passProps:{avaliableTimes,type}});
-                    }else{
-                        this.props.navigator.resetTo({component:TabBarView, passProps: {initialPage: 3}});
-                    }                   
+                    this._createChat(newOrder,avaliableTimes);            
                 }else if(resObject.status==-2){
                     this.props.navigator.push({component: noConnectTimes})
                 }
@@ -120,7 +106,7 @@ export default class Connect extends Component {
         }
     }
 
-    async _createChat(_deal_id){
+    async _createChat( newOrder, avaliableTimes ){
         let chat_content = this.state.lately_chat_content;
         try {
             let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + `${global.user.authentication_token}`;
@@ -133,7 +119,7 @@ export default class Connect extends Component {
 
                 body: JSON.stringify({
                 chat: {
-                    deal_id: _deal_id,
+                    deal_id: newOrder.id,
                     chat_content: chat_content,
                     user_id: global.user.id,
                     catalog: 2
@@ -143,7 +129,23 @@ export default class Connect extends Component {
 
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
-                console.log("line:99");
+                let resObject =JSON.parse(res);
+                let type = 'offer';
+                 /*当前用户没有看过每天联系总数量的提示时 */
+                if (!this.state.hasSeenTotalTimes) {
+                    UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+                        if (hasSeenTotalRestimesPage == null) {
+                            hasSeenTotalRestimesPage = {};
+                        }
+                        hasSeenTotalRestimesPage[global.user.id] = true
+                        UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
+                    })
+                    this.props.navigator.push({component:totalResTimes, passProps:{feed: newOrder,type}});
+                }else if(avaliableTimes == 5){
+                    this.props.navigator.push({component:resTimes, passProps:{feed: newOrder,type}});
+                }else{
+                    this.props.navigator.resetTo({component:ChatDetail, passProps: {feed: newOrder, newChat: true}});
+                }       
             } else {
                 let error = res;
                 throw error;

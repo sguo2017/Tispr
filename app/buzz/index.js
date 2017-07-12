@@ -33,6 +33,7 @@ import ServOfferDetail from '../explore/ServOfferDetail'
 import resTimes from './restTimes';
 import noConnectTimes from './noConnectTimes';
 import totalResTimes from './totalResTimes';
+import ChatDetail from '../chat/ChatDetail';
 const KNOWLEDGE_ID = 3
 
 var styles = StyleSheet.create({
@@ -299,20 +300,9 @@ export default class BussList extends Component {
                 if (newStatus == Constant.sys_msgs_status.FINISHED) {
                     let resObject = JSON.parse(res);
                     let avaliableTimes =resObject.avaliable;
+                    let newOrder = resObject.feed;
                     if (resObject.status == 0) {
-                        this._createChat(resObject.id, lately_chat_content);
-                        if (!this.state.hasSeenTotalTimes) {
-                            UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
-                                if (hasSeenTotalRestimesPage == null) {
-                                    hasSeenTotalRestimesPage = {};
-                                }
-                                hasSeenTotalRestimesPage[global.user.id] = true
-                                UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
-                            })
-                            this.props.navigator.push({component:totalResTimes, passProps:{avaliableTimes,type}});
-                        }else if(avaliableTimes == 5){
-                            this.props.navigator.push({component:resTimes, passProps:{avaliableTimes,type}});
-                        }
+                        this._createChat(newOrder,avaliableTimes, lately_chat_content);
                     } else if (resObject.status == -2) {
                         this.props.navigator.push({component: noConnectTimes});
                     } else if (resObject.status == -1) {
@@ -320,7 +310,7 @@ export default class BussList extends Component {
                             '提示',
                             '对方的邀标达到上限，无法接单了',
                             [
-                                { text: '确定', onPress: () => this.props.navigator.pop() },
+                                { text: '确定'},
                             ]
                         )
                     }
@@ -334,7 +324,7 @@ export default class BussList extends Component {
             alert(error)
         }
     }
-    async _createChat(_deal_id, chat_content) {
+    async _createChat(newOrder, avaliableTimes, chat_content) {
         try {
             let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
             let response = await fetch(URL, {
@@ -346,13 +336,38 @@ export default class BussList extends Component {
 
                 body: JSON.stringify({
                     chat: {
-                        deal_id: _deal_id,
+                        deal_id: newOrder.id,
                         chat_content: chat_content,
                         user_id: global.user.id,
                         catalog: 2
                     }
                 })
             });
+
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                let resObject =JSON.parse(res);
+                let type = 'offer';
+                 /*当前用户没有看过每天联系总数量的提示时 */
+                if (!this.state.hasSeenTotalTimes) {
+                    UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+                        if (hasSeenTotalRestimesPage == null) {
+                            hasSeenTotalRestimesPage = {};
+                        }
+                        hasSeenTotalRestimesPage[global.user.id] = true
+                        UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
+                    })
+                    this.props.navigator.push({component:totalResTimes, passProps:{feed: newOrder,type}});
+                }else if(avaliableTimes == 5){
+                    this.props.navigator.push({component:resTimes, passProps:{feed: newOrder,type}});
+                }else{
+                    this.props.navigator.resetTo({component:ChatDetail, passProps: {feed: newOrder, newChat: true}});
+                }       
+            } else {
+                let error = res;
+                throw error;
+            }
+
         } catch (error) {
             console.log("error " + error);
         }
