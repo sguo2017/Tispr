@@ -21,6 +21,7 @@ import UselessTextInput from '../components/UselessTextInput';
 import UserDefaults from '../common/UserDefaults';
 import Constant from '../common/constants';
 import resTimes from './restTimes';
+import totalResTimes from './totalResTimes';
 import noConnectTimes from './noConnectTimes';
 import TabBarView from'../containers/TabBarView';
 const screenW = Dimensions.get('window').width;
@@ -37,7 +38,15 @@ export default class Connect extends Component {
             button1: true,
             button2: false, 
             button3: false,
-        }
+            hasSeenTotalTimes: false,
+        };
+        UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+            if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
+                this.setState({
+                    hasSeenTotalTimes: true
+                });
+            }
+        })
     }
     
     async _createDeal() {
@@ -81,7 +90,17 @@ export default class Connect extends Component {
                 let type = 'offer';
                 if(resObject.status==0){
                     this._createChat(resObject.id,this.state.lately_chat_content);
-                    if(avaliableTimes == 5){
+                    /*当前用户没有看过每天联系总数量的提示时 */
+                    if (!this.state.hasSeenTotalTimes) {
+                        UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+                            if (hasSeenTotalRestimesPage == null) {
+                                hasSeenTotalRestimesPage = {};
+                            }
+                            hasSeenTotalRestimesPage[global.user.id] = true
+                            UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
+                        })
+                        this.props.navigator.push({component:totalResTimes, passProps:{avaliableTimes,type}});
+                    }else if(avaliableTimes == 5){
                         this.props.navigator.push({component:resTimes, passProps:{avaliableTimes,type}});
                     }else{
                         this.props.navigator.resetTo({component:TabBarView, passProps: {initialPage: 3}});

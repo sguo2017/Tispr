@@ -32,6 +32,7 @@ import Me from '../me/index';
 import ServOfferDetail from '../explore/ServOfferDetail'
 import resTimes from './restTimes';
 import noConnectTimes from './noConnectTimes';
+import totalResTimes from './totalResTimes';
 const KNOWLEDGE_ID = 3
 
 var styles = StyleSheet.create({
@@ -119,6 +120,13 @@ export default class BussList extends Component {
                     hasSeenSwiperIntroduce: true
                 });
             }
+        });
+        UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+            if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
+                this.setState({
+                    hasSeenTotalTimes: true
+                });
+            }
         })
     }
 
@@ -142,7 +150,8 @@ export default class BussList extends Component {
         initCard: 0,
         hasSeenSwiperIntroduce: false,
         swiper_1_height: 230,
-        swiper_2_height: 230
+        swiper_2_height: 230,
+        hasSeenTotalTimes: false,
     }
 
     knowledgeListStore = new SysMsgStore(KNOWLEDGE_ID)
@@ -292,9 +301,18 @@ export default class BussList extends Component {
                     let avaliableTimes =resObject.avaliable;
                     if (resObject.status == 0) {
                         this._createChat(resObject.id, lately_chat_content);
-                        if(avaliableTimes == 5){
+                        if (!this.state.hasSeenTotalTimes) {
+                            UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+                                if (hasSeenTotalRestimesPage == null) {
+                                    hasSeenTotalRestimesPage = {};
+                                }
+                                hasSeenTotalRestimesPage[global.user.id] = true
+                                UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
+                            })
+                            this.props.navigator.push({component:totalResTimes, passProps:{avaliableTimes,type}});
+                        }else if(avaliableTimes == 5){
                             this.props.navigator.push({component:resTimes, passProps:{avaliableTimes,type}});
-                    }
+                        }
                     } else if (resObject.status == -2) {
                         this.props.navigator.push({component: noConnectTimes});
                     } else if (resObject.status == -1) {

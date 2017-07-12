@@ -38,7 +38,7 @@ export default class ConnectPage extends Component{
         if(this.state.button3)
             default_msg += msg3;
         return(
-            <View style={{backgroundColor: '#fff'}}>
+            <View style={{flex: 1, backgroundColor: '#fff'}}>
                 <Header
                     leftIconAction={() => this.props.navigator.pop()}
                     leftIcon={require('../../resource/ic_back_white.png')}
@@ -103,21 +103,21 @@ export default class ConnectPage extends Component{
                     </View>
                 }
                 
-                    <TouchableHighlight style={[styles.button, {backgroundColor:global.gColors.buttonColor,position:'absolute', top: 506,flexShrink: 0, width: global.gScreen.width}]}
-                        onPress={() =>{
-                            this.props.callback(
-                                this.props.discardIndex,
-                                Constant.sys_msgs_status.FINISHED,
-                                this.props.feed.smt_id, 
-                                this.state.send_default_chat_conteng?default_msg :this.state.msg);
-                            this.props.navigator.pop()}}
+                <TouchableHighlight style={[styles.button, {backgroundColor:global.gColors.buttonColor,position:'absolute', bottom: 0, flexShrink: 0, width: global.gScreen.width}]}
+                    onPress={() =>{
+                        this.props.callback(
+                            this.props.discardIndex,
+                            Constant.sys_msgs_status.FINISHED,
+                            this.props.feed.smt_id, 
+                            this.state.send_default_chat_conteng?default_msg :this.state.msg);
+                        this.props.navigator.pop()}}
 
+                >
+                    <Text style={styles.buttonText}
                     >
-                        <Text style={styles.buttonText}
-                        >
-                        联系TA
-                        </Text>
-                    </TouchableHighlight>
+                    联系TA
+                    </Text>
+                </TouchableHighlight>
             </View>
         )
     }

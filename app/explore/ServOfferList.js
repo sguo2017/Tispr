@@ -14,6 +14,7 @@ import {
   Linking,
   Alert,
   Modal,
+  AsyncStorage
 } from 'react-native';
 import { CachedImage } from "react-native-img-cache";
 import { fetchExploreList } from '../actions/ServOfferListActions';
@@ -21,6 +22,10 @@ import Common from '../common/constants';
 import Loading from '../components/Loading';
 import ServOfferDetail from './ServOfferDetail';
 import Constant from '../common/constants';
+import UserDefaults from '../common/UserDefaults';
+import resTimes from '../buzz/restTimes';
+import totalResTimes from '../buzz/totalResTimes';
+import noConnectTimes from '../buzz/noConnectTimes';
 const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: 'row',
@@ -133,7 +138,15 @@ export default class ServOfferList extends Component {
         connectUserName: '',
         connectUserAvatar: '',
         connectServ: '',
-      }
+        hasSeenTotalTimes: false,
+      };
+      UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+            if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
+                this.setState({
+                    hasSeenTotalTimes: true
+                });
+            }
+        })
   }
 
   componentDidMount() {
@@ -235,21 +248,22 @@ export default class ServOfferList extends Component {
           let type = 'offer';
           if(resObject.status==0){
               this._createChat(resObject.id, default_msg);
-              Alert.alert(
-                  '提示',
-                  '联系成功！你今天还可以联系'+avaliableTimes+ '位奇客',
-                  [
-                      { text: '确定'},
-                  ]
-              )
+                if (!this.state.hasSeenTotalTimes) {
+                    UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+                        if (hasSeenTotalRestimesPage == null) {
+                            hasSeenTotalRestimesPage = {};
+                        }
+                        hasSeenTotalRestimesPage[global.user.id] = true
+                        UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
+                    })
+                    this.props.navigator.push({component:totalResTimes, passProps:{avaliableTimes,type}});
+                }else if(avaliableTimes == 5){
+                    this.props.navigator.push({component:resTimes, passProps:{avaliableTimes,type}});
+                }else{
+                    this.props.navigator.resetTo({component:TabBarView, passProps: {initialPage: 3}});
+                }   
           }else if(resObject.status==-2){
-              Alert.alert(
-                  '提示',
-                  '您今天的沟通机会已用完，请明天再联系',
-                  [
-                      { text: '确定'},
-                  ]
-              )
+               this.props.navigator.push({component: noConnectTimes})
           }
       } else {
           let error = res;
