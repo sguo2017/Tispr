@@ -180,11 +180,11 @@ export default class Connect extends Component {
                         <View>
                             <Text style={{color: '#999999', marginVertical: 36}}>获得更多竞标</Text>
                         </View>
-                        <View style={{flexDirection: 'row', marginTop: -10, marginBottom: 26}}>
+                        {/*<View style={{flexDirection: 'row', marginTop: -10, marginBottom: 26}}>
                             <Text style={{fontSize: 16, color: 'black', marginRight: 162}}>为我找到更多人才</Text>
                             <Text style={{lineHeight: 20}}>是</Text>
                             <Image source={require('../resource/g_chevron right.png')} style={{justifyContent: 'flex-end'}}></Image>
-                        </View> 
+                        </View> */}
                     </View>:          
                     <View style={{paddingHorizontal: 20}}>
                         <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>                                
