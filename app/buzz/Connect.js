@@ -13,7 +13,8 @@ import {
     AsyncStorage,
     Dimensions,
     PixelRatio,
-    Alert
+    Alert,
+    ScrollView
 } from 'react-native'
 import ImagePicker from 'react-native-image-picker';
 import Header from '../components/HomeNavigation';
@@ -24,6 +25,7 @@ import resTimes from './restTimes';
 import totalResTimes from './totalResTimes';
 import noConnectTimes from './noConnectTimes';
 import TabBarView from'../containers/TabBarView';
+import AutoTextInput from '../components/AutoTextInput'
 const screenW = Dimensions.get('window').width;
 const msg1 ='你发布的专业服务很棒！';
 const msg2 ='请问你是如何收费的？';
@@ -39,6 +41,7 @@ export default class Connect extends Component {
             button2: false, 
             button3: false,
             hasSeenTotalTimes: false,
+            content: ''
         };
         UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -153,8 +156,21 @@ export default class Connect extends Component {
         }
     }
 
+    focusNextField (nextField){
+        this.refs[nextField].focus();
+    };
+
+
+
     render() {
         const { feed } = this.props;
+        let button1 = this.state.button1;
+        let button2 = this.state.button2;
+        let button3 = this.state.button3;
+        let name = feed.user.name;
+        let content = this.state.content;
+        let send_default_chat_conteng = this.state.send_default_chat_conteng;
+        let length = 0;
         return (
             <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
@@ -162,13 +178,31 @@ export default class Connect extends Component {
                     leftIcon={require('../resource/ic_back_white.png')}
                     leftIconAction={() => this.props.navigator.pop()}
                 />
-                {
-                    this.state.send_default_chat_conteng?
+                    <ScrollView>
                     <View style={{paddingHorizontal: 20}}>
+                        
                         <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>                                
-                        <View style={{height:80}}>
-                            <Text style={{fontSize: 16, color: '#1B2833'}}>{feed.user.name} 您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
-                        </View>                       
+                        {/*<View style={{marginBottom: 8, height: 80}}>*/}
+                        <AutoTextInput
+                            ref="1"
+                            multiline={true}
+                            onChangeText={(text) => 
+                                {
+                                    length= (name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')).length;
+                                    this.setState({content: text.substring(length)});
+
+                                }
+                            }
+                            onBlur={() => {
+                                this.setState({send_default_chat_conteng: true})}
+                            }
+                            style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
+                            value={name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')+content}
+                            underlineColorAndroid={'transparent'}
+                            editable={!send_default_chat_conteng}
+                        />
+                        {/*</View>*/}
+                        <View style={{marginTop: 8}}>                     
                         <TouchableHighlight 
                             style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
                             onPress={()=>this.setState({button1: !this.state.button1})}
@@ -192,42 +226,30 @@ export default class Connect extends Component {
 
                         <TouchableHighlight 
                             style={[styles.notSelectedButton, {width:Platform.OS ==='ios'?120:100}]} 
-                            onPress={()=>this.setState({send_default_chat_conteng:false})}
+                            onPress={()=> {
+                                this.setState({send_default_chat_conteng:false});
+                                this.focusNextField.bind(this, '1');
+                                }
+                            }
                         >
                             <Text style={[styles.themeColorText]}>自定义信息</Text>
                         </TouchableHighlight>
                         <View>
                             <Text style={{color: '#999999', marginVertical: 36}}>获得更多竞标</Text>
                         </View>
+                        </View>  
+                        
                         {/*<View style={{flexDirection: 'row', marginTop: -10, marginBottom: 26}}>
                             <Text style={{fontSize: 16, color: 'black', marginRight: 162}}>为我找到更多人才</Text>
                             <Text style={{lineHeight: 20}}>是</Text>
                             <Image source={require('../resource/g_chevron right.png')} style={{justifyContent: 'flex-end'}}></Image>
                         </View> */}
-                    </View>:          
-                    <View style={{paddingHorizontal: 20}}>
-                        <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>                                
-                        <Text style={{ marginTop:30, color: "#a8a6b9", fontSize: 16}}>联系{feed.user.name}询问服务细节</Text>
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={3}
-                            value ={this.state.lately_chat_content}
-                            placeholder='请输入聊天内容'
-                            onChangeText={(val) => {
-                                this.setState({ lately_chat_content: val })
-                                }}
-                        />
-                        <TouchableHighlight 
-                            onPress={()=>this.setState({send_default_chat_conteng:true})}
-                        >
-                            <Text style={[styles.themeColorText]}>发送默认消息</Text>
-                        </TouchableHighlight>
                     </View>
-                }
                 
                 <TouchableOpacity style={{height: 44, backgroundColor: '#FFC400'}}  onPress={this._createDeal.bind(this)}>
                     <Text style={{fontSize: 16, color: 'white', marginVertical: 10, marginHorizontal: 164}}>发送</Text>
                 </TouchableOpacity>
+                </ScrollView>
             </View>
         );
     }
