@@ -29,6 +29,7 @@ export default class Personinfoedit extends Component {
 
         this.state = {
             selfintroduce: global.user.profile,
+            website: global.user.website,
             name: global.user.name,
             avatar: global.user.avatar,
             errors: this.props.errors,
@@ -48,7 +49,7 @@ export default class Personinfoedit extends Component {
             });
         }else{
             if (this.props.getdata) {
-                this.props.getdata(global.user.avatar, this.state.selfintroduce);
+                this.props.getdata(global.user.avatar, this.state.selfintroduce, this.state.website);
             }
             if (navigator) {
                 navigator.pop();
@@ -64,7 +65,7 @@ export default class Personinfoedit extends Component {
             });
         }else{
             if (this.props.getdata) {
-                this.props.getdata(global.user.avatar, this.state.selfintroduce);
+                this.props.getdata(global.user.avatar, this.state.selfintroduce, this.state.website);
             }
             if (navigator) {
                 navigator.pop();
@@ -168,6 +169,7 @@ export default class Personinfoedit extends Component {
                         avatar: this.state.avatar,
                         name: this.state.name,
                         profile: this.state.selfintroduce,
+                        website: this.state.website,
                     }
                 })
             });
@@ -176,6 +178,7 @@ export default class Personinfoedit extends Component {
                 console.log("line:144///res"+res);
                 console.log(this.state.selfintroduce);
                 global.user.profile = this.state.selfintroduce;
+                global.user.website = this.state.website;
                 global.user.addressComponent= this.state.addressComponent;
                 Alert.alert(
                     '提示',
@@ -323,6 +326,8 @@ export default class Personinfoedit extends Component {
                           underlineColorAndroid="transparent"
                           numberOfLines={1}
                           multiline={true}
+                          value={this.state.website}
+                          onChangeText={(val) => {this.setState({ website: val})}}
                         />
                     </View>
                     
