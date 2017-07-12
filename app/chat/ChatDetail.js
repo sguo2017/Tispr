@@ -26,11 +26,14 @@ import ProposeDeal from '../order/ProposeDeal'
 import CloseDeal from '../order/CloseDeal';
 import Report from '../sys/others/report';
 import Me from '../me/index';
-
+import TabBarView from '../containers/TabBarView';
 const screenW = Dimensions.get('window').width;
 let int;
 export default class ChatDetail extends Component {
-
+/*两种情况：
+ *由聊天列表进入时，不带newChat参数，左上角返回键退出到聊天列表
+ *由初次联系跳转至聊天界面时，带newChat参数，左上角返回键退出到首页
+ */
   constructor(props) {
     super(props);
     this.state = {
@@ -208,7 +211,9 @@ export default class ChatDetail extends Component {
         <Header
           leftIconAction={() => {
             clearInterval(int);
-            this.props.navigator.pop()}}
+            if(this.props.newChat){this.props.navigator.resetTo({component:TabBarView})}
+            else{this.props.navigator.pop()}
+            }}
           title={feed.offer_user_id == global.user.id?feed.request_user:feed.offer_user}
           leftIcon={require('../resource/w-back.png')}
           rightIcon={{uri:feed.offer_user_id == global.user.id?feed.request_user_avatar:feed.offer_user_avatar} }
