@@ -39,7 +39,8 @@ class ExploreList extends PureComponent {
             sps: [false, false, false, false],//排序按钮操作
             cps: [false, false, false, false, false, false, false],//类型按钮操作
             lps: [false, false],//位置按钮操作
-            searchText: this.props.searchText
+            searchText: this.props.searchText,
+            via: 'remote',
         };
     }
     componentWillMount() {
@@ -115,6 +116,12 @@ class ExploreList extends PureComponent {
             exploreparams.sort_by = "favorites_count"
         if(this.state.transiSortBy == "最多联系")
             exploreparams.sort_by = "order_cnt"
+        if(this.state.via == 'local'){
+            exploreparams.via = 'local'
+        }
+        if(this.state.via == 'remote'){
+            exploreparams.via = 'remote'
+        }
         if (goods_catalog[0]) {
             goods_catalog.map((item, index, input) => { input[index] = true });
         }
@@ -129,6 +136,7 @@ class ExploreList extends PureComponent {
     }
 
     render() {
+        let page = this.state.via =='local'?0:1
         return (
           <View style={styles.listView}>
               <View style={styles.container}>
@@ -164,13 +172,13 @@ class ExploreList extends PureComponent {
                   }
               </View>
               <View style={{ flexDirection: 'row', paddingVertical: 6, backgroundColor: 'rgba(0,0,0,0.16)'}}>
-                  <TouchableOpacity style={styles.filterButton} onPress={() => this.setState({ tabName: 'index', show: true })}>
+                  <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'index', show: true });this.tabView.goToPage(page)}}>
                       <Text style={styles.whiteText}>{this.state.sortBy}</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.filterButton} onPress={() => this.setState({ tabName: 'index', show: true })}>
+                  <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'index', show: true });this.tabView.goToPage(page)}}>
                       <Text style={styles.whiteText}>{this.state.classify}</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.filterButton} onPress={() => this.setState({ tabName: 'index', show: true })}>
+                  <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'index', show: true });this.tabView.goToPage(page)}}>
                       <Image source={require('../resource/w-location.png')} style={{ width: 14, height: 14 }}></Image>
                       <Text style={styles.whiteText}>{this.state.location}</Text>
                   </TouchableOpacity>
@@ -208,11 +216,20 @@ class ExploreList extends PureComponent {
                                 </View>
                                 <ScrollableTabView
                                   style={{ marginTop: 20, marginRight: 5, marginLeft: 5, borderRadius: 5 }}
-                                  initialPage={0}
                                   renderTabBar={() => <TabCategoryBar tabNames={titles} />}
                                   tabBarPosition='top'
                                   scrollWithoutAnimation={false}
                                   tabBarBackgroundColor= '#1B2833'
+                                  ref={(tabView) => { this.tabView = tabView; }}
+                                  onChangeTab ={({i, ref, from, })=>{
+                                      if(i==0){
+                                          this.state.via = 'local';
+                                          }
+                                          
+                                      else if(i==1){
+                                          this.state.via = 'remote';
+                                          }
+                                          }}
                                 >
                                     <View tabLabel='本地'>
                                         <View style={{ flexDirection: 'row' }}>
