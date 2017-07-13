@@ -333,9 +333,9 @@ class ExploreList extends PureComponent {
                                 <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 12 }}>
                                     <TouchableOpacity
                                       style={[styles.selectButton, this.state.cps[0] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiClassify: '全部人才', cps: [!this.state.cps[0], false, false, false, false, false] })}
+                                      onPress={() => this.setState({ transiClassify: '全部人才', cps: [!this.state.cps[0], false, false, false, false, false, false] })}
                                     >
-                                        <Text style={[styles.themeColorText, this.state.cps[0] && styles.whiteText]}>全部分类</Text>
+                                        <Text style={[styles.themeColorText, this.state.cps[0] && styles.whiteText]}>全部人才</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 12 }}>
