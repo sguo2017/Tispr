@@ -58,7 +58,7 @@ export default class ServOfferConfirm extends Component {
     _onBack = () => {
         const { navigator } = this.props;
         if (this.props.getdata) {
-            this.props.getdata(this.props.serv_offer.offer);
+            this.props.getdata(this.state.serv_offer);
         }
         if (navigator) {
             navigator.pop();
@@ -154,38 +154,31 @@ export default class ServOfferConfirm extends Component {
     }
 
     async onServOfferPres() {
-        if(undefined === this.state.serv_offer.avatarSourceArray || this.state.serv_offer.avatarSourceArray.length <= 0){
-          Alert.alert(
-            '提示',
-            '请至少提交一张图片',
-            [
-              { text: '继续编辑', onPress: () => console.log('确定') },
-            ]
-          );
-          return;
-        }
-
         this.setState({ showProgress: true });
-        //上传图片
-        let imageRequests = [];
-        this.state.serv_offer.avatarSourceArray.map((source, i) => {
-          imageRequests.push(this.uploadImage(source.uri));
-        });
         let uploadedImages = '';
-        try {
-          const datas = await Promise.all(imageRequests);
-          console.log(datas);
-          if (datas == null || datas.length <= 0) throw new Error();
-          let seperate = '';
-          datas.map((data, i) => {
-            uploadedImages = uploadedImages + seperate + JSON.parse(data).images;
-            seperate = ',';
+        if(this.state.serv_offer.avatarSourceArray && this.state.serv_offer.avatarSourceArray.length > 0){
+          //上传图片
+          let imageRequests = [];
+          this.state.serv_offer.avatarSourceArray.map((source, i) => {
+            imageRequests.push(this.uploadImage(source.uri));
           });
-        } catch (error) {
-          this.setState({ showProgress: false });
-          this.toast.show('上传图片失败,请稍后再试');
-          return;
+          try {
+            const datas = await Promise.all(imageRequests);
+            console.log(datas);
+            if (datas == null || datas.length <= 0) throw new Error();
+            let seperate = '';
+            datas.map((data, i) => {
+              uploadedImages = uploadedImages + seperate + JSON.parse(data).images;
+              seperate = ',';
+            });
+          } catch (error) {
+            this.setState({ showProgress: false });
+            this.toast.show('上传图片失败,请稍后再试');
+            return;
+          }
         }
+        
+        
 
         try {
             let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
@@ -245,7 +238,7 @@ export default class ServOfferConfirm extends Component {
                 throw error;     
             }
         } catch (error) {
-            // console.log("error195 " + error);
+             console.log("error195 " + error);
             this.setState({
               error: error,
               showProgress: false
