@@ -65,7 +65,7 @@ export default class Personinfoedit extends Component {
             });
         }else{
             if (this.props.getdata) {
-                this.props.getdata(global.user.avatar, this.state.selfintroduce, this.state.website);
+                this.props.getdata(global.user.avatar, global.user.profile, global.user.website, global.user.name);
             }
             if (navigator) {
                 navigator.pop();
@@ -154,7 +154,18 @@ export default class Personinfoedit extends Component {
         // console.log("122url:" + url);
         // let file = { avatar: this.state.avatar};
         // formData.append("user", file);
-
+        let reg = /^(http(s)?:\/\/)?(www\.)?[\w-]+\.\w{2,4}(\/)?$/;
+        let isValide = reg.test(this.state.website);
+        if(!isValide){
+            Alert.alert(
+                '提示',
+                '请输入合法的网址',
+                [
+                    { text: '重新输入' },
+                ]
+            );
+            return
+        }
         try {
             let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_AVAT_UPDATE + global.user.id+'?token='+global.user.authentication_token;
             let response = await fetch(url, {
@@ -177,6 +188,7 @@ export default class Personinfoedit extends Component {
             if (response.status >= 200 && response.status < 300) {
                 console.log("line:144///res"+res);
                 console.log(this.state.selfintroduce);
+                global.user.name = this.state.name;
                 global.user.profile = this.state.selfintroduce;
                 global.user.website = this.state.website;
                 global.user.addressComponent= this.state.addressComponent;

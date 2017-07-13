@@ -31,6 +31,9 @@ export default class Setting extends Component {
 
 	_onBack = () => {
 		const { navigator } = this.props;
+		if (this.props.getdata) {
+                this.props.getdata(global.user.avatar, global.user.profile, global.user.website, global.user.name);
+        }
 		navigator.pop();
 	}
 	clickJump =() =>{
@@ -82,7 +85,7 @@ export default class Setting extends Component {
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:userMsg,name:'userMsg', passProps: { info: global.user.profile }})}>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:userMsg,name:'userMsg', passProps: { getdata: this.props.getdata, info: global.user.profile }})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
 								个人信息
