@@ -64,6 +64,8 @@ export default class Connect extends Component {
                 default_msg += msg2;
             if(this.state.button3)
                 default_msg += msg3;
+            if (this.state.content)
+                default_msg += this.state.content;
             this.state.lately_chat_content = default_msg;
         }
         try {
@@ -180,7 +182,7 @@ export default class Connect extends Component {
                     leftIcon={require('../resource/ic_back_white.png')}
                     leftIconAction={() => this.props.navigator.pop()}
                 />
-                    <ScrollView>
+                <ScrollView>
                     <View style={{paddingHorizontal: 20}}>
                         
                         <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>                                
@@ -251,7 +253,7 @@ export default class Connect extends Component {
                 <TouchableOpacity style={{height: 44, backgroundColor: '#FFC400'}}  onPress={this._createDeal.bind(this)}>
                     <Text style={{fontSize: 16, color: 'white', marginVertical: 10, marginHorizontal: 164}}>发送</Text>
                 </TouchableOpacity>
-                </ScrollView>
+            </ScrollView>
             </View>
         );
     }

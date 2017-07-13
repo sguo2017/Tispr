@@ -32,6 +32,8 @@ import UserDefaults from '../common/UserDefaults';
 import resTimes from '../buzz/restTimes';
 import totalResTimes from '../buzz/totalResTimes';
 import noConnectTimes from '../buzz/noConnectTimes';
+import AutoTextInput from '../components/AutoTextInput'
+
 const screenW = Dimensions.get('window').width;
 
 const msg1 = '你发布的专业服务很棒！';
@@ -60,6 +62,8 @@ export default class ServOfferDetail extends Component {
             isFavorited: this.props.feed.isFavorited,
             favorite_id: this.props.feed.favorite_id,
             hasSeenTotalTimes: false,
+            editable: false,
+            content: ''
         };
         UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -335,6 +339,11 @@ export default class ServOfferDetail extends Component {
             passProps: { obj }
         });
     }
+
+    focusNextField (nextField){
+        this.refs[nextField].focus();
+    };
+
     render() {
         const { feed } = this.props;
         let _images = feed.serv_images.split(',');
@@ -478,7 +487,7 @@ export default class ServOfferDetail extends Component {
                                 <Text style={styles.text}>新浪微博</Text>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={() => this.setState({ show_share: false })} style={{ height: 57, width: 300, marginTop: 30 }}>
+                        <TouchableOpacity onPress={() => this.setState({ show_share: false })} style={{ alignItems: 'center', justifyContent: 'center', height: 57,marginTop: 30 }}>
                             <Text style={styles.cancel}>取消</Text>
                         </TouchableOpacity>
                     </View>
@@ -491,7 +500,7 @@ export default class ServOfferDetail extends Component {
                     visible={this.state.show}
                 >
                     <View style={styles.modalStyle}>
-                        <View style={[styles.subView, { height: 400 }]}>
+                        <View style={[styles.subView, { height: 430 }]}>
                             <View style={styles.modalHead}>
                                 <TouchableOpacity onPress={() => this.setState({ show: false })}>
                                     <Text style={styles.themeColorText}>取消</Text>
@@ -501,31 +510,61 @@ export default class ServOfferDetail extends Component {
                                     <Text style={styles.themeColorText}>发送</Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={{ marginLeft: 20 }}>
-                                <Image defaultSource={require('../resource/user_default_image.png')} source={{ uri: this.state.connectUserAvatar }} style={styles.avatar}></Image>
-                                <Text style={{ fontSize: 16, color: '#1B2833' }}>{this.state.connectUserName}您好！{this.state.button1 && msg1}{this.state.button2 && msg2}{this.state.button3 && msg3}</Text>
-                                <View style={{ height: 30 }}></View>
+                            <ScrollView>
+                                <View style={{ marginLeft: 20 }}>
+                                    <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: this.state.connectUserAvatar}} style={styles.avatar}></Image>
+                                    {/*<View style={{height:80}}>
+                                        <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
+                                    </View>*/}
+                                    <AutoTextInput
+                                            ref="1"
+                                            multiline={true}
+                                            onChangeText={(text) => 
+                                                {
+                                                    let length= (this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')).length;
+                                                    this.setState({content: text.substring(length)});
 
-                                <TouchableHighlight
-                                    style={[!this.state.button1 && styles.notSelectedButton, this.state.button1 && styles.selectedButton, { width: Platform.OS == 'ios' ? 250 : 200, marginTop: 26 }]}
-                                    onPress={() => this.setState({ button1: !this.state.button1 })}
-                                >
-                                    <Text style={[!this.state.button1 && styles.themeColorText, this.state.button1 && styles.whiteText]}>{msg1}</Text>
-                                </TouchableHighlight>
-                                <TouchableHighlight
-                                    style={[!this.state.button2 && styles.notSelectedButton, this.state.button2 && styles.selectedButton, { width: Platform.OS == 'ios' ? 250 : 200 }]}
-                                    onPress={() => this.setState({ button2: !this.state.button2 })}
-                                >
-                                    <Text style={[!this.state.button2 && styles.themeColorText, this.state.button2 && styles.whiteText]}>{msg2}</Text>
-                                </TouchableHighlight>
-                                <TouchableHighlight
-                                    style={[!this.state.button3 && styles.notSelectedButton, this.state.button3 && styles.selectedButton, { width: Platform.OS == 'ios' ? 250 : 200 }]}
-                                    onPress={() => this.setState({ button3: !this.state.button3 })}
-                                >
-                                    <Text style={[!this.state.button3 && styles.themeColorText, this.state.button3 && styles.whiteText]}>{msg3}</Text>
-                                </TouchableHighlight>
+                                                }
+                                            }
+                                            onBlur={() => {
+                                                this.setState({editable: false})}
+                                            }
+                                            style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
+                                            value={this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')+this.state.content}
+                                            underlineColorAndroid={'transparent'}
+                                            editable={this.state.editable}
+                                        />
 
-                            </View>
+                                    <TouchableHighlight 
+                                        style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
+                                        onPress={()=>this.setState({button1: !this.state.button1})}
+                                    >
+                                        <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
+                                    </TouchableHighlight>
+                                    <TouchableHighlight 
+                                        style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton]} 
+                                        onPress={()=>this.setState({button2: !this.state.button2})}
+                                    >
+                                        <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
+                                    </TouchableHighlight>
+                                    <TouchableHighlight 
+                                        style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton]} 
+                                        onPress={()=>this.setState({button3: !this.state.button3})}
+                                    >
+                                        <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
+                                    </TouchableHighlight>
+                                    <TouchableHighlight 
+                                        style={[styles.notSelectedButton, {width:Platform.OS ==='ios'?120:100}]} 
+                                        onPress={()=> {
+                                            this.setState({editable: true});
+                                            this.focusNextField.bind(this, '1');
+                                            }
+                                        }
+                                    >
+                                        <Text style={[styles.themeColorText]}>自定义信息</Text>
+                                    </TouchableHighlight>
+                                </View>
+                            </ScrollView>
                         </View>
                     </View>
                 </Modal>
@@ -669,22 +708,23 @@ const styles = StyleSheet.create({
     notSelectedButton: {
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
-        padding: 5,
+        padding:5,
         height: 36,
-        width: 210,
         marginRight: 20,
         marginBottom: 8,
-        borderRadius: 2
+        borderRadius: 4,
+        width:Platform.OS === 'ios'? 260: 210
     },
     selectedButton: {
-        borderWidth: 1,
+       borderWidth: 1,
         borderColor: global.gColors.themeColor,
         backgroundColor: global.gColors.themeColor,
-        padding: 5,
+        padding:5,
         height: 36,
-        width: 210,
         marginRight: 20,
-        marginBottom: 20
+        marginBottom:8,
+        borderRadius: 4,
+        width:Platform.OS === 'ios'? 260: 210
     },
     avatar: {
         width: 60,

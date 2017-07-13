@@ -26,6 +26,8 @@ import UserDefaults from '../common/UserDefaults';
 import resTimes from '../buzz/restTimes';
 import totalResTimes from '../buzz/totalResTimes';
 import noConnectTimes from '../buzz/noConnectTimes';
+import AutoTextInput from '../components/AutoTextInput'
+
 const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: 'row',
@@ -139,6 +141,8 @@ export default class ServOfferList extends Component {
         connectUserAvatar: '',
         connectServ: '',
         hasSeenTotalTimes: false,
+        content: '',
+        editable: false
       };
       UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -220,6 +224,8 @@ export default class ServOfferList extends Component {
         default_msg += msg2;
     if(this.state.button3)
         default_msg += msg3;
+    if (this.state.content)
+        default_msg += this.state.content;
     try {
       let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_CREATE + global.user.authentication_token;
       let response = await fetch(url, {
@@ -306,6 +312,10 @@ export default class ServOfferList extends Component {
         }
     }
 
+    focusNextField (nextField){
+        this.refs[nextField].focus();
+    };
+
   render() {
     const { ServOfferList } = this.props;
     return(
@@ -356,7 +366,7 @@ export default class ServOfferList extends Component {
           visible={this.state.show}
         >
           <View style={styles.modalStyle}>
-            <View style={[styles.subView, {height: 400}]}>
+            <View style={[styles.subView, {height: 430}]}>
                 <View style={styles.modalHead}>
                     <TouchableOpacity onPress={() => this.setState({ show: false })}>
                         <Text style={styles.themeColorText}>取消</Text>
@@ -366,11 +376,30 @@ export default class ServOfferList extends Component {
                         <Text style={styles.themeColorText}>发送</Text>
                     </TouchableOpacity>
                 </View>
+                <ScrollView>
                 <View style={{ marginLeft: 20 }}>
                     <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: this.state.connectUserAvatar}} style={styles.avatar}></Image>
-                    <View style={{height:80}}>
+                    {/*<View style={{height:80}}>
                         <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
-                    </View>
+                    </View>*/}
+                    <AutoTextInput
+                            ref="1"
+                            multiline={true}
+                            onChangeText={(text) => 
+                                {
+                                    let length= (this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')).length;
+                                    this.setState({content: text.substring(length)});
+
+                                }
+                            }
+                            onBlur={() => {
+                                this.setState({editable: false})}
+                            }
+                            style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
+                            value={this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')+this.state.content}
+                            underlineColorAndroid={'transparent'}
+                            editable={this.state.editable}
+                        />
 
                     <TouchableHighlight 
                         style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
@@ -390,8 +419,18 @@ export default class ServOfferList extends Component {
                     >
                         <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
                     </TouchableHighlight>
-
+                    <TouchableHighlight 
+                        style={[styles.notSelectedButton, {width:Platform.OS ==='ios'?120:100}]} 
+                        onPress={()=> {
+                            this.setState({editable: true});
+                            this.focusNextField.bind(this, '1');
+                            }
+                        }
+                    >
+                        <Text style={[styles.themeColorText]}>自定义信息</Text>
+                    </TouchableHighlight>
                 </View>
+                </ScrollView>
             </View>
         </View>
         </Modal>
