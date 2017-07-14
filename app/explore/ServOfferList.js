@@ -176,11 +176,6 @@ export default class ServOfferList extends Component {
     //console.log('this.state.exploreparams:'+this.state.exploreparams);
     let exploreparams = this.props.exploreparams;
     let goods_catalog = this.props.cps;
-    let district = this.props.lps;
-    if(district[0])
-        exploreparams.district = "番禺区"
-    if(district[1])
-        exploreparams.district = "海珠区"
     if(goods_catalog[0]){
         goods_catalog.map((item,index,input)=>{input[index]=true});
     }
