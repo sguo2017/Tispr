@@ -33,7 +33,8 @@ import resTimes from '../buzz/restTimes';
 import totalResTimes from '../buzz/totalResTimes';
 import noConnectTimes from '../buzz/noConnectTimes';
 import AutoTextInput from '../components/AutoTextInput'
-import ChatDetail from '../chat/ChatDetail'
+import offerEdit from '../me/offerEdit'
+
 const screenW = Dimensions.get('window').width;
 
 const msg1 = '你发布的专业服务很棒！';
@@ -47,6 +48,7 @@ export default class ServOfferDetail extends Component {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
             }),
+            isMine: false,
             show_share: false,
             show_report: false,
             offerList: [],
@@ -178,10 +180,23 @@ export default class ServOfferDetail extends Component {
                 //console.log("line:153");
                 let resObject = JSON.parse(res);
                 let avaliableTimes = resObject.avaliable;
-                let newOrder = resObject.feed;
                 let type = 'offer';
                 if (resObject.status == 0) {
-                    this._createChat(newOrder, avaliableTimes, default_msg);                    
+                    this._createChat(resObject.id, default_msg);
+                    if (!this.state.hasSeenTotalTimes) {
+                        UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+                            if (hasSeenTotalRestimesPage == null) {
+                                hasSeenTotalRestimesPage = {};
+                            }
+                            hasSeenTotalRestimesPage[global.user.id] = true
+                            UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
+                        })
+                        this.props.navigator.push({ component: totalResTimes, passProps: { avaliableTimes, type } });
+                    } else if (avaliableTimes == 5) {
+                        this.props.navigator.push({ component: resTimes, passProps: { avaliableTimes, type } });
+                    } else {
+                        this.props.navigator.resetTo({ component: TabBarView, passProps: { initialPage: 3 } });
+                    }
                 } else if (resObject.status == -2) {
                     this.props.navigator.push({component: noConnectTimes})
                 }
@@ -194,7 +209,7 @@ export default class ServOfferDetail extends Component {
         }
     }
 
-    async _createChat(newOrder, avaliableTimes, chat_content) {
+    async _createChat(_deal_id, chat_content) {
         try {
             let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + `${global.user.authentication_token}`;
             let response = await fetch(URL, {
@@ -206,7 +221,7 @@ export default class ServOfferDetail extends Component {
 
                 body: JSON.stringify({
                     chat: {
-                        deal_id: newOrder.id,
+                        deal_id: _deal_id,
                         chat_content: chat_content,
                         user_id: global.user.id,
                         catalog: 2
@@ -216,22 +231,7 @@ export default class ServOfferDetail extends Component {
 
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
-                let type = 'offer';
-                 /*当前用户没有看过每天联系总数量的提示时 */
-                if (!this.state.hasSeenTotalTimes) {
-                    UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
-                        if (hasSeenTotalRestimesPage == null) {
-                            hasSeenTotalRestimesPage = {};
-                        }
-                        hasSeenTotalRestimesPage[global.user.id] = true
-                        UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
-                    })
-                    this.props.navigator.push({component:totalResTimes, passProps:{feed: newOrder,type}});
-                }else if(avaliableTimes == 5){
-                    this.props.navigator.push({component:resTimes, passProps:{feed: newOrder,type}});
-                }else{
-                    this.props.navigator.resetTo({component:ChatDetail, passProps: {feed: newOrder, newChat: true}});
-                }      
+                console.log("line:99");
             } else {
                 let error = res;
                 throw error;
@@ -346,9 +346,60 @@ export default class ServOfferDetail extends Component {
         this.refs[nextField].focus();
     };
 
+    offerEdit() {
+        this.props.navigator.push({
+            component: offerEdit
+        })
+    }
+
+    async cancelOffer() {
+        Alert.alert(
+            '提示',
+            '确认删除该服务？',
+            [
+                 { text: '取消', onPress: () => {} },
+                 { text: '确定', onPress: () => {
+                    this.setState({ isMine: false});
+                   // this.props.navigator.pop();
+                    try {
+                        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_EDIT+ this.props.feed.id +`?token=`+ global.user.authentication_token;
+                        let response = await fetch(url, {
+                            method: 'DELETE',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                        //console.log(response)
+                        console.log(1)
+                        //this.state.navigator.pop()
+                        let res = await response.text();
+                        
+                        console.log('111')
+                        if (response.status >= 200 && response.status < 300) {
+                            let resObject =JSON.parse(res);
+                            
+                        console.log(12223)
+                            if(resObject.status==0){
+                                
+                        console.log(3331)
+                                this.props.navigator.pop()
+                            }else{
+
+                            }
+                        }
+                    } catch(error) {
+
+                    }  
+                 }}
+            ]
+        )
+    }
+
     render() {
         const { feed } = this.props;
         let _images = feed.serv_images.split(',');
+        let mine = this.props.mine;
         return (
             <View style={styles.listView}>
                 <Header
@@ -356,7 +407,9 @@ export default class ServOfferDetail extends Component {
                     leftIcon={require('../resource/w-back.png')}
                     leftIconAction={() => this.props.navigator.pop()}
                     rightIcon={require('../resource/w-more.png')}
-                    rightIconAction={() => this.setState({ show_report: true })}
+                    rightIconAction={() => {
+                        mine? this.setState({ isMine: true}):this.setState({ show_report: true })}
+                    }
                     rightIcon2={this.state.isFavorited ? require('../resource/ic_account_favour.png') : require('../resource/ic_news_collect.png')}
                     rightIcon2Action={() => this._switch(this.state.isFavorited, this.state.favorite_id)}
                     rightIcon2Size={30}
@@ -507,7 +560,7 @@ export default class ServOfferDetail extends Component {
                                 <TouchableOpacity onPress={() => this.setState({ show: false })}>
                                     <Text style={styles.themeColorText}>取消</Text>
                                 </TouchableOpacity>
-                                <Text style={{ color: 'black', fontSize: 16 }}>快捷联系</Text>
+                                <Text style={{ color: 'black', fontSize: 16 }}>快捷回复</Text>
                                 <TouchableOpacity onPress={this._sendMessage.bind(this)}>
                                     <Text style={styles.themeColorText}>发送</Text>
                                 </TouchableOpacity>
@@ -574,8 +627,8 @@ export default class ServOfferDetail extends Component {
                     animationType='slide'
                     transparent={true}
                     visible={this.state.show_report}
-                >
-                    <View style={styles.modal}>
+                >                    
+                    <View style={[styles.modal, {height: 170}]}>
                         <TouchableOpacity style={[styles.modalItem, { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16 }]}
                         >
                             <View style={{ flexDirection: 'row' }}>
@@ -597,11 +650,41 @@ export default class ServOfferDetail extends Component {
                             <Text style={{ fontSize: 14, lineHeight: 20 }}>已举报</Text>
                         </TouchableOpacity>
                         <View style={{ height: 0.5, backgroundColor: 'rgba(237,237,237,1)' }}></View>
-                        <TouchableOpacity onPress={() => this.setState({ show_report: false })} style={{ alignItems: 'center', justifyContent: 'center', height: 56 }}>
+                        <TouchableOpacity onPress={() => this.setState({ show_report: false })} style={{ alignItems: 'center', justifyContent: 'center', marginTop: 16}}>
                             <Text style={styles.modalText}>取消</Text>
                         </TouchableOpacity>
                     </View>
                 </Modal>
+                <Modal
+                    animationType='slide'
+                    transparent={true}
+                    visible={this.state.isMine}
+                >
+                    <View style={[styles.modal, {height: 170}]}>
+                        <TouchableOpacity 
+                            style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', paddingTop: 16 }]}
+                            onPress={() => {
+                                this.props.navigator.push({
+                                    component: offerEdit,
+                                    passProps: {mine, feed}
+                                });
+                                this.setState({isMine: false});
+                            }}
+                        >
+                            <Text style={styles.modalText}>编辑</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center'}]}
+                            onPress={this.cancelOffer.bind(this)}
+                        >
+                            <Text style={styles.modalText}>删除</Text>
+                        </TouchableOpacity>
+                        <View style={{ height: 0.5, backgroundColor: 'rgba(237,237,237,1)' }}></View>
+                        <TouchableOpacity onPress={() => this.setState({isMine: false}) } style={{ alignItems: 'center', justifyContent: 'center', marginTop: 16}}>
+                            <Text style={styles.modalText}>取消</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>    
             </View>
         )
     }
@@ -752,7 +835,7 @@ const styles = StyleSheet.create({
 const OfferItem = ({
   offer,
     onPress,
-    onCall
+    onCall,
 }) => {
     let width = (screenW - 24) / 2;
     let imageH = 120;

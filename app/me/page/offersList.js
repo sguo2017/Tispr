@@ -24,6 +24,9 @@ class OffersList extends PureComponent {
     super(props);
     this._onMomentumScrollEnd = this._onMomentumScrollEnd.bind(this);
     this._onRefresh = this._onRefresh.bind(this);
+    this.state = {
+      mine: true
+    }
   }
 
   componentDidMount() {
@@ -50,9 +53,10 @@ class OffersList extends PureComponent {
   }
 
   _onPressCell(feed) {
+    let mine = this.state.mine;
     this.props.navigator.push({
       component: ServOfferDetail,
-      passProps: { feed },
+      passProps: { feed, mine },
     })
   }
 
@@ -120,7 +124,7 @@ const OfferItem = ({
       onPress={onPress}
     >
       <CachedImage
-        style={{ width: width, height: imageH }}
+        style={{ width: width, height: imageH, borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
         defaultSource={require('../../resource/qk_nav_default.png')}
         source={serv_image}
       />
