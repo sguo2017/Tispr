@@ -358,42 +358,44 @@ export default class ServOfferDetail extends Component {
             '确认删除该服务？',
             [
                  { text: '取消', onPress: () => {} },
-                 { text: '确定', onPress: () => {
-                    this.setState({ isMine: false});
-                   // this.props.navigator.pop();
-                    try {
-                        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_EDIT+ this.props.feed.id +`?token=`+ global.user.authentication_token;
-                        let response = await fetch(url, {
-                            method: 'DELETE',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json',
-                            },
-                        });
-                        //console.log(response)
-                        console.log(1)
-                        //this.state.navigator.pop()
-                        let res = await response.text();
-                        
-                        console.log('111')
-                        if (response.status >= 200 && response.status < 300) {
-                            let resObject =JSON.parse(res);
-                            
-                        console.log(12223)
-                            if(resObject.status==0){
-                                
-                        console.log(3331)
-                                this.props.navigator.pop()
-                            }else{
-
-                            }
-                        }
-                    } catch(error) {
-
-                    }  
-                 }}
+                 { text: '确定', onPress: this.deleteOffer.bind(this)}
             ]
         )
+    }
+
+    async  deleteOffer() {
+        this.setState({ isMine: false});
+    // this.props.navigator.pop();
+        try {
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_EDIT+ this.props.feed.id +`?token=`+ global.user.authentication_token;
+            let response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            });
+            //console.log(response)
+            console.log(1)
+            //this.state.navigator.pop()
+            let res = await response.text();
+            
+            console.log('111')
+            if (response.status >= 200 && response.status < 300) {
+                let resObject =JSON.parse(res);
+                
+            console.log(12223)
+                if(resObject.status==0){
+                    
+            console.log(3331)
+                    this.props.navigator.pop()
+                }else{
+
+                }
+            }
+        } catch(error) {
+
+        }  
     }
 
     render() {
