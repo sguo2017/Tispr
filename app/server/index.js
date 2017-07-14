@@ -127,14 +127,14 @@ export default class Server extends Component {
                     <Animated.View style={{ marginRight: this.state.itemsSpacing }}>
                         <TouchableOpacity style={styles.clickItem} onPress={() => {this.clickNavigationJump("serv_offer")}}>
                             <View elevation={5} style={styles.itemImageContent}>
-                                <Image elevation={5} style={styles.itemImage} source={require('../resource/t_offer_serv.png')} />
+                                <Image elevation={5} style={styles.itemImage} source={require('../resource/offer.png')} />
                             </View>
                             <Text style={styles.titleText}>发布服务</Text>
                         </TouchableOpacity>
                     </Animated.View>
                     <TouchableOpacity style={styles.clickItem}  onPress={() => {this.clickNavigationJump("serv_request")}}>
                         <View elevation={5} style={styles.itemImageContent}>
-                            <Image elevation={5} style={styles.itemImage} source={require('../resource/t_serv_request.png')} />
+                            <Image elevation={5} style={styles.itemImage} source={require('../resource/request.png')} />
                         </View>
                         <Text style={styles.titleText}>发布需求</Text>
                     </TouchableOpacity>
