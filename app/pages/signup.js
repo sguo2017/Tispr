@@ -44,7 +44,6 @@ export default class signup extends Component{
         return(
             <View style={{justifyContent:'flex-start',alignItems:'center',backgroundColor:'#ffffff', height: screenH}}>
                 <Image style={{width:screenW, resizeMode:'contain', marginTop: -70, marginLeft: -8}} source={require('../resource/head.png')}/>
-                {/*<Text style={{color:'black',fontSize:16,margin: 20}}>不要错过最好的工作机会.</Text>*/}
                 <TouchableHighlight onPress={this.toSignup.bind(this)} style={{height:44,borderRadius: 2,padding:10,marginBottom:15,backgroundColor: global.gColors.themeColor,marginTop: -70, width: 180, alignItems: 'center'}}>
                     <Text style={{color:'white',fontSize:16}}>
                         创建账号
@@ -53,13 +52,11 @@ export default class signup extends Component{
                  <TouchableHighlight onPress={this.toSignin.bind(this)}>
                     <Text style={{color:global.gColors.themeColor, fontSize:16, marginBottom:60, marginTop: 30, borderBottomColor:global.gColors.themeColor}}>使用已有账号</Text>
                 </TouchableHighlight>
-                <Text>创建账号表示您已阅读并同意 </Text>
-                <Text>
-                    <Text onPress={this.toUserAgreement.bind(this)} style={{color:global.gColors.themeColor,borderBottomWidth:1, borderBottomColor:global.gColors.themeColor}}>使用条款</Text>
-                        &nbsp;和&nbsp;
-                    <Text onPress={this.toUserAgreement.bind(this)} style={{color:global.gColors.themeColor,borderBottomWidth:1, borderBottomColor:global.gColors.themeColor}}>隐私政策</Text>
-                    
-                </Text>
+                <View style={{flexDirection: 'row'}}>
+                    <Text>创建账号表示您已阅读并同意 </Text>
+                    <Text onPress={this.toUserAgreement.bind(this)} style={{color:global.gColors.themeColor}}>《奇客服务协议》</Text>
+                </View>
+                
             </View>
         )
     }
