@@ -1,3 +1,4 @@
+import breakdown from '../sys/others/breakdown'
 let Util = {
     /*
      * fetch简单封装
@@ -23,6 +24,25 @@ let Util = {
                 failCallback(err);
             });
     },
+    
+    post: (url, data, successCallback, navigator, exploreparams) => {
+        const URL = url + '&exploreparams=' + JSON.stringify(exploreparams)  
+        fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => response.text())
+        .then((responseText) => {
+            successCallback(JSON.parse(responseText));
+        })
+        .catch((err) => {
+            navigator.push({component: breakdown});
+        });
+    }
 }
 
 export default Util;

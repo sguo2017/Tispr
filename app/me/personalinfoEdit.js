@@ -14,6 +14,7 @@ import {
     Dimensions,
     ScrollView
 } from 'react-native';
+import { Geolocation } from 'react-native-baidu-map';
 import AutoTextInput from '../components/AutoTextInput';
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
@@ -181,6 +182,12 @@ export default class Personinfoedit extends Component {
                         name: this.state.name,
                         profile: this.state.selfintroduce,
                         website: this.state.website,
+                        district: global.user.addressComponent.district,
+                        city: global.user.addressComponent.city,
+                        province: global.user.addressComponent.province,
+                        country: global.user.addressComponent.country,
+                        latitude: global.user.addressComponent.latitude,
+                        longitude: global.user.addressComponent.longitude,
                     }
                 })
             });
@@ -220,43 +227,30 @@ export default class Personinfoedit extends Component {
         }
     }
 
-    async getGeoLocation() {
-        let _that = this;
-        this.setState({ latitude: (JSON.parse(this.state.lastPosition)).coords.latitude })
-        this.setState({ longitude: (JSON.parse(this.state.lastPosition)).coords.longitude })
-        this.setState({ showProgress: true })
-        let url = Constant.url.GEO_LOCATION_ADDR + `&location=${this.state.latitude},${this.state.longitude}`;
-        await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            }
-        }).then((response) => {
-            return response.json().then(function (json) {
-                //console.log("60:"+JSON.stringify(json.result.addressComponent));
-                var addressComponent = json.result.addressComponent;
-                //console.log("62:"+JSON.stringify(addressComponent));
-                _that.setState({ addressComponent: addressComponent });
-                //console.log("64:"+JSON.stringify(_that.state.addressComponent))
-                global.user.addressComponent = _that.state.addressComponent;
-                global.user.addressComponent.latitude = _that.state.latitude;
-                global.user.addressComponent.longitude = _that.state.longitude;
-                UserDefaults.setObject(Constant.storeKeys.ADDRESS_COMPONENT, global.user.addressComponent);
-            })
-
-
-        }).then(() => {
-            this.existsToken();
-        }).catch((error) => {
-            this.setState({ error: error });
-            //console.log("109 error: " + error);
-            this.setState({ showProgress: false });
-        });
-    }
-
     onReplay() {
-        this.getGeoLocation();
+        Geolocation.getCurrentPosition()
+        .then(data => {
+            console.log("获取经纬度"+JSON.stringify(data));   
+            if(data.street){
+                global.user = {};
+                global.user.addressComponent = data;
+                global.user.addressComponent.latitude = data.latitude;
+                global.user.addressComponent.longitude = data.longitude;
+                UserDefaults.setObject(Constant.storeKeys.ADDRESS_COMPONENT, global.user.addressComponent);
+            }else{
+                this.setState({ showProgress: false });
+                Alert.alert(
+                    null,
+                    `请开启奇客的定位权限`,
+                    [
+                     { text: '确定' },
+                    ]
+                )
+            }
+         })
+        .catch(e =>{
+            console.warn(e, 'error');           
+        })
         this.setState({
             address: global.user.addressComponent.country + global.user.addressComponent.province +
                      global.user.addressComponent.city + global.user.addressComponent.district
