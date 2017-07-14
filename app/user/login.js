@@ -327,6 +327,7 @@ export default class Login extends Component {
           </TouchableOpacity>
           <View style={{ flex: 1, justifyContent: 'center'}}>
             <AutoTextInput
+              keyboardType='numeric'
               ref = "3"
               style={styles.input}
               underlineColorAndroid="transparent"
