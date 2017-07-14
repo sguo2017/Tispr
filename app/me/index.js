@@ -84,21 +84,31 @@ export default class MeInfo extends Component {
         console.log(`Fetch evaluating list error: ${error}`)
       }      
     }
-    clickJump() {
+    clickJump(toPage) {
         let _this = this;
         const { navigator } = this.props;
-        let getdata = (a, b)=>{
+        let getdata = (a, b, c, d)=>{
           _this.setState({
             avatar:a,
             info: b,
+            website: c,
+            name: d,
           });
         };
         let info = _this.state.info;
-        if (navigator) {
+        let website = this.state.website;
+        if (navigator && toPage == 'EditInfo') {
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "PersonInfo",
                 component: PersonInfo,
-                passProps: {getdata, info},
+                passProps: {getdata},
+            });
+        }
+        if(navigator && toPage == 'Setting'){
+          navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+                name: "Setting",
+                component: Setting,
+                passProps: {getdata},
             });
         }
     }
@@ -135,7 +145,7 @@ export default class MeInfo extends Component {
     render() {
       let titles;
       let controllers;
-      if (!this.props.isBrowseMode) {
+      if (!this.props.isBrowseMode || this.props.id && this.props.id == global.user.id) {
         titles = ['服务('+global.user.offer_count+')', '需求('+global.user.request_count+')', '收藏('+global.user.favorites_count+')'];
         controllers = [
           {categoryId: 1, controller: OffersList},
@@ -143,10 +153,9 @@ export default class MeInfo extends Component {
           {categoryId: 3, controller: BookmarksList},
         ];
       } else {
-        titles = ['服务('+this.state.offer_count+')', '需求('+this.state.request_count+')'];
+        titles = ['TA发布的服务('+this.state.offer_count+')'];
         controllers = [
-          {categoryId: 1, controller: OffersList},
-          {categoryId: 2, controller: RequestsList},
+          {categoryId: 1, controller: OffersList}
         ];
       }
       return(
@@ -166,11 +175,13 @@ export default class MeInfo extends Component {
                 <View style={{ flex: 1, justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
                   <View>
                     <Text style={{ fontSize:16, color:'white' }}>{this.state.name}</Text>
+                  </View>
+                  <View>
                     <Text style={ styles.text }>{this.state.country} {this.state.province} {this.state.city} {this.state.district}</Text>
                   </View>
                   {
                     this.props.isBrowseMode ? null :
-                      <TouchableOpacity style={styles.editButton} onPress={this.clickJump.bind(this)} >
+                      <TouchableOpacity style={styles.editButton} onPress={this.clickJump.bind(this, 'EditInfo')} >
                         <Text style={{ fontSize: 12, color: 'white' }}>
                           编辑个人信息
                         </Text>
@@ -187,7 +198,7 @@ export default class MeInfo extends Component {
                       <Image style={{ width: 18, height: 18 }} source={require('../resource/w-cancel-line-nor.png')}></Image>
                     </TouchableOpacity>
                     :
-                    <TouchableOpacity onPress={()=>this.props.navigator.push({ component: Setting })}>
+                    <TouchableOpacity onPress={this.clickJump.bind(this, 'Setting')}>
                       <Image style={{ width: 18, height: 18 }} source={require('../resource/w-setting.png')}></Image>
                     </TouchableOpacity>
                 }
@@ -197,7 +208,7 @@ export default class MeInfo extends Component {
               </View>
               <View style={{marginVertical: 16, flexDirection: 'row', alignItems: 'center' }}>
                   <Image style={{ marginRight: 11 }} source={require('../resource/w-earth.png')}></Image>
-                  <Text style={styles.text}>www.straphoto.com</Text>
+                  <Text style={styles.text}>{global.user.website?global.user.website:''}</Text>
               </View>
           </View>
           <ScrollableTabView
