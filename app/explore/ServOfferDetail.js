@@ -65,7 +65,8 @@ export default class ServOfferDetail extends Component {
             favorite_id: this.props.feed.favorite_id,
             hasSeenTotalTimes: false,
             editable: false,
-            content: ''
+            content: '',
+            cover: false
         };
         UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -365,7 +366,6 @@ export default class ServOfferDetail extends Component {
 
     async  deleteOffer() {
         this.setState({ isMine: false});
-    // this.props.navigator.pop();
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_EDIT+ this.props.feed.id +`?token=`+ global.user.authentication_token;
             let response = await fetch(url, {
@@ -375,22 +375,12 @@ export default class ServOfferDetail extends Component {
                     'Content-Type': 'application/json',
                 },
             });
-            //console.log(response)
-            console.log(1)
-            //this.state.navigator.pop()
             let res = await response.text();
-            
-            console.log('111')
             if (response.status >= 200 && response.status < 300) {
                 let resObject =JSON.parse(res);
-                
-            console.log(12223)
                 if(resObject.status==0){
-                    
-            console.log(3331)
                     this.props.navigator.pop()
                 }else{
-
                 }
             }
         } catch(error) {
@@ -410,7 +400,8 @@ export default class ServOfferDetail extends Component {
                     leftIconAction={() => this.props.navigator.pop()}
                     rightIcon={require('../resource/w-more.png')}
                     rightIconAction={() => {
-                        mine? this.setState({ isMine: true}):this.setState({ show_report: true })}
+                        mine? this.setState({ isMine: true}):this.setState({ show_report: true });
+                        }
                     }
                     rightIcon2={this.state.isFavorited ? require('../resource/ic_account_favour.png') : require('../resource/ic_news_collect.png')}
                     rightIcon2Action={() => this._switch(this.state.isFavorited, this.state.favorite_id)}
@@ -419,6 +410,7 @@ export default class ServOfferDetail extends Component {
                     rightIcon3Action={() => this.setState({ show_share: true })}
                     style={{ height: 50 }}
                 />
+                
                 <ScrollView>
                     <View style={{ paddingHorizontal: 16, justifyContent: 'space-between', backgroundColor: 'white' }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, height: 48, }}>
@@ -629,7 +621,7 @@ export default class ServOfferDetail extends Component {
                     animationType='slide'
                     transparent={true}
                     visible={this.state.show_report}
-                >                    
+                >
                     <View style={[styles.modal, {height: 170}]}>
                         <TouchableOpacity style={[styles.modalItem, { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16 }]}
                         >
@@ -662,29 +654,36 @@ export default class ServOfferDetail extends Component {
                     transparent={true}
                     visible={this.state.isMine}
                 >
-                    <View style={[styles.modal, {height: 170}]}>
+                    <View style={styles.container}> 
+                    <View style={[styles.modal,{height: 180, borderTopWidth: 0, paddingHorizontal: 8, backgroundColor: 'transparent'}]}>
+                        <View style={{ borderRadius: 16, backgroundColor: 'white',  marginBottom: 6}}>
+                            <TouchableOpacity 
+                                style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
+                            >
+                                <Text 
+                                    style={[styles.modalText, {color: global.gColors.themeColor}]}
+                                    onPress={() => {
+                                    this.props.navigator.push({
+                                        component: offerEdit,
+                                        passProps: {mine, feed}
+                                    });
+                                    this.setState({isMine: false});
+                                }}>编辑</Text>
+                            </TouchableOpacity>
+                            <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
+                            <TouchableOpacity 
+                                style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center',}]}
+                            >
+                                <Text style={[styles.modalText, {color: 'red'}]} onPress={this.cancelOffer.bind(this)}>删除</Text>
+                            </TouchableOpacity>
+                        </View>
+                        {/*<View style={{ height: 6}}></View>*/}
                         <TouchableOpacity 
-                            style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', paddingTop: 16 }]}
-                            onPress={() => {
-                                this.props.navigator.push({
-                                    component: offerEdit,
-                                    passProps: {mine, feed}
-                                });
-                                this.setState({isMine: false});
-                            }}
-                        >
-                            <Text style={styles.modalText}>编辑</Text>
+                            style={{alignItems: 'center', justifyContent: 'center', borderRadius: 16, backgroundColor: 'white', height: 56}}>
+                            <Text style={styles.modalText} onPress={() => this.setState({isMine: false}) } >取消</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity 
-                            style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center'}]}
-                            onPress={this.cancelOffer.bind(this)}
-                        >
-                            <Text style={styles.modalText}>删除</Text>
-                        </TouchableOpacity>
-                        <View style={{ height: 0.5, backgroundColor: 'rgba(237,237,237,1)' }}></View>
-                        <TouchableOpacity onPress={() => this.setState({isMine: false}) } style={{ alignItems: 'center', justifyContent: 'center', marginTop: 16}}>
-                            <Text style={styles.modalText}>取消</Text>
-                        </TouchableOpacity>
+                        {/*<View style={styles.container}></View>*/}
+                    </View>
                     </View>
                 </Modal>    
             </View>
@@ -693,6 +692,17 @@ export default class ServOfferDetail extends Component {
 }
 
 const styles = StyleSheet.create({
+    container:{  
+        flex:1,  
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',  
+        position: 'absolute',  
+        top: 0,  
+        bottom: 0,  
+        left: 0,  
+        right: 0,  
+        justifyContent:'center',  
+        alignItems:'center'  
+    },  
     listView: {
         flex: 1,
         backgroundColor: '#f5f5f5',
