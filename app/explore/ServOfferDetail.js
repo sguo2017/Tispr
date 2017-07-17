@@ -657,30 +657,33 @@ export default class ServOfferDetail extends Component {
                     <View style={styles.container}> 
                     <View style={[styles.modal,{height: 180, borderTopWidth: 0, paddingHorizontal: 8, backgroundColor: 'transparent'}]}>
                         <View style={{ borderRadius: 16, backgroundColor: 'white',  marginBottom: 6}}>
-                            <View  style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}>
                             <TouchableOpacity 
+                                style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
                                 onPress={() => {
-                                        this.props.navigator.push({
-                                            component: offerEdit,
-                                            passProps: {mine, feed}
-                                        });
-                                        this.setState({isMine: false});
-                                    }}>
-                                <Text style={[styles.modalText, {color: global.gColors.themeColor}]}>编辑</Text>
+                                    this.props.navigator.push({
+                                        component: offerEdit,
+                                        passProps: {mine, feed}
+                                    });
+                                    this.setState({isMine: false});
+                                }}
+                            >
+                                <Text 
+                                    style={[styles.modalText, {color: global.gColors.themeColor}]}>编辑</Text>
                             </TouchableOpacity>
-                            </View>
                             <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
-                            <View style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center',}]}>
-                            <TouchableOpacity onPress={this.cancelOffer.bind(this)}>
+                            <TouchableOpacity 
+                                style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center',}]}
+                                onPress={this.cancelOffer.bind(this)}
+                            >
                                 <Text style={[styles.modalText, {color: 'red'}]}>删除</Text>
                             </TouchableOpacity>
-                            </View>
                         </View>
-                        <View style={{alignItems: 'center', justifyContent: 'center', borderRadius: 16, backgroundColor: 'white', height: 56}}>
-                        <TouchableOpacity onPress={() => this.setState({isMine: false})}>
-                            <Text  style={[styles.modalText, {color: global.gColors.themeColor}]}>取消</Text>
+                        <TouchableOpacity
+                            onPress={() => this.setState({isMine: false})} 
+                            style={{alignItems: 'center', justifyContent: 'center', borderRadius: 16, backgroundColor: 'white', height: 56}}>
+                            <Text style={styles.modalText}>取消</Text>
                         </TouchableOpacity>
-                        </View>
+
                     </View>
                     </View>
                 </Modal>    
