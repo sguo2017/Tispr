@@ -163,7 +163,14 @@ export default class MeInfo extends Component {
           <View style={styles.headerView}>
               <View style={{ flexDirection:'row', justifyContent:'flex-start' }}>
                 <View>
-                  <CachedImage style={{width: 72, height:72, borderRadius: 36 }} source={{ uri: this.state.avatar }} />
+                  {
+                    this.props.isBrowseMode?
+                    <CachedImage style={{width: 72, height:72, borderRadius: 36 }} source={{ uri: this.state.avatar }} />
+                    :
+                    <TouchableOpacity onPress={this.clickJump.bind(this, 'EditInfo')}>
+                        <CachedImage style={{width: 72, height:72, borderRadius: 36 }} source={{ uri: this.state.avatar }} />
+                    </TouchableOpacity>
+                  }
                   {
                     this.props.isBrowseMode ?
                       <TouchableOpacity style={{ borderRadius: 10, position: 'absolute', right: 0, bottom: 0 }} onPress={() => {this.clickCall('10000', global.user.name)}}>

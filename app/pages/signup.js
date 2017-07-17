@@ -49,8 +49,8 @@ export default class signup extends Component{
                         创建账号
                     </Text>
                 </TouchableHighlight>
-                 <TouchableHighlight onPress={this.toSignin.bind(this)}>
-                    <Text style={{color:global.gColors.themeColor, fontSize:16, marginBottom:60, marginTop: 30, borderBottomColor:global.gColors.themeColor}}>使用已有账号</Text>
+                 <TouchableHighlight style={{ marginBottom:60, marginTop: 30}} onPress={this.toSignin.bind(this)}>
+                    <Text style={{color:global.gColors.themeColor, fontSize:16, borderBottomColor:global.gColors.themeColor}}>使用已有账号</Text>
                 </TouchableHighlight>
                 <View style={{flexDirection: 'row'}}>
                     <Text>创建账号表示您已阅读并同意 </Text>

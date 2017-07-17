@@ -11,7 +11,7 @@ import Login from './signup';
 import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 import Util from '../common/utils';
-export default class Guide extends Component {
+export default class Guide extends React.Component {
 
     constructor() {
         super();
@@ -50,7 +50,7 @@ export default class Guide extends Component {
         Geolocation.getCurrentPosition()
         .then(data => {
             console.log("获取经纬度"+JSON.stringify(data));   
-            if(data.cityCode){
+            if(data.street){
                 global.user = {};
                 global.user.addressComponent = data;
                 global.user.addressComponent.latitude = data.latitude;
@@ -60,7 +60,7 @@ export default class Guide extends Component {
                 this.setState({ showProgress: false });
                 Alert.alert(
                     null,
-                    '请开启奇客的定位权限',
+                    `请开启奇客的定位权限`,
                     [
                      { text: '确定' },
                     ]
@@ -99,8 +99,7 @@ export default class Guide extends Component {
             global.user.addressComponent = address;
             global.user.authentication_token = response.token;
             this._navigate('TabBarView');
-        }, navigator );
-        
+        }, navigator );        
     }
 
     async existsToken() {
