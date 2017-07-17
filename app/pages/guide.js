@@ -58,13 +58,13 @@ export default class Guide extends React.Component {
                 UserDefaults.setObject(Constant.storeKeys.ADDRESS_COMPONENT, global.user.addressComponent);
             }else{
                 this.setState({ showProgress: false });
-                Alert.alert(
-                    null,
-                    `请开启奇客的定位权限`,
-                    [
-                     { text: '确定' },
-                    ]
-                )
+                // Alert.alert(
+                //     null,
+                //     `请开启奇客的定位权限`,
+                //     [
+                //      { text: '确定' },
+                //     ]
+                // )
             }
          })
         .then(() => {

@@ -88,6 +88,7 @@ class OffersList extends PureComponent {
                   key={`${offer.id}-${i}`}
                   offer={offer}
                   onPress={() => this._onPressCell(offer)}
+                  isBrowseMode ={this.props.isBrowseMode}
                 />
               );
             })}
@@ -111,7 +112,8 @@ class OffersList extends PureComponent {
 const OfferItem = ({
   offer,
   onPress,
-  onCall
+  onCall,
+  isBrowseMode
 }) => {
   let width = (Common.window.width - 24) / 2;
   let imageH = 120;
@@ -154,16 +156,22 @@ const OfferItem = ({
             {offerUser.name}
           </Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableOpacity
-            activeOpacity={0.75}
-            onPress={onCall}
-          >
-            <Image style={{height: 18, width: 18}} source={require('../../resource/y-chat.png')}/>
-          </TouchableOpacity>
-          {/*<Image style={{height: 24, width: 24}} source={require('../../resource/ic_account_favour.png')}/>
-          <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{offer.favorites_count ? offer.favorites_count : 0}</Text>*/}
-        </View>
+        {
+          isBrowseMode?
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <TouchableOpacity
+              activeOpacity={0.75}
+              onPress={onCall}
+            >
+              <Image style={{height: 18, width: 18}} source={require('../../resource/y-chat.png')}/>
+            </TouchableOpacity>
+            {/*<Image style={{height: 24, width: 24}} source={require('../../resource/ic_account_favour.png')}/>
+            <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{offer.favorites_count ? offer.favorites_count : 0}</Text>*/}
+          </View>
+          :
+          <View></View>
+        }
+        
       </View>
     </TouchableOpacity>
   );
