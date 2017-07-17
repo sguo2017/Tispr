@@ -486,7 +486,7 @@ export default class BussList extends Component {
         let cardArray = this.state.sys_msgs;
         return (
             <View style={styles.listView}>
-                <Header title='Qiker' />
+                <Header title='奇客' />
                 <Text style={styles.text1}>{cardArray && cardArray.length > 0 ? "您有重要更新" : "想要更多机会?"}</Text>
                 {this.generateSwiper()}
                 <View style={[styles.view, { marginTop: 10 }]}>

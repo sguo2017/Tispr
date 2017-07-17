@@ -227,41 +227,46 @@ export default class Register extends Component {
           rightButton='下一步'
           rightButtonAction={()=> {if(this.state.isEmail && this.state.name && this.state.password){this.setState({firstPage: false});}}}
         />
-        <View style={{ flex: 1, padding: 16 }}>
+        <View style={{ flex: 1, paddingHorizontal: 16}}>
+          <View style={{marginVertical: 16, flexDirection: 'row', height: 40}}>
+            <Image source={require('../resource/b_register.png')} style={{width:40, height:40}}/>
+            <Text style={{fontWeight: 'bold', fontSize: 14, color: 'black', lineHeight: 30, marginLeft: 16}} >让更多人认识您</Text>
+          </View>
           <TextInput
             ref = "1"
-            onChangeText={(text) => this.setState({ email: text })}
-            style={styles.input} placeholder="邮箱"
-            value={this.state.email}
+            onChangeText={(text) => this.setState({ name: text })}
+            style={styles.input} placeholder="怎样称呼您"
+            value={this.state.name}
             underlineColorAndroid="transparent"
             returnKeyType = 'next'
             multiline = {false}
             onSubmitEditing={() => this.focusNextField('2')}
+            onBlur ={()=>{if(this.state.name){this.setState({nameValid: true})}else{this.setState({nameValid: false})}}}
+            >
+          </TextInput>
+          {this.state.nameValid? <Text style={styles.greyText}>2-4个中文汉字</Text>:<Text style ={styles.redText}>姓名不能为空</Text>}
+          <TextInput
+            ref = "2"
+            onChangeText={(text) => this.setState({ email: text })}
+            style={styles.input} placeholder="您的电子邮箱"
+            value={this.state.email}
+            underlineColorAndroid="transparent"
+            returnKeyType = 'next'
+            multiline = {false}
+            onSubmitEditing={() => this.focusNextField('3')}
             onBlur = {
               ()=>{let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
               this.setState({isEmail: reg.test(this.state.email)});
             }}  
           >
           </TextInput>
-          {this.state.isEmail?<Text></Text>:<Text style ={styles.redText}>邮箱格式不正确</Text>}
-          <TextInput
-            ref = "2"
-            onChangeText={(text) => this.setState({ name: text })}
-            style={styles.input} placeholder="姓名"
-            value={this.state.name}
-            underlineColorAndroid="transparent"
-            returnKeyType = 'next'
-            multiline = {false}
-            onSubmitEditing={() => this.focusNextField('3')}
-            onBlur ={()=>{if(this.state.name){this.setState({nameValid: true})}else{this.setState({nameValid: false})}}}
-            >
-          </TextInput>
-          {this.state.nameValid? <Text></Text>:<Text style ={styles.redText}>姓名不能为空</Text>}
+          {this.state.isEmail?<Text style={{color: '#4990e2'}}>该电子邮箱可用于登录和接收奇客平台的邮件信息</Text>:<Text style ={styles.redText}>邮箱格式不正确</Text>}
+          {/*<View style={{flexDirection: 'row'}}>*/}
           <TextInput
             ref = "3"
             onChangeText={(text) => this.setState({ password: text })}
             style={styles.input}
-            placeholder="密码"
+            placeholder="请设置登录密码"
             secureTextEntry={true}
             value={this.state.password}
             underlineColorAndroid="transparent"
@@ -269,9 +274,12 @@ export default class Register extends Component {
             multiline = {false}
             onSubmitEditing={()=> {if(this.state.isEmail && this.state.name && this.state.password){this.setState({firstPage: false});}}}
             onBlur ={()=>{if(this.state.password){this.setState({passwordValid: true})}else{this.setState({passwordValid: false})}}}
-            >
-          </TextInput>
-          {this.state.passwordValid? <Text></Text>:<Text style ={styles.redText}>密码不能为空</Text>}
+          />
+          {/*<TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword: !this.state.seePassword })}>
+            <Image style={{ width: 25, height: 20 }} source={this.state.seePassword? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
+          </TouchableOpacity>
+          </View>*/}
+          {this.state.passwordValid? <Text>8-16位字符组成，不能包含空格</Text>:<Text style ={styles.redText}>密码不能为空</Text>}
         </View>
       </View>
     );
@@ -419,5 +427,8 @@ const styles = StyleSheet.create({
   },
   redText: {
     color: 'red'
+  },
+  greyText: {
+    color: '#C1C1C1'
   }
 });
