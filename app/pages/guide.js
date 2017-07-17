@@ -99,7 +99,8 @@ export default class Guide extends React.Component {
             global.user.addressComponent = address;
             global.user.authentication_token = response.token;
             this._navigate('TabBarView');
-        }, navigator );        
+        }, navigator );
+        
     }
 
     async existsToken() {

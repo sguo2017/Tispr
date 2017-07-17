@@ -141,13 +141,13 @@ export default class CardDetail extends Component {
                         </View>
                          {
                             _images.length == 1?
-                            <Image style={{height: 300, width: 328, marginBottom: 10}} defaultSource={require('../../resource/img_default_home_cover.png')} source={{uri: _images[0]}}></Image>
+                            <Image style={{height: 300, width: 328, marginBottom: 10}}  source={{uri: _images[0]}}></Image>
                             :
                             <Swiper height={320} paginationStyle={{alignSelf:'center'}}>
                                 {
                                      _images.map((data, index)=> {
                                          return(
-                                            <Image style={{height: 300, width: 328, marginBottom: 10}} defaultSource={require('../../resource/img_default_home_cover.png')} key={index} source={{uri: data}}></Image>
+                                            <Image style={{height: 300, width: 328, marginBottom: 10}}  key={index} source={{uri: data}}></Image>
                                      )
                                     })   
                                 }                                                               

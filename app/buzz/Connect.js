@@ -14,7 +14,7 @@ import {
     Dimensions,
     PixelRatio,
     Alert,
-    ScrollView
+    ScrollView,
 } from 'react-native'
 import ImagePicker from 'react-native-image-picker';
 import Header from '../components/HomeNavigation';
@@ -160,12 +160,6 @@ export default class Connect extends Component {
         }
     }
 
-    focusNextField (nextField){
-        this.refs[nextField].focus();
-    };
-
-
-
     render() {
         const { feed } = this.props;
         let button1 = this.state.button1;
@@ -187,24 +181,7 @@ export default class Connect extends Component {
                         
                         <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>                                
                         {/*<View style={{marginBottom: 8, height: 80}}>*/}
-                        <AutoTextInput
-                            ref="1"
-                            multiline={true}
-                            onChangeText={(text) => 
-                                {
-                                    length= (name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')).length;
-                                    this.setState({content: text.substring(length)});
-
-                                }
-                            }
-                            onBlur={() => {
-                                this.setState({send_default_chat_conteng: true})}
-                            }
-                            style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
-                            value={name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')+content}
-                            underlineColorAndroid={'transparent'}
-                            editable={!send_default_chat_conteng}
-                        />
+                        
                         {/*</View>*/}
                         <View style={{marginTop: 8}}>                     
                         <TouchableHighlight 
@@ -225,19 +202,24 @@ export default class Connect extends Component {
                         >
                             <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
                         </TouchableHighlight>
+                        <AutoTextInput
+                            ref="myTextInput"
+                            multiline={true}
+                            onChangeText={(text) => 
+                                {
+                                    length= (name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')).length;
+                                    this.setState({content: text.substring(length)});
 
-                        <View style={{height: 1, backgroundColor: 'rgba(0,0,0,0.12)', marginVertical: 13.7}}></View>
-
-                        <TouchableHighlight 
-                            style={[styles.notSelectedButton, {width:Platform.OS ==='ios'?120:100}]} 
-                            onPress={()=> {
-                                this.setState({send_default_chat_conteng:false});
-                                this.focusNextField.bind(this, '1');
                                 }
                             }
-                        >
-                            <Text style={[styles.themeColorText]}>自定义信息</Text>
-                        </TouchableHighlight>
+                            style={{fontSize: 16, color: '#1B2833', marginBottom: 8, height: 100}}
+                            value={name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')+content}
+                        />
+                        <View style={{height: 1, backgroundColor: 'rgba(0,0,0,0.12)', marginVertical: 13.7}}></View>
+
+                        <Text onPress={()=>this.refs["myTextInput"].setFocus()} style={[styles.themeColorText]}>
+                            自定义信息
+                        </Text>
                         <View>
                             <Text style={{color: '#999999', marginVertical: 36}}>获得更多竞标</Text>
                         </View>

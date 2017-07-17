@@ -13,7 +13,6 @@ import {reaction} from 'mobx'
 import Loading from '../components/Loading'
 import LoadMoreFooter from '../components/LoadMoreFooter'
 import SysMsgSingleImageCell from './SysMsgSingleImageCell'
-import FeedMultiImageCell from './SysMsgMultiImageCell'
 import Toast from 'react-native-easy-toast'
 import SysMsgStore from './SysMsgStore'
 const KNOWLEDGE_ID = 3
