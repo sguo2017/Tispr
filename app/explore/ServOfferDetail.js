@@ -61,12 +61,12 @@ export default class ServOfferDetail extends Component {
             connectUserAvatar: '',
             connectServ: '',
             /*收藏*/
-            isFavorited: this.props.feed.isFavorited,
-            favorite_id: this.props.feed.favorite_id,
+            isFavorited: this.props.feed.isFavorited?this.props.feed.isFavorited:this.props.isFavorited,
+            favorite_id: this.props.feed.favorite_id?this.props.feed.favorite_id:this.props.favorite_id,
             hasSeenTotalTimes: false,
             editable: false,
             content: '',
-            cover: false
+            isReported: this.props.feed.isReported
         };
         UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -291,7 +291,7 @@ export default class ServOfferDetail extends Component {
             if (response.status >= 200 && response.status < 300) {
                 let rmsg = JSON.parse(response._bodyText);
                 this.props.feed.favorite_id = rmsg.favorite_id;
-                this.props.feed.isFavorited = true;
+                this.props.feed.isFavorited? (this.props.feed.isFavorited= true):(this.props.isFavorited);
                 global.user.favorites_count++;
                 this.setState({ isFavorited: true });
             } else {
@@ -339,7 +339,7 @@ export default class ServOfferDetail extends Component {
         };
         this.props.navigator.push({
             component: Report,
-            passProps: { obj }
+            passProps: { obj}
         });
     }
 
@@ -392,6 +392,7 @@ export default class ServOfferDetail extends Component {
         const { feed } = this.props;
         let _images = feed.serv_images.split(',');
         let mine = this.props.mine;
+        console.log(feed)
         return (
             <View style={styles.listView}>
                 <Header
@@ -444,7 +445,7 @@ export default class ServOfferDetail extends Component {
                         <Text style={{ color: '#000', fontSize: 18, lineHeight: 24 }}>{feed.serv_title}</Text>
                         <Text style={{ color: '#999999', fontSize: 14, lineHeight: 24 }}>{feed.serv_detail}</Text>
                         <View style={{ backgroundColor: '#FFC400', height: 18, width: 68, borderRadius: 2, justifyContent: 'center', alignItems: 'center', marginTop: 8 }}>
-                            <Text style={{ color: 'white', fontsize: 12 }}>发布成功</Text>
+                            <Text style={{ color: 'white', fontSize: 12 }}>发布成功</Text>
                         </View>
                     </View>
                     {
@@ -634,7 +635,7 @@ export default class ServOfferDetail extends Component {
                                     this.setState({show_report: false})
                                 }}
                             >
-                                {this.state.isFavorited?
+                                {!this.state.isFavorited?
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image source={require('../resource/b-archive.png')} />
                                     <Text style={styles.modalText}>存档</Text>
@@ -645,15 +646,22 @@ export default class ServOfferDetail extends Component {
                                 </View>}
                             </TouchableOpacity>
                             <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
-                            <TouchableOpacity style={[styles.modalItem, { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16 }]}
-                                onPress={this.reportOffer.bind(this, feed.id)}
+                            {!this.state.isReported?
+                            <TouchableOpacity style={[styles.modalItem, {justifyContent: 'center', alignItems: 'center' }]}
+                                onPress={
+                                    this.reportOffer.bind(this, feed.id)
+                                }
                             >
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image source={require('../resource/y-jubao.png')} />
                                     <Text style={styles.modalText}>举报</Text>
                                 </View>
+                            </TouchableOpacity>:
+                            <View style={[styles.modalItem, {justifyContent: 'center', alignItems: 'center' }]}>
                                 <Text style={{ fontSize: 14, lineHeight: 20 }}>已举报</Text>
-                            </TouchableOpacity>
+                            </View>
+                            }
+                            
                         </View>
                         <TouchableOpacity 
                             onPress={() => this.setState({ show_report: false })} 

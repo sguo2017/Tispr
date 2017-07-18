@@ -18,6 +18,8 @@ import Constant from '../../common/constants';
 import ImagePicker from 'react-native-image-picker';
 import AutoTextInput from '../../components/AutoTextInput';
 import Toast from 'react-native-easy-toast';
+import SerOfferDetail from '../../explore/ServOfferDetail'
+
 export default class PasswordConfirm extends Component {
     constructor(props) {
         super(props);
@@ -80,17 +82,22 @@ export default class PasswordConfirm extends Component {
                         tag: this.state.title,
                         content: this.state.content,
                         image: uploadedImages,
+                        user_id: global.user.id,
                     }
                 })
             });
             let res = await response.text();
             let result = JSON.parse(res);
+            
+            let isFavorited = this.props.isFavorited;
+            const {feed} = this.props;
+            console.log(feed)
             if (response.status >= 200 && response.status < 300) {
                 Alert.alert(
                     '提示',
                     '举报成功',
                     [
-                        { text: '确定', onPress: () => this.props.navigator.pop() },
+                        { text: '确定', onPress: () => this.props.navigator.push({component: SerOfferDetail, passProps: {feed}}) },
                     ]
                 )
             } else {
