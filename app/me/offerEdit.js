@@ -220,7 +220,7 @@ export default class ServOfferConfirm extends Component {
                         country: global.user.addressComponent.country,
                         latitude: global.user.addressComponent.latitude,
                         longitude: global.user.addressComponent.longitude,
-                        status: Constant.goods_status.CREATED
+                        status: Constant.sys_msgs_status.CREATED
                         //goods_catalog_id: this.state.serv_offer.goods_catalogs_id,
                         //via: this.state.serv_offer.via,
                     }

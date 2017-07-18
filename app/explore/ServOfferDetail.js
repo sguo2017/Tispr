@@ -517,30 +517,35 @@ export default class ServOfferDetail extends Component {
                     visible={this.state.show_share}
                     onShow={() => { }}
                     onRequestClose={() => { }}>
+                    <View style={styles.container}>
                     <View style={styles.modal}>
-                        <View style={styles.share}>
-                            <TouchableOpacity style={styles.item}>
-                                <Image source={require('../resource/ico-wechat.png')} style={styles.img}></Image>
-                                <Text style={styles.text}>微信</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.item}>
-                                <Image source={require('../resource/ico-friend.png')} style={styles.img}></Image>
-                                <Text style={styles.text}>朋友圈</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.item}>
-                                <Image source={require('../resource/ico-qq.png')} style={styles.img}></Image>
-                                <Text style={styles.text}>QQ</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Image source={require('../resource/ico-weibo.png')} style={styles.img}></Image>
-                                <Text style={styles.text}>新浪微博</Text>
-                            </TouchableOpacity>
+                        <View style={{ borderRadius: 16, backgroundColor: 'white', height: 112}}>
+                            <View style={styles.share}>
+                                <TouchableOpacity style={styles.item}>
+                                    <Image source={require('../resource/ico-wechat.png')} style={styles.img}></Image>
+                                    <Text style={styles.text}>微信</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.item}>
+                                    <Image source={require('../resource/ico-friend.png')} style={styles.img}></Image>
+                                    <Text style={styles.text}>朋友圈</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.item}>
+                                    <Image source={require('../resource/ico-qq.png')} style={styles.img}></Image>
+                                    <Text style={styles.text}>QQ</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <Image source={require('../resource/ico-weibo.png')} style={styles.img}></Image>
+                                    <Text style={styles.text}>新浪微博</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <TouchableOpacity onPress={() => this.setState({ show_share: false })} style={{ alignItems: 'center', justifyContent: 'center', height: 57,marginTop: 30 }}>
+                        <TouchableOpacity 
+                            onPress={() => this.setState({ show_share: false })} 
+                            style={{ alignItems: 'center', justifyContent: 'center',marginTop: 6, borderRadius: 16, backgroundColor: 'white', height: 56}}>
                             <Text style={styles.cancel}>取消</Text>
                         </TouchableOpacity>
                     </View>
-
+                    </View>
                 </Modal>
                 {/*相关服务列表快捷回复弹窗*/}
                 <Modal
@@ -622,31 +627,37 @@ export default class ServOfferDetail extends Component {
                     transparent={true}
                     visible={this.state.show_report}
                 >
-                    <View style={[styles.modal, {height: 170}]}>
-                        <TouchableOpacity style={[styles.modalItem, { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16 }]}
-                        >
-                            <View style={{ flexDirection: 'row' }}>
-                                <Image source={require('../resource/b-archive.png')} />
-                                <Text style={styles.modalText}>存档</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Image source={require('../resource/y-check-r.png')} />
-                                <Text style={{ lineHeight: 21 }}>已存档</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.modalItem, { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16 }]}
-                            onPress={this.reportOffer.bind(this, feed.id)}
-                        >
-                            <View style={{ flexDirection: 'row' }}>
-                                <Image source={require('../resource/y-jubao.png')} />
-                                <Text style={styles.modalText}>举报</Text>
-                            </View>
-                            <Text style={{ fontSize: 14, lineHeight: 20 }}>已举报</Text>
-                        </TouchableOpacity>
-                        <View style={{ height: 0.5, backgroundColor: 'rgba(237,237,237,1)' }}></View>
-                        <TouchableOpacity onPress={() => this.setState({ show_report: false })} style={{ alignItems: 'center', justifyContent: 'center', marginTop: 16}}>
+                    <View style={styles.container}> 
+                    <View style={styles.modal}>
+                        <View style={{ borderRadius: 16, backgroundColor: 'white'}}>
+                            <TouchableOpacity style={[styles.modalItem, { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16 }]}
+                            >
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Image source={require('../resource/b-archive.png')} />
+                                    <Text style={styles.modalText}>存档</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Image source={require('../resource/y-check-r.png')} />
+                                    <Text style={{ lineHeight: 21 }}>已存档</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
+                            <TouchableOpacity style={[styles.modalItem, { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16 }]}
+                                onPress={this.reportOffer.bind(this, feed.id)}
+                            >
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Image source={require('../resource/y-jubao.png')} />
+                                    <Text style={styles.modalText}>举报</Text>
+                                </View>
+                                <Text style={{ fontSize: 14, lineHeight: 20 }}>已举报</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <TouchableOpacity 
+                            onPress={() => this.setState({ show_report: false })} 
+                            style={{ alignItems: 'center', justifyContent: 'center', marginTop: 6, borderRadius: 16, backgroundColor: 'white', height: 56}}>
                             <Text style={styles.modalText}>取消</Text>
                         </TouchableOpacity>
+                    </View>
                     </View>
                 </Modal>
                 <Modal
@@ -655,7 +666,7 @@ export default class ServOfferDetail extends Component {
                     visible={this.state.isMine}
                 >
                     <View style={styles.container}> 
-                    <View style={[styles.modal,{height: 180, borderTopWidth: 0, paddingHorizontal: 8, backgroundColor: 'transparent'}]}>
+                    <View style={styles.modal}>
                         <View style={{ borderRadius: 16, backgroundColor: 'white',  marginBottom: 6}}>
                             <TouchableOpacity 
                                 style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
@@ -710,14 +721,13 @@ const styles = StyleSheet.create({
     },
     modal: {
         marginTop: 300,
-        height: 200,
         width: global.gScreen.width,
-        backgroundColor: 'white',
         position: 'absolute',
         bottom: 0,
-        borderTopWidth: 1,
-        borderColor: '#000'
-
+        height: 180, 
+        borderTopWidth: 0,
+         paddingHorizontal: 8, 
+         backgroundColor: 'transparent'
     },
     share: {
         flexDirection: 'row',
@@ -749,7 +759,7 @@ const styles = StyleSheet.create({
     cancel: {
         color: '#1B2833',
         fontSize: 16,
-        marginTop: 30,
+        //marginTop: 30,
         marginHorizontal: 132
     },
     cardContainer: {
