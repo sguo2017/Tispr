@@ -21,7 +21,9 @@ let Util = {
                 successCallback(JSON.parse(responseText));
             })
             .catch((err) => {
-                failCallback(err);
+                if(failCallback) failCallback(err);
+                //navigator.push({component: breakdown});
+               
             });
     },
     
