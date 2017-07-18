@@ -403,11 +403,8 @@ export default class ServOfferDetail extends Component {
                         mine? this.setState({ isMine: true}):this.setState({ show_report: true });
                         }
                     }
-                    rightIcon2={this.state.isFavorited ? require('../resource/ic_account_favour.png') : require('../resource/ic_news_collect.png')}
-                    rightIcon2Action={() => this._switch(this.state.isFavorited, this.state.favorite_id)}
-                    rightIcon2Size={30}
-                    rightIcon3={require('../resource/b_info.png')}
-                    rightIcon3Action={() => this.setState({ show_share: true })}
+                    rightIcon2={require('../resource/b_info.png')}
+                    rightIcon2Action={() => this.setState({ show_share: true })}
                     style={{ height: 50 }}
                 />
                 
@@ -630,16 +627,22 @@ export default class ServOfferDetail extends Component {
                     <View style={styles.container}> 
                     <View style={styles.modal}>
                         <View style={{ borderRadius: 16, backgroundColor: 'white'}}>
-                            <TouchableOpacity style={[styles.modalItem, { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16 }]}
+                            <TouchableOpacity 
+                                style={[styles.modalItem, {alignItems: 'center', justifyContent:'center',}]}
+                                onPress={()=>{
+                                    this._switch(this.state.isFavorited, this.state.favorite_id);
+                                    this.setState({show_report: false})
+                                }}
                             >
+                                {this.state.isFavorited?
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image source={require('../resource/b-archive.png')} />
                                     <Text style={styles.modalText}>存档</Text>
-                                </View>
+                                </View>:
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image source={require('../resource/y-check-r.png')} />
                                     <Text style={{ lineHeight: 21 }}>已存档</Text>
-                                </View>
+                                </View>}
                             </TouchableOpacity>
                             <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
                             <TouchableOpacity style={[styles.modalItem, { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16 }]}
