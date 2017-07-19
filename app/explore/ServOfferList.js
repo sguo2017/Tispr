@@ -483,12 +483,14 @@ const ServItem = ({
             {servUser.name}
           </Text>
         </View>
-        <TouchableOpacity
-          activeOpacity={0.75}
-          onPress={onCall}
-        >
-          <Image style={{height: 18, width: 18}} source={require('../resource/y-chat.png')}/>
-        </TouchableOpacity>
+        {global.user.id !== servUser.id?
+            <TouchableOpacity
+                activeOpacity={0.75}
+                onPress={onCall}
+                >
+                <Image style={{height: 18, width: 18}} source={require('../resource/y-chat.png')}/>
+            </TouchableOpacity>:<View></View>
+        }
       </View>
     </TouchableOpacity>
   )
