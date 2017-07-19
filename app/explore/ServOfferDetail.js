@@ -61,8 +61,8 @@ export default class ServOfferDetail extends Component {
             connectUserAvatar: '',
             connectServ: '',
             /*收藏*/
-            isFavorited: this.props.feed.isFavorited?this.props.feed.isFavorited:this.props.isFavorited,
-            favorite_id: this.props.feed.favorite_id?this.props.feed.favorite_id:this.props.favorite_id,
+            isFavorited: this.props.feed.isFavorited,
+            favorite_id: this.props.feed.favorite_id,
             hasSeenTotalTimes: false,
             editable: false,
             content: '',
@@ -337,9 +337,13 @@ export default class ServOfferDetail extends Component {
             id: id,
             type: 'good'
         };
+        let _this = this;
+        let getData = (a) => {
+            _this.setState({isReported: a})
+        }
         this.props.navigator.push({
             component: Report,
-            passProps: { obj}
+            passProps: { obj, getData}
         });
     }
 

@@ -89,15 +89,15 @@ export default class PasswordConfirm extends Component {
             let res = await response.text();
             let result = JSON.parse(res);
             
-            let isFavorited = this.props.isFavorited;
             const {feed} = this.props;
             console.log(feed)
             if (response.status >= 200 && response.status < 300) {
+                this.props.getData(true);
                 Alert.alert(
                     '提示',
                     '举报成功',
                     [
-                        { text: '确定', onPress: () => this.props.navigator.push({component: SerOfferDetail, passProps: {feed}}) },
+                        { text: '确定', onPress: () => this.props.navigator.pop()},
                     ]
                 )
             } else {
