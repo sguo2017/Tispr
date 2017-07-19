@@ -35,7 +35,8 @@ import noConnectTimes from './noConnectTimes';
 import totalResTimes from './totalResTimes';
 import ChatDetail from '../chat/ChatDetail';
 import Util from '../common/utils'
-import breakdown from '../sys/others/breakdown'
+import breakdown from '../sys/others/breakdown';
+import TabBarView from '../containers/TabBarView';
 const KNOWLEDGE_ID = 3
 
 var styles = StyleSheet.create({
@@ -186,7 +187,7 @@ export default class BussList extends Component {
         errorMsg && this.toast.show(errorMsg)
     }
 
-    _renderRow = feed => <KnowledgeItem onPressAvatar={this._onPressAvatar} onPressOffer ={this._onPressOffer} feed={feed} />
+    _renderRow = feed => <KnowledgeItem onPressAvatar={this._onPressAvatar} onPressAddress={this._onPressAddress} onPressOffer ={this._onPressOffer} feed={feed} />
 
     _onPressAvatar = (id) => {
         this.props.navigator.push({
@@ -201,6 +202,16 @@ export default class BussList extends Component {
         });
     }
 
+    _onPressAddress = ( city ) => {
+        console.log("你点击了地址："+city);
+        this.props.navigator.resetTo({
+            component: TabBarView,
+            passProps: {
+                city: city,
+                initialPage: 1
+            }
+        });
+    }
     _onPressOffer = feed => {  
         let offer = feed.serv_offer;
          /*加入奇客的动态offer为空*/
@@ -552,7 +563,11 @@ class KnowledgeItem extends Component {
         const { feed, onPressAvatar } = this.props
         onPressAvatar && onPressAvatar(feed.link_user_id)
     }
-
+    _pressAddress =() =>{
+        const { feed, onPressAddress } = this.props
+        let cityName = feed.action_desc.split("__")[1]
+        onPressAddress && onPressAddress(cityName)
+    }
     _pressOffer = () => {
         const { feed, onPressOffer } = this.props
         onPressOffer && onPressOffer(feed)
@@ -560,6 +575,6 @@ class KnowledgeItem extends Component {
     render() {
         const { feed: { action_title, action_desc, interval, user, link_user } } = this.props
         const cellData = { action_title, action_desc, interval, user, link_user }
-        return <SysMsgSingleImageCell {...cellData} onPressAvatar={this._pressAvatar} onPressAvatar2={this._pressAvatar2} onPressOffer={this._pressOffer} />
+        return <SysMsgSingleImageCell {...cellData} onPressAddress={this._pressAddress} onPressAvatar={this._pressAvatar} onPressAvatar2={this._pressAvatar2} onPressOffer={this._pressOffer} />
     }
 }

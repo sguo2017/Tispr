@@ -40,12 +40,12 @@ export default class TabBarView extends PureComponent {
                 tabNames={tabTitles}
                 tabIconNames={tabIcons}
                 selectedTabIconNames={tabSelectedIcon}
-                activeTab = {this.props.initialPage?this.props.initialPage: 0}
                 centralEvent={()=>{
                     this.props.navigator.resetTo({component:Server, name:'Server',passProps:{}})
                 }}
               />
             }
+            initialPage  = {this.props.initialPage?this.props.initialPage: 0}
             tabBarPosition='bottom'
             tabBarActiveTextColor={global.gColors.themeColor}
             tabBarTextStyle={{fontSize: 18}}
@@ -54,7 +54,7 @@ export default class TabBarView extends PureComponent {
             onChangeTab={this._onChangeTab}
           >
               <Buzz tabLabel="Buzz" navigator={this.props.navigator}/>
-              <Explore tabLabel="Explore" categoryId={0} navigator={this.props.navigator}/>
+              <Explore tabLabel="Explore" categoryId={0} navigator={this.props.navigator} city={this.props.city}/>
               {/*<Server tabLabel="Server" navigator={this.props.navigator}/>*/}
               <View />
               <Chat tabLabel="Chat" navigator={this.props.navigator}/>

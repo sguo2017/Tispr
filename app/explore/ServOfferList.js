@@ -155,7 +155,7 @@ export default class ServOfferList extends Component {
 
   componentDidMount() {
       const { dispatch } = this.props;
-      dispatch(fetchExploreList(1));
+      this._onRefresh();
   }
 
   _onMomentumScrollEnd(event) {
@@ -185,6 +185,7 @@ export default class ServOfferList extends Component {
             goods_catalog_paramas=goods_catalog_paramas.concat(global.goods_catalogs_II_id[index-1]);
         }
     });
+    exploreparams.city = this.props.location + "市";
     exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
     dispatch(fetchExploreList(1, exploreparams));
   }
