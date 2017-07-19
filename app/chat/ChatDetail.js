@@ -39,7 +39,8 @@ export default class ChatDetail extends Component {
     this.state = {
       messages: [],
       order_status: this.props.order_status,
-      show: false
+      show: false,
+      isReported:this.props.isReported
     };
     this.onSend = this.onSend.bind(this);
   }
@@ -256,23 +257,47 @@ export default class ChatDetail extends Component {
           visible={this.state.show}
           onShow={() => { }}
           onRequestClose={() => { }}>
-          <View style={styles.modal}>
-            <TouchableOpacity style={styles.item} onPress={this.jumpInfo.bind(this, obj.id)}>
-              <Text style={styles.text}>查看TA的个人信息</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.item} onPress={this.jumpInfo.bind(this, obj.id)}>
-              <Text  style={styles.text}>查看TA的需求(服务)</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.item, {flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16}]}
-            onPress = {()=> {this.setState({show: false});this.props.navigator.push({component:Report,passProps:{obj}})}}
-            >
-              <Text  style={styles.text}>举报TA</Text>
-              <Text style={{fontSize: 14, color: '#CCCCCC', lineHeight: 20}}>已举报</Text>
-            </TouchableOpacity>
-            <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
-            <TouchableOpacity onPress={() => this.setState({show: false})} style={{alignItems: 'center', justifyContent: 'center', height: 56}}>
-              <Text style={styles.text}>取消</Text>
-            </TouchableOpacity>
+          <View style={styles.container}> 
+            <View style={styles.modal}>
+              <View style={{ borderRadius: 16, backgroundColor: 'white',  marginBottom: 6}}>
+                <TouchableOpacity 
+                    style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
+                    onPress={this.jumpInfo.bind(this, obj.id)}
+                >
+                    <Text style={styles.text}>查看TA的个人信息</Text>
+                </TouchableOpacity>
+                <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
+                <TouchableOpacity 
+                    style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center',}]}
+                    onPress={this.jumpInfo.bind(this, obj.id)}
+                >
+                    <Text  style={styles.text}>查看TA的需求(服务)</Text>
+                </TouchableOpacity>
+                <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
+                {
+                  this.state.isReported?
+                  <View style={[styles.modalItem, {justifyContent: 'center', alignItems: 'center' }]}>
+                      <Text style={{ fontSize: 14, lineHeight: 20 }}>已举报</Text>
+                  </View>:
+                  <TouchableOpacity 
+                    style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center',}]}
+                    onPress = {()=> {
+                      this.setState({show: false});
+                      let getData = (a) => {this.setState({isReported: a})}
+                      this.props.navigator.push({component:Report,passProps:{obj, getData}})
+                    }}
+                  >
+                      <Text  style={styles.text}>举报TA</Text>
+                  </TouchableOpacity>
+                }
+              </View>
+                
+              <TouchableOpacity
+                  onPress={() => this.setState({show: false})}
+                  style={{alignItems: 'center', justifyContent: 'center', borderRadius: 16, backgroundColor: 'white', height: 56}}>
+                  <Text style={styles.text}>取消</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </Modal>
       </View>
@@ -288,6 +313,17 @@ class CustomMessage extends Message {
 }
 
 const styles = StyleSheet.create({
+  container:{  
+    flex:1,  
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',  
+    position: 'absolute',  
+    top: 0,  
+    bottom: 0,  
+    left: 0,  
+    right: 0,  
+    justifyContent:'center',  
+    alignItems:'center'  
+  },  
   cardImageContent: {
     height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,
     width: Constant.window.width,
@@ -307,10 +343,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   modal: {
-    backgroundColor: 'white',
-    paddingHorizontal: 16,
-    position:'relative',
-    top: screenW
+      marginTop: 200,
+      width: global.gScreen.width,
+      position: 'absolute',
+      bottom: 0,
+      height: 240, 
+      borderTopWidth: 0,
+      paddingHorizontal: 8, 
+      backgroundColor: 'transparent'
   },
   item: {
     height: 56,
@@ -319,5 +359,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: 'black'
-  }
+  },
+  modalItem: {
+      height: 56,
+      justifyContent: 'center',
+      marginHorizontal: 22
+  },
 })
