@@ -37,7 +37,6 @@ class ExploreList extends PureComponent {
             classify: this.props.classify,
             transiClassify: this.props.transiClassify,
             location: this.props.location,
-            transiLocation: this.props.transiLocation,
             exploreparams: {},
             exploretitle:'',
             sps: [false, false, false, false],//排序按钮操作
@@ -57,8 +56,7 @@ class ExploreList extends PureComponent {
             transiSortBy: '综合排序',
             classify: '全部人才',
             transiClassify: '全部人才',
-            location: '广州',
-            transiLocation: '广州',
+            location: '广州市',
             searchText: ''
         });
         if(this.props.city){
