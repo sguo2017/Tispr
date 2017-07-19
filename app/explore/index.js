@@ -147,7 +147,7 @@ class ExploreList extends PureComponent {
         if(this.state.via == 'remote'){
             exploreparams.via = 'remote'
         }
-        exploreparams.city = this.state.location+ '市';
+        exploreparams.city = this.state.location;
         if (goods_catalog[0]) {
             goods_catalog.map((item, index, input) => { input[index] = true });
         }
@@ -290,10 +290,10 @@ class ExploreList extends PureComponent {
                                                 {() => {this.setState({
                                                     sortBy: this.state.transiSortBy,
                                                     classify: this.state.transiClassify,
-                                                    location: this.state.initArea[1],
+                                                    location: this.state.initArea[1]+"市",
                                                     show: false,
                                                 });
-                                                this.state.location = this.state.initArea[1];
+                                                this.state.location = this.state.initArea[1]+"市";
                                                 this.refresh();
                                                 }}
                                         >完成</Text>
