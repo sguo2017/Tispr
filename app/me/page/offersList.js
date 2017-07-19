@@ -24,9 +24,6 @@ class OffersList extends PureComponent {
     super(props);
     this._onMomentumScrollEnd = this._onMomentumScrollEnd.bind(this);
     this._onRefresh = this._onRefresh.bind(this);
-    this.state = {
-      mine: true
-    }
   }
 
   componentDidMount() {
@@ -53,10 +50,9 @@ class OffersList extends PureComponent {
   }
 
   _onPressCell(feed) {
-    let mine = this.state.mine;
     this.props.navigator.push({
       component: ServOfferDetail,
-      passProps: { feed, mine },
+      passProps: { feed},
     })
   }
 

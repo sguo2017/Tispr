@@ -395,8 +395,9 @@ export default class ServOfferDetail extends Component {
     render() {
         const { feed } = this.props;
         let _images = feed.serv_images.split(',');
-        let mine = this.props.mine;
+        let mine = feed.user.id === global.user.id? true : false;
         console.log(feed)
+        console.log(global.user.id)
         return (
             <View style={styles.listView}>
                 <Header
