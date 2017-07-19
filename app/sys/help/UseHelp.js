@@ -6,7 +6,8 @@ import {
 	Image,
 	ScrollView,
 	TouchableOpacity,
-	TouchableHighlight
+	TouchableHighlight,
+	TextInput
 } from 'react-native'
 
 import Header from '../../components/HomeNavigation';
@@ -18,7 +19,8 @@ export default class UseHelp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			question_num: [false, false, false, false, false, false]
+			question_num: [false, false, false, false, false, false],
+			content: ''
 		}
 	}
 
@@ -39,7 +41,27 @@ export default class UseHelp extends Component {
 					title='帮助'
 					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={this._onBack.bind(this)}
+					rightButton='联系我们'
 				/>
+				<View style={{backgroundColor: '#4a90e2', height: 40, marginTop: -2, paddingLeft: 16}}>
+					<View style={styles.searchBox}>
+						<Image source={require('../../resource/w-search.png')} style={styles.searchIcon} />
+						<TextInput style={styles.inputText}
+							underlineColorAndroid='transparent'
+							keyboardType='web-search'
+							value={this.state.content}
+							placeholder='搜索'
+							returnKeyType = 'search'
+							returnKeyLabel = 'search'
+							placeholderTextColor='white'
+							selectTextOnFocus ={true}
+							onSubmitEditing = {() => this.refresh()}
+							onChangeText={(val) => {
+								this.setState({ content: val })
+							}}
+						/>
+					</View>
+				</View>
 				<ScrollView ref={(scrollView) => { _scrollView = scrollView; }}>
 					<View style={{ height: 40, backgroundColor: '#f7f7f7', justifyContent: 'center', paddingLeft: 20 }}>
 						<Text style={{ color: '#999999' }}>常见问题</Text>
@@ -159,4 +181,24 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		paddingLeft: 8,
 	},
+	searchBox: {//搜索框
+        flexDirection: 'row',   // 水平排布
+        borderRadius: 5,  // 设置圆角边
+        backgroundColor: 'rgba(255,255,255,0.24)',
+        alignItems: 'center',
+        width: 330,
+        height: 32,
+    },
+    searchIcon: {//搜索图标
+        height: 24,
+        width: 24,
+        marginLeft: 5,
+        resizeMode: 'stretch'
+    },
+    inputText: {
+        backgroundColor: 'transparent',
+        fontSize: 14,
+        width: 330,
+        padding: 0,
+    },
 });

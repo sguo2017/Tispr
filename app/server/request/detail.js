@@ -14,7 +14,8 @@ import {
     PixelRatio,
     Alert,
     ProgressViewIOS,
-    ScrollView
+    ScrollView,
+    Keyboard
 } from 'react-native'
 import AutoTextInput from '../../components/AutoTextInput';
 import Header from '../../components/HomeNavigation';
@@ -49,6 +50,8 @@ export default class ServOfferDetail extends Component {
         const { navigator } = this.props;
         console.log("go to delivory");
         if (navigator) {
+            const dismissKeyboard = require('dismissKeyboard'); 
+            dismissKeyboard();
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "ServOfferDelivory",
                 component: ServOfferDelivory,
@@ -117,7 +120,6 @@ export default class ServOfferDetail extends Component {
                   multiline={true}
                   numberOfLines={3}
                   value ={this.state.serv_offer.serv_detail}
-                  placeholder="详细描述您的需求，如要求，偏好，预算及完成周期等"
                   placeholderTextColor="#cccccc"
                   autoFocus
                   onChangeText={(val) => {
