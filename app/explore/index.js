@@ -61,6 +61,11 @@ class ExploreList extends PureComponent {
             transiLocation: '广州',
             searchText: ''
         });
+        if(this.props.city){
+            this.setState({
+                location: this.props.city
+            });
+        }
         if (global.goods_catalog_I === undefined) {
             this.getGoodsCatalog();
         }
@@ -262,7 +267,7 @@ class ExploreList extends PureComponent {
                       <Text style={styles.whiteText}>{this.state.location}</Text>
                   </TouchableOpacity>
               </View>
-              <ServOfferList exploreparams={this.state.exploreparams} cps={this.state.cps} {...this.props} />
+              <ServOfferList exploreparams={this.state.exploreparams} cps={this.state.cps} location={this.state.location} {...this.props} />
               <Modal
                 animationType='slide'
                 transparent={true}

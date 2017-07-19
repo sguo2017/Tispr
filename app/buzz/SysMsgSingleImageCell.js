@@ -17,10 +17,13 @@ const SysMsgSingleImageItem = ({
     link_user,
     onPressAvatar,
     onPressAvatar2,
-    onPressOffer
+    onPressOffer,
+    onPressAddress
 }) => {
     let action_title_arry = action_title.split("__")
     let array_length =action_title_arry.length;
+    let action_desc_arry = action_desc.split("__")
+    let array_desc_length =action_desc_arry.length;
     if(action_title){
         return (
             <TouchableOpacity
@@ -58,7 +61,23 @@ const SysMsgSingleImageItem = ({
                             </Text>
                         }                         
                     </Text>
-                    <Text onPress={onPressOffer} numberOfLines={2} style={{ flex: 1, color: '#4a90e2', fontSize: 14 }}>{action_desc}</Text>
+                        {
+                            array_desc_length == 3 ?
+                            <Text>
+                                <Text numberOfLines={1} style={{ flex: 1, color: '#999999', fontSize: 16 }}>
+                                    {action_desc_arry[0]}
+                                </Text>
+                                <Text onPress={onPressAddress} numberOfLines={1} style={{ flex: 1, color: '#000000', fontSize: 16 }}>
+                                    {action_desc_arry[1]}
+                                </Text>
+                                <Text numberOfLines={1} style={{ flex: 1, color: '#999999', fontSize: 16 }}>
+                                    {action_desc_arry[2]}
+                                </Text>
+                            </Text>
+                            :
+                            <Text onPress={onPressOffer} numberOfLines={2} style={{ flex: 1, color: '#4a90e2', fontSize: 14 }}>{action_desc}</Text>                            
+                        }          
+                    
                 </View>
                 <Text numberOfLines={1} style={{ fontSize:12, color: '#b8b8b8' }}>{interval}</Text>
             </TouchableOpacity>
