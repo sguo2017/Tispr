@@ -23,6 +23,8 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TabCategoryBar from '../me/TabCategoryBar';
 import Constant from '../common/constants'
 import area from '../sys/others/area.json'
+import MarkList from './MarkList'
+
 const titles = ['本地','远程', ];
 var goods_catalogs_II=[];
 var goods_catalogs_II_id=[];
@@ -37,6 +39,7 @@ class ExploreList extends PureComponent {
             classify: this.props.classify,
             transiClassify: this.props.transiClassify,
             location: this.props.location,
+            transiLocation: this.props.transiLocation,
             exploreparams: {},
             exploretitle:'',
             sps: [false, false, false, false],//排序按钮操作
@@ -56,7 +59,8 @@ class ExploreList extends PureComponent {
             transiSortBy: '综合排序',
             classify: '全部人才',
             transiClassify: '全部人才',
-            location: '广州市',
+            location: '广州',
+            transiLocation: '广州',
             searchText: ''
         });
         if(this.props.city){
@@ -145,7 +149,7 @@ class ExploreList extends PureComponent {
         if(this.state.via == 'remote'){
             exploreparams.via = 'remote'
         }
-        exploreparams.city = this.state.location;
+        exploreparams.city = this.state.location+ '市';
         if (goods_catalog[0]) {
             goods_catalog.map((item, index, input) => { input[index] = true });
         }
@@ -242,16 +246,9 @@ class ExploreList extends PureComponent {
                          }}
                       />
                 </View>
-                  {
-                      this.state.exploretitle == ''?
-                    <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} onPress={() => this.refresh()}>
-                        <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
-                    </TouchableOpacity>
-                    :
-                    <View style={{ marginLeft: 17, marginRight: 8 }} >
-                        <Text style={{color: '#fff'}} onPress={() =>{this.setState({exploreparams: {},exploretitle: ''});this.state.exploreparams={}; this.refresh()}}>取消</Text>
-                    </View>
-                  }
+                <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} onPress={() => this.props.navigator.push({component: MarkList})}>
+                    <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
+                </TouchableOpacity>
               </View>
               <View style={{ flexDirection: 'row', paddingVertical: 6, backgroundColor: 'rgba(0,0,0,0.16)'}}>
                   <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'recentPublish', show: true });}}>
@@ -288,10 +285,10 @@ class ExploreList extends PureComponent {
                                                 {() => {this.setState({
                                                     sortBy: this.state.transiSortBy,
                                                     classify: this.state.transiClassify,
-                                                    location: this.state.initArea[1]+"市",
+                                                    location: this.state.initArea[1],
                                                     show: false,
                                                 });
-                                                this.state.location = this.state.initArea[1]+"市";
+                                                this.state.location = this.state.initArea[1];
                                                 this.refresh();
                                                 }}
                                         >完成</Text>
