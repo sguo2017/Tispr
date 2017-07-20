@@ -15,6 +15,7 @@ import LoadMoreFooter from '../components/LoadMoreFooter'
 import SysMsgSingleImageCell from './SysMsgSingleImageCell'
 import Toast from 'react-native-easy-toast'
 import SysMsgStore from './SysMsgStore'
+import Util from '../common/utils'
 const KNOWLEDGE_ID = 3
 const itemWidth =global.gScreen.width-20;
 const itemHeight =300;
@@ -56,6 +57,9 @@ export default class BussList extends PureComponent {
     _renderRow = feed => <KnowledgeItem feed={feed}/> 
 
     _onRefresh = () => {
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
         this.knowledgeListStore.isRefreshing = true
         this.knowledgeListStore.fetchFeedList()
     }

@@ -246,6 +246,10 @@ export default class BussList extends Component {
     }
 
     _onRefresh = () => {
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
+    
         this.knowledgeListStore.isRefreshing = true
         this.knowledgeListStore.fetchFeedList();
         this._getSysMsgs();
@@ -254,36 +258,12 @@ export default class BussList extends Component {
     _onEndReach = () => this.knowledgeListStore.page++
 
     async _getSysMsgs() {
+            if(!global.user.authentication_token){
+               Util.noToken(this.props.navigator);
+            }
        
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSGS_QUERIES + global.user.authentication_token + `&query_type=` + Constant.sysMsgCatalog.PRIVATE + `&user_id=` + global.user.id + `&page=1`;
-            // console.log("148:"+url)
-            // fetch(url, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Accept': 'application/json',
-            //         'Content-Type': 'application/json',
-            //     },
-            // }).then(response => {
-            //     if (response.status == 200) return response.json()
-            //     return null
-            // }).then(responseData => {
-            //     // console.log("160:"+JSON.stringify(responseData.feeds))
-            //     if (responseData) {
-            //         let sys_msgs = this.state.sys_msgs;
-            //         // console.log("163:")
-            //         sys_msgs = responseData.feeds;
-            //         // console.log("165:"+JSON.stringify(sys_msgs))
-            //         this.setState({
-            //             sys_msgs: sys_msgs,
-            //         });
-            //         //console.log("167:"+JSON.stringify(this.state.sys_msgs))
-            //     } else {
 
-            //     }
-            // }).catch(error => {
-            //     console.log(`Fetch evaluating list error: ${error}`)
-
-            // })
             Util.get(
                 url,
                 (response) => {
@@ -297,8 +277,7 @@ export default class BussList extends Component {
                 },
                 (error) => {
                     this.props.navigator.push({component: breakdown})
-                },
-                {}
+                }
             )       
     }
 

@@ -23,6 +23,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TabCategoryBar from '../me/TabCategoryBar';
 import Constant from '../common/constants'
 import area from '../sys/others/area.json'
+import Util from '../common/utils'
 const titles = ['本地','远程', ];
 var goods_catalogs_II=[];
 var goods_catalogs_II_id=[];
@@ -89,6 +90,9 @@ class ExploreList extends PureComponent {
     }
 
     async getGoodsCatalog() {
+        if(!global.user.authentication_token){
+               Util.noToken(this.props.navigator);
+        }
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_GOODS_CATALOG + global.user.authentication_token + `&level=1`;
 
@@ -128,6 +132,10 @@ class ExploreList extends PureComponent {
         }
     }
     refresh() {
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
+       
         const { dispatch, categoryId } = this.props;
         page = 1;
         let exploreparams = this.state.exploreparams;

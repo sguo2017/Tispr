@@ -34,7 +34,7 @@ import totalResTimes from '../buzz/totalResTimes';
 import noConnectTimes from '../buzz/noConnectTimes';
 import AutoTextInput from '../components/AutoTextInput'
 import offerEdit from '../me/offerEdit'
-
+import Util from '../common/utils'
 const screenW = Dimensions.get('window').width;
 
 const msg1 = '你发布的专业服务很棒！';
@@ -117,30 +117,23 @@ export default class ServOfferDetail extends Component {
     async _getSameTypeOffer() {
         let catalog_id = this.props.feed.goods_catalog_id;
         let serv_id = this.props.feed.id;
-        try {
-            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_INDEX + global.user.authentication_token + `&catalog_id=${catalog_id}&serv_id=${serv_id}`;
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-            }).then(response => {
-                // console.log("156:"+JSON.stringify(response))
-                if (response.status == 200) return response.json()
-                return null
-            }).then(responseData => {
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_INDEX + global.user.authentication_token + `&catalog_id=${catalog_id}&serv_id=${serv_id}`;        
+        Util.get(
+            url,
+            (response) => {
                 let offerList = this.state.offerList
-                offerList = JSON.parse(responseData.feeds);
+                offerList = JSON.parse(response.feeds);
                 this.setState({
                     offerList: offerList,
                 });
-            }).catch(error => {
-                console.log(`Fetch evaluating list error: ${error}`)
-            })
-        } catch (error) {
-            console.log(`Fetch evaluating list error: ${error}`)
-        }
+            },
+            (error) => {
+                this.props.navigator.push({component: breakdown})
+            }
+        )       
     }
 
     async _sendMessage() {
