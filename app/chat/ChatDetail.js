@@ -40,14 +40,16 @@ export default class ChatDetail extends Component {
       messages: [],
       order_status: this.props.order_status,
       show: false,
-      isReported:this.props.isReported
+      isReported:''
     };
     this.onSend = this.onSend.bind(this);
   }
 
   componentWillMount() {
     this.refreshmessage();
-    int = setInterval(this.refreshmessage.bind(this),5000);
+    int = setInterval(this.refreshmessage.bind(this),5000); 
+    const { feed } = this.props;
+    this.setState({isReported: feed.is_reported});
   }
     //
     //let ws = new WebSocket('ws://' + Constant.url.SERV_API_ADDR + ':' + '3001' + '/websocket');
