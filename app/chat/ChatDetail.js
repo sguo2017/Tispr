@@ -239,7 +239,7 @@ export default class ChatDetail extends Component {
           }
           <Image source={require('../resource/g_chevron right.png')} style={{}}/>
          </TouchableOpacity>
-          <GiftedChat
+            <GiftedChat
             messages={this.state.messages}
             onSend={this.onSend}
             user={{
@@ -249,8 +249,9 @@ export default class ChatDetail extends Component {
             renderSend={this.renderSend}
             renderBubble ={this.renderBubble}
             renderMessage={props => <CustomMessage {...props} />}
-          />
+          />  
         </View>
+
         <Modal
           animationType='slide'
           transparent={true}
@@ -325,11 +326,11 @@ const styles = StyleSheet.create({
     alignItems:'center'  
   },  
   cardImageContent: {
-    height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,
+   // height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50)-100,
     width: Constant.window.width,
     backgroundColor: global.gColors.bgColor,
     top: Platform.OS === 'ios' ? 64 : 50,
-    bottom: 44,
+    bottom: 1,
     position: 'absolute'
   },
   listView: {
