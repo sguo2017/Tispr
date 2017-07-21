@@ -14,7 +14,8 @@ import {
   Linking,
   Alert,
   Modal,
-  AsyncStorage
+  AsyncStorage,
+  TextInput,
 } from 'react-native';
 import { CachedImage } from "react-native-img-cache";
 import { fetchExploreList } from '../actions/ServOfferListActions';
@@ -28,6 +29,7 @@ import totalResTimes from '../buzz/totalResTimes';
 import noConnectTimes from '../buzz/noConnectTimes';
 import AutoTextInput from '../components/AutoTextInput'
 import ChatDetail from '../chat/ChatDetail'
+import Util from '../common/utils'
 const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: 'row',
@@ -63,6 +65,7 @@ const styles = StyleSheet.create({
   },
    // modal的样式
     modalStyle: {
+        zIndex: 999,
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
         flex: 1,
@@ -155,7 +158,7 @@ export default class ServOfferList extends Component {
 
   componentDidMount() {
       const { dispatch } = this.props;
-      dispatch(fetchExploreList(1));
+      this._onRefresh();
   }
 
   _onMomentumScrollEnd(event) {
@@ -172,15 +175,13 @@ export default class ServOfferList extends Component {
   }
 
   _onRefresh() {
+    if(!global.user.authentication_token){
+        Util.noToken(this.props.navigator);
+    }
     const { dispatch } = this.props;
     //console.log('this.state.exploreparams:'+this.state.exploreparams);
     let exploreparams = this.props.exploreparams;
     let goods_catalog = this.props.cps;
-    let district = this.props.lps;
-    if(district[0])
-        exploreparams.district = "番禺区"
-    if(district[1])
-        exploreparams.district = "海珠区"
     if(goods_catalog[0]){
         goods_catalog.map((item,index,input)=>{input[index]=true});
     }
@@ -190,6 +191,7 @@ export default class ServOfferList extends Component {
             goods_catalog_paramas=goods_catalog_paramas.concat(global.goods_catalogs_II_id[index-1]);
         }
     });
+    exploreparams.city = this.props.location;
     exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
     dispatch(fetchExploreList(1, exploreparams));
   }
@@ -312,11 +314,14 @@ export default class ServOfferList extends Component {
         } catch (error) {
             console.log("error " + error);
         }
-    }
+  }
 
-    focusNextField (nextField){
-        this.refs[nextField].focus();
-    };
+  focusOnTextInput = () => {
+    this.setState({ editable: true });
+    InteractionManager.runAfterInteractions(() => {
+       this.modelTextInput.focus();
+    });
+  }
 
   render() {
     const { ServOfferList } = this.props;
@@ -339,18 +344,34 @@ export default class ServOfferList extends Component {
             />
           }
         >
-          <View style={styles.contentContainer}>
-            {ServOfferList.exploreList.map((serv, i) => {
-              return (
-                <ServItem
-                  key={`${serv.id}-${i}`}
-                  serv={serv}
-                  onPress={() => this._onPressCell(serv)}
-                  onCall={() => this._selectMessage(serv)}
-                />
-              );
-            })}
-          </View>
+            <View style={styles.contentContainer}>
+                <View style={{ flex: 1 }}>
+                    {ServOfferList.exploreList.map((serv, i) => {
+                        if (i%2 === 1) return;
+                        return (
+                            <ServItem
+                                key={`${serv.id}-${i}`}
+                                serv={serv}
+                                onPress={() => this._onPressCell(serv)}
+                                onCall={() => this._selectMessage(serv)}
+                            />
+                        );
+                    })}
+                </View>
+                <View style={{ flex: 1 }}>
+                    {ServOfferList.exploreList.map((serv, i) => {
+                        if (i%2 === 0) return;
+                        return (
+                            <ServItem
+                                key={`${serv.id}-${i}`}
+                                serv={serv}
+                                onPress={() => this._onPressCell(serv)}
+                                onCall={() => this._selectMessage(serv)}
+                            />
+                        );
+                    })}
+                </View>
+            </View> 
           {
             ServOfferList.isLoadMore ? (
               <View style={styles.loadingContainer}>
@@ -367,6 +388,7 @@ export default class ServOfferList extends Component {
           transparent={true}
           visible={this.state.show}
         >
+          <View style={{ position: 'absolute', zIndex: 1, backgroundColor: 'black', width: gScreen.width, height: gScreen.height, opacity: 0.5 }} />
           <View style={styles.modalStyle}>
             <View style={[styles.subView, {height: 430}]}>
                 <View style={styles.modalHead}>
@@ -384,24 +406,24 @@ export default class ServOfferList extends Component {
                     {/*<View style={{height:80}}>
                         <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
                     </View>*/}
-                    <AutoTextInput
-                            ref="1"
-                            multiline={true}
-                            onChangeText={(text) => 
-                                {
-                                    let length= (this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')).length;
-                                    this.setState({content: text.substring(length)});
+                    <TextInput
+                        ref={(textInput) => { this.modelTextInput = textInput; }}
+                        multiline={true}
+                        onChangeText={(text) => 
+                            {
+                                let length= (this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')).length;
+                                this.setState({content: text.substring(length)});
 
-                                }
                             }
-                            onBlur={() => {
-                                this.setState({editable: false})}
-                            }
-                            style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
-                            value={this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')+this.state.content}
-                            underlineColorAndroid={'transparent'}
-                            editable={this.state.editable}
-                        />
+                        }
+                        onBlur={() => {
+                            this.setState({editable: false})}
+                        }
+                        style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
+                        value={this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')+this.state.content}
+                        underlineColorAndroid={'transparent'}
+                        editable={this.state.editable}
+                    />
 
                     <TouchableHighlight 
                         style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
@@ -424,10 +446,9 @@ export default class ServOfferList extends Component {
                     <TouchableHighlight 
                         style={[styles.notSelectedButton, {width:Platform.OS ==='ios'?120:100}]} 
                         onPress={()=> {
-                            this.setState({editable: true});
-                            this.focusNextField.bind(this, '1');
-                            }
-                        }
+                            {/* this.setState({editable: true}); */}
+                            this.focusOnTextInput();
+                        }}
                     >
                         <Text style={[styles.themeColorText]}>自定义信息</Text>
                     </TouchableHighlight>
@@ -466,7 +487,7 @@ const ServItem = ({
         paddingHorizontal: 15,
         paddingVertical: 8,
       }}>
-        <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }} numberOfLines={2}>{serv.serv_title}</Text>
+        <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }}>{serv.serv_title}</Text>
         <Text style={{ fontSize: 12, color: '#999999', marginBottom: 4 }}>{serv.catalog}</Text>
         <View style={{ flexDirection:'row' }}>
           <Image style={{ width: 12, height: 12 }} source={require('../resource/g-location-s.png')}/>
@@ -487,12 +508,14 @@ const ServItem = ({
             {servUser.name}
           </Text>
         </View>
-        <TouchableOpacity
-          activeOpacity={0.75}
-          onPress={onCall}
-        >
-          <Image style={{height: 18, width: 18}} source={require('../resource/y-chat.png')}/>
-        </TouchableOpacity>
+        {global.user.id !== servUser.id?
+            <TouchableOpacity
+                activeOpacity={0.75}
+                onPress={onCall}
+                >
+                <Image style={{height: 18, width: 18}} source={require('../resource/y-chat.png')}/>
+            </TouchableOpacity>:<View></View>
+        }
       </View>
     </TouchableOpacity>
   )

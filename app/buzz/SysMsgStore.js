@@ -1,7 +1,8 @@
 import {observable, computed, action, runInAction} from 'mobx'
 import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
-
+import Utils from '../common/utils'
+import offline from '../sys/others/offline'
 export default class FeedStore {
     @observable feedList = []
     @observable errorMsg = ''
@@ -44,28 +45,42 @@ export default class FeedStore {
     }
 
     _fetchDataFromUrl() {
-        return new Promise((resolve, reject) => {
+       console.log(111);
+
+       return new Promise((resolve, reject) => {
+
             const URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSG + `${global.user.authentication_token}&page=${this.page}`;   
-            fetch(URL, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
+            
+            // fetch(URL, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Accept': 'application/json',
+            //         'Content-Type': 'application/json',
+            //     },
+            // }).then(response => {
+            //     if (response.status == 200) return response.json()
+            //     return null
+            // }).then(responseData => {
+            //     if (responseData) {
+            //         //console.log(JSON.parse(responseData.feeds))
+            //         resolve(JSON.parse(responseData.feeds))
+            //     } else {
+            //         reject('请求出错！')
+            //     }
+            // }).catch(error => {
+            //     console.log(`ssFetch evaluating list error: ${error}`)
+            //     reject('网络出错！')
+            // })
+
+            Utils.get(
+                URL, 
+                (response) => {
+                    resolve(JSON.parse(response.feeds))
                 },
-            }).then(response => {
-                if (response.status == 200) return response.json()
-                return null
-            }).then(responseData => {
-                if (responseData) {
-                    //console.log(JSON.parse(responseData.feeds))
-                    resolve(JSON.parse(responseData.feeds))
-                } else {
-                    reject('请求出错！')
+                (error) => {
+                    reject()
                 }
-            }).catch(error => {
-                console.log(`Fetch evaluating list error: ${error}`)
-                reject('网络出错！')
-            })
-        })
+            );
+        })     
     }
 }

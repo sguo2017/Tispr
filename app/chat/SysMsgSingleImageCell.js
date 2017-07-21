@@ -41,10 +41,6 @@ const SysMsgSingleImageItem = ({
                         </View>
                         <Text style={{color: '#4A90E2', fontSize: 14, paddingRight: 90}}>{action_desc}</Text>
                     </View>
-                    <Image
-                        style={{height: 80, width: (screenW - 15 * 2 - 10 * 2) / 3}}
-                        defaultSource={require('../resource/img_news_default.png')}
-                    />
                 </View>
             </TouchableOpacity>
         )

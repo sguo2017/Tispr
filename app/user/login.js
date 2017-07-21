@@ -11,7 +11,8 @@ import {
   Image,
   Dimensions,
   Platform,
-  ScrollView
+  ScrollView,
+  InteractionManager,
 } from 'react-native';
 import Header from '../components/HomeNavigation';
 import Register from '../user/register';
@@ -28,7 +29,7 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "38359504@qq.com",
+      email: "p2@qq.com",
       password: "123456",
       password2: '123456',
       error: "",
@@ -39,7 +40,7 @@ export default class Login extends Component {
       loginWay: 'phonenumber',
       initialPosition: 'unknown',
       lastPosition: 'unknown',
-      addressComponent: { "country": "中国", "country_code": 0, "province": "广东省", "city": "广州市", "district": "番禺区", "adcode": "440113", "street": "石北路", "street_number": "", "direction": "", "distance": "" },
+      addressComponent: {"buildingName":null,"street":"石北路","district":"番禺区","city":"广州市","latitude":23.021835,"altitude":5e-324,"buildingId":null,"radius":300,"province":"广东省","direction":-1,"address":"中国广东省广州市番禺区石北路","countryCode":"0","streetNumber":null,"longitude":113.29391,"country":"中国","cityCode":"257"},
       seePassword:true,
     };
   }
@@ -78,20 +79,14 @@ export default class Login extends Component {
     }
   }
 
-  async onLoginPressed() {
-    if(global.user == undefined){
-      global.user ={}
-    }
-    let address = await UserDefaults.cachedObject(Constant.storeKeys.ADDRESS_COMPONENT);
-    if(address)
-      global.user.addressComponent = address;
-    else
+  onLoginPressed = () => {
+    this.setState({ showProgress: true });
+    if (Platform.OS == 'ios' && __DEV__) {
       global.user.addressComponent = this.state.addressComponent;
-    UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
-    this.setState({ showProgress: true })
-    try {
+    }
+    InteractionManager.runAfterInteractions(() => {
       let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_LOGIN;
-      let response = await fetch(url, {
+      fetch(url, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -109,10 +104,8 @@ export default class Login extends Component {
             longitude: global.user.addressComponent.longitude,
           }
         })
-      });
-      let res = await response.text();
-      let result = JSON.parse(res);
-      if (response.status >= 200 && response.status < 300 ) { 
+      }).then(response => response.json())
+      .then((result) => {
         if(result.error){
             Alert.alert(
               '登录失败',
@@ -125,7 +118,6 @@ export default class Login extends Component {
         if(result.user && result.token){
           let userdetail = JSON.parse(result.user);
           UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token);
-          let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
           let address = global.user.addressComponent;
           global.user = userdetail;
           global.user.addressComponent = address;
@@ -133,30 +125,19 @@ export default class Login extends Component {
           //console.log(JSON.stringify(global.user))
           this._navigateHome();
         }
-      } else {
-        UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
-        let error = res;
-         Alert.alert(
+      }).catch(()=>{
+        this.setState({ error: error });
+        console.log("error " + error);
+        Alert.alert(
           '登录失败',
-          '服务器错误',
+          '网络连接错误',
           [
             { text: '确定', onPress: () => console.log('确定') },
           ]
         )
-        throw error;
-      }
-    } catch (error) {
-      this.setState({ error: error });
-      console.log("error " + error);
-      Alert.alert(
-        '登录失败',
-        '网络连接错误',
-        [
-          { text: '确定', onPress: () => console.log('确定') },
-        ]
-      )
-      this.setState({ showProgress: false });
-    }
+        this.setState({ showProgress: false });
+      });
+    });
   }
 
   async _smsSend() {
@@ -286,7 +267,7 @@ export default class Login extends Component {
               value ={this.state.password}
               returnKeyType = 'done'
               returnKeyLabel = 'done'
-              onSubmitEditing={this.onLoginPressed.bind(this)}
+              onSubmitEditing={() => {this.onLoginPressed()}}
             />
           </View>
           <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword: !this.state.seePassword })}>
@@ -306,7 +287,7 @@ export default class Login extends Component {
           </TouchableOpacity>
         </View>
         </ScrollView>
-        <TouchableOpacity onPress={this.onLoginPressed.bind(this)} style={styles.loginButton}>
+        <TouchableOpacity onPress={()=>{this.onLoginPressed()}} style={styles.loginButton}>
           <Text  style={styles.loginButtonText}>
             登录
           </Text>
@@ -327,6 +308,7 @@ export default class Login extends Component {
           </TouchableOpacity>
           <View style={{ flex: 1, justifyContent: 'center'}}>
             <AutoTextInput
+              keyboardType='numeric'
               ref = "3"
               style={styles.input}
               underlineColorAndroid="transparent"

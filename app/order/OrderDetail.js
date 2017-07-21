@@ -125,7 +125,7 @@ export default class OrderDetail extends Component {
     render(){
         const { feed } = this.props;
         return (
-            <View style={{backgroundColor: '#fff'}}>
+            <View>
                 <Header
                         leftIconAction={() => this.props.navigator.pop()}
                         title={'交易条件'}
@@ -141,8 +141,8 @@ export default class OrderDetail extends Component {
                         <View style={{flexDirection:'row', justifyContent:'flex-start', alignItems:'center',padding:10, width: screenW}}>
                             <Image style={{width: 40, height: 40, borderRadius:20}} defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.offer_user_avatar}}/>
                             <View style={{paddingLeft: 10, width: 280}}>
-                                <Text style={{fontSize:20, color:'black'}}>{feed.offer_user}</Text>
-                                <Text style={{fontSize: 16}}>{feed.serv}</Text>
+                                <Text style={{fontSize:16, color:'black'}}>{feed.offer_user}</Text>
+                                <Text style={{fontSize: 14}}>{feed.serv}</Text>
                             </View>
                             {
                                  !(feed.bidder== feed.offer_user_id) ?
@@ -155,8 +155,8 @@ export default class OrderDetail extends Component {
                         <View style={{flexDirection:'row', justifyContent:'flex-start', alignItems:'center',padding:10, width: screenW,backgroundColor:'white'}}>
                             <Image style={{width: 40, height: 40, borderRadius:20}} defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.request_user_avatar}}/>
                             <View style={{paddingLeft: 10, width: 280}}>
-                                <Text style={{fontSize:20, color:'black'}}>{feed.request_user}</Text>
-                                <Text style={{fontSize: 16}}>{feed.lately_chat_content}</Text>
+                                <Text style={{fontSize:16, color:'black'}}>{feed.request_user}</Text>
+                                <Text style={{fontSize: 14}}>{feed.lately_chat_content}</Text>
                             </View>
                             {
                                  !(feed.bidder== feed.request_user_id) ?
@@ -182,24 +182,22 @@ export default class OrderDetail extends Component {
                                     borderTopColor: '#ccc',
                                     position: 'absolute',
                                     bottom: 5,
-                                    backgroundColor: '#665dc6',width: screenW*0.5,height:44}}
+                                    backgroundColor: global.gColors.themeColor,width: screenW*0.5,height:44}}
                             onPress={this._leftButtonClick.bind(this)}
                         >
                            
-                            <Image style={{width:30, height: 30}} source={require('../resource/ic_my_order.png')}/>
-                            <Text style={{ fontSize: 22, color: '#FFF' }}>
-                            新的提议
+                            <Text style={{ fontSize: 16, color: '#FFF' }}>
+                            提出新条件
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             activeOpacity={0.75}
                             style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',borderTopColor: '#ccc',position: 'absolute',
-                            bottom: 5,left: screenW*0.5,backgroundColor: '#81d49c',width: screenW*0.5,height:44}}
+                            bottom: 5,left: screenW*0.5,backgroundColor: global.gColors.buttonColor,width: screenW*0.5,height:44}}
                             onPress={this._rightButtonClick.bind(this)}
                         >
                         
-                            <Image style={{width:30, height: 30}} source={require('../resource/ic_modal_window_submit.png')}/>
-                            <Text style={{ fontSize: 22, color: '#FFF' }}>
+                            <Text style={{ fontSize: 16, color: '#FFF' }}>
                             确认交易
                             </Text>
                         </TouchableOpacity>

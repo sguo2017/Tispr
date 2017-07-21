@@ -55,23 +55,35 @@ let order_qry_type = {
     BIDDER: 'bidder',//动态->卡片->邀标列表
 }
 
+let error_type = {
+    USER_IS_NIL: -101,
+    DEFAULT: -1,
+}
 
 let default_img={
     AVATAR:'http://47.92.27.52:8080/group1/M00/00/04/ezid6Vk98BqAFb5QAAAQGOym6eI771.jpg'
 }
 let url = {
-     //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
-     IMG_SERV_ADDR: "47.92.27.52",
+    //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
+     IMG_SERV_ADDR: "123.56.157.233",
      IMG_SERV_PORT: "9090",
      SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
      //////////////////<<<<   API接口  >>>>>//////////////////////////////
-     SERV_API_ADDR: `47.92.27.52`,
-     SERV_API_PORT: `8081`,
+     SERV_API_ADDR: `123.56.157.233`,
+     SERV_API_PORT: `8082`,
+    //  //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
+    //  IMG_SERV_ADDR: "47.92.27.52",
+    //  IMG_SERV_PORT: "9090",
+    //  SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
+    //  //////////////////<<<<   API接口  >>>>>//////////////////////////////
+    //  SERV_API_ADDR: `47.92.27.52`,
+    //  SERV_API_PORT: `8081`,
      SERV_API_USER_LOGIN: `/api/users/sessions`,//登录接口
      SERV_API_USER_REGI: `/api/users/registrations`, //注册接口
      SERV_API_USER_PASSWORD: `/api/users/passwords`,//忘记密码接口
      SERV_API_CHECK_PASSWORD: `/api/users/sessions?check_password=1`,//验证密码接口
      SERV_API_SERV_OFFER_ADD: `/api/goods/serv_offers?token=`,//服务提供的新增接口
+     SERV_API_SERV_OFFER_EDIT:`/api/goods/serv_offers/`,//服务的更新接口
      SERV_API_SERV_OFFER_INDEX: `/api/goods/serv_offers?token=`,//服务提供的list接口
 	 SERV_API_SERV_OFFER_MARKS: `/api/me/favorites.json?token=`,//服务提供的收藏展示接口
      SERV_API_AVAT_UPDATE: `/api/users/registrations/`,//头像更新接口
@@ -138,5 +150,6 @@ export default {
     serv_qry_type: serv_qry_type,
     default_img: default_img,
     orderStatus: orderStatus,
-    order_qry_type: order_qry_type
+    order_qry_type: order_qry_type,
+    error_type: error_type
 }

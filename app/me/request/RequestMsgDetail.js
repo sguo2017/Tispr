@@ -70,7 +70,7 @@ export default class RequestMsgDetail extends Component {
                                 feed.serv_images?<ListView
                                 dataSource={this.state.dataSource.cloneWithRows(feed.serv_images.split(','))}
                                 renderRow={(rowData) =>
-                                    <Image defaultSource={require('../../resource/img_default_home_cover.png')} source={{uri:rowData}} style={{height: 300, width: 328, marginBottom: 10}}></Image>
+                                    <Image  source={{uri:rowData}} style={{height: 300, width: 328, marginBottom: 10}}></Image>
                                 }/>: <View></View>
                             }                                                                     
                         </View>

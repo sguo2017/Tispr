@@ -1,3 +1,6 @@
+import breakdown from '../sys/others/breakdown'
+import offline from '../sys/others/offline'
+import Constant from './constants'
 let Util = {
     /*
      * fetch简单封装
@@ -7,7 +10,10 @@ let Util = {
      * 
      * */
     get: (url, successCallback, failCallback, exploreparams) => {
-        const URL = url + '&exploreparams=' + JSON.stringify(exploreparams)                   
+        let URL = url;
+        if(exploreparams){
+            URL = URL + '&exploreparams=' + JSON.stringify(exploreparams)   
+        }          
         fetch(URL, {
                 method: 'GET',
                 headers: {
@@ -17,12 +23,48 @@ let Util = {
             })
             .then((response) => response.text())
             .then((responseText) => {
-                successCallback(JSON.parse(responseText));
+                let result = JSON.parse(responseText)
+                if(result.status == Constant.error_type.USER_IS_NIL){
+                    console.log("token失效了")
+                    global.user = {};
+                    global.user.addressComponent = {}
+                    failCallback();
+                }else{
+                    successCallback(result);
+                }  
             })
             .catch((err) => {
-                failCallback(err);
+                if(failCallback) failCallback(err);
+                //navigator.push({component: breakdown});
+               
             });
     },
+    
+    post: (url, data, successCallback, navigator, exploreparams) => {
+        let URL = url;
+        if(exploreparams){
+            URL = URL + '&exploreparams=' + JSON.stringify(exploreparams)   
+        }  
+        fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => response.text())
+        .then((responseText) => {
+            successCallback(JSON.parse(responseText));
+        })
+        .catch((err) => {
+            console.log("请求时发生错误："+err)
+            navigator.push({component: breakdown});
+        });
+    },
+    noToken: (navigator) => {
+        navigator.push({component: offline});
+    }
 }
 
 export default Util;

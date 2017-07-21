@@ -18,7 +18,7 @@ import { fetchOfferList } from '../../actions/MeOfferListActions';
 import ServOfferDetail from '../../explore/ServOfferDetail';
 import Common from '../../common/constants';
 import Loading from '../../components/Loading';
-
+import Util from '../../common/utils'
 class OffersList extends PureComponent {
   constructor(props) {
     super(props);
@@ -27,6 +27,9 @@ class OffersList extends PureComponent {
   }
 
   componentDidMount() {
+    if(!global.user.authentication_token){
+      Util.noToken(this.props.navigator);
+    }
     const { dispatch, userId } = this.props;
     dispatch(fetchOfferList(1, userId));
   }
@@ -45,6 +48,9 @@ class OffersList extends PureComponent {
   }
 
   _onRefresh() {
+    if(!global.user.authentication_token){
+      Util.noToken(this.props.navigator);
+    }
     const { dispatch, userId } = this.props;
     dispatch(fetchOfferList(1, userId));
   }
@@ -52,7 +58,7 @@ class OffersList extends PureComponent {
   _onPressCell(feed) {
     this.props.navigator.push({
       component: ServOfferDetail,
-      passProps: { feed },
+      passProps: { feed},
     })
   }
 
@@ -78,15 +84,32 @@ class OffersList extends PureComponent {
           }
         >
           <View style={styles.contentContainer}>
-            {MeOfferList.meOfferList.map((offer, i) => {
-              return (
-                <OfferItem
-                  key={`${offer.id}-${i}`}
-                  offer={offer}
-                  onPress={() => this._onPressCell(offer)}
-                />
-              );
-            })}
+            <View style={{ flex: 1 }}>
+              {MeOfferList.meOfferList.map((offer, i) => {
+                if (i%2 === 1) return;
+                return (
+                  <OfferItem
+                    key={`${offer.id}-${i}`}
+                    offer={offer}
+                    onPress={() => this._onPressCell(offer)}
+                    isBrowseMode ={this.props.isBrowseMode}
+                  />
+                );
+              })}
+            </View>
+            <View style={{ flex: 1 }}>
+              {MeOfferList.meOfferList.map((offer, i) => {
+                if (i%2 === 0) return;
+                return (
+                  <OfferItem
+                    key={`${offer.id}-${i}`}
+                    offer={offer}
+                    onPress={() => this._onPressCell(offer)}
+                    isBrowseMode ={this.props.isBrowseMode}
+                  />
+                );
+              })}
+            </View>
           </View>
           {
             MeOfferList.isLoadMore ? (
@@ -107,7 +130,8 @@ class OffersList extends PureComponent {
 const OfferItem = ({
   offer,
   onPress,
-  onCall
+  onCall,
+  isBrowseMode
 }) => {
   let width = (Common.window.width - 24) / 2;
   let imageH = 120;
@@ -120,7 +144,7 @@ const OfferItem = ({
       onPress={onPress}
     >
       <CachedImage
-        style={{ width: width, height: imageH }}
+        style={{ width: width, height: imageH, borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
         defaultSource={require('../../resource/qk_nav_default.png')}
         source={serv_image}
       />
@@ -150,16 +174,22 @@ const OfferItem = ({
             {offerUser.name}
           </Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableOpacity
-            activeOpacity={0.75}
-            onPress={onCall}
-          >
-            <Image style={{height: 18, width: 18}} source={require('../../resource/y-chat.png')}/>
-          </TouchableOpacity>
-          {/*<Image style={{height: 24, width: 24}} source={require('../../resource/ic_account_favour.png')}/>
-          <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{offer.favorites_count ? offer.favorites_count : 0}</Text>*/}
-        </View>
+        {
+          isBrowseMode?
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <TouchableOpacity
+              activeOpacity={0.75}
+              onPress={onCall}
+            >
+              <Image style={{height: 18, width: 18}} source={require('../../resource/y-chat.png')}/>
+            </TouchableOpacity>
+            {/*<Image style={{height: 24, width: 24}} source={require('../../resource/ic_account_favour.png')}/>
+            <Text style={{fontSize: 12, color: 'gray', marginLeft: 2}}>{offer.favorites_count ? offer.favorites_count : 0}</Text>*/}
+          </View>
+          :
+          <View></View>
+        }
+        
       </View>
     </TouchableOpacity>
   );

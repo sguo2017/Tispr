@@ -29,7 +29,7 @@ export default class Splash extends React.Component {
                     width: Constant.window.width,
                     height: Constant.window.height
                 }}
-                source={require('../resource/qk_startup.png')}
+                source={require('../resource/start.png')}
             />
         );
     }

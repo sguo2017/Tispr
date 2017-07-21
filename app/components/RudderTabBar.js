@@ -54,8 +54,45 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 50,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.5,
   },
+  centerBackground: {
+    position: 'absolute',
+    bottom: 0,
+    right: (gScreen.width / 5 - 60) / 2,
+    zIndex: 0,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 0.5,
+    borderColor: global.gColors.themeColor,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.5,
+  },
+  centerCover: {
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    bottom: 0,
+    zIndex: 1,
+    height: 49.5,
+    backgroundColor: 'white',
+  }
 })
 
 export default class RudderTabBar extends Component {
@@ -80,7 +117,7 @@ export default class RudderTabBar extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.backgroundBar} />
+        <View elevation={5} style={styles.backgroundBar} />
         {this.props.tabs.map((tab, i) => {
           let icon = this.props.activeTab == i ? this.props.selectedTabIconNames[i] : this.props.tabIconNames[i];
           let color = this.props.activeTab === i ? global.gColors.themeColor : '#999999';
@@ -97,29 +134,8 @@ export default class RudderTabBar extends Component {
                     source={icon}
                   />
                 </TouchableOpacity>
-                <View style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  right: (gScreen.width / 5 - 60) / 2,
-                  zIndex: 0,
-                  width: 60,
-                  height: 60,
-                  borderRadius: 30,
-                  backgroundColor: 'white',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderWidth: 0.5,
-                  borderColor: global.gColors.themeColor,
-                }} />
-                <View style={{
-                  position: 'absolute',
-                  right: 0,
-                  left: 0,
-                  bottom: 0,
-                  zIndex: 1,
-                  height: 49.5,
-                  backgroundColor: 'white',
-                }}/>
+                <View elevation={5} style={styles.centerBackground} />
+                <View style={styles.centerCover}/>
               </View>
             )
           } else {

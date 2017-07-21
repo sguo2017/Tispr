@@ -10,14 +10,21 @@ import {
   TextInput,
   Platform,
   Modal,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions,
+  ScrollView
 } from 'react-native';
+import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
+import Picker from 'react-native-picker';
 import { fetchExploreList } from '../actions/ServOfferListActions';
 import { connect } from 'react-redux';
 import ServOfferList from './ServOfferList';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TabCategoryBar from '../me/TabCategoryBar';
 import Constant from '../common/constants'
+import area from '../sys/others/area.json'
+import Util from '../common/utils'
+import MarkList from './MarkList'
 
 const titles = ['本地','远程', ];
 var goods_catalogs_II=[];
@@ -33,13 +40,14 @@ class ExploreList extends PureComponent {
             classify: this.props.classify,
             transiClassify: this.props.transiClassify,
             location: this.props.location,
-            transiLocation: this.props.transiLocation,
             exploreparams: {},
             exploretitle:'',
             sps: [false, false, false, false],//排序按钮操作
             cps: [false, false, false, false, false, false, false],//类型按钮操作
-            lps: [false, false],//位置按钮操作
-            searchText: this.props.searchText
+            searchText: this.props.searchText,
+            via: 'remote',
+            initArea: ['广东', '广州', '番禺区'],
+            zoom: 18
         };
     }
     componentWillMount() {
@@ -51,16 +59,43 @@ class ExploreList extends PureComponent {
             transiSortBy: '综合排序',
             classify: '全部人才',
             transiClassify: '全部人才',
-            location: '广州',
-            transiLocation: '广州',
+            location: '广州市',
             searchText: ''
         });
+        if(this.props.city){
+            this.setState({
+                location: this.props.city
+            });
+        }
         if (global.goods_catalog_I === undefined) {
             this.getGoodsCatalog();
         }
     }
 
+
+    componentDidMount() {
+        let longitude = global.user.addressComponent.longitude, latitude = global.user.addressComponent.latitude;
+        
+        Geolocation.getCurrentPosition().then(
+            (data) => {
+                this.setState({
+                    zoom: 18,
+                    center: {
+                        latitude: latitude,
+                        longitude: longitude,
+                    }
+                })
+            }
+        ).catch(error => {
+            console.warn(error, 'error')
+        })
+
+    }
+
     async getGoodsCatalog() {
+        if(!global.user.authentication_token){
+               Util.noToken(this.props.navigator);
+        }
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_GOODS_CATALOG + global.user.authentication_token + `&level=1`;
 
@@ -100,21 +135,28 @@ class ExploreList extends PureComponent {
         }
     }
     refresh() {
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
+       
         const { dispatch, categoryId } = this.props;
         page = 1;
         let exploreparams = this.state.exploreparams;
         let goods_catalog = this.state.cps;
-        let district = this.state.lps;
-        if(district[0])
-            exploreparams.district = "番禺区"
-        if(district[1])
-            exploreparams.district = "海珠区"
+
         if(this.state.transiSortBy == "最近发布")
             exploreparams.sort_by = "created_at"
         if(this.state.transiSortBy == "最多收藏")
             exploreparams.sort_by = "favorites_count"
         if(this.state.transiSortBy == "最多联系")
             exploreparams.sort_by = "order_cnt"
+        if(this.state.via == 'local'){
+            exploreparams.via = 'local'
+        }
+        if(this.state.via == 'remote'){
+            exploreparams.via = 'remote'
+        }
+        exploreparams.city = this.state.location;
         if (goods_catalog[0]) {
             goods_catalog.map((item, index, input) => { input[index] = true });
         }
@@ -128,7 +170,67 @@ class ExploreList extends PureComponent {
         dispatch(fetchExploreList(page, exploreparams));
     }
 
+    _createAreaData() {
+        let data = [];
+        let len = area.length;
+        for(let i=0;i<len;i++){
+            let city = [];
+            for(let j=0,cityLen=area[i]['city'].length;j<cityLen;j++){
+                let _city = {};
+                _city[area[i]['city'][j]['name']] = area[i]['city'][j]['area'];
+                city.push(_city);
+            }
+
+            let _data = {};
+            _data[area[i]['name']] = city;
+            data.push(_data);
+        }
+        return data;
+    }
+
+    _showAreaPicker() {
+        Picker.init({
+            pickerData: this._createAreaData(),
+            selectedValue: this.state.initArea,
+            onPickerConfirm: pickedValue => {
+                console.log('area', pickedValue);
+                this.setState({
+                    initArea: pickedValue,
+                });
+                Geolocation.geocode(pickedValue[1]+"市", pickedValue[2])
+                .then((response)=>{
+                    // let lat = response.latitude;
+                    // let lng = response.longitude;
+
+
+                    this.setState({
+                        zoom: 18,
+                        center: {
+                            latitude: response.latitude,
+                            longitude: response.longitude,
+                            rand: Math.random()
+                        }
+                    });                    
+                    console.log("新地址的经度："+response.longitude)
+                    // Geolocation.moveToCenter(lat, lng , 16)
+                })
+                .catch(error => {
+                    console.warn(error, 'error')
+                })    
+            },
+            onPickerCancel: pickedValue => {
+                console.log('area', pickedValue);
+            },
+            pickerTitleText: '选择位置',
+            pickerCancelBtnText: '取消',
+            pickerConfirmBtnText: '确定',
+        });
+        Picker.show();
+    }
+
+
     render() {
+        let page = this.state.via =='local'?0:1
         return (
           <View style={styles.listView}>
               <View style={styles.container}>
@@ -138,7 +240,6 @@ class ExploreList extends PureComponent {
                          underlineColorAndroid='transparent'
                          keyboardType='web-search'
                          value={this.state.exploretitle}
-                //onChangeText={(val)=>this.setState({searchText:val})}
                          placeholder='搜索'
                          returnKeyType = 'search'
                          returnKeyLabel = 'search'
@@ -151,43 +252,37 @@ class ExploreList extends PureComponent {
                              this.setState({ exploreparams: explore, exploretitle:val })
                          }}
                       />
-                  </View>
-                  {
-                      this.state.exploretitle == ''?
-                    <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} onPress={() => this.refresh()}>
-                        <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
-                    </TouchableOpacity>
-                    :
-                    <View style={{ marginLeft: 17, marginRight: 8 }} >
-                        <Text style={{color: '#fff'}} onPress={() =>{this.setState({exploreparams: {},exploretitle: ''});this.state.exploreparams={}; this.refresh()}}>取消</Text>
-                    </View>
-                  }
+                </View>
+                <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} onPress={() => this.props.navigator.push({component: MarkList})}>
+                    <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
+                </TouchableOpacity>
               </View>
               <View style={{ flexDirection: 'row', paddingVertical: 6, backgroundColor: 'rgba(0,0,0,0.16)'}}>
-                  <TouchableOpacity style={styles.filterButton} onPress={() => this.setState({ tabName: 'index', show: true })}>
+                  <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'recentPublish', show: true });}}>
                       <Text style={styles.whiteText}>{this.state.sortBy}</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.filterButton} onPress={() => this.setState({ tabName: 'index', show: true })}>
+                  <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'allTalentedPeople', show: true });}}>
                       <Text style={styles.whiteText}>{this.state.classify}</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.filterButton} onPress={() => this.setState({ tabName: 'index', show: true })}>
+                  <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'selectLocation', show: true });}}>
                       <Image source={require('../resource/w-location.png')} style={{ width: 14, height: 14 }}></Image>
                       <Text style={styles.whiteText}>{this.state.location}</Text>
                   </TouchableOpacity>
               </View>
-              <ServOfferList exploreparams={this.state.exploreparams} cps={this.state.cps} lps={this.state.lps} {...this.props} />
+              <ServOfferList exploreparams={this.state.exploreparams} cps={this.state.cps} location={this.state.location} {...this.props} />
               <Modal
                 animationType='slide'
                 transparent={true}
                 visible={this.state.show}
                 onShow={() => { }}
                 onRequestClose={() => { }} >
+                  <View style={{ position: 'absolute', zIndex: 1, backgroundColor: 'black', width: gScreen.width, height: gScreen.height, opacity: 0.5 }} />
                   {
                       this.state.tabName == 'index' ?
                         <View style={styles.modalStyle}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
-                                    <TouchableOpacity onPress={() => this.setState({ cps: [true, false, false, false, false, false, false], lps: [false, false], transiSortBy: '综合排序', transiClassify: '全部分类' })}>
+                                    <TouchableOpacity onPress={() => this.setState({ cps: [true, false, false, false, false, false, false], transiSortBy: '综合排序', transiClassify: '全部分类' })}>
                                         <Text style={styles.themeColorText}>重置</Text>
                                     </TouchableOpacity>
 
@@ -198,21 +293,31 @@ class ExploreList extends PureComponent {
                                                 {() => {this.setState({
                                                     sortBy: this.state.transiSortBy,
                                                     classify: this.state.transiClassify,
-                                                    location: this.state.transiLocation,
+                                                    location: this.state.initArea[1]+"市",
                                                     show: false,
                                                 });
-                                                    this.refresh();
+                                                this.state.location = this.state.initArea[1]+"市";
+                                                this.refresh();
                                                 }}
                                         >完成</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <ScrollableTabView
                                   style={{ marginTop: 20, marginRight: 5, marginLeft: 5, borderRadius: 5 }}
-                                  initialPage={0}
                                   renderTabBar={() => <TabCategoryBar tabNames={titles} />}
                                   tabBarPosition='top'
                                   scrollWithoutAnimation={false}
                                   tabBarBackgroundColor= '#1B2833'
+                                  ref={(tabView) => { this.tabView = tabView; }}
+                                  onChangeTab ={({i, ref, from, })=>{
+                                      if(i==0){
+                                          this.state.via = 'local';
+                                          }
+                                          
+                                      else if(i==1){
+                                          this.state.via = 'remote';
+                                          }
+                                          }}
                                 >
                                     <View tabLabel='本地'>
                                         <View style={{ flexDirection: 'row' }}>
@@ -236,10 +341,10 @@ class ExploreList extends PureComponent {
                                         </View>
                                         <View style={{borderTopWidth: 1, borderTopColor: '#f0f0f0'}}></View>
                                         <View style={{ flexDirection: 'row' }}>
-                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'guangzhou' })} style={styles.filterRow}>
+                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'selectLocation' })} style={styles.filterRow}>
                                                 <Text style={styles.blackText}>位置</Text>
                                                 <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-                                                    <Text style={styles.greyText}>{this.state.transiLocation}</Text>
+                                                    <Text style={styles.greyText}>{this.state.initArea[1]}</Text>
                                                     <Image source={require('../resource/g_chevron right.png')} />
                                                 </View>
                                             </TouchableOpacity>
@@ -381,37 +486,47 @@ class ExploreList extends PureComponent {
                         : <View></View>
                   }
                   {
-                      this.state.tabName == 'guangzhou' ?
-                        <View style={styles.modalStyle}>
-                            <View style={styles.subView}>
-                                <View style={styles.modalHead}>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
-                                        <Text style={styles.themeColorText}>返回</Text>
-                                    </TouchableOpacity>
-                                    <Text style={{ color: 'black', fontSize: 16 }}>选择范围</Text>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
-                                        <Text style={styles.themeColorText}>确定</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 12 }}>
-                                    <TouchableOpacity style={styles.selectButton}>
-                                        <Text style={styles.themeColorText}>全部范围</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ flexDirection: 'row', marginLeft: 12 }}>
-                                    <TouchableOpacity
-                                      style={[styles.selectButton, this.state.lps[0] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiLocation: '番禺区', lps: [true, false] })}
-                                    >
-                                        <Text style={[styles.themeColorText, this.state.lps[0] && styles.whiteText]}>番禺区</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                      style={[styles.selectButton, this.state.lps[1] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiLocation: '海珠区', lps: [false, true] })}
-                                    >
-                                        <Text style={[styles.themeColorText, this.state.lps[1] && styles.whiteText]}>海珠区</Text>
-                                    </TouchableOpacity>
-                                </View>
+                      this.state.tabName == 'selectLocation' ?
+                        <View style={[styles.modalStyle]}>
+                            <View style={[styles.subView]}>
+                                    <View>
+                                        <View style={styles.modalHead}>
+                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
+                                                <Text style={styles.themeColorText}>返回</Text>
+                                            </TouchableOpacity>
+                                            <Text style={{ color: 'black', fontSize: 16 }}>位置</Text>
+                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
+                                                <Text style={styles.themeColorText}>确定</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 12 }}>
+                                            <TouchableOpacity
+                                            style={{flexDirection: 'row'}}
+                                            onPress={this._showAreaPicker.bind(this)}
+                                            >
+                                                <Image style={styles.headIcon} source={require('../resource/b_location.png')} />
+                                                <Text style={[styles.themeColorText]}>{this.state.initArea[0]}, {this.state.initArea[1]}, {this.state.initArea[2]} </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={{ flexDirection: 'row', marginLeft: 12 }}>
+                                            <MapView
+                                                trafficEnabled={this.state.trafficEnabled}
+                                                baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
+                                                zoom={this.state.zoom}
+                                                mapType={this.state.mapType}
+                                                center={this.state.center}
+                                                marker={this.state.marker}
+                                                markers={this.state.markers}
+                                                style={styles.map}
+                                                onMarkerClick={(e) => {
+                                                    console.warn(JSON.stringify(e));
+                                                }}
+                                                onMapClick={(e) => {
+                                                }}
+                                            >
+                                            </MapView>
+                                        </View>
+                                    </View>                                                      
                             </View>
                         </View>
                         : <View></View>
@@ -533,7 +648,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
         flex: 1,
-        
+        zIndex: 999,
     },
     // modal上子View的样式
     subView: {
@@ -550,7 +665,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 12
-    }
+    },
+    map: {
+        width: Dimensions.get('window').width - 40,
+        height: Dimensions.get('window').height - 500,
+        marginBottom: 10,
+        marginLeft: 20,
+    },
 })
 
 

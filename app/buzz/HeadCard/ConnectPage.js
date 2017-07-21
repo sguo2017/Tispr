@@ -40,7 +40,7 @@ export default class ConnectPage extends Component{
         let button1 = this.state.button1;
         let button2 = this.state.button2;
         let button3 = this.state.button3;
-        let name = feed.user.name;
+        let name = feed.user_name;
         let content = this.state.content;
         let send_default_chat_conteng = this.state.send_default_chat_conteng;
         let length = 0;   
@@ -81,7 +81,7 @@ export default class ConnectPage extends Component{
                             onBlur={() => {
                                 this.setState({send_default_chat_conteng: true})}
                             }
-                            style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
+                            style={{fontSize: 16, color: '#1B2833', marginBottom: 8, height: 100}}
                             value={name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')+content}
                             underlineColorAndroid={'transparent'}
                             editable={!send_default_chat_conteng}
@@ -116,22 +116,23 @@ export default class ConnectPage extends Component{
                             <Text style={[styles.themeColorText]}>自定义信息</Text>
                         </TouchableHighlight>
                     </View>
-                    <TouchableHighlight style={[styles.button, {backgroundColor:global.gColors.buttonColor,position:'absolute', bottom: 0, flexShrink: 0, width: global.gScreen.width}]}
-                        onPress={() =>{
-                            this.props.callback(
-                                this.props.discardIndex,
-                                Constant.sys_msgs_status.FINISHED,
-                                this.props.feed.smt_id, 
-                                this.state.send_default_chat_conteng?default_msg :this.state.msg);
-                            this.props.navigator.pop()}}
-
-                    >
-                        <Text style={styles.buttonText}
-                        >
-                        联系TA
-                        </Text>
-                    </TouchableHighlight>
+                    
                 </ScrollView>
+                <TouchableHighlight style={[styles.button, {backgroundColor:global.gColors.buttonColor,position:'absolute', bottom: 0, flexShrink: 0, width: global.gScreen.width}]}
+                    onPress={() =>{
+                        this.props.callback(
+                            this.props.discardIndex,
+                            Constant.sys_msgs_status.FINISHED,
+                            this.props.feed.smt_id, 
+                            this.state.send_default_chat_conteng?default_msg :this.state.msg);
+                        this.props.navigator.pop()}}
+
+                >
+                    <Text style={styles.buttonText}
+                    >
+                    联系TA
+                    </Text>
+                </TouchableHighlight>
             </View>
         )
     }
@@ -171,7 +172,9 @@ const styles = StyleSheet.create({
         backgroundColor: global.gColors.themeColor,
         alignSelf: 'stretch',
         marginTop: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 0,
     },
     buttonText: {
         fontSize: 22,

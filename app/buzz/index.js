@@ -34,6 +34,9 @@ import resTimes from './restTimes';
 import noConnectTimes from './noConnectTimes';
 import totalResTimes from './totalResTimes';
 import ChatDetail from '../chat/ChatDetail';
+import Util from '../common/utils'
+import breakdown from '../sys/others/breakdown';
+import TabBarView from '../containers/TabBarView';
 const KNOWLEDGE_ID = 3
 
 var styles = StyleSheet.create({
@@ -184,7 +187,7 @@ export default class BussList extends Component {
         errorMsg && this.toast.show(errorMsg)
     }
 
-    _renderRow = feed => <KnowledgeItem onPressAvatar={this._onPressAvatar} onPressOffer ={this._onPressOffer} feed={feed} />
+    _renderRow = feed => <KnowledgeItem onPressAvatar={this._onPressAvatar} onPressAddress={this._onPressAddress} onPressOffer ={this._onPressOffer} feed={feed} />
 
     _onPressAvatar = (id) => {
         this.props.navigator.push({
@@ -199,6 +202,16 @@ export default class BussList extends Component {
         });
     }
 
+    _onPressAddress = ( city ) => {
+        console.log("你点击了地址："+city);
+        this.props.navigator.resetTo({
+            component: TabBarView,
+            passProps: {
+                city: city,
+                initialPage: 1
+            }
+        });
+    }
     _onPressOffer = feed => {  
         let offer = feed.serv_offer;
          /*加入奇客的动态offer为空*/
@@ -233,6 +246,10 @@ export default class BussList extends Component {
     }
 
     _onRefresh = () => {
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
+    
         this.knowledgeListStore.isRefreshing = true
         this.knowledgeListStore.fetchFeedList();
         this._getSysMsgs();
@@ -241,39 +258,27 @@ export default class BussList extends Component {
     _onEndReach = () => this.knowledgeListStore.page++
 
     async _getSysMsgs() {
-        try {
+            if(!global.user.authentication_token){
+               Util.noToken(this.props.navigator);
+            }
+       
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSGS_QUERIES + global.user.authentication_token + `&query_type=` + Constant.sysMsgCatalog.PRIVATE + `&user_id=` + global.user.id + `&page=1`;
-            // console.log("148:"+url)
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-            }).then(response => {
-                if (response.status == 200) return response.json()
-                return null
-            }).then(responseData => {
-                // console.log("160:"+JSON.stringify(responseData.feeds))
-                if (responseData) {
+
+            Util.get(
+                url,
+                (response) => {
                     let sys_msgs = this.state.sys_msgs;
                     // console.log("163:")
-                    sys_msgs = responseData.feeds;
+                    sys_msgs = (response.feeds);
                     // console.log("165:"+JSON.stringify(sys_msgs))
                     this.setState({
                         sys_msgs: sys_msgs,
                     });
-                    //console.log("167:"+JSON.stringify(this.state.sys_msgs))
-                } else {
-
+                },
+                (error) => {
+                    this.props.navigator.push({component: breakdown})
                 }
-            }).catch(error => {
-                console.log(`Fetch evaluating list error: ${error}`)
-
-            })
-        } catch (error) {
-            console.log(`Fetch evaluating list error: ${error}`)
-        }
+            )       
     }
 
     _renderFooter = () => <LoadMoreFooter />
@@ -486,7 +491,7 @@ export default class BussList extends Component {
         let cardArray = this.state.sys_msgs;
         return (
             <View style={styles.listView}>
-                <Header title='Qiker' />
+                <Header title='奇客' />
                 <Text style={styles.text1}>{cardArray && cardArray.length > 0 ? "您有重要更新" : "想要更多机会?"}</Text>
                 {this.generateSwiper()}
                 <View style={[styles.view, { marginTop: 10 }]}>
@@ -537,7 +542,11 @@ class KnowledgeItem extends Component {
         const { feed, onPressAvatar } = this.props
         onPressAvatar && onPressAvatar(feed.link_user_id)
     }
-
+    _pressAddress =() =>{
+        const { feed, onPressAddress } = this.props
+        let cityName = feed.action_desc.split("__")[1]
+        onPressAddress && onPressAddress(cityName)
+    }
     _pressOffer = () => {
         const { feed, onPressOffer } = this.props
         onPressOffer && onPressOffer(feed)
@@ -545,6 +554,6 @@ class KnowledgeItem extends Component {
     render() {
         const { feed: { action_title, action_desc, interval, user, link_user } } = this.props
         const cellData = { action_title, action_desc, interval, user, link_user }
-        return <SysMsgSingleImageCell {...cellData} onPressAvatar={this._pressAvatar} onPressAvatar2={this._pressAvatar2} onPressOffer={this._pressOffer} />
+        return <SysMsgSingleImageCell {...cellData} onPressAddress={this._pressAddress} onPressAvatar={this._pressAvatar} onPressAvatar2={this._pressAvatar2} onPressOffer={this._pressOffer} />
     }
 }
