@@ -50,15 +50,8 @@ export default class Guide extends React.Component {
         Geolocation.getCurrentPosition()
         .then(data => {
             console.log("获取经纬度"+JSON.stringify(data));   
-<<<<<<< HEAD
             if(data != null){
                 global.user = {};
-=======
-            if(data.cityCode){
-                if(!global.user){
-                    global.user = {};
-                } 
->>>>>>> fb7adcd7712b967dd8b84998a3b4659ffe7c51a3
                 global.user.addressComponent = data;
                 global.user.addressComponent.latitude = data.latitude;
                 global.user.addressComponent.longitude = data.longitude;
