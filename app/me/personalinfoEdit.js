@@ -231,8 +231,7 @@ export default class Personinfoedit extends Component {
         Geolocation.getCurrentPosition()
         .then(data => {
             console.log("获取经纬度"+JSON.stringify(data));   
-            if(data.street){
-                global.user = {};
+            if(data.cityCode){
                 global.user.addressComponent = data;
                 global.user.addressComponent.latitude = data.latitude;
                 global.user.addressComponent.longitude = data.longitude;
