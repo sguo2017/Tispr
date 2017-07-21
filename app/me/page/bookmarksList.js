@@ -19,7 +19,7 @@ import { fetchMarkList } from '../../actions/MeMarkListActions';
 import Common from '../../common/constants';
 import Loading from '../../components/Loading';
 import ServOfferDetail from '../../explore/ServOfferDetail';
-
+import Util from '../../common/utils'
 const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: 'row',
@@ -63,6 +63,9 @@ class BookmarksList extends PureComponent {
   }
 
   componentDidMount() {
+    if(!global.user.authentication_token){
+      Util.noToken(this.props.navigator);
+    }
     const { dispatch } = this.props;
     dispatch(fetchMarkList(1));
   }
@@ -81,6 +84,9 @@ class BookmarksList extends PureComponent {
   }
 
   _onRefresh() {
+    if(!global.user.authentication_token){
+      Util.noToken(this.props.navigator);
+    }
     const { dispatch } = this.props;
     dispatch(fetchMarkList(1));
   }

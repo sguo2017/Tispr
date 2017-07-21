@@ -28,7 +28,7 @@ import Report from '../sys/others/report';
 import Me from '../me/index';
 import TabBarView from '../containers/TabBarView';
 const screenW = Dimensions.get('window').width;
-let int;
+let msg_task;
 export default class ChatDetail extends Component {
 /*两种情况：
  *由聊天列表进入时，不带newChat参数，左上角返回键退出到聊天列表
@@ -47,7 +47,8 @@ export default class ChatDetail extends Component {
 
   componentWillMount() {
     this.refreshmessage();
-    int = setInterval(this.refreshmessage.bind(this),5000); 
+    msg_task = setInterval(this.refreshmessage.bind(this),5000);
+
     const { feed } = this.props;
     this.setState({isReported: feed.is_reported});
   }
@@ -213,16 +214,16 @@ export default class ChatDetail extends Component {
       <View style={{ flex: 1, backgroundColor: '#EEEEEE' }}>
         <Header
           leftIconAction={() => {
-            clearInterval(int);
+            clearInterval(msg_task);
             if(this.props.newChat){this.props.navigator.resetTo({component:TabBarView})}
             else{this.props.navigator.pop()}
             }}
           title={feed.offer_user_id == global.user.id?feed.request_user:feed.offer_user}
           leftIcon={require('../resource/w-back.png')}
           rightIcon={{uri:feed.offer_user_id == global.user.id?feed.request_user_avatar:feed.offer_user_avatar} }
-          rightIconSize={30}
+          rightIconSize={32}
           rightIconAction={() => this.setState({show: true})}
-          rightIconRadius={300}
+          rightIconRadius={16}
         />
         <View style={[styles.cardImageContent]}>
           <TouchableOpacity onPress={this.clickJump.bind(this)} style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: 10, backgroundColor: 'white' }}>

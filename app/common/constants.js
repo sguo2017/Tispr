@@ -55,6 +55,10 @@ let order_qry_type = {
     BIDDER: 'bidder',//动态->卡片->邀标列表
 }
 
+let error_type = {
+    USER_IS_NIL: -101,
+    DEFAULT: -1,
+}
 
 let default_img={
     AVATAR:'http://123.56.157.233:8080/group1/M00/00/04/ezid6Vk98BqAFb5QAAAQGOym6eI771.jpg'
@@ -139,5 +143,6 @@ export default {
     serv_qry_type: serv_qry_type,
     default_img: default_img,
     orderStatus: orderStatus,
-    order_qry_type: order_qry_type
+    order_qry_type: order_qry_type,
+    error_type: error_type
 }

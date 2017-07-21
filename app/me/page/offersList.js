@@ -18,7 +18,7 @@ import { fetchOfferList } from '../../actions/MeOfferListActions';
 import ServOfferDetail from '../../explore/ServOfferDetail';
 import Common from '../../common/constants';
 import Loading from '../../components/Loading';
-
+import Util from '../../common/utils'
 class OffersList extends PureComponent {
   constructor(props) {
     super(props);
@@ -27,6 +27,9 @@ class OffersList extends PureComponent {
   }
 
   componentDidMount() {
+    if(!global.user.authentication_token){
+      Util.noToken(this.props.navigator);
+    }
     const { dispatch, userId } = this.props;
     dispatch(fetchOfferList(1, userId));
   }
@@ -45,6 +48,9 @@ class OffersList extends PureComponent {
   }
 
   _onRefresh() {
+    if(!global.user.authentication_token){
+      Util.noToken(this.props.navigator);
+    }
     const { dispatch, userId } = this.props;
     dispatch(fetchOfferList(1, userId));
   }

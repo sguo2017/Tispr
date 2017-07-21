@@ -16,7 +16,7 @@ import ChatSingleImageCell from './ChatSingleImageCell'
 import FeedDetail from './ChatDetail'
 import Toast from 'react-native-easy-toast'
 import FeedBaseStore from './ChatStore'
-
+import Util from '../common/utils'
 const KNOWLEDGE_ID = 3
 
 @observer
@@ -42,6 +42,9 @@ export default class ChatList extends PureComponent {
     knowledgeListStore = new FeedBaseStore(KNOWLEDGE_ID)
 
     componentDidMount() {
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
         reaction(
           () => this.knowledgeListStore.page,
           () => this.knowledgeListStore.fetchFeedList()
@@ -64,6 +67,9 @@ export default class ChatList extends PureComponent {
     }
 
     _onRefresh = () => {
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
         this.knowledgeListStore.isRefreshing = true
         this.knowledgeListStore.fetchFeedList()
     }

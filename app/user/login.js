@@ -28,7 +28,7 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "a1@qq.com",
+      email: "p2@qq.com",
       password: "123456",
       password2: '123456',
       error: "",

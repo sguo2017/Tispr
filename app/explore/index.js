@@ -23,6 +23,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TabCategoryBar from '../me/TabCategoryBar';
 import Constant from '../common/constants'
 import area from '../sys/others/area.json'
+import Util from '../common/utils'
 import MarkList from './MarkList'
 
 const titles = ['本地','远程', ];
@@ -39,7 +40,6 @@ class ExploreList extends PureComponent {
             classify: this.props.classify,
             transiClassify: this.props.transiClassify,
             location: this.props.location,
-            transiLocation: this.props.transiLocation,
             exploreparams: {},
             exploretitle:'',
             sps: [false, false, false, false],//排序按钮操作
@@ -59,8 +59,7 @@ class ExploreList extends PureComponent {
             transiSortBy: '综合排序',
             classify: '全部人才',
             transiClassify: '全部人才',
-            location: '广州',
-            transiLocation: '广州',
+            location: '广州市',
             searchText: ''
         });
         if(this.props.city){
@@ -72,6 +71,7 @@ class ExploreList extends PureComponent {
             this.getGoodsCatalog();
         }
     }
+
 
     componentDidMount() {
         let longitude = global.user.addressComponent.longitude, latitude = global.user.addressComponent.latitude;
@@ -93,6 +93,9 @@ class ExploreList extends PureComponent {
     }
 
     async getGoodsCatalog() {
+        if(!global.user.authentication_token){
+               Util.noToken(this.props.navigator);
+        }
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_GOODS_CATALOG + global.user.authentication_token + `&level=1`;
 
@@ -132,6 +135,10 @@ class ExploreList extends PureComponent {
         }
     }
     refresh() {
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
+       
         const { dispatch, categoryId } = this.props;
         page = 1;
         let exploreparams = this.state.exploreparams;
@@ -149,7 +156,7 @@ class ExploreList extends PureComponent {
         if(this.state.via == 'remote'){
             exploreparams.via = 'remote'
         }
-        exploreparams.city = this.state.location+ '市';
+        exploreparams.city = this.state.location;
         if (goods_catalog[0]) {
             goods_catalog.map((item, index, input) => { input[index] = true });
         }
@@ -285,10 +292,10 @@ class ExploreList extends PureComponent {
                                                 {() => {this.setState({
                                                     sortBy: this.state.transiSortBy,
                                                     classify: this.state.transiClassify,
-                                                    location: this.state.initArea[1],
+                                                    location: this.state.initArea[1]+"市",
                                                     show: false,
                                                 });
-                                                this.state.location = this.state.initArea[1];
+                                                this.state.location = this.state.initArea[1]+"市";
                                                 this.refresh();
                                                 }}
                                         >完成</Text>

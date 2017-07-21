@@ -28,6 +28,7 @@ import totalResTimes from '../buzz/totalResTimes';
 import noConnectTimes from '../buzz/noConnectTimes';
 import AutoTextInput from '../components/AutoTextInput'
 import ChatDetail from '../chat/ChatDetail'
+import Util from '../common/utils'
 const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: 'row',
@@ -172,6 +173,9 @@ export default class ServOfferList extends Component {
   }
 
   _onRefresh() {
+    if(!global.user.authentication_token){
+        Util.noToken(this.props.navigator);
+    }
     const { dispatch } = this.props;
     //console.log('this.state.exploreparams:'+this.state.exploreparams);
     let exploreparams = this.props.exploreparams;
