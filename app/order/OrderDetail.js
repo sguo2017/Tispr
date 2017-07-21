@@ -18,7 +18,7 @@ import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import CloseDeal from './CloseDeal';
 import ProposeDeal from './ProposeDeal'
-
+import Util from '../common/utils'
 const screenW = Dimensions.get('window').width;
 
 export default class OrderDetail extends Component {
@@ -51,48 +51,31 @@ export default class OrderDetail extends Component {
         });  
     }  
     async _createChat(_deal_id){
-        try {            
-            let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
-            let response = await fetch(URL, {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                },
-
-                body: JSON.stringify({
-                chat: {
-                    deal_id: _deal_id,
-                    chat_content: "我同意了您提出的价格",
-                    user_id: global.user.id,
-                    catalog: 2
-                    }
-                })
-            });
-        } catch (error) {
-            console.log("error " + error);
+        let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
+        let data = {
+            chat: {
+                deal_id: _deal_id,
+                chat_content: "我同意了您提出的价格",
+                user_id: global.user.id,
+                catalog: 2
+            }
         }
+        Util.post(URL, data, ()=>{console.log("创建会话成功")}, this.props.navigator)
     }
     async clickJump() {
         let isShow = this.state.show;  
-        try {         
-            let t = global.user.authentication_token;
-            let order_id = this.props.feed.id;
-            let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_UPDATE +'/' +order_id +'?token='+ t;            
-            let response = await fetch(url, {
-                method: 'PATCH',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    order: {
-                        status: Constant.orderStatus.CONFIRMED,
-                    }
-                })
-            });
-             let res = await response.text();
-            if (response.status >= 200 && response.status < 300) {
+        let t = global.user.authentication_token;
+        let order_id = this.props.feed.id;
+        let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_UPDATE +'/' +order_id +'?token='+ t;            
+        let data = {
+            order: {
+                    status: Constant.orderStatus.CONFIRMED,
+            }
+        };
+        Util.patch(
+            url,
+            data,
+            (response)=>{
                 this._createChat(order_id);
                 this.setState({  
                     show:!isShow,  
@@ -104,24 +87,10 @@ export default class OrderDetail extends Component {
                     component: CloseDeal,
                 });
                 }
-            } else {
-                let error = res;
-                throw error;
-            }
-        } catch (error) {
-            this.setState({ error: error });
-        } 
+            },
+            this.props.navigator
+        )    
     }
-    // showAlert(){
-    //     Alert.alert(
-    //                     'Do you want to confirm the deal?',
-    //                         'If everyone confirms, the deal is made and the request is awarded.',
-    //                     [
-    //                     {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
-    //                     {text: 'Yes', onPress: this.clickJump()},
-    //                     ]
-    //                 )
-    // }
     render(){
         const { feed } = this.props;
         return (

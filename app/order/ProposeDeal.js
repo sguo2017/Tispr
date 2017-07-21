@@ -16,6 +16,7 @@ import {
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import AutoTextInput from '../components/AutoTextInput';
+import Util from '../common/utils'
 const screenW = Dimensions.get('window').width;
 
 export default class ProposeDeal extends Component{
@@ -27,35 +28,26 @@ export default class ProposeDeal extends Component{
     }
 
     async askPrice(){
-        try {
-            let bidder_id = global.user.id;
-            let signature_id;
-            if(bidder_id ==this.props.feed.offer_user_id)
-                signature_id =  this.props.feed.request_user_id;
-            else
-                signature_id =  this.props.feed.offer_user_id;              
-            let t = global.user.authentication_token;
-            let order_id = this.props.feed.id;
-            let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_UPDATE +'/' +order_id +'?token='+ t;            
-            let response = await fetch(url, {
-                method: 'PATCH',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    order: {
-                        status: Constant.orderStatus.OFFERED,
-                        lately_chat_content: this.state.new_price,
-                        bidder: bidder_id,
-                        signature :signature_id,
-                    }
-                })
-            });
-             let res = await response.text();
-            if (response.status >= 200 && response.status < 300) {
-                console.log("line:144///res"+res);
-                this._createChat(order_id, this.state.new_price);
+        let bidder_id = global.user.id;
+        let signature_id;
+        if(bidder_id ==this.props.feed.offer_user_id)
+            signature_id =  this.props.feed.request_user_id;
+        else
+            signature_id =  this.props.feed.offer_user_id;              
+        let t = global.user.authentication_token;
+        let order_id = this.props.feed.id;
+        let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_UPDATE +'/' +order_id +'?token='+ t;            
+        let data = {
+            order: {
+                status: Constant.orderStatus.OFFERED,
+                lately_chat_content: this.state.new_price,
+                bidder: bidder_id,
+                signature :signature_id,
+            }
+        };
+        Util.patch(url,data,
+            (response)=>{
+             this._createChat(order_id, this.state.new_price);
                 Alert.alert(
                     '提示',
                     '已向对方询价，待对方确认',
@@ -63,38 +55,27 @@ export default class ProposeDeal extends Component{
                         { text: '确定' ,  onPress: () => this.props.navigator.popN(2)}
                     ]
                 )
-            } else {
-                let error = res;
-                throw error;
-            }
-        } catch (error) {
-            this.setState({ error: error });
-            console.log("158 error "+error);
-        }
+            },
+            this.props.navigator
+        )
     }
 
     async _createChat(_deal_id,chat_content){
-        try {            
-            let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
-            let response = await fetch(URL, {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                },
-
-                body: JSON.stringify({
-                chat: {
-                    deal_id: _deal_id,
-                    chat_content: chat_content,
-                    user_id: global.user.id,
-                    catalog: 2
-                    }
-                })
-            });
-        } catch (error) {
-            console.log("error " + error);
+        let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
+        let data = {
+            chat: {
+                deal_id: _deal_id,
+                chat_content: chat_content,
+                user_id: global.user.id,
+                catalog: 2
+            }
         }
+        Util.post(URL,data,
+            (response)=>{
+                console.log("成功创建会话")
+            },
+            this.props.navigator
+        )
     }
 
     render(){

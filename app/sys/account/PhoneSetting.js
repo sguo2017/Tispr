@@ -13,6 +13,7 @@ import {
 
 import Header from '../../components/HomeNavigation';
 import Constant from '../../common/constants';
+import Util from '../../common/utils'
 class CustomButton extends React.Component {
   render() {
     return (
@@ -107,36 +108,23 @@ export default class PhoneSetting extends Component {
         }
     }
     async saveSetting(){
-        try {
-            let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_PHONE_SETTING + global.user.id+'?token='+global.user.authentication_token;
-            let response = await fetch(url, {
-                method: 'PATCH',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-
-                body: JSON.stringify({
-                    user: {
-                        switch_to: this.state.allDaySwitch,
-                        call_from: this.state.startTime,
-                        call_to: this.state.endTime
-                    }
-                })
-            });
-             let res = await response.text();
-            if (response.status >= 200 && response.status < 300) {
+        let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_PHONE_SETTING + global.user.id+'?token='+global.user.authentication_token;
+        let data = {
+            user: {
+                switch_to: this.state.allDaySwitch,
+                call_from: this.state.startTime,
+                call_to: this.state.endTime
+            }
+        }
+        Util.patch(url, data,
+            (response)=>{
                 ToastAndroid.show('保存成功',ToastAndroid.LONG);
                 global.user.call_from = this.state.startTime;
                 global.user.call_to = this.state.endTime;
                 global.user.switch_to = this.state.allDaySwitch;
-            } else {
-                let error = res;
-                throw error;
-            }
-        } catch (error) {
-            console.log("error "+error);
-        }
+            },
+            this.props.navigator
+        )
     }
 	render() {
 		return (

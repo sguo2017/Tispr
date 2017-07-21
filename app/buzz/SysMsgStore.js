@@ -48,30 +48,7 @@ export default class FeedStore {
        console.log(111);
 
        return new Promise((resolve, reject) => {
-
-            const URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSG + `${global.user.authentication_token}&page=${this.page}`;   
-            
-            // fetch(URL, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Accept': 'application/json',
-            //         'Content-Type': 'application/json',
-            //     },
-            // }).then(response => {
-            //     if (response.status == 200) return response.json()
-            //     return null
-            // }).then(responseData => {
-            //     if (responseData) {
-            //         //console.log(JSON.parse(responseData.feeds))
-            //         resolve(JSON.parse(responseData.feeds))
-            //     } else {
-            //         reject('请求出错！')
-            //     }
-            // }).catch(error => {
-            //     console.log(`ssFetch evaluating list error: ${error}`)
-            //     reject('网络出错！')
-            // })
-
+            const URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SYS_MSG + `${global.user.authentication_token}&page=${this.page}`;               
             Utils.get(
                 URL, 
                 (response) => {

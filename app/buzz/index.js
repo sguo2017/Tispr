@@ -284,26 +284,18 @@ export default class BussList extends Component {
     _renderFooter = () => <LoadMoreFooter />
 
     async _changeSysMsgStatus(newStatus, id, lately_chat_content) {
-        try {
-            let t = global.user.authentication_token;
-            let url = 'http:\/\/' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SSRV_API_SYS_MSGS_TIMELINES + id + '?token=' + t;
-            let response = await fetch(url, {
-                method: 'PATCH',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    sys_msgs_timeline: {
-                        status: newStatus,
-                    },
-                    lately_chat_content: lately_chat_content
-                })
-            });
-            let res = await response.text();
-            if (response.status >= 200 && response.status < 300) {
+        let t = global.user.authentication_token;
+        let url = 'http:\/\/' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SSRV_API_SYS_MSGS_TIMELINES + id + '?token=' + t;
+        let data ={
+            sys_msgs_timeline: {
+                status: newStatus,
+            },
+            lately_chat_content: lately_chat_content
+        };
+        Util.patch(url,data,
+            (response)=>{
                 if (newStatus == Constant.sys_msgs_status.FINISHED) {
-                    let resObject = JSON.parse(res);
+                    let resObject = response;
                     let avaliableTimes =resObject.avaliable;
                     let newOrder = resObject.feed;
                     if (resObject.status == 0) {
@@ -322,12 +314,10 @@ export default class BussList extends Component {
                 }
                 if (newStatus == Constant.sys_msgs_status.DISCARDED)
                     alert('已忽略，不再显示')
-            } else {
-                alert('出错了')
-            }
-        } catch (error) {
-            alert(error)
-        }
+            },
+            this.props.navigator
+        )
+        
     }
     async _createChat(newOrder, avaliableTimes, chat_content) {
         try {

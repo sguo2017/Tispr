@@ -1,7 +1,7 @@
 import {observable, computed, action, runInAction} from 'mobx'
 import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
-
+import Utils from '../common/utils'
 export default class ChatStore {
     @observable feedList = []
     @observable errorMsg = ''
@@ -49,25 +49,16 @@ export default class ChatStore {
 
     _fetchDataFromUrl() {
         return new Promise((resolve, reject) => {
-            const URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_LIST + `${global.user.authentication_token}&scence=${Constant.order_qry_type.PERSONAL}&page=${this.page}`;
-            fetch(URL, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
+            const URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_LIST + `${global.user.authentication_token}&scence=${Constant.order_qry_type.PERSONAL}&page=${this.page}`;            
+            Utils.get(
+                URL, 
+                (response) => {
+                    resolve(JSON.parse(response.feeds))
                 },
-            }).then(response => {
-                if (response.status == 200) return response.json()
-                return null
-            }).then(responseData => {
-                if (responseData) {
-                    resolve(JSON.parse(responseData.feeds))
-                } else {
-                    reject('请求出错！')
+                (error) => {
+                    reject()
                 }
-            }).catch(error => {
-                reject('网络出错！')
-            })
+            );           
         })
     }
 }

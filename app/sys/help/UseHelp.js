@@ -55,7 +55,6 @@ export default class UseHelp extends Component {
 							returnKeyLabel = 'search'
 							placeholderTextColor='white'
 							selectTextOnFocus ={true}
-							onSubmitEditing = {() => this.refresh()}
 							onChangeText={(val) => {
 								this.setState({ content: val })
 							}}

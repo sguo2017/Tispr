@@ -22,6 +22,7 @@ import ImagePicker from 'react-native-image-picker';
 import Setting from '../sys/Setting';
 import UserDefaults from '../common/UserDefaults';
 import TabBarView from '../containers/TabBarView';
+import Util from '../common/utils'
 const screenW = Dimensions.get('window').width;
 
 export default class Personinfoedit extends Component {
@@ -167,54 +168,39 @@ export default class Personinfoedit extends Component {
             );
             return
         }
-        try {
-            let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_AVAT_UPDATE + global.user.id+'?token='+global.user.authentication_token;
-            let response = await fetch(url, {
-                method: 'PATCH',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-
-                body: JSON.stringify({
-                    user: {
-                        avatar: this.state.avatar,
-                        name: this.state.name,
-                        profile: this.state.selfintroduce,
-                        website: this.state.website,
-                        district: global.user.addressComponent.district,
-                        city: global.user.addressComponent.city,
-                        province: global.user.addressComponent.province,
-                        country: global.user.addressComponent.country,
-                        latitude: global.user.addressComponent.latitude,
-                        longitude: global.user.addressComponent.longitude,
-                    }
-                })
-            });
-             let res = await response.text();
-            if (response.status >= 200 && response.status < 300) {
-                console.log("line:144///res"+res);
-                console.log(this.state.selfintroduce);
-                global.user.name = this.state.name;
-                global.user.profile = this.state.selfintroduce;
-                global.user.website = this.state.website;
-                global.user.addressComponent= this.state.addressComponent;
-                Alert.alert(
-                    '提示',
-                    '成功',
-                    [
-                        { text: '个人信息更新成功' , onPress: () => this._save.bind(this)},
-                    ]
-                )
-                global.user.avatar=this.state.avatar;
-            } else {
-                let error = res;
-                throw error;
+        let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_AVAT_UPDATE + global.user.id+'?token='+global.user.authentication_token;
+        let data = {
+            user: {
+                avatar: this.state.avatar,
+                name: this.state.name,
+                profile: this.state.selfintroduce,
+                website: this.state.website,
+                district: global.user.addressComponent.district,
+                city: global.user.addressComponent.city,
+                province: global.user.addressComponent.province,
+                country: global.user.addressComponent.country,
+                latitude: global.user.addressComponent.latitude,
+                longitude: global.user.addressComponent.longitude,
             }
-        } catch (error) {
-            this.setState({ error: error });
-            //console.log("158 error "+error);
         }
+        Util.patch(url,data,
+            (response)=>{
+                global.user.name = this.state.name;
+                    global.user.profile = this.state.selfintroduce;
+                    global.user.website = this.state.website;
+                    global.user.addressComponent= this.state.addressComponent;
+                    Alert.alert(
+                        '提示',
+                        '成功',
+                        [
+                            { text: '个人信息更新成功' , onPress: () => this._save.bind(this)},
+                        ]
+                    )
+                    global.user.avatar=this.state.avatar;
+            },
+            this.props.navigator
+        )
+        
     }
 
     editSetting(){
@@ -231,8 +217,7 @@ export default class Personinfoedit extends Component {
         Geolocation.getCurrentPosition()
         .then(data => {
             console.log("获取经纬度"+JSON.stringify(data));   
-            if(data.street){
-                global.user = {};
+            if(data.cityCode){
                 global.user.addressComponent = data;
                 global.user.addressComponent.latitude = data.latitude;
                 global.user.addressComponent.longitude = data.longitude;
