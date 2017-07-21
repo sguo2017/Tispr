@@ -57,16 +57,16 @@ let order_qry_type = {
 
 
 let default_img={
-    AVATAR:'http://123.56.157.233:8080/group1/M00/00/04/ezid6Vk98BqAFb5QAAAQGOym6eI771.jpg'
+    AVATAR:'http://47.92.27.52:8080/group1/M00/00/04/ezid6Vk98BqAFb5QAAAQGOym6eI771.jpg'
 }
 let url = {
      //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
-     IMG_SERV_ADDR: "123.56.157.233",
+     IMG_SERV_ADDR: "47.92.27.52",
      IMG_SERV_PORT: "9090",
      SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
      //////////////////<<<<   API接口  >>>>>//////////////////////////////
-     SERV_API_ADDR: `123.56.157.233`,
-     SERV_API_PORT: `8082`,
+     SERV_API_ADDR: `47.92.27.52`,
+     SERV_API_PORT: `8081`,
      SERV_API_USER_LOGIN: `/api/users/sessions`,//登录接口
      SERV_API_USER_REGI: `/api/users/registrations`, //注册接口
      SERV_API_USER_PASSWORD: `/api/users/passwords`,//忘记密码接口
