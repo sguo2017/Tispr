@@ -84,16 +84,32 @@ class OffersList extends PureComponent {
           }
         >
           <View style={styles.contentContainer}>
-            {MeOfferList.meOfferList.map((offer, i) => {
-              return (
-                <OfferItem
-                  key={`${offer.id}-${i}`}
-                  offer={offer}
-                  onPress={() => this._onPressCell(offer)}
-                  isBrowseMode ={this.props.isBrowseMode}
-                />
-              );
-            })}
+            <View style={{ flex: 1 }}>
+              {MeOfferList.meOfferList.map((offer, i) => {
+                if (i%2 === 1) return;
+                return (
+                  <OfferItem
+                    key={`${offer.id}-${i}`}
+                    offer={offer}
+                    onPress={() => this._onPressCell(offer)}
+                    isBrowseMode ={this.props.isBrowseMode}
+                  />
+                );
+              })}
+            </View>
+            <View style={{ flex: 1 }}>
+              {MeOfferList.meOfferList.map((offer, i) => {
+                if (i%2 === 0) return;
+                return (
+                  <OfferItem
+                    key={`${offer.id}-${i}`}
+                    offer={offer}
+                    onPress={() => this._onPressCell(offer)}
+                    isBrowseMode ={this.props.isBrowseMode}
+                  />
+                );
+              })}
+            </View>
           </View>
           {
             MeOfferList.isLoadMore ? (

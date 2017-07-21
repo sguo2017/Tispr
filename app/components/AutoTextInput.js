@@ -37,10 +37,14 @@ export default class AutoTextInput extends Component {
       this.setState({height: height});
     }
   }
+  focus = () => {
+    this.textInput.focus();
+  }
   render() {
     return (
       <TextInput
         {...this.props}
+        ref={(textInput) => { this.textInput = textInput; }}
         multiline
         onContentSizeChange={this.onContentSizeChange}
         onChange={this.onChange}

@@ -215,9 +215,12 @@ export default class ChatDetail extends Component {
         <Header
           leftIconAction={() => {
             clearInterval(msg_task);
-            if(this.props.newChat){this.props.navigator.resetTo({component:TabBarView})}
-            else{this.props.navigator.pop()}
-            }}
+            if (this.props.newChat) {
+              this.props.navigator.resetTo({ component: TabBarView, passProps: { initialPage: 3 } });
+            } else{
+              this.props.navigator.pop()
+            }
+          }}
           title={feed.offer_user_id == global.user.id?feed.request_user:feed.offer_user}
           leftIcon={require('../resource/w-back.png')}
           rightIcon={{uri:feed.offer_user_id == global.user.id?feed.request_user_avatar:feed.offer_user_avatar} }

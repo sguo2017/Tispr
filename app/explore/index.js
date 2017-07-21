@@ -276,6 +276,7 @@ class ExploreList extends PureComponent {
                 visible={this.state.show}
                 onShow={() => { }}
                 onRequestClose={() => { }} >
+                  <View style={{ position: 'absolute', zIndex: 1, backgroundColor: 'black', width: gScreen.width, height: gScreen.height, opacity: 0.5 }} />
                   {
                       this.state.tabName == 'index' ?
                         <View style={styles.modalStyle}>
@@ -647,7 +648,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
         flex: 1,
-        
+        zIndex: 999,
     },
     // modal上子View的样式
     subView: {

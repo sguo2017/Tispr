@@ -151,16 +151,32 @@ class BookmarksList extends PureComponent {
           }
         >
           <View style={styles.contentContainer}>
-            {MeMarkList.markList.map((mark, i) => {
-              return (
-                <MarkItem
-                  key={`${mark.id}-${i}`}
-                  mark={mark}
-                  onPress={() => this._onPressCell(mark)}
-                  onCall={() => this.clickCall('10000', mark.user.name)}
-                />
-              );
-            })}
+            <View style={{ flex: 1 }}>
+              {MeMarkList.markList.map((mark, i) => {
+                if (i%2 === 1) return;
+                return (
+                  <MarkItem
+                    key={`${mark.id}-${i}`}
+                    mark={mark}
+                    onPress={() => this._onPressCell(mark)}
+                    onCall={() => this.clickCall('10000', mark.user.name)}
+                  />
+                );
+              })}
+            </View>
+            <View style={{ flex: 1 }}>
+              {MeMarkList.markList.map((mark, i) => {
+                if (i%2 === 0) return;
+                return (
+                  <MarkItem
+                    key={`${mark.id}-${i}`}
+                    mark={mark}
+                    onPress={() => this._onPressCell(mark)}
+                    onCall={() => this.clickCall('10000', mark.user.name)}
+                  />
+                );
+              })}
+            </View>
           </View>
           {
             MeMarkList.isLoadMore ? (
@@ -203,7 +219,7 @@ const MarkItem = ({
         paddingHorizontal: 15,
         paddingVertical: 8,
       }}>
-        <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }} numberOfLines={2}>{mark.serv_title}</Text>
+        <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }}>{mark.serv_title}</Text>
         <Text style={{ fontSize: 12, color: '#999999', marginBottom: 4 }}>{mark.catalog}</Text>
         <View style={{ flexDirection:'row' }}>
           <Image style={{ width: 12, height: 12 }} source={require('../../resource/g-location-s.png')}/>
