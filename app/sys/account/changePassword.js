@@ -13,6 +13,7 @@ import {
 import Header from '../../components/HomeNavigation';
 import accountSetting from './accountSetting'
 import Constant from '../../common/constants';
+import Util from '../../common/utils';
 export default class PasswordConfirm extends Component{
     constructor(props) {
 		super(props);
@@ -23,47 +24,33 @@ export default class PasswordConfirm extends Component{
 	}
     
     async _changePassword(){
-        try {
-            let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_PASSWORD +'/' +global.user.id;            
-            let response = await fetch(url, {
-                method: 'PATCH',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    user: {
-                        password: this.state.password
-                    }
-                })
-            });
-             let res = await response.text();
-             let result = JSON.parse(res);
-            if (response.status >= 200 && response.status < 300) {
-               if (result.status && result.status==-1) {
-                    Alert.alert(
-                        '提示',
-                        '密码修改失败',
-                        [
-                        { text: '确定'},
-                        ]
-                    )                
-                }else{
-                    Alert.alert(
-                        '提示',
-                        '密码修改成功',
-                        [
-                        { text: '确定', onPress: () => this.props.navigator.pop()},
-                        ]
-                    ) 
-                }
-            } else {
-                let error = res;
-                throw error;
+        let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_PASSWORD +'/' +global.user.id;            
+        let data = {
+            user: {
+                password: this.state.password
             }
-        } catch (error) {
-            console.log("error "+error);
-        }
+        };
+        Util.patch(url, data,
+        (result)=>{
+            if (result.status && result.status==-1) {
+                Alert.alert(
+                    '提示',
+                    '密码修改失败',
+                    [
+                    { text: '确定'},
+                    ]
+                )                
+            }else{
+                Alert.alert(
+                    '提示',
+                    '密码修改成功',
+                    [
+                    { text: '确定', onPress: () => this.props.navigator.pop()},
+                    ]
+                ) 
+            }
+        },
+        this.props.navigator);
     }
 
     render(){

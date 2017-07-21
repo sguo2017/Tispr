@@ -62,6 +62,27 @@ let Util = {
             navigator.push({component: breakdown});
         });
     },
+    patch: (url, data, successCallback, navigator, exploreparams) => {
+        let URL = url;
+        if(exploreparams){
+            URL = URL + '&exploreparams=' + JSON.stringify(exploreparams)   
+        }  
+        fetch(URL, {
+            method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => response.text())
+        .then((responseText) => {
+            successCallback(JSON.parse(responseText));
+        })
+        .catch((err) => {
+            navigator.push({component: breakdown});
+        });
+    },
     noToken: (navigator) => {
         navigator.push({component: offline});
     }

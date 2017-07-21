@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import {
   StyleSheet,
   View,
@@ -20,7 +20,7 @@ import Util from '../common/utils'
 const KNOWLEDGE_ID = 3
 
 @observer
-export default class ChatList extends PureComponent {
+export default class ChatList extends Component {
     // _pictureAction = () => {
     //     const { user: { name } } = RootStore
     //     if (name) {
@@ -115,7 +115,7 @@ export default class ChatList extends PureComponent {
     }
 }
 
-class KnowledgeItem extends PureComponent {
+class KnowledgeItem extends Component {
 
     static propTypes = {
         feed: React.PropTypes.object,

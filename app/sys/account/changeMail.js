@@ -12,6 +12,7 @@ import {
 import Header from '../../components/HomeNavigation';
 import accountSetting from './accountSetting';
 import Constant from '../../common/constants';
+import Util from '../../common/utils'
 export default class PasswordConfirm extends Component{
     constructor(props) {
 		super(props);
@@ -21,24 +22,15 @@ export default class PasswordConfirm extends Component{
 	}
 
     async _changeMail(){
-        try {
-            let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_PASSWORD +'/' +global.user.id;            
-            let response = await fetch(url, {
-                method: 'PATCH',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    user: {
-                        email: this.state.mail
-                    }
-                })
-            });
-            let res = await response.text();
-            let result = JSON.parse(res);
-            if (response.status >= 200 && response.status < 300) {
-               if (result.status && result.status == -1) {
+        let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_PASSWORD +'/' +global.user.id;            
+        let data = {
+            user: {
+                email: this.state.mail
+            }
+        }
+        Util.patch(url,data,
+            (result) => {
+                if (result.status && result.status == -1) {
                    Alert.alert(
                         '提示',
                         '邮箱修改失败',
@@ -64,13 +56,10 @@ export default class PasswordConfirm extends Component{
                         ]
                     )  
                 }
-            } else {
-                let error = res;
-                throw error;
-            }
-        } catch (error) {
-            console.log("error "+error);
-        }
+            },
+            this.props.navigator
+        )
+       
     }
 
     render(){
