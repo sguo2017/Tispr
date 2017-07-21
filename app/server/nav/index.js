@@ -164,7 +164,7 @@ export default class navpage extends Component {
                                                             alignItems: 'center',
                                                         }}
                                                                      source={{ uri: d.image }}>
-                                                            <Text style={{ color: 'white', backgroundColor: 'transparent', fontSize: 16 }}>{d.name}&nbsp;</Text>
+                                                            {/*<Text style={{ color: 'white', backgroundColor: 'transparent', fontSize: 16 }}>{d.name}&nbsp;</Text>*/}
                                                         </CachedImage>
                                                     </TouchableOpacity>
                                                 );
