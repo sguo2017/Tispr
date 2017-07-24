@@ -261,7 +261,7 @@ export default class feedback extends Component {
 					<Text style ={{color: '#4990e2', fontSize: 14 }}>{this.state.avatarSourceArray ? this.state.avatarSourceArray.length : 0}/6</Text>
 				</View>
 				{this.generateImageContent()}
-				<TouchableHighlight onPress={this.sendFeedback.bind(this)} style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:22, flexShrink: 0, width: global.gScreen.width }]}>
+				<TouchableHighlight onPress={this.sendFeedback.bind(this)} style={[styles.button, { backgroundColor: global.gColors.buttonColor, flexShrink: 0, width: global.gScreen.width }]}>
                     <Text style={styles.buttonText}>
                         确定
                     </Text>
@@ -276,13 +276,15 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: global.gColors.themeColor,
     alignSelf: 'stretch',
-    marginTop: 10,
-    justifyContent: 'center'
+    //marginTop: 10,
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0
   },
   buttonText: {
     fontSize: 22,
     color: '#FFF',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
     avatarContainer: {
         borderColor: '#9B9B9B',
