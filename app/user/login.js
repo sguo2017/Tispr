@@ -29,13 +29,15 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "p2@qq.com",
+      num: "13911551595",
+      email: "38359504@qq.com",
+      // num: "13911551595",
+      // email: "p2@qq.com",
       password: "123456",
       password2: '123456',
       error: "",
       showProgress: false,
       seePassword2 : true,
-      num: "13911551595",
       code: "",
       loginWay: 'phonenumber',
       initialPosition: 'unknown',
