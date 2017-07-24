@@ -317,15 +317,6 @@ export default class PasswordConfirm extends Component {
                                 this.setState({ content: val })
                             }}
                         />
-
-                        {/*<TextInput
-                    style={styles.input}
-                    underlineColorAndroid="transparent"
-                    multiline={true}
-                    numberOfLines={1}
-                    value = {this.state.content}
-                    onChangeText={(text) => this.setState({ content: text })}
-                    />*/}
                         <View style={{ alignItems: 'flex-end' }}>
                             <Text style={{ color: '#B8B8B8', fontSize: 12 }}>{this.state.content ? this.state.content.length : 0}/1000</Text>
                         </View>

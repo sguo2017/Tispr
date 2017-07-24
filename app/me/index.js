@@ -206,16 +206,16 @@ export default class MeInfo extends Component {
                     </TouchableOpacity>
                     :
                     <TouchableOpacity onPress={this.clickJump.bind(this, 'Setting')}>
-                      <Image style={{ width: 18, height: 18 }} source={require('../resource/w-setting.png')}></Image>
+                      <Image style={{marginTop: -2}} source={require('../resource/w-setting.png')}></Image>
                     </TouchableOpacity>
                 }
               </View>
-              <View style={{marginHorizontal: 16}}>
+              <View style={{marginTop: 16}}>
                   <Text style={styles.text}>{this.state.info}</Text>
               </View>
               <View style={{marginVertical: 16, flexDirection: 'row', alignItems: 'center' }}>
                   <Image style={{ marginRight: 11 }} source={require('../resource/w-earth.png')}></Image>
-                  <Text style={styles.text}>{global.user.website?global.user.website:''}</Text>
+                  <Text style={[styles.text, {lineHeight: 16}]}>{global.user.website?global.user.website:''}</Text>
               </View>
           </View>
           <ScrollableTabView
