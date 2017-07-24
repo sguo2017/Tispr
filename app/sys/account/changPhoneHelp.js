@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import Header from '../../components/HomeNavigation';
 import accountSetting from './accountSetting'
+import AutoTextInput from '../../components/AutoTextInput'
 export default class changPhoneHelp extends Component{
     constructor(props) {
 		super(props);
@@ -23,28 +24,32 @@ export default class changPhoneHelp extends Component{
 					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={()=> this.props.navigator.pop()}
 				/>
-                <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center',margin:10}}>
-                    <Image style={{width: 40, height: 40}} source={require('../../resource/b_messge.png')}/>
+                <View style={{flexDirection:'row',alignItems:'center',marginHorizontal:18, marginTop: 34}}>
+                    <Image source={require('../../resource/b_messge.png')}/>
                     <TextInput
-                    style={{flexDirection:'row',width: global.gScreen.width*0.8}}
                     multiline={true}
-                    numberOfLines={1}
+                    numberOfLines={2}
+                    style={styles.textInput}
+                    placeholderTextColor='#CCCCCC'
+                    underlineColorAndroid="transparent"
                     placeholder='请尽可能详细地描述您遇到的问题，我们将在48小时内回复您。'
                     />
                 </View>
-                <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center',margin:10}}>
-                    <Image style={{width: 40, height: 40}} source={require('../../resource/b_mail.png')}/>
+                <View style={{flexDirection:'row',alignItems:'center',marginHorizontal:18, marginTop: 28}}>
+                    <Image source={require('../../resource/b_mail.png')}/>
                     <TextInput
-                    style={{flexDirection:'row',width: global.gScreen.width*0.8}}
+                    style={styles.textInput}
                     multiline={true}
                     numberOfLines={1}
                     placeholder='mail@examlple.com'
+                    placeholderTextColor='#CCCCCC'
+                    underlineColorAndroid="transparent"
                     />
                 </View>
                 
                 <TouchableHighlight style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:22, flexShrink: 0, width: global.gScreen.width }]}>
                     <Text style={styles.buttonText}>
-                        确定
+                        发送
                     </Text>
                 </TouchableHighlight>
             </View>
@@ -63,6 +68,16 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#FFF',
     alignSelf: 'center'
+  },
+  textInput: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 0,
+    backgroundColor: 'white',
+    fontSize: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eeeeee',
+    marginLeft: 16,
   },
 
 })

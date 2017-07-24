@@ -57,6 +57,8 @@ const RequestMsgSingleImageItem = ({
           <Text style={{ fontSize: 12, color: '#999999' }}>{createDate}</Text>
           <View style={styles.dot} />
           <Text style={{ fontSize: 12, color: '#999999' }}>{catalog}</Text>
+          <View style={styles.dot} />
+          <Text style={{fontSize:12, color: '#4A90E2'}}>1/5投标</Text>
         </View>
       </TouchableOpacity>
   </View>

@@ -129,7 +129,7 @@ export default class Setting extends Component {
 					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:aboutQike,name:'aboutQike'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
-								关于奇客
+								关于我们
 			  			</Text>
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />

@@ -62,7 +62,7 @@ export default class forgetPassword extends Component {
 				/>
                 <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center',margin:10}}>
                     <TextInput
-                    style={{flexDirection:'row',width: global.gScreen.width*0.8}}
+                    style={{flexDirection:'row',width: 330}}
                     multiline={false}
                     placeholder='mail@examlple.com'
                     value={this.state.email}
@@ -74,13 +74,13 @@ export default class forgetPassword extends Component {
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',marginLeft:10 }}>
                     <Image style={{ height: 20, width: 30 }} source={require('../resource/b_correct.png')} />
-                    <Text style={{fontSize:16,color:global.gColors.themeColor}}>您注册时使用的电子邮箱</Text>
+                    <Text style={{fontSize:16,color:global.gColors.themeColor}}>您现在使用的电子邮箱</Text>
                 </View>
                 <TouchableHighlight style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:22, flexShrink: 0, width: global.gScreen.width }]}
                     onPress={this.sendEmail.bind(this)}
                 >
                     <Text style={styles.buttonText}>
-                        发送邮件
+                        确定
                     </Text>
                 </TouchableHighlight>
             </View>

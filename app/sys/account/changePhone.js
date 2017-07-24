@@ -130,7 +130,7 @@ export default class PasswordConfirm extends Component{
                     </View>
                     <Text style={{fontSize:14,marginTop:10}}>为了账户安全，我们将向您的手机发送验证码。您的手机号码将被隐匿，任何人都无法查看。</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                        <Image style={{ height: 20, width: 30 }} source={require('../../resource/qk_china_flag.png')} />
+                        <Image style={{ height: 20, width: 30 }} source={require('../../resource/ico-china.png')} />
                         <Text style={{ fontSize: 20, color: 'black' }}>+86</Text>
                         <TextInput
                             onChangeText={(text) => this.setState({ phoneNumber: text })}

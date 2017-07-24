@@ -68,7 +68,8 @@ export default class UseHelp extends Component {
 					<TouchableOpacity style={styles.rectangle_view} 
 						onPress={() => {
 							let num = 0;
-							this.props.navigator.push({ component: HelpDetail, passProps: {num} })
+							let title = '在哪里查看客户项目需求？';
+							this.props.navigator.push({ component: HelpDetail, passProps: {num, title} })
 						}}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
@@ -80,7 +81,8 @@ export default class UseHelp extends Component {
 					 <TouchableOpacity style={styles.rectangle_view} 
 					 	onPress={() => {
 							let num = 1;
-							this.props.navigator.push({ component: HelpDetail, passProps: {num} })
+							let title = '竞标项目的流程是怎样？';
+							this.props.navigator.push({ component: HelpDetail, passProps: {num, title} })
 						}}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
@@ -92,7 +94,8 @@ export default class UseHelp extends Component {
 					<TouchableOpacity style={styles.rectangle_view}
 						onPress={() => {
 							let num = 2;
-							this.props.navigator.push({ component: HelpDetail, passProps: {num} })
+							let title = '项目服务费用如何结算？';
+							this.props.navigator.push({ component: HelpDetail, passProps: {num, title} })
 						}}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
@@ -106,7 +109,8 @@ export default class UseHelp extends Component {
 					<TouchableOpacity style={styles.rectangle_view}
 						onPress={() => {
 							let num = 3;
-							this.props.navigator.push({ component: HelpDetail, passProps: {num} })
+							let title = '平台在交易中收取服务费吗？'
+							this.props.navigator.push({ component: HelpDetail, passProps: {num, title} })
 						}}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
@@ -118,7 +122,8 @@ export default class UseHelp extends Component {
 					<TouchableOpacity style={styles.rectangle_view}
 						onPress={() => {
 							let num = 4;
-							this.props.navigator.push({ component: HelpDetail, passProps: {num} })
+							let title = '最多可以发布多少个服务？';
+							this.props.navigator.push({ component: HelpDetail, passProps: {num, title} })
 						}}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
@@ -130,7 +135,8 @@ export default class UseHelp extends Component {
 					<TouchableOpacity style={styles.rectangle_view}
 						onPress={() => {
 							let num = 5;
-							this.props.navigator.push({ component: HelpDetail, passProps: {num} })
+							let title = '发布是否需要审核？审核时间多久？'
+							this.props.navigator.push({ component: HelpDetail, passProps: {num, title} })
 						}}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >

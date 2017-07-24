@@ -36,6 +36,7 @@ export default class HelpDetail extends Component {
 					leftIconAction={this._onBack.bind(this)}
 				/>
                 <View style={styles.container}>
+                    <Text style={{fontSize:18, color: '#000000', fontWeight: 'bold', marginBottom: 10}}>{this.props.title}</Text>
                     <Text style={styles.answer}>{this.state.answers[this.state.num]}</Text>
                 </View>
             </View>

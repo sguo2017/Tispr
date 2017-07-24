@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import {
     StyleSheet,
     View,
@@ -20,7 +20,7 @@ import Util from '../../common/utils'
 const KNOWLEDGE_ID = 3
 
 @observer
-export default class RequestsList extends PureComponent {
+export default class RequestsList extends Component {
     state = {
         dataSource: new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
@@ -103,7 +103,7 @@ export default class RequestsList extends PureComponent {
     }
 
 }
-class KnowledgeItem extends PureComponent {
+class KnowledgeItem extends Component {
 
     static propTypes = {
         feed: React.PropTypes.object,
