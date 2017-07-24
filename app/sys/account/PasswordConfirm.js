@@ -76,6 +76,7 @@ export default class PasswordConfirm extends Component {
                             onChangeText={(text) => this.setState({ password: text })}
                             style={[styles.input, { width: global.gScreen.width * 0.7 }]}
                             placeholder="请输入密码"
+                            underlineColorAndroid="#dedfe0"
                             secureTextEntry={this.state.seePassword}>
                         </TextInput>
                         {
@@ -84,13 +85,13 @@ export default class PasswordConfirm extends Component {
                                     <Image style={{
                                         marginLeft: 5, marginRight: 8, marginTop: 25, width: 25, height: 20,
                                         resizeMode: 'stretch'
-                                    }} source={require('../../resource/g_eyes_open.png')} />
+                                    }} source={require('../../resource/g_eyes_close.png')} />
                                 </TouchableOpacity> :
                                 <TouchableOpacity onPress={() => this.setState({ seePassword: true })}>
                                     <Image style={{
                                         marginLeft: 5, marginRight: 8, marginTop: 25, width: 25, height: 20,
                                         resizeMode: 'stretch'
-                                    }} source={require('../../resource/g_eyes_close.png')} />
+                                    }} source={require('../../resource/g_eyes_open.png')} />
                                 </TouchableOpacity>
                         }
                     </View>
@@ -99,7 +100,7 @@ export default class PasswordConfirm extends Component {
                     {
                         this.state.passVerify ?
                             <Text>8至16个字符</Text> :
-                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginRight: 40 }}>
+                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginRight: 10 }}>
                                 <Text style={{ color: 'red' }}>密码验证不成功</Text>
                                 <Image style={{ width: 20, height: 20 }} source={require('../../resource/r_warning.png')} />
                             </View>

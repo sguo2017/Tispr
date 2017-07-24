@@ -262,7 +262,7 @@ export default class Personinfoedit extends Component {
                     
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
                         <Image style={{ width: 24, height: 24 }} source={require('../resource/g_name.png')}/>
-                        <TextInput
+                        <AutoTextInput
                           maxLength={20}
                           placeholder='请填写您的真实姓名'
                           placeholderTextColor='#CCCCCC'
@@ -278,7 +278,7 @@ export default class Personinfoedit extends Component {
                     <Text style={styles.text}>1-20个字符</Text>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 16 }}>
                         <Image style={{ width: 24, height: 24 }} source={require('../resource/g_location.png')}/>
-                        <TextInput
+                        <AutoTextInput
                           placeholder='获取当前地址'
                           placeholderTextColor='#CCCCCC'
                           style={styles.textInput}
@@ -294,7 +294,7 @@ export default class Personinfoedit extends Component {
                     </View>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
                         <Image style={{ width: 24, height: 24 }} source={require('../resource/g_info.png')}/>
-                        <TextInput
+                        <AutoTextInput
                           placeholder='介绍下自己，获得更多关注'
                           placeholderTextColor='#CCCCCC'
                           style={styles.textInput}
@@ -310,7 +310,7 @@ export default class Personinfoedit extends Component {
                     </View>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
                         <Image style={{ width: 24, height: 24 }} source={require('../resource/g_earth_nor.png')}/>
-                        <TextInput
+                        <AutoTextInput
                           placeholder='添加网页链接'
                           placeholderTextColor='#CCCCCC'
                           style={styles.textInput}

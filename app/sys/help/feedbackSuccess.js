@@ -15,7 +15,7 @@ export default class feedbackSuccess extends Component{
         return(
             <View style={{width:global.gScreen.width,height:global.gScreen.height,backgroundColor:global.gColors.themeColor,
              justifyContent:'center',alignItems:'center'}}>
-                <View style={{backgroundColor:'#fff',justifyContent:'center',width:300,height:215,alignItems:'center'}}>
+                <View style={{backgroundColor:'#fff',justifyContent:'center',width:300,height:215,alignItems:'center', borderRadius: 4}}>
                     <View style={{justifyContent:'center', alignItems:'center'}}>
                         <Text style={{color:'black', fontWeight:'bold',fontSize:18}}>提交成功</Text>
                         <Text style={{color:'black', fontSize:14,margin:10}}>非常感谢您对我们的支持！</Text>
