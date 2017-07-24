@@ -23,6 +23,7 @@ const SysMsgSingleImageItem = ({
     let action_title_arry = action_title.split("__")
     let array_length =action_title_arry.length;
     if(!action_desc) action_desc=''
+    if(!user) user ={}
     let action_desc_arry = action_desc.split("__");
     let array_desc_length =action_desc_arry.length;
     if(action_title){

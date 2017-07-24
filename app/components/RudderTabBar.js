@@ -117,7 +117,7 @@ export default class RudderTabBar extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View elevation={5} style={styles.backgroundBar} />
+        <View style={styles.backgroundBar} />
         {this.props.tabs.map((tab, i) => {
           let icon = this.props.activeTab == i ? this.props.selectedTabIconNames[i] : this.props.tabIconNames[i];
           let color = this.props.activeTab === i ? global.gColors.themeColor : '#999999';
@@ -134,7 +134,7 @@ export default class RudderTabBar extends Component {
                     source={icon}
                   />
                 </TouchableOpacity>
-                <View elevation={5} style={styles.centerBackground} />
+                <View style={styles.centerBackground} />
                 <View style={styles.centerCover}/>
               </View>
             )

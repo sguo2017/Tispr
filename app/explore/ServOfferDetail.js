@@ -4,6 +4,7 @@ import {
     View,
     Text,
     Image,
+    InteractionManager,
     ListView,
     TouchableOpacity,
     TouchableHighlight,
@@ -387,6 +388,12 @@ export default class ServOfferDetail extends Component {
         }  
     }
 
+    focusOnTextInput = () => {
+        this.setState({ editable: true });
+        InteractionManager.runAfterInteractions(() => {
+        this.modelTextInput.focus();
+        });
+    }
     render() {
         const { feed } = this.props;
         let _images = feed.serv_images.split(',');
@@ -569,7 +576,7 @@ export default class ServOfferDetail extends Component {
                                         <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
                                     </View>*/}
                                     <AutoTextInput
-                                            ref="1"
+                                            ref={(textInput) => { this.modelTextInput = textInput; }}
                                             multiline={true}
                                             onChangeText={(text) => 
                                                 {
@@ -608,10 +615,9 @@ export default class ServOfferDetail extends Component {
                                     <TouchableHighlight 
                                         style={[styles.notSelectedButton, {width:Platform.OS ==='ios'?120:100}]} 
                                         onPress={()=> {
-                                            this.setState({editable: true});
-                                            this.focusNextField.bind(this, '1');
-                                            }
-                                        }
+                                            {/* this.setState({editable: true}); */}
+                                            this.focusOnTextInput();
+                                        }}
                                     >
                                         <Text style={[styles.themeColorText]}>自定义信息</Text>
                                     </TouchableHighlight>

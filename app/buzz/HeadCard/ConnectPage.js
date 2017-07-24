@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   Image,
+  InteractionManager,
   Text,
   TouchableOpacity,
   TouchableHighlight,
@@ -27,13 +28,17 @@ export default class ConnectPage extends Component{
             button1: true,
             button2: false, 
             button3: false,
-            content: ''
+            content: '',
+            editable: false
         }
     }
 
-    focusNextField (nextField){
-        this.refs[nextField].focus();
-    };
+    focusOnTextInput = () => {
+        this.setState({ editable: true });
+        InteractionManager.runAfterInteractions(() => {
+            this.modelTextInput.focus();
+        });
+    }
 
     render(){
         const { feed } = this.props;      
@@ -68,8 +73,8 @@ export default class ConnectPage extends Component{
                         style={{width:50,height:50,borderRadius:25,alignSelf:'center'}} 
                         defaultSource={require('../../resource/user_default_image.png')}
                         source={{uri: feed.avatar}}/>
-                        <AutoTextInput
-                            ref="1"
+                        <TextInput
+                            ref={(textInput) => { this.modelTextInput = textInput; }}
                             multiline={true}
                             onChangeText={(text) => 
                                 {
@@ -84,7 +89,7 @@ export default class ConnectPage extends Component{
                             style={{fontSize: 16, color: '#1B2833', marginBottom: 8, height: 100}}
                             value={name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')+content}
                             underlineColorAndroid={'transparent'}
-                            editable={!send_default_chat_conteng}
+                            editable={this.state.editable}
                         />
                         <TouchableHighlight 
                             style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
@@ -106,15 +111,12 @@ export default class ConnectPage extends Component{
                         </TouchableHighlight>
                         <View style={{height: 1, backgroundColor: 'rgba(0,0,0,0.12)', marginVertical: 13.7}}></View>
 
-                        <TouchableHighlight 
-                            style={[styles.notSelectedButton, {width: Platform.OS === 'ios'? 120:100}]} 
-                            onPress={()=> {
-                                this.setState({send_default_chat_conteng:false});
-                                this.focusNextField.bind(this, '1');}
-                            }
-                        >
-                            <Text style={[styles.themeColorText]}>自定义信息</Text>
-                        </TouchableHighlight>
+                        <Text onPress={()=> {
+                            {/* this.setState({editable: true}); */}
+                            this.focusOnTextInput();
+                            }} style={[styles.themeColorText]}>
+                            自定义信息
+                        </Text>
                     </View>
                     
                 </ScrollView>

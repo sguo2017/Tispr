@@ -3,6 +3,7 @@ import {
     View,
     Text,
     Image,
+    InteractionManager,
     TextInput,
     ProgressBarAndroid,
     TouchableOpacity,
@@ -42,7 +43,8 @@ export default class Connect extends Component {
             button2: false, 
             button3: false,
             hasSeenTotalTimes: false,
-            content: ''
+            content: '',
+            editable: false
         };
         UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -160,6 +162,13 @@ export default class Connect extends Component {
         }
     }
 
+    focusOnTextInput = () => {
+        this.setState({ editable: true });
+        InteractionManager.runAfterInteractions(() => {
+            this.modelTextInput.focus();
+        });
+    }
+
     render() {
         const { feed } = this.props;
         let button1 = this.state.button1;
@@ -202,8 +211,8 @@ export default class Connect extends Component {
                         >
                             <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
                         </TouchableHighlight>
-                        <AutoTextInput
-                            ref="myTextInput"
+                        <TextInput
+                            ref={(textInput) => { this.modelTextInput = textInput; }}
                             multiline={true}
                             onChangeText={(text) => 
                                 {
@@ -212,12 +221,19 @@ export default class Connect extends Component {
 
                                 }
                             }
+                            onBlur={() => {
+                                this.setState({editable: false})}
+                            }
                             style={{fontSize: 16, color: '#1B2833', marginBottom: 8, height: 100}}
                             value={name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')+content}
+                            editable={this.state.editable}
                         />
                         <View style={{height: 1, backgroundColor: 'rgba(0,0,0,0.12)', marginVertical: 13.7}}></View>
 
-                        <Text onPress={()=>this.refs["myTextInput"].setFocus()} style={[styles.themeColorText]}>
+                        <Text onPress={()=> {
+                            {/* this.setState({editable: true}); */}
+                            this.focusOnTextInput();
+                            }} style={[styles.themeColorText]}>
                             自定义信息
                         </Text>
                         <View>
