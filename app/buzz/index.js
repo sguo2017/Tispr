@@ -481,7 +481,9 @@ export default class BussList extends Component {
         let cardArray = this.state.sys_msgs;
         return (
             <View style={styles.listView}>
-                <Header title='奇客' />
+                <View style={{height: 50, justifyContent: 'center', alignItems: 'center', backgroundColor: '#4a90e2'}}>
+                    <Image source={require('../resource/navbar-w-logo.png')}/>
+                </View>
                 <Text style={styles.text1}>{cardArray && cardArray.length > 0 ? "您有重要更新" : "想要更多机会?"}</Text>
                 {this.generateSwiper()}
                 <View style={[styles.view, { marginTop: 10 }]}>
