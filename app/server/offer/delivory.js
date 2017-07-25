@@ -19,7 +19,7 @@ import {
 } from 'react-native'
 import Header from '../../components/HomeNavigation';
 import ServOfferConfirm from './confirm';
-
+import Picker from 'react-native-picker';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -116,14 +116,13 @@ const styles = StyleSheet.create({
         marginBottom: 8
     },
 });
-
+const rangeText = ["不提供上门服务","5公里内","10公里内","15公里内","25公里内","50公里内","100公里内"];
 export default class ServOfferDelivory extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            choices: [false, false, false],
             serv_offer: this.props.serv_offer,
             remoteSwitchIsOn: this.props.serv_offer.via == 'remote'||this.props.serv_offer.via == 'all'?true:false ,
             localSwitchIsOn: this.props.serv_offer.via == 'local'||this.props.serv_offer.via == 'all'?true:false ,
@@ -174,6 +173,11 @@ export default class ServOfferDelivory extends Component {
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID);
     }
+    componentWillMount(){
+        if(this.state.localSwitchIsOn){
+            this._showAreaPicker();
+        }
+    }
     renderProgressView = () => {
         if (Platform.OS == 'ios') {
             return (
@@ -195,6 +199,32 @@ export default class ServOfferDelivory extends Component {
               />
             );
         }
+    }
+
+
+    _showAreaPicker(value) {
+        Picker.init({
+            pickerData: rangeText,
+            selectedValue: ['5公里内'],
+            onPickerCancel: pickedValue => {
+                console.log('area', pickedValue);
+            },
+            onPickerSelect: pickedValue =>{
+                let offer = this.state.serv_offer;
+                offer.range = Array.indexOf(rangeText, pickedValue[0]);
+                console.log('选择了', pickedValue+"位置"+offer.range);
+                this.setState({serv_offer: offer});
+            },
+            pickerTitleText: '服务范围',
+            pickerCancelBtnText: '取消',
+            pickerConfirmBtnText: '确定',
+        });
+        if(value){
+            Picker.show();
+        }else{
+            Picker.hide();
+        }
+            
     }
     render() {
     //    console.log("this.state.avatarSourceArray: "+this.state.avatarSourceArray);
@@ -229,37 +259,12 @@ export default class ServOfferDelivory extends Component {
                         </Text>
                     </View>
                     <Switch
-                      onValueChange={(value) => this.setState({localSwitchIsOn: value})}
+                      onValueChange={(value) => {this.setState({localSwitchIsOn: value});this._showAreaPicker(value)}}
                       value={this.state.localSwitchIsOn}
                       onTintColor="#ffc400"
                       thumbTintColor={Platform.OS == 'ios'?null:'white'}
                     />
                 </View>
-                {this.state.localSwitchIsOn?
-                <View style={{paddingHorizontal: 8, marginTop: 20}}>
-                <TouchableOpacity
-                    style={[styles.touch, {width: 118}, this.state.choices[0] && { backgroundColor: global.gColors.themeColor, }]}
-                    onPress={() => this.setState({choices: [true, false, false] })}
-                >
-                    <Text style={[styles.text, this.state.choices[0] && { color: 'white' }]}>不提供上门服务</Text>
-                </TouchableOpacity>
-                <View style={{marginTop: 16, flexWrap: 'wrap', flexDirection: 'row'}}>
-                    <TouchableOpacity
-                        style={[styles.touch, this.state.choices[1] && { backgroundColor: global.gColors.themeColor }]}
-                        onPress={() => this.setState({choices: [false, true, false] })}
-                    >
-                        <Text style={[styles.text, this.state.choices[1] && { color: 'white' }]}>5公里内</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.touch, this.state.choices[2] && { backgroundColor: global.gColors.themeColor }]}
-                        onPress={() => this.setState({ choices: [false, false, true] })}
-                    >
-                        <Text style={[styles.text, this.state.choices[2] && { color: 'white' }]}>10公里内</Text>
-                    </TouchableOpacity >
-                </View>
-                </View>
-                :<View></View>
-                }
                 </ScrollView>
                 
             </View>

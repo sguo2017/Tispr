@@ -466,6 +466,11 @@ export default class ServOfferDetail extends Component {
                                 </TouchableOpacity>
                             </View>
                     }
+                    <View style={{paddingHorizontal:16,paddingVertical: 10}}>
+                        {   
+                            feed.via == 'all' ?<Text>远程或附近</Text>:feed.via == 'local'?<Text>附近</Text>:<Text>远程</Text>
+                        }
+                    </View>
                     {
                         Platform.OS === 'ios'
                             ?
@@ -734,7 +739,7 @@ const styles = StyleSheet.create({
     },  
     listView: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#fff',
     },
     modal: {
         marginTop: 300,
