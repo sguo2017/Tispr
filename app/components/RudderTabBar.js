@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   backgroundBar: {
     position: 'absolute',
-    zIndex: 0,
+    //zIndex: 0,
     bottom: 0,
     left: 0,
     right: 0,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: (gScreen.width / 5 - 60) / 2,
-    zIndex: 0,
+    //zIndex: 0,
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     bottom: 0,
-    zIndex: 1,
+    //zIndex: 1,
     height: 49.5,
     backgroundColor: 'white',
   }
@@ -119,10 +119,11 @@ export default class RudderTabBar extends Component {
           if (i == 2) {
             return (
               <View key={i} style={styles.centerTab} elevation={7}>
-                <View style={styles.centerBackground} elevation={5}/> 
+                <View style={styles.centerBackground} elevation={5}/>
+                <View style={styles.centerCover} elevation={5}/>     
                 <View elevation={6}>
                   <TouchableOpacity
-                  style={{ zIndex: 999 }}  
+                  style={{ zIndex: 999 }}   
                   activeOpacity={0.8}
                   onPress={()=>this.props.centralEvent()}
                 >
@@ -131,8 +132,7 @@ export default class RudderTabBar extends Component {
                     source={icon}
                   />
                 </TouchableOpacity>
-                </View>
-                  <View style={styles.centerCover} elevation={5}/>  
+                </View>   
               </View>
             )
           } else {
