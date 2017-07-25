@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
     width: gScreen.width / 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent',
   },
   tab: {
     height: 50,
@@ -47,14 +46,12 @@ const styles = StyleSheet.create({
   },
   backgroundBar: {
     position: 'absolute',
-    zIndex: 0,
-    borderTopColor: global.gColors.themeColor,
-    borderTopWidth: 0.5,
+    //zIndex: 0,
     bottom: 0,
     left: 0,
     right: 0,
     height: 50,
-    backgroundColor: '#ffffff',
+    backgroundColor: 'white',
     shadowColor: '#000000',
     shadowOffset: {
       width: 0,
@@ -67,15 +64,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: (gScreen.width / 5 - 60) / 2,
-    zIndex: 0,
+    //zIndex: 0,
     width: 60,
     height: 60,
     borderRadius: 30,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 0.5,
-    borderColor: global.gColors.themeColor,
     shadowColor: '#000000',
     shadowOffset: {
       width: 0,
@@ -89,7 +84,7 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     bottom: 0,
-    zIndex: 1,
+    //zIndex: 1,
     height: 49.5,
     backgroundColor: 'white',
   }
@@ -117,15 +112,18 @@ export default class RudderTabBar extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.backgroundBar} />
+        <View style={styles.backgroundBar} elevation={7}/>
         {this.props.tabs.map((tab, i) => {
           let icon = this.props.activeTab == i ? this.props.selectedTabIconNames[i] : this.props.tabIconNames[i];
           let color = this.props.activeTab === i ? global.gColors.themeColor : '#999999';
           if (i == 2) {
             return (
-              <View key={i} style={styles.centerTab}>
-                <TouchableOpacity
-                  style={{ zIndex: 999 }}
+              <View key={i} style={styles.centerTab} elevation={7}>
+                <View style={styles.centerBackground} elevation={5}/>
+                <View style={styles.centerCover} elevation={5}/>     
+                <View elevation={6}>
+                  <TouchableOpacity
+                  style={{ zIndex: 999 }}   
                   activeOpacity={0.8}
                   onPress={()=>this.props.centralEvent()}
                 >
@@ -134,28 +132,27 @@ export default class RudderTabBar extends Component {
                     source={icon}
                   />
                 </TouchableOpacity>
-                <View style={styles.centerBackground} />
-                <View style={styles.centerCover}/>
+                </View>   
               </View>
             )
           } else {
             return (
-              <TouchableOpacity
-                key={i}
-                activeOpacity={0.8}
-                style={styles.tab}
-                onPress={()=>this.props.goToPage(i)}
-              >
-                <View style={styles.tabItem}>
-                  <Image
-                    style={styles.icon}
-                    source={icon}
-                  />
-                  <Text style={{color: color, fontSize: 12}}>
-                    {this.props.tabNames[i]}
-                  </Text>
-                </View>
+              <View elevation={7} key={i} style={styles.tab}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={()=>this.props.goToPage(i)}
+                >
+                  <View style={styles.tabItem}>
+                    <Image
+                      style={styles.icon}
+                      source={icon}
+                    />
+                    <Text style={{color: color, fontSize: 12}}>
+                      {this.props.tabNames[i]}
+                    </Text>
+                  </View>
               </TouchableOpacity>
+              </View>
             )
           }
         })}

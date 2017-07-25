@@ -229,7 +229,7 @@ export default class Register extends Component {
         />
         <View style={{ flex: 1, paddingHorizontal: 16}}>
           <View style={{marginVertical: 16, flexDirection: 'row', height: 40}}>
-            <Image source={require('../resource/b_register.png')} style={{width:40, height:40}}/>
+            <Image source={require('../resource/b-reg-smail.png')} style={{width:40, height:40}}/>
             <Text style={{fontWeight: 'bold', fontSize: 14, color: 'black', lineHeight: 30, marginLeft: 16}} >让更多人认识您</Text>
           </View>
           <TextInput
