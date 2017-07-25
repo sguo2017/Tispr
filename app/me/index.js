@@ -179,16 +179,16 @@ export default class MeInfo extends Component {
                       : null
                   }
                 </View>
-                <View style={{ flex: 1, justifyContent:'space-between', alignItems:'flex-start',marginLeft: 15}}>
+                <View style={{ flex: 1, alignItems:'flex-start',marginLeft: 15}}>
                   <View>
-                    <Text style={{ fontSize:16, color:'white' }}>{this.state.name}</Text>
+                    <Text style={{ fontSize:16, color:'white', marginBottom: 6}}>{this.state.name}</Text>
                   </View>
                   <View>
                     <Text style={ styles.text }>{this.state.country} {this.state.province} {this.state.city} {this.state.district}</Text>
                   </View>
                   {
                     this.props.isBrowseMode ? null :
-                      <TouchableOpacity style={styles.editButton} onPress={this.clickJump.bind(this, 'EditInfo')} >
+                      <TouchableOpacity style={[styles.editButton,{marginTop:6}]} onPress={this.clickJump.bind(this, 'EditInfo')} >
                         <Text style={{ fontSize: 12, color: 'white' }}>
                           编辑个人信息
                         </Text>
