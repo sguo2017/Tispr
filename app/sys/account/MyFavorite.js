@@ -20,7 +20,7 @@ export default class MyFavorite extends Component{
 					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={()=> this.props.navigator.pop()}
 				/>
-				<RequestsList/> 
+				<RequestsList userId={global.user.id} archived={true} navigator ={this.props.navigator}/> 
             </View>
         )
     }

@@ -27,7 +27,7 @@ export default class RequestsList extends Component {
         }),
     };
 
-    knowledgeListStore = new RequestMsgStore(KNOWLEDGE_ID, this.props.userId);
+    knowledgeListStore = new RequestMsgStore(KNOWLEDGE_ID, this.props.userId, this.props.archived);
 
     componentDidMount() {
         if (!global.user.authentication_token) {

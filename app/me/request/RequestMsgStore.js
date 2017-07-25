@@ -8,9 +8,10 @@ export default class FeedStore {
     @observable isRefreshing = false;
     @observable noResult = false;
 
-    constructor(categoryId, userId) {
+    constructor(categoryId, userId, archived) {
         this.categoryId = categoryId;
         this.userId = userId;
+        this.archived = archived;
         this.fetchFeedList();
     }
 
@@ -52,6 +53,9 @@ export default class FeedStore {
     _fetchDataFromUrl() {
         return new Promise((resolve, reject) => {
             let URL = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_INDEX + global.user.authentication_token + `&page=${this.page}&user_id=${this.userId}&qry_type=${Constant.serv_qry_type.REQUEST}`;
+            if(this.archived){
+                URL = URL + `&archived=${this.archived}`;
+            }
             Utils.get(
                 URL, 
                 (response) => {
