@@ -100,7 +100,21 @@ const styles = StyleSheet.create({
         borderBottomColor: '#a8a6b9',
         borderBottomWidth: 1,
         marginHorizontal: 16,
-    }
+    },
+    text: {
+        color: '#4A90E2',
+        fontSize: 14,
+        lineHeight: 22
+    },
+    touch: {
+        borderRadius: 2,
+        borderWidth: 1,
+        borderColor: '#4A90E2',
+        height: 28,
+        paddingHorizontal: 8,
+        marginLeft: 8,
+        marginBottom: 8
+    },
 });
 
 export default class ServOfferDelivory extends Component {
@@ -109,6 +123,7 @@ export default class ServOfferDelivory extends Component {
         super(props);
 
         this.state = {
+            choices: [false, false, false],
             serv_offer: this.props.serv_offer,
             remoteSwitchIsOn: this.props.serv_offer.via == 'remote'||this.props.serv_offer.via == 'all'?true:false ,
             localSwitchIsOn: this.props.serv_offer.via == 'local'||this.props.serv_offer.via == 'all'?true:false ,
@@ -220,7 +235,33 @@ export default class ServOfferDelivory extends Component {
                       thumbTintColor={Platform.OS == 'ios'?null:'white'}
                     />
                 </View>
+                {this.state.localSwitchIsOn?
+                <View style={{paddingHorizontal: 8, marginTop: 20}}>
+                <TouchableOpacity
+                    style={[styles.touch, {width: 118}, this.state.choices[0] && { backgroundColor: global.gColors.themeColor, }]}
+                    onPress={() => this.setState({choices: [true, false, false] })}
+                >
+                    <Text style={[styles.text, this.state.choices[0] && { color: 'white' }]}>不提供上门服务</Text>
+                </TouchableOpacity>
+                <View style={{marginTop: 16, flexWrap: 'wrap', flexDirection: 'row'}}>
+                    <TouchableOpacity
+                        style={[styles.touch, this.state.choices[1] && { backgroundColor: global.gColors.themeColor }]}
+                        onPress={() => this.setState({choices: [false, true, false] })}
+                    >
+                        <Text style={[styles.text, this.state.choices[1] && { color: 'white' }]}>5公里内</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.touch, this.state.choices[2] && { backgroundColor: global.gColors.themeColor }]}
+                        onPress={() => this.setState({ choices: [false, false, true] })}
+                    >
+                        <Text style={[styles.text, this.state.choices[2] && { color: 'white' }]}>10公里内</Text>
+                    </TouchableOpacity >
+                </View>
+                </View>
+                :<View></View>
+                }
                 </ScrollView>
+                
             </View>
         );
     }
