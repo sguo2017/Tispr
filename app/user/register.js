@@ -240,6 +240,7 @@ export default class Register extends Component {
             value={this.state.name}
             underlineColorAndroid="transparent"
             returnKeyType = 'next'
+            placeholderTextColor  = '#ccc'
             multiline = {false}
             onSubmitEditing={() => this.focusNextField('2')}
             onBlur ={()=>{if(this.state.name){this.setState({nameValid: true})}else{this.setState({nameValid: false})}}}
@@ -253,6 +254,7 @@ export default class Register extends Component {
             value={this.state.email}
             underlineColorAndroid="transparent"
             returnKeyType = 'next'
+            placeholderTextColor  = '#ccc'
             multiline = {false}
             onSubmitEditing={() => this.focusNextField('3')}
             onBlur = {
@@ -271,6 +273,7 @@ export default class Register extends Component {
             secureTextEntry={true}
             value={this.state.password}
             underlineColorAndroid="transparent"
+            placeholderTextColor  = '#ccc'
             returnKeyType = 'done'
             multiline = {false}
             onSubmitEditing={()=> {if(this.state.isEmail && this.state.name && this.state.password){this.setState({firstPage: false});}}}
