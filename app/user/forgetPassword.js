@@ -18,7 +18,9 @@ export default class forgetPassword extends Component {
 		super(props);
 		this.state =({
             email: '',
-            loginWay: 'phonenumber'
+            loginWay: 'phonenumber',
+            num: '',
+            code: ''
 		});
 
 	}
@@ -56,8 +58,16 @@ export default class forgetPassword extends Component {
     }
 
     async _smsSend() {
+        if (!this.state.num) {
+            Alert.alert(
+                '提示',
+                '请输入手机号码',
+                [{text: '确定'}]
+            )
+            return;
+        }
         try {
-        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_SPI_SMS_SEND_REGISTER_PHONE;
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SMS_SEND_ADD;
         let response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -74,15 +84,15 @@ export default class forgetPassword extends Component {
         let res = await response.text();
         let result = JSON.parse(res);
         if (response.status >= 200 && response.status < 300) {
-            if(result.status == -1){
-            Alert.alert(
-                '提示',
-                '手机号已被注册',
-                [
-                { text: '确定'},
-                ]
-            )
-            }
+            // if(result.status == -1){
+            // Alert.alert(
+            //     '提示',
+            //     '手机号已被注册',
+            //     [
+            //     { text: '确定'},
+            //     ]
+            // )
+            // }
             if(result.status == 0){
             Alert.alert(
                 '提示',
@@ -109,8 +119,63 @@ export default class forgetPassword extends Component {
         }
     }
 
-    passwordComfirm() {
-        this.props.navigator.push({ component: PasswordConfirm})
+    async passwordComfirm() {
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHANGE_PHONE;
+            let response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                user: {                   
+                    num: this.state.num,
+                    code: this.state.code,
+                }
+                })
+            });
+            let res = await response.text();
+            let result = JSON.parse(res);
+            console.log(result.status)
+            if (response.status >= 200 && response.status < 300) {
+                if(result.status == -2){
+
+                }else if(result.error){
+                Alert.alert(
+                    '提示',
+                    '验证码不正确',
+                    [
+                    { text: '确定'},
+                    ]
+                )} else {
+                    this.props.navigator.push({ component: PasswordConfirm})
+                }
+            //     }else if(result.user){
+            //     let userdetail =JSON.parse(result.user);    
+            //     UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
+            //     global.user = global.user = userdetail;
+            //     global.user.addressComponent = address;
+            //     global.user.authentication_token = result.token;  
+            //     this._navigatePerInfo();
+            //     }        
+            // } else {
+            //     UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
+            //     let error = res;
+            //     throw error;
+            // }
+            // } catch (error) {
+            // this.setState({ error: error });
+            // console.log("error " + error);
+            // Alert.alert(
+            //     '提示',
+            //     '失败'+error,
+            //     [
+            //     { text: '注册失败'},
+            //     ]
+            // )
+            // this.setState({ showProgress: false });
+            // }
+        }
     }
 
     render(){
@@ -181,7 +246,7 @@ export default class forgetPassword extends Component {
                             ref = "4"
                             underlineColorAndroid="#eeeeee"
                             multiline = {false}
-                            onChangeText={(text) => this.setState({ password2: text })}
+                            onChangeText={(text) => this.setState({ code: text })}
                             placeholder="输入短信验证码"
                             placeholderTextColor="#cccccc"
                             returnKeyType = 'done'
