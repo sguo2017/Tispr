@@ -7,15 +7,18 @@ import {
 	TouchableHighlight,
     Alert,
     TextInput,
-    Image
+    Image,
+    ScrollView
 } from 'react-native'
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
+import PasswordConfirm from '../sys/account/changePassword'
 export default class forgetPassword extends Component {
     constructor(props) {
 		super(props);
 		this.state =({
-			email: '',
+            email: '',
+            loginWay: 'phonenumber'
 		});
 
 	}
@@ -52,37 +55,171 @@ export default class forgetPassword extends Component {
         }
     }
 
+    async _smsSend() {
+        try {
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_SPI_SMS_SEND_REGISTER_PHONE;
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+            sms_send: {
+                recv_num: this.state.num,
+                sms_type: "code",
+            }
+            })
+        });
+        let res = await response.text();
+        let result = JSON.parse(res);
+        if (response.status >= 200 && response.status < 300) {
+            if(result.status == -1){
+            Alert.alert(
+                '提示',
+                '手机号已被注册',
+                [
+                { text: '确定'},
+                ]
+            )
+            }
+            if(result.status == 0){
+            Alert.alert(
+                '提示',
+                '短信验证码发送成功（验证码为'+ result.send_content + '测试临时通知)',
+                [
+                { text: '确定'},
+                ]
+            )
+            }
+        } else {
+            let error = res;
+            throw error;
+        }
+        } catch (error) {
+        this.setState({ error: error });
+        Alert.alert(
+            '提示',
+            '失败',
+            [
+            { text: '短信验证发送失败', onPress: () => console.log('确定') },
+            ]
+        )
+        this.setState({ showProgress: false });
+        }
+    }
+
+    passwordComfirm() {
+        this.props.navigator.push({ component: PasswordConfirm})
+    }
+
     render(){
+        const emailView = (
+        <View style={{ flex: 1, padding: 16 }}>
+            <ScrollView>
+            <View style={{flexDirection: 'row'}}>
+                <Image source={require('../resource/b_key.png')} style={{width: 33, height: 32, marginRight: 10}}/>
+                <Text style={{color: '#1B2833', fontSize: 14, fontWeight: 'bold', lineHeight: 25}}>重置密码</Text>
+            </View>
+            <Text style={{color:'#999999', fontSize: 12, marginTop: 26}}>我们将向您注册的电子邮箱发送验证码</Text>
+            <TextInput
+                style={styles.input}
+                multiline = {false}
+                underlineColorAndroid="#eeeeee"
+                value={this.state.email}
+                onChangeText={(val)=>this.setState({ email: val})}
+                returnKeyType = 'done'
+                returnKeyLabel = 'done'
+                onSubmitEditing = {this.sendEmail.bind(this)}
+                placeholder = '填写您注册时使用的电子邮箱'
+                placeholderTextColor = '#cccccc'
+            />
+            </ScrollView>
+            <TouchableHighlight style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:22, flexShrink: 0, width: global.gScreen.width }]}
+                onPress={this.sendEmail.bind(this)}
+            >
+                <Text style={styles.buttonText}>
+                    下一步
+                </Text>
+            </TouchableHighlight>
+        </View>
+        );
+        const smsView = (
+        <View style={{ flex: 1, padding: 16 }}>
+            <ScrollView>
+                <View style={{flexDirection: 'row'}}>
+                    <Image source={require('../resource/b_key.png')} style={{width: 32, height: 32, marginRight: 10}}/>
+                    <Text style={{color: '#1B2833', fontSize: 14, fontWeight: 'bold', lineHeight: 25}}>重置密码</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 16, minHeight: 48 }}>
+                    <TouchableOpacity style={styles.countryButton} onPress={()=>this.props.navigator.push({component:nationWarning,name:'nationWarning'})}>
+                        <Image style={{ height: 12, width: 18, marginRight: 9 }} source={require('../resource/ico-china.png')} />
+                        <Text style={{ fontSize: 16, color: '#1b2833' }}>+86</Text>
+                        <Image style={{ height: 24, width: 24 }} source={require('../resource/g-arrow-drop-down.png')} />
+                    </TouchableOpacity>
+                    <View style={{ flex: 1, justifyContent: 'center'}}>
+                        <TextInput
+                        keyboardType='numeric'
+                        ref = "3"
+                        style={styles.input}
+                        underlineColorAndroid="#eeeeee"
+                        multiline = {false}
+                        onChangeText={(text) => this.setState({ num: text })}
+                        placeholder="输入您注册时的手机号"
+                        placeholderTextColor="#cccccc"
+                        value ={this.state.num}
+                        returnKeyType = 'next'
+                        returnKeyLabel = 'next'
+                        onSubmitEditing={() => this.focusNextField('4')}
+                        />
+                    </View>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, minHeight: 48 }}>
+                    <View style={{ flex: 1, justifyContent: 'center', marginRight: -4}}>
+                        <TextInput
+                            ref = "4"
+                            underlineColorAndroid="#eeeeee"
+                            multiline = {false}
+                            onChangeText={(text) => this.setState({ password2: text })}
+                            placeholder="输入短信验证码"
+                            placeholderTextColor="#cccccc"
+                            returnKeyType = 'done'
+                            returnKeyLabel = 'done'
+                            style={{fontSize: 16}}
+                        />
+                    </View>
+                    <TouchableOpacity 
+                         onPress={this._smsSend.bind(this)}
+                        style={{borderBottomColor: '#eeeeee', borderBottomWidth: 1, height: 41}}
+                    >
+                        <Text style={{color: '#4A90E2', fontSize: 14, lineHeight: 33}}>获取短信验证码</Text>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={() => this.setState({ loginWay: 'email' })}>
+                    <Text style={{ color: '#4A90E2', marginLeft: 4}}>
+                    使用邮箱重置
+                    </Text>
+                </TouchableOpacity>
+            </ScrollView>
+            <TouchableHighlight style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:22, flexShrink: 0, width: global.gScreen.width }]}
+                onPress={this.passwordComfirm.bind(this)}
+            >
+                <Text style={styles.buttonText}>
+                    下一步
+                </Text>
+            </TouchableHighlight>
+        </View>
+        );
+
         return(
-            <View style={{height:global.gScreen.height}}>
+            <View style={{height:global.gScreen.height,backgroundColor: 'white'}}>
                 <Header
-					title='忘记密码'
+					title='重置密码'
 					leftIcon={require('../resource/ic_back_white.png')}
 					leftIconAction={()=> this.props.navigator.pop()}
 				/>
-                <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center',margin:10}}>
-                    <TextInput
-                    style={{flexDirection:'row',width: 330}}
-                    multiline={false}
-                    placeholder='mail@examlple.com'
-                    value={this.state.email}
-                    onChangeText={(val)=>this.setState({ email: val})}
-                    returnKeyType = 'done'
-                    returnKeyLabel = 'done'
-                    onSubmitEditing = {this.sendEmail.bind(this)}
-                    />
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',marginLeft:10 }}>
-                    <Image style={{ height: 20, width: 30 }} source={require('../resource/b_correct.png')} />
-                    <Text style={{fontSize:16,color:global.gColors.themeColor}}>您现在使用的电子邮箱</Text>
-                </View>
-                <TouchableHighlight style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:22, flexShrink: 0, width: global.gScreen.width }]}
-                    onPress={this.sendEmail.bind(this)}
-                >
-                    <Text style={styles.buttonText}>
-                        确定
-                    </Text>
-                </TouchableHighlight>
+                {this.state.loginWay == 'email' ? emailView : smsView}
             </View>
         )
     }
@@ -93,9 +230,18 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: 10,
     //padding: 4,
-    fontSize: 18,
+    fontSize: 16,
     borderWidth: 0,
     // borderColor: '#48bbec'
+  },
+  countryButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor: '#eeeeee',
+    borderBottomWidth: 1,
+    height: 43,
+    marginRight: 18,
   },
   button: {
     height: 50,

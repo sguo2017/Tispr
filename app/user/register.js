@@ -299,7 +299,7 @@ export default class Register extends Component {
 
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 16, minHeight: 48 }}>
             <TouchableOpacity style={styles.countryButton} onPress={()=>this.props.navigator.push({component:nationWarning,name:'nationWarning'})}>
-              <Image style={{ height: 12, width: 18, marginRight: 9 }} source={require('../resource/qk_china_flag.png')} />
+              <Image style={{ height: 12, width: 18, marginRight: 9 }} source={require('../resource/ico-china.png')} />
               <Text style={{ fontSize: 16, color: '#1b2833' }}>+86</Text>
               <Image style={{ height: 24, width: 24 }} source={require('../resource/g-arrow-drop-down.png')} />
             </TouchableOpacity>
