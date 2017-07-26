@@ -116,6 +116,7 @@ export default class Login extends Component {
                 { text: '登录失败'},
               ]
             )
+            this.setState({ showProgress: false });
         }        
         if(result.user && result.token){
           let userdetail = JSON.parse(result.user);
@@ -374,7 +375,7 @@ export default class Login extends Component {
           leftIconAction={this._onBack}
         />
         {this.state.loginWay == 'email' ? emailView : smsView}
-        <Loading text="登陆中" isShow={this.state.showProgress} />    
+        <Loading text="登录中" isShow={this.state.showProgress} />    
       </View>
     );
   }

@@ -26,7 +26,7 @@ export default class accountSetting extends Component {
                 <TouchableOpacity style={styles.rectangle_view} onPress={()=> this.props.navigator.push({component:changePhone,name:'changePhone'})}>
 					<Text style={styles.rectangle_text} >手机号码</Text>
 					<View style={{flexDirection: 'row'}}>
-						<Text>{global.user.name}</Text>
+						<Text>{global.user.num}</Text>
 						<Image source={require('../../resource/g_chevron right.png')}/>
 					</View>
 				</TouchableOpacity>
