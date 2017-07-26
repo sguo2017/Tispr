@@ -411,7 +411,7 @@ export default class ServOfferDetail extends Component {
                         mine? this.setState({ isMine: true}):this.setState({ show_report: true });
                         }
                     }
-                    rightIcon2={require('../resource/b_info.png')}
+                    rightIcon2={require('../resource/w-share.png')}
                     rightIcon2Action={() => this.setState({ show_share: true })}
                     style={{ height: 50 }}
                 />
