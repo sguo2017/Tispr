@@ -66,6 +66,9 @@ let error_type = {
 let default_img={
     AVATAR:'http://47.92.27.52:8080/group1/M00/00/04/ezid6Vk98BqAFb5QAAAQGOym6eI771.jpg'
 }
+
+let offer_range = ["不上门","5公里内","10公里内","15公里内","25公里内","50公里内","100公里内"];
+
 let url = {
     //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
      IMG_SERV_ADDR: "47.92.27.52",
@@ -154,5 +157,6 @@ export default {
     default_img: default_img,
     orderStatus: orderStatus,
     order_qry_type: order_qry_type,
-    error_type: error_type
+    error_type: error_type,
+    offer_range: offer_range,
 }
