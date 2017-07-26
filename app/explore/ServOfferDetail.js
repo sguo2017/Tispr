@@ -33,9 +33,10 @@ import UserDefaults from '../common/UserDefaults';
 import resTimes from '../buzz/restTimes';
 import totalResTimes from '../buzz/totalResTimes';
 import noConnectTimes from '../buzz/noConnectTimes';
-import AutoTextInput from '../components/AutoTextInput'
-import offerEdit from '../me/offerEdit'
-import Util from '../common/utils'
+import AutoTextInput from '../components/AutoTextInput';
+import offerEdit from '../me/offerEdit';
+import Util from '../common/utils';
+import Me from '../me/index';
 const screenW = Dimensions.get('window').width;
 
 const msg1 = '你发布的专业服务很棒！';
@@ -394,12 +395,24 @@ export default class ServOfferDetail extends Component {
         this.modelTextInput.focus();
         });
     }
+
+    _onPressAvatar = (id) => {
+        this.props.navigator.push({
+            component: Me,
+            passProps: {
+                isBrowseMode: true,
+                close: () => {
+                    this.props.navigator.pop();
+                },
+                id: id
+            }
+        });
+    }
+
     render() {
         const { feed } = this.props;
         let _images = feed.serv_images.split(',');
         let mine = feed.user.id === global.user.id? true : false;
-        console.log(feed)
-        console.log("服务范围402"+feed.province)
         return (
             <View style={styles.listView}>
                 <Header
@@ -420,7 +433,9 @@ export default class ServOfferDetail extends Component {
                     <View style={{ paddingHorizontal: 16, justifyContent: 'space-between', backgroundColor: 'white' }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, height: 48, }}>
                             <View style={{ justifyContent: 'space-around', flexDirection: 'row', }}>
-                                <Image style={{ width: 32, height: 32, borderRadius: 16 }} source={{ uri: feed.user.avatar }} defaultsource={require('../resource/user_default_image.png')}></Image>
+                                <TouchableOpacity onPress={this._onPressAvatar.bind(this, feed.user.id)}>
+                                    <Image style={{ width: 32, height: 32, borderRadius: 16 }} source={{ uri: feed.user.avatar }} defaultsource={require('../resource/user_default_image.png')}></Image>
+                                </TouchableOpacity>
                                 <View style={{ marginLeft: 8, marginTop: -5 }}>
                                     <Text style={{ fontSize: 14, lineHeight: 20, color: '#000' }}>{feed.user.name}</Text>
                                     {
@@ -655,11 +670,11 @@ export default class ServOfferDetail extends Component {
                                 {!this.state.isFavorited?
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image source={require('../resource/b-archive.png')} />
-                                    <Text style={styles.modalText}>存档</Text>
+                                    <Text style={styles.modalText}>收藏</Text>
                                 </View>:
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image source={require('../resource/y-check-r.png')} />
-                                    <Text style={{ lineHeight: 21 }}>已存档</Text>
+                                    <Text style={{ lineHeight: 21 }}>已收藏</Text>
                                 </View>}
                             </TouchableOpacity>
                             <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
