@@ -241,6 +241,10 @@ export default class Login extends Component {
     const emailView = (
       <View style={{ flex: 1, padding: 16 }}>
         <ScrollView>
+        <View style={{flexDirection: 'row'}}>
+          <Image source={require('../resource/b-reg-smail.png')} style={{width: 32, height: 32, marginRight: 10}}/>
+          <Text style={{color: '#1B2833', fontSize: 14, fontWeight: 'bold', lineHeight: 25}}>欢迎回来</Text>
+        </View>
         <View style={{ justifyContent: 'center', minHeight: 48}}>
           <AutoTextInput
             ref="1"
@@ -298,14 +302,16 @@ export default class Login extends Component {
       </View>
     );
     const smsView = (
-
       <View style={{ flex: 1, padding: 16 }}>
         <ScrollView>
-        <Text style={{ color: '#1b2833', fontSize: 14, fontWeight: 'bold' }}>使用手机号码登录</Text>
+        <View style={{flexDirection: 'row'}}>
+          <Image source={require('../resource/b-reg-smail.png')} style={{width: 32, height: 32, marginRight: 10}}/>
+          <Text style={{color: '#1B2833', fontSize: 14, fontWeight: 'bold', lineHeight: 25}}>欢迎回来</Text>
+        </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 16, minHeight: 48 }}>
           <TouchableOpacity style={styles.countryButton} onPress={()=>this.props.navigator.push({component:nationWarning,name:'nationWarning'})}>
-            <Image style={{ height: 12, width: 18, marginRight: 9 }} source={require('../resource/qk_china_flag.png')} />
+            <Image style={{ height: 12, width: 18, marginRight: 9 }} source={require('../resource/ico-china.png')} />
             <Text style={{ fontSize: 16, color: '#1b2833' }}>+86</Text>
             <Image style={{ height: 24, width: 24 }} source={require('../resource/g-arrow-drop-down.png')} />
           </TouchableOpacity>
@@ -335,7 +341,7 @@ export default class Login extends Component {
               underlineColorAndroid="transparent"
               multiline = {false}
               onChangeText={(text) => this.setState({ password2: text })}
-              placeholder="密码"
+              placeholder="输入密码(8-16位字符)"
               placeholderTextColor="#cccccc"
               secureTextEntry={this.state.seePassword2}
               value ={ this.state.password2}
@@ -367,13 +373,14 @@ export default class Login extends Component {
         </TouchableOpacity>
       </View>
     );
+    let title = this.state.loginWay == 'email' ?'邮箱登录':'手机登录';
     return (
       <View style={styles.container}>
-        <Header
-          title='登录'
+         <Header
+          title={title}
           leftIcon={require('../resource/ic_back_white.png')}
           leftIconAction={this._onBack}
-        />
+        /> 
         {this.state.loginWay == 'email' ? emailView : smsView}
         <Loading text="登录中" isShow={this.state.showProgress} />    
       </View>

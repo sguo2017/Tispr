@@ -481,7 +481,7 @@ export default class ServOfferDetail extends Component {
                                 </TouchableOpacity>
                             </View>
                     }
-                    <View style={{paddingHorizontal:16,paddingVertical: 10}}>
+                    <View style={{paddingHorizontal:16,paddingVertical: 10, backgroundColor: 'white'}}>
                         {   
                             feed.via == 'local' ?<Text>提供{feed.province}{feed.city}{feed.district}{Constant.offer_range[feed.range]}的服务</Text>  :<Text></Text>                        
                         }
@@ -516,7 +516,7 @@ export default class ServOfferDetail extends Component {
                     }
                     {
                         this.state.offerList.length > 0 ?
-                            <View style={{ justifyContent: 'space-around', alignItems: 'center', marginTop: 2 }}>
+                            <View style={{ justifyContent: 'space-around', alignItems: 'center', marginTop: 2, backgroundColor: '#eeee' }}>
                                 <Text style={{ color: '#9E9E9E', fontSize: 14, paddingVertical: 20 }}>相关服务</Text>
                             </View>
                             :
@@ -524,7 +524,7 @@ export default class ServOfferDetail extends Component {
                     }
 
 
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: '#eeee' }}>
                         {
 
                             this.state.offerList.map((data, index) => {
@@ -760,7 +760,7 @@ const styles = StyleSheet.create({
     },  
     listView: {
         flex: 1,
-        backgroundColor: '#fff',
+       // backgroundColor: '#fff',
     },
     modal: {
         marginTop: 300,
@@ -914,7 +914,7 @@ const OfferItem = ({
             onPress={onPress}
         >
             <CachedImage
-                style={{ width: width, height: imageH }}
+                style={{ width: width, height: imageH, borderRadius: 4 }}
                 defaultSource={require('../resource/qk_nav_default.png')}
                 source={serv_image}
             />
