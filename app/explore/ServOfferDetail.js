@@ -399,7 +399,7 @@ export default class ServOfferDetail extends Component {
         let _images = feed.serv_images.split(',');
         let mine = feed.user.id === global.user.id? true : false;
         console.log(feed)
-        console.log(global.user.id)
+        console.log("服务范围402"+feed.province)
         return (
             <View style={styles.listView}>
                 <Header
@@ -468,7 +468,13 @@ export default class ServOfferDetail extends Component {
                     }
                     <View style={{paddingHorizontal:16,paddingVertical: 10}}>
                         {   
-                            feed.via == 'all' ?<Text>远程或附近</Text>:feed.via == 'local'?<Text>附近</Text>:<Text>远程</Text>
+                            feed.via == 'local' ?<Text>提供{feed.province}{feed.city}{feed.district}{Constant.offer_range[feed.range]}的服务</Text>  :<Text></Text>                        
+                        }
+                        {
+                            feed.via == 'remote'? <Text>提供远程服务</Text>:<Text></Text>
+                        }
+                        {
+                            feed.via == 'all'?<Text>提供远程服务，以及提供{feed.province}{feed.city}{feed.district}{Constant.offer_range[feed.range]}的服务</Text>:<Text></Text>
                         }
                     </View>
                     {
