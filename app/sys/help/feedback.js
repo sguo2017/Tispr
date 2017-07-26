@@ -10,7 +10,8 @@ import {
 	TextInput,
 	Alert,
 	Platform,
-	PixelRatio
+    PixelRatio,
+    Keyboard
 } from 'react-native'
 import Header from '../../components/HomeNavigation';
 import Setting from '../Setting';
@@ -101,7 +102,10 @@ export default class feedback extends Component {
                     }
                 })
             });
-			let res = await response.text();
+            let res = await response.text();
+            console.log(response.status)
+            const dismissKeyboard = require('dismissKeyboard'); 
+            dismissKeyboard();
             if (response.status >= 200 && response.status < 300) {
                 this.props.navigator.push({
 					name:'feedbackSuccess',

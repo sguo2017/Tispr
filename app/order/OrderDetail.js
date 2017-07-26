@@ -19,6 +19,7 @@ import Constant from '../common/constants';
 import CloseDeal from './CloseDeal';
 import ProposeDeal from './ProposeDeal'
 import Util from '../common/utils'
+import OrderConfirm from './OrderConfirm'
 const screenW = Dimensions.get('window').width;
 
 export default class OrderDetail extends Component {
@@ -39,17 +40,14 @@ export default class OrderDetail extends Component {
         });
         }
     }  
-    _rightButtonClick() {  
-        this._setModalVisible();  
+    _rightButtonClick() {
+        let order_id = this.props.feed.id;
+        this.props.navigator.push({
+            component: OrderConfirm,
+            passProps: {order_id}
+        })
     }  
     
-    // 显示/隐藏 modal  
-    _setModalVisible() {  
-        let isShow = this.state.show;  
-        this.setState({  
-        show:!isShow,  
-        });  
-    }  
     async _createChat(_deal_id){
         let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
         let data = {
@@ -61,35 +59,6 @@ export default class OrderDetail extends Component {
             }
         }
         Util.post(URL, data, ()=>{console.log("创建会话成功")}, this.props.navigator)
-    }
-    async clickJump() {
-        let isShow = this.state.show;  
-        let t = global.user.authentication_token;
-        let order_id = this.props.feed.id;
-        let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_UPDATE +'/' +order_id +'?token='+ t;            
-        let data = {
-            order: {
-                    status: Constant.orderStatus.CONFIRMED,
-            }
-        };
-        Util.patch(
-            url,
-            data,
-            (response)=>{
-                this._createChat(order_id);
-                this.setState({  
-                    show:!isShow,  
-                });
-                const { navigator } = this.props;
-                if (navigator) {
-                navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
-                    name: "CloseDeal",
-                    component: CloseDeal,
-                });
-                }
-            },
-            this.props.navigator
-        )    
     }
     render(){
         const { feed } = this.props;
@@ -174,41 +143,6 @@ export default class OrderDetail extends Component {
                     : <View></View>
                     }
                 </View>
-                 <Modal  
-                    animationType='slide'  
-                    transparent={true}  
-                    visible={this.state.show}  
-                    onShow={() => {}}  
-                    onRequestClose={() => {}} >  
-                    <View style={styles.modalStyle}>  
-                        <View style={styles.subView}>  
-                        <Text style={styles.titleText}>  
-                           您是否确认本次交易？
-                        </Text>  
-                        <Text style={styles.contentText}>  
-                            如果您确认了交易，将会产生订单，并开始分配服务  
-                        </Text>  
-                        <View style={styles.horizontalLine} />  
-                        <View style={styles.buttonView}>  
-                            <TouchableHighlight underlayColor='transparent'  
-                            style={styles.buttonStyle}  
-                            onPress={this._setModalVisible.bind(this)}>  
-                            <Text style={styles.buttonText}>  
-                                取消  
-                            </Text>  
-                            </TouchableHighlight>  
-                            <View style={styles.verticalLine} />  
-                            <TouchableHighlight underlayColor='transparent'  
-                            style={styles.buttonStyle}  
-                            onPress={this.clickJump.bind(this)}>  
-                            <Text style={styles.buttonText}>  
-                                确定  
-                            </Text>  
-                            </TouchableHighlight>  
-                        </View>  
-                        </View>  
-                    </View>  
-                    </Modal>  
             </View>
         )
     }

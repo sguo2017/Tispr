@@ -11,6 +11,7 @@ import {
   Alert,
   Image,
   Platform,
+  ScrollView
 } from 'react-native';
 
 import TabBarView from '../containers/TabBarView';
@@ -227,7 +228,7 @@ export default class Register extends Component {
           rightButton='下一步'
           rightButtonAction={()=> {if(this.state.isEmail && this.state.name && this.state.password){this.setState({firstPage: false});}}}
         />
-        <View style={{ flex: 1, paddingHorizontal: 16}}>
+        <ScrollView style={{ paddingHorizontal: 16}}>
           <View style={{marginVertical: 16, flexDirection: 'row', height: 40}}>
             <Image source={require('../resource/b-reg-smail.png')} style={{width:40, height:40}}/>
             <Text style={{fontWeight: 'bold', fontSize: 14, color: 'black', lineHeight: 30, marginLeft: 16}} >让更多人认识您</Text>
@@ -283,7 +284,7 @@ export default class Register extends Component {
           </TouchableOpacity>
           </View>*/}
           {this.state.passwordValid? <Text>8-16位字符组成，不能包含空格</Text>:<Text style ={styles.redText}>密码不能为空</Text>}
-        </View>
+        </ScrollView>
       </View>
     );
     const phoneVerify = (
@@ -293,7 +294,7 @@ export default class Register extends Component {
           leftIcon={require('../resource/ic_back_white.png')}
           leftIconAction = {()=>this.setState({firstPage: true})}
         />
-        <View style ={{ flex: 1, padding: 16}}>
+        <View style ={{padding: 16}}>
           <Text style={{ color: '#1b2833', fontSize: 14, fontWeight: 'bold' }}>请输入你的手机号码验证账号</Text>
 
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 16, minHeight: 48 }}>

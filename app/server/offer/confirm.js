@@ -21,6 +21,7 @@ import Header from '../../components/HomeNavigation';
 import Constant from '../../common/constants';
 import TabBarView from '../../containers/TabBarView';
 import Loading from '../../components/Loading';
+import uploadImage from './uploadImage'
 
 export default class ServOfferConfirm extends Component {
 
@@ -153,13 +154,9 @@ export default class ServOfferConfirm extends Component {
 
     async onServOfferPres() {
         if(undefined === this.state.serv_offer.avatarSourceArray || this.state.serv_offer.avatarSourceArray.length <= 0){
-            Alert.alert(
-                    '提示',
-                    '请至少提交一张图片',
-                    [
-                        { text: '继续编辑', onPress: () => console.log('确定') },
-                    ]
-                );
+            this.props.navigator.push({
+                component: uploadImage
+            })
             return;
         }
 
