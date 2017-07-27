@@ -387,6 +387,7 @@ export default class ServOfferList extends Component {
           animationType='slide'
           transparent={true}
           visible={this.state.show}
+          onRequestClose={() => { }}
         >
           <View style={{ position: 'absolute', zIndex: 1, backgroundColor: 'black', width: gScreen.width, height: gScreen.height, opacity: 0.5 }} />
           <View style={styles.modalStyle}>

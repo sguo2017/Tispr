@@ -210,7 +210,7 @@ const MarkItem = ({
       onPress={onPress}
     >
       <CachedImage
-        style={{ width: width, height: imageH }}
+        style={{ width: width, height: imageH, borderRadius: 4 }}
         defaultSource={require('../../resource/qk_nav_default.png')}
         source={serv_image}
       />

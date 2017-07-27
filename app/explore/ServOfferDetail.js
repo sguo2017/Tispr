@@ -14,7 +14,8 @@ import {
     Modal,
     Alert,
     Platform,
-    AsyncStorage
+    AsyncStorage,
+    TouchableWithoutFeedback
 } from 'react-native'
 import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
 import { observer } from 'mobx-react/native'
@@ -547,9 +548,12 @@ export default class ServOfferDetail extends Component {
                     transparent={true}
                     visible={this.state.show_share}
                     onShow={() => { }}
-                    onRequestClose={() => { }}>
+                    onRequestClose={() => { }}
+                >
+                    <TouchableWithoutFeedback style={{flex: 1}} onPress={()=> this.setState({show_share: false})}>
                     <View style={styles.container}>
                     <View style={styles.modal}>
+                        <TouchableWithoutFeedback  onPress={() => {}}>
                         <View style={{ borderRadius: 16, backgroundColor: 'white', height: 112}}>
                             <View style={styles.share}>
                                 <TouchableOpacity style={styles.item}>
@@ -570,6 +574,7 @@ export default class ServOfferDetail extends Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
+                        </TouchableWithoutFeedback>
                         <TouchableOpacity 
                             onPress={() => this.setState({ show_share: false })} 
                             style={{ alignItems: 'center', justifyContent: 'center',marginTop: 6, borderRadius: 16, backgroundColor: 'white', height: 56}}>
@@ -577,12 +582,14 @@ export default class ServOfferDetail extends Component {
                         </TouchableOpacity>
                     </View>
                     </View>
+                    </TouchableWithoutFeedback>
                 </Modal>
                 {/*相关服务列表快捷回复弹窗*/}
                 <Modal
                     animationType='slide'
                     transparent={true}
                     visible={this.state.show}
+                    onRequestClose={() => { }}
                 >
                     <View style={styles.modalStyle}>
                         <View style={[styles.subView, { height: 430 }]}>
@@ -656,9 +663,12 @@ export default class ServOfferDetail extends Component {
                     animationType='slide'
                     transparent={true}
                     visible={this.state.show_report}
+                    onRequestClose={() => { }}
                 >
+                    <TouchableWithoutFeedback style={{flex: 1}} onPress={() => this.setState({show_report: false})}>
                     <View style={styles.container}> 
                     <View style={styles.modal}>
+                        <TouchableWithoutFeedback  onPress={() => {}}>
                         <View style={{ borderRadius: 16, backgroundColor: 'white'}}>
                             <TouchableOpacity 
                                 style={[styles.modalItem, {alignItems: 'center', justifyContent:'center',}]}
@@ -692,9 +702,9 @@ export default class ServOfferDetail extends Component {
                             <View style={[styles.modalItem, {justifyContent: 'center', alignItems: 'center' }]}>
                                 <Text style={{ fontSize: 14, lineHeight: 20 }}>已举报</Text>
                             </View>
-                            }
-                            
+                            }    
                         </View>
+                        </TouchableWithoutFeedback>
                         <TouchableOpacity 
                             onPress={() => this.setState({ show_report: false })} 
                             style={{ alignItems: 'center', justifyContent: 'center', marginTop: 6, borderRadius: 16, backgroundColor: 'white', height: 56}}>
@@ -702,6 +712,7 @@ export default class ServOfferDetail extends Component {
                         </TouchableOpacity>
                     </View>
                     </View>
+                    </TouchableWithoutFeedback>
                 </Modal>
                 <Modal
                     animationType='slide'
