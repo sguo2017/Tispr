@@ -20,6 +20,7 @@ import {
 import Header from '../../components/HomeNavigation';
 import ServOfferConfirm from './confirm';
 import Picker from 'react-native-picker';
+import { Geolocation } from 'react-native-baidu-map';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -148,7 +149,11 @@ export default class ServOfferDelivory extends Component {
             return;
         }
         if (navigator) {
-            navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
+            if(this.props.editOffer){
+                this.props.getdata(this.state.serv_offer);
+                navigator.pop();
+            }else{
+                navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
                 name: "ServOfferConfirm",
                 component: ServOfferConfirm,
                 passProps: {
@@ -158,6 +163,7 @@ export default class ServOfferDelivory extends Component {
                     }
                 }
             });
+            }    
         }
     }
 
@@ -174,9 +180,31 @@ export default class ServOfferDelivory extends Component {
         navigator.geolocation.clearWatch(this.watchID);
     }
     componentWillMount(){
+
+
         if(this.state.localSwitchIsOn){
-            this._showAreaPicker();
+            this._showAreaPicker(true);
         }
+    }
+    componentDidMount() {
+        let _that = this
+
+        Geolocation.getCurrentPosition()
+        .then(data => {
+            console.log("获取经纬度"+JSON.stringify(data));   
+            if(data != null){
+                this.state.serv_offer.district = data.district;
+                this.state.serv_offer.city = data.city;
+                this.state.serv_offer.province = data.province;
+                this.state.serv_offer.country = data.country;
+                this.state.serv_offer.latitude = data.latitude;
+                this.state.serv_offer.longitude = data.longitude;
+            }
+         })
+         .catch(e =>{
+            console.warn(e, 'error');           
+        })
+
     }
     renderProgressView = () => {
         if (Platform.OS == 'ios') {
@@ -255,7 +283,7 @@ export default class ServOfferDelivory extends Component {
                         <Text style={styles.textStyle}>本地</Text>
                         <Text style={styles.subtext}>
                             您的服务范围设置在 &nbsp;
-                            <Text>{global.user.addressComponent.district}，{global.user.addressComponent.city}，{global.user.addressComponent.province}，{global.user.addressComponent.country}</Text>
+                            <Text>{this.state.serv_offer.country}，{this.state.serv_offer.province}，{this.state.serv_offer.city}，{this.state.serv_offer.district}</Text>
                         </Text>
                     </View>
                     <Switch

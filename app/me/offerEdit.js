@@ -22,7 +22,7 @@ import Constant from '../common/constants';
 import TabBarView from '../containers/TabBarView';
 import Loading from '../components/Loading';
 import AutoTextInput from '../components/AutoTextInput'
-
+import delivery from '../server/offer/delivory';
 export default class ServOfferConfirm extends Component {
 
     constructor(props) {
@@ -32,7 +32,7 @@ export default class ServOfferConfirm extends Component {
             catalog: this.props.feed.catalog,
             serv_title: this.props.feed.serv_title,
             serv_detail: this.props.feed.serv_detail,
-            serv_offer: this.props.serv_offer,
+            serv_offer: this.props.feed,
             serv_images: this.props.feed.serv_images,
             fileName: this.props.fileName,
             avatarSourceArray: this.props.feed.serv_images.split(','),            
@@ -214,13 +214,14 @@ export default class ServOfferConfirm extends Component {
                         serv_title: this.state.serv_title,
                         serv_detail: this.state.serv_detail,
                         serv_images: uploadedImages,
-                        district: global.user.addressComponent.district,
-                        city: global.user.addressComponent.city,
-                        province: global.user.addressComponent.province,
-                        country: global.user.addressComponent.country,
-                        latitude: global.user.addressComponent.latitude,
-                        longitude: global.user.addressComponent.longitude,
-                        status: Constant.sys_msgs_status.CREATED
+                        district: this.state.serv_offer.district,
+                        city: this.state.serv_offer.city,
+                        province: this.state.serv_offer.province,
+                        country: this.state.serv_offer.country,
+                        latitude: this.state.serv_offer.latitude,
+                        longitude: this.state.serv_offer.longitude,
+                        status: Constant.sys_msgs_status.CREATED,
+                        range: this.state.serv_offer.range,
                         //goods_catalog_id: this.state.serv_offer.goods_catalogs_id,
                         //via: this.state.serv_offer.via,
                     }
@@ -363,12 +364,12 @@ export default class ServOfferConfirm extends Component {
                     <View style={styles.rowView}>
                         <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../resource/b_location.png')} />
                         <View style={styles.rowTextView}>
-                            <AutoTextInput 
-                                underlineColorAndroid="transparent"
-                                style={styles.contentText}
-                                value={global.user.addressComponent.district+'，'+global.user.addressComponent.city+'，'+global.user.addressComponent.province+'，'+global.user.addressComponent.country}
-                            />
-                            
+                            <Text 
+                                style={[styles.contentText, {paddingBottom: 10}]}
+                                onPress={()=>{let _this = this;this.props.navigator.push({component:delivery, passProps:{serv_offer:this.props.feed, editOffer: true, getdata:(offer)=>_this.state.serv_offer = offer}})}}
+                            >
+                                {this.state.serv_offer.province + '，' + this.state.serv_offer.city + '，'+ this.state.serv_offer.district + '，'+ Constant.offer_range[this.state.serv_offer.range]}
+                            </Text>
                         </View>
                     </View>
 

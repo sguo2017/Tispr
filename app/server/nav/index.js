@@ -13,7 +13,7 @@ import {
     PixelRatio,
     Alert,
     Dimensions,
-    ScrollView
+    FlatList
 } from 'react-native'
 import { CachedImage } from "react-native-img-cache";
 import Header from '../../components/HomeNavigation';
@@ -105,7 +105,7 @@ export default class navpage extends Component {
         const { navigator } = this.props;
         navigator.resetTo({component: ServIndex, name: 'ServIndex'})
     }
-
+    _keyExtractor = (item, index) => item.id;
     render() {
         let param = global.goods_catalog_I;
         let max = 0;
@@ -132,46 +132,51 @@ export default class navpage extends Component {
                     renderTabBar={() => <ScrollableTabBar />}
                 >
                     {
-                        this.state.goods_catalog_I.map((data, index) => {
+                        this.state.goods_catalog_I.map((data_I, index) => {
+                            let data_II = JSON.parse(data_I.goods_catalogs_II)
+                            var dataArray =Array.from(data_II)
                             return (
-                                <View tabLabel={data.name}  key={index}>
+                                <View tabLabel={data_I.name}  key={index} >
                                     {
                                         this.state.goods_tpye == "serv_request" ?
                                           <View style={styles.conclusionView}>
                                               <Image style={{ width: 24, height: 24, marginRight: 6 }} source={require('../../resource/b-people.png')} />
                                               <Text style={{ color: '#1b2833', fontSize: 14, }}>
-                                                  {data.goods_count}位奇客提供&nbsp;{data.name}类&nbsp;服务
+                                                  {data_I.goods_count}位奇客提供&nbsp;{data_I.name}类&nbsp;服务
                                               </Text>
                                           </View>
                                         :
                                         <View style={styles.conclusionView}>
                                             <Image style={{ width: 24, height: 24, marginRight: 6 }} source={require('../../resource/b-people.png')} />
                                             <Text style={{ color: '#1b2833', fontSize: 14, }}>
-                                                {data.request_count}位客户需要&nbsp;{data.name}类&nbsp;专业人士
+                                                {data_I.request_count}位客户需要&nbsp;{data_I.name}类&nbsp;专业人士
                                             </Text>
                                         </View>
                                     }
                                     
-                                    <ScrollView>
-                                        {
-                                            JSON.parse(data.goods_catalogs_II).map((d, i) => {
-                                                return (
-                                                    <TouchableOpacity key={i} onPress={() => { this.jump(d.id, d.name) }}>
+                                    <FlatList
+                                        data = {dataArray}
+                                        keyExtractor={this._keyExtractor}
+                                        style={{marginBottom:60}}
+                                        removeClippedSubviews={false}
+                                        renderItem = {(item)=>{
+                                            console.log("渲染对象"+JSON.stringify(item))
+                                            return (
+                                                    <TouchableOpacity key={item.id} onPress={() => { this.jump(d.id, d.name) }}>
                                                         <CachedImage style={{
                                                             width: screenW,
                                                             height: 170,
                                                             justifyContent: 'center',
                                                             alignItems: 'center',
-                                                            
                                                         }}
-                                                                     source={{ uri: d.image }}>
+                                                                     source={{ uri: item.item.image }}>
                                                             {/*<Text style={{ color: 'white', backgroundColor: 'transparent', fontSize: 16 }}>{d.name}&nbsp;</Text>*/}
                                                         </CachedImage>
                                                     </TouchableOpacity>
                                                 );
-                                            })
-                                        }
-                                    </ScrollView>
+
+                                        }}
+                                    />
                                 </View>
                             )
                         })

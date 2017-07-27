@@ -31,8 +31,8 @@ export default class Login extends Component {
     this.state = {
       num: "13911551595",
       email: "38359504@qq.com",
-      // num: "13911551595",
-      // email: "p2@qq.com",
+      // num: "18210034398",
+      // email: "a3@qq.com",
       password: "123456",
       password2: '123456',
       error: "",
@@ -42,7 +42,7 @@ export default class Login extends Component {
       loginWay: 'phonenumber',
       initialPosition: 'unknown',
       lastPosition: 'unknown',
-      addressComponent: {"buildingName":null,"street":"石北路","district":"番禺区","city":"广州市","latitude":23.021835,"altitude":5e-324,"buildingId":null,"radius":300,"province":"广东省","direction":-1,"address":"中国广东省广州市番禺区石北路","countryCode":"0","streetNumber":null,"longitude":113.29391,"country":"中国","cityCode":"257"},
+      addressComponent: {"buildingName":null,"street":"XXX","district":"XXX","city":"XXX","latitude":23.021835,"altitude":5e-324,"buildingId":null,"radius":300,"province":"XXX","direction":-1,"address":"XXX","countryCode":"0","streetNumber":null,"longitude":113.29391,"country":"XXX","cityCode":"0"},
       seePassword:true,
     };
   }
