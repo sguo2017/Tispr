@@ -14,7 +14,7 @@ export default class offline extends Component{
             <View style={{width:global.gScreen.width,height:global.gScreen.height,backgroundColor:'#fff',
             justifyContent:'center',alignItems:'center'}}>
                     <Image style={{width:160,height:160,margin:20}} source={require('../resource/pupop-times0.png')}/>
-                    <Text style={{color:'black',fontSize:20,margin:20}}>抱歉，你今天的沟通机会已用完</Text>
+                    <Text style={{color:'#1B2833',fontSize:16,margin:20}}>抱歉，今天的沟通机会已用完</Text>
                     
                     <View style={{flexDirection:'row', justifyContent:'center',marginTop:20}}>
                         <TouchableOpacity 

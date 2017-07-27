@@ -17,7 +17,7 @@ export default class breakdown extends Component{
                     <Text style={{color:'black',fontSize:20,margin:20}}>奇客爱你</Text>
                     <Text style={{color:'black',fontSize:16}}>我们正在全力修复此故障</Text>
                     <Text style={{color:'black',fontSize:16}}>感谢您的理解</Text>
-                    <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                    {/* <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                        <TouchableOpacity
                             activeOpacity={0.75}
                             style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',borderTopColor: '#ccc',
@@ -28,7 +28,7 @@ export default class breakdown extends Component{
                                 返回
                             </Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
             </View>
         )
     }

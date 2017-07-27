@@ -27,8 +27,8 @@ export default class feedbackSuccess extends Component{
                     borderRadius: 8,
                     alignItems:'center',
                 }}>
-                    <Text style={{color:'black', fontSize:16, marginTop: 32 }}>奇客目前只开通中国地区注册，将</Text>
-                    <Text style={{color:'black', fontSize:16, margin: 10 }}>很快开通其它国家注册服务</Text>
+                    <Text style={{color:'#1B2833', fontSize:16, marginTop: 32,fontWeight:'bold' }}>奇客目前只开通中国地区注册，将</Text>
+                    <Text style={{color:'#1B2833', fontSize:16, margin: 10, fontWeight:'bold' }}>很快开通其它国家注册服务。</Text>
                     <TouchableOpacity
                       activeOpacity={0.75}
                       style={{

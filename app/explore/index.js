@@ -12,7 +12,8 @@ import {
   Modal,
   TouchableHighlight,
   Dimensions,
-  ScrollView
+  ScrollView,
+  TouchableWithoutFeedback
 } from 'react-native';
 import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
 import Picker from 'react-native-picker';
@@ -274,11 +275,14 @@ class ExploreList extends PureComponent {
                 transparent={true}
                 visible={this.state.show}
                 onShow={() => { }}
-                onRequestClose={() => { }} >
-                  <View style={{ position: 'absolute', zIndex: 1, backgroundColor: 'black', width: gScreen.width, height: gScreen.height, opacity: 0.5 }} />
-                  {
+                onRequestClose={() => { }}
+                >
+                <TouchableWithoutFeedback style={{flex: 1}} onPress={() => this.setState({show: false})}>
+                <View style={styles.cover}>
+                    {
                       this.state.tabName == 'index' ?
                         <View style={styles.modalStyle}>
+                            <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
                                     <TouchableOpacity onPress={() => this.setState({ cps: [true, false, false, false, false, false, false], transiSortBy: '综合排序', transiClassify: '全部分类' })}>
@@ -372,13 +376,15 @@ class ExploreList extends PureComponent {
                                     </View>
                                 </ScrollableTabView>
                             </View>
-                        </View>
+                            </TouchableWithoutFeedback>
+                        </View>                       
                         : <View></View>
                   }
 
                   {
                       this.state.tabName == 'recentPublish' ?
                         <View style={styles.modalStyle}>
+                            <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
                                     <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
@@ -416,12 +422,14 @@ class ExploreList extends PureComponent {
                                     </TouchableOpacity>*/}
                                 </View>
                             </View>
+                            </TouchableWithoutFeedback>
                         </View>
                         : <View></View>
                   }
                   {
                       this.state.tabName == 'allTalentedPeople' ?
                         <View style={styles.modalStyle}>
+                            <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
                                     <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
@@ -481,12 +489,14 @@ class ExploreList extends PureComponent {
                                     </TouchableOpacity>
                                 </View>
                             </View>
+                            </TouchableWithoutFeedback>
                         </View>
                         : <View></View>
                   }
                   {
                       this.state.tabName == 'selectLocation' ?
                         <View style={[styles.modalStyle]}>
+                            <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={[styles.subView]}>
                                     <View>
                                         <View style={styles.modalHead}>
@@ -527,9 +537,12 @@ class ExploreList extends PureComponent {
                                         </View>
                                     </View>                                                      
                             </View>
+                            </TouchableWithoutFeedback>
                         </View>
                         : <View></View>
                   }
+                </View>
+                </TouchableWithoutFeedback>
               </Modal>
           </View>
         )
@@ -551,6 +564,15 @@ const styles = StyleSheet.create({
         backgroundColor: global.gColors.themeColor,
         alignItems: 'center'  // 使元素垂直居中排布, 当flexDirection为column时, 为水平居中
     },
+    cover:{  
+        flex:1,  
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',  
+        position: 'absolute',  
+        top: 0,  
+        bottom: 0,  
+        left: 0,  
+        right: 0, 
+    },  
     logo: {//图片logo
         height: 24,
         width: 64,
@@ -647,7 +669,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
         flex: 1,
-        zIndex: 999,
     },
     // modal上子View的样式
     subView: {

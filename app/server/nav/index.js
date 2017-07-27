@@ -196,14 +196,14 @@ export default class navpage extends Component {
                                         this.state.goods_tpye == "serv_request" ?
                                           <View style={styles.conclusionView}>
                                               <Image style={{ width: 24, height: 24, marginRight: 6 }} source={require('../../resource/b-people.png')} />
-                                              <Text style={{ color: '#1b2833', fontSize: 14, }}>
+                                              <Text style={{ color: '#4A90E2', fontSize: 14, }}>
                                                   {data_I.goods_count}位奇客提供&nbsp;{data_I.name}类&nbsp;服务
                                               </Text>
                                           </View>
                                         :
                                         <View style={styles.conclusionView}>
                                             <Image style={{ width: 24, height: 24, marginRight: 6 }} source={require('../../resource/b-people.png')} />
-                                            <Text style={{ color: '#1b2833', fontSize: 14, }}>
+                                            <Text style={{ color: '#4A90E2', fontSize: 14, }}>
                                                 {data_I.request_count}位客户需要&nbsp;{data_I.name}类&nbsp;专业人士
                                             </Text>
                                         </View>
