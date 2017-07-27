@@ -37,6 +37,7 @@ export default class Register extends Component {
       code: "",
       isEmail: true,
       nameValid: true,
+      seePassword: true,
       passwordValid: true
     }
   }
@@ -263,27 +264,30 @@ export default class Register extends Component {
             }}  
           >
           </TextInput>
-          {this.state.isEmail?<Text style={{color: '#4990e2'}}>该电子邮箱可用于登录和接收奇客平台的邮件信息</Text>:<Text style ={styles.redText}>邮箱格式不正确</Text>}
-          {/*<View style={{flexDirection: 'row'}}>*/}
-          <TextInput
-            ref = "3"
-            onChangeText={(text) => this.setState({ password: text })}
-            style={styles.input}
-            placeholder="请设置登录密码"
-            secureTextEntry={true}
-            value={this.state.password}
-            underlineColorAndroid="transparent"
-            placeholderTextColor  = '#ccc'
-            returnKeyType = 'done'
-            multiline = {false}
-            onSubmitEditing={()=> {if(this.state.isEmail && this.state.name && this.state.password){this.setState({firstPage: false});}}}
-            onBlur ={()=>{if(this.state.password){this.setState({passwordValid: true})}else{this.setState({passwordValid: false})}}}
-          />
-          {/*<TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword: !this.state.seePassword })}>
+          {this.state.isEmail?<Text style={{color: '#4A90E2'}}>该电子邮箱可用于登录和接收奇客平台的邮件信息</Text>:<Text style ={styles.redText}>邮箱格式不正确</Text>}
+          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minHeight: 48}}>
+            <View style={{ flex: 1, justifyContent: 'center'}}>
+              <TextInput
+                ref = "3"
+                onChangeText={(text) => this.setState({ password: text })}
+                style={styles.input}
+                placeholder="请设置登录密码"
+                secureTextEntry={true}
+                value={this.state.password}
+                underlineColorAndroid="transparent"
+                placeholderTextColor  = '#ccc'
+                returnKeyType = 'done'
+                secureTextEntry={this.state.seePassword}
+                multiline = {false}
+                onSubmitEditing={()=> {if(this.state.isEmail && this.state.name && this.state.password){this.setState({firstPage: false});}}}
+                onBlur ={()=>{if(this.state.password){this.setState({passwordValid: true})}else{this.setState({passwordValid: false})}}}
+              />
+            </View>
+          <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword: !this.state.seePassword })}>
             <Image style={{ width: 25, height: 20 }} source={this.state.seePassword? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
           </TouchableOpacity>
-          </View>*/}
-          {this.state.passwordValid? <Text>8-16位字符组成，不能包含空格</Text>:<Text style ={styles.redText}>密码不能为空</Text>}
+          </View>
+          {this.state.passwordValid? <Text style={{color: '#B8B8B8'}}>8-16位字符组成，不能包含空格</Text>:<Text style ={styles.redText}>密码不能为空</Text>}
         </ScrollView>
       </View>
     );
@@ -369,14 +373,12 @@ const styles = StyleSheet.create({
     // paddingTop: 80
   },
   input: {
-    height: 50,
+    height: 40,
     marginTop: 10,
     padding: 4,
     fontSize: 18,
-    // borderWidth: 1,
-    borderColor: '#48bbec',
     borderBottomWidth: 1,
-    borderBottomColor: '#eeeeee',
+    borderBottomColor: '#EDEDED',
   },
   button: {
     height: 50,
