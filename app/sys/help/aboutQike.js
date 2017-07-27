@@ -28,7 +28,7 @@ export default class UseHelp extends Component {
 					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={()=>this.props.navigator.pop()}
 				/>
-				<View style={{alignItems: 'center', padding: 16}}>
+				<View style={{alignItems: 'center', paddingHorizontal: 16}}>
 					<Image source={require('../../resource/launch-logo-s.png')} style={{marginTop: 62}}/>
 					<Text style={{color: '#999999', fontSize: 12, marginTop: 40, marginBottom: 35}}>当前版本  1.01</Text>
 					<Text style={{color: "black",fontSize:14, marginBottom:16}}>
@@ -36,18 +36,18 @@ export default class UseHelp extends Component {
 					</Text>
 					<Text style={{color: '#4A90E2'}}>我们致力于创造一个可持续，可信赖，安全可靠的人才服务生态系统。</Text>
 				</View>
-				<View style={{paddingLeft: 110, marginTop: 50}}>
+				<View style={{paddingLeft: 110, marginTop: 45}}>
 					<View style={{flexDirection: 'row'}}>
 						<Image source={require('../../resource/aboutus-ico-weibo.png')}/>
-						<Text style={{color: '#999999', fontSize: 12, lineHeight: 20}}>微博 @奇客qike</Text>
+						<Text style={{color: '#999999', fontSize: 12, lineHeight: 20, marginLeft: 8, marginBottom: 8}}>微博 @奇客qike</Text>
 					</View>
 					<View style={{flexDirection: 'row'}}>
 						<Image source={require('../../resource/aboutus-ico-email.png')}/>
-						<Text style={{color: '#999999', fontSize: 12, lineHeight: 20}}>邮箱 info@qikework.com</Text>
+						<Text style={{color: '#999999', fontSize: 12, lineHeight: 20, marginLeft: 8, marginBottom: 8}}>邮箱 info@qikework.com</Text>
 					</View>
 					<View style={{flexDirection: 'row'}}>
 						<Image source={require('../../resource/aboutus-ico-qq.png')}/>
-						<Text style={{color: '#999999', fontSize: 12, lineHeight: 20}}>QQ 3558182357</Text>
+						<Text style={{color: '#999999', fontSize: 12, lineHeight: 20, marginLeft: 8}}>QQ 3558182357</Text>
 					</View>
 				</View>
 			</View>

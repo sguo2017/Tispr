@@ -396,7 +396,7 @@ export default class ServOfferList extends Component {
                     <TouchableOpacity onPress={() => this.setState({ show: false })}>
                         <Text style={styles.themeColorText}>取消</Text>
                     </TouchableOpacity>
-                    <Text style={{ color: 'black', fontSize: 16 }}>快捷联系</Text>
+                    <Text style={{ color: 'black', fontSize: 16 }}>快捷消息</Text>
                     <TouchableOpacity onPress={this._sendMessage.bind(this)}>
                         <Text style={styles.themeColorText}>发送</Text>
                     </TouchableOpacity>
