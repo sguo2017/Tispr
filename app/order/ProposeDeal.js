@@ -17,6 +17,7 @@ import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import AutoTextInput from '../components/AutoTextInput';
 import Util from '../common/utils'
+import fetchers from '../common/netRequest'
 const screenW = Dimensions.get('window').width;
 
 export default class ProposeDeal extends Component{
@@ -70,6 +71,10 @@ export default class ProposeDeal extends Component{
                 catalog: 2
             }
         }
+        // fetchers.post(URL, data, (response)=>{
+        //         console.log("成功创建会话")
+        //     }
+        // )
         Util.post(URL,data,
             (response)=>{
                 console.log("成功创建会话")

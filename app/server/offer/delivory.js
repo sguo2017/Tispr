@@ -188,7 +188,6 @@ export default class ServOfferDelivory extends Component {
     }
     componentDidMount() {
         let _that = this
-
         Geolocation.getCurrentPosition()
         .then(data => {
             console.log("获取经纬度"+JSON.stringify(data));   
@@ -204,7 +203,6 @@ export default class ServOfferDelivory extends Component {
          .catch(e =>{
             console.warn(e, 'error');           
         })
-
     }
     renderProgressView = () => {
         if (Platform.OS == 'ios') {

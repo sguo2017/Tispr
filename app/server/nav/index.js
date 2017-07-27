@@ -23,6 +23,61 @@ import ServIndex from '../index';
 import ServOffer from '../offer/title';
 import ServRequest from '../request/title';
 const screenW = Dimensions.get('window').width;
+const _image = {
+    21: require('../../resource/industry/21.png'),
+    22: require('../../resource/industry/22.png'),
+    23: require('../../resource/industry/23.png'),
+    24: require('../../resource/industry/24.png'),
+    25: require('../../resource/industry/25.png'),
+    26: require('../../resource/industry/26.png'),
+    27: require('../../resource/industry/27.png'),
+    28: require('../../resource/industry/28.png'),
+    29: require('../../resource/industry/29.png'),
+    30: require('../../resource/industry/30.png'),
+    31: require('../../resource/industry/31.png'),
+    32: require('../../resource/industry/32.png'),
+    33: require('../../resource/industry/33.png'),
+    34: require('../../resource/industry/34.png'),
+    35: require('../../resource/industry/35.png'),
+    36: require('../../resource/industry/36.png'),
+    37: require('../../resource/industry/37.png'),
+    38: require('../../resource/industry/38.png'),
+    39: require('../../resource/industry/39.png'),
+    40: require('../../resource/industry/40.png'),
+    41: require('../../resource/industry/41.png'),
+    42: require('../../resource/industry/42.png'),
+    43: require('../../resource/industry/43.png'),
+    44: require('../../resource/industry/44.png'),
+    45: require('../../resource/industry/45.png'),
+    46: require('../../resource/industry/46.png'),
+    47: require('../../resource/industry/47.png'),
+    48: require('../../resource/industry/48.png'),
+    49: require('../../resource/industry/49.png'),
+    50: require('../../resource/industry/50.png'),
+    51: require('../../resource/industry/51.png'),
+    52: require('../../resource/industry/52.png'),
+    53: require('../../resource/industry/53.png'),
+    54: require('../../resource/industry/54.png'),
+    55: require('../../resource/industry/55.png'),
+    56: require('../../resource/industry/56.png'),
+    57: require('../../resource/industry/57.png'),
+    58: require('../../resource/industry/58.png'),
+    59: require('../../resource/industry/59.png'),
+    60: require('../../resource/industry/60.png'),
+    61: require('../../resource/industry/61.png'),
+    62: require('../../resource/industry/62.png'),
+    63: require('../../resource/industry/63.png'),
+    64: require('../../resource/industry/64.png'),
+    65: require('../../resource/industry/65.png'),
+    66: require('../../resource/industry/66.png'),
+    67: require('../../resource/industry/67.png'),
+    68: require('../../resource/industry/68.png'),
+    69: require('../../resource/industry/69.png'),
+    70: require('../../resource/industry/70.png'),
+    71: require('../../resource/industry/71.png'),
+    72: require('../../resource/industry/72.png'),
+    73: require('../../resource/industry/73.png'),  
+}
 export default class navpage extends Component {
 
     constructor(props) {
@@ -160,16 +215,15 @@ export default class navpage extends Component {
                                         style={{marginBottom:60}}
                                         removeClippedSubviews={false}
                                         renderItem = {(item)=>{
-                                            console.log("渲染对象"+JSON.stringify(item))
                                             return (
-                                                    <TouchableOpacity key={item.id} onPress={() => { this.jump(d.id, d.name) }}>
+                                                    <TouchableOpacity key={item.item.id} onPress={() => { this.jump(item.item.id, item.item.name) }}>
                                                         <CachedImage style={{
                                                             width: screenW,
                                                             height: 170,
                                                             justifyContent: 'center',
                                                             alignItems: 'center',
-                                                        }}
-                                                                     source={{ uri: item.item.image }}>
+                                                            }}
+                                                            source={ _image[item.item.id]}>
                                                             {/*<Text style={{ color: 'white', backgroundColor: 'transparent', fontSize: 16 }}>{d.name}&nbsp;</Text>*/}
                                                         </CachedImage>
                                                     </TouchableOpacity>

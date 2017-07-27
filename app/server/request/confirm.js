@@ -197,12 +197,12 @@ export default class ServOfferConfirm extends Component {
                         serv_images: uploadedImages,
                         serv_catagory: this.state.serv_offer.goods_tpye,
                         catalog: this.state.serv_offer.goods_catalogs_name,
-                        district: global.user.addressComponent.district,
-                        city: global.user.addressComponent.city,
-                        province: global.user.addressComponent.province,
-                        country: global.user.addressComponent.country,
-                        latitude: global.user.addressComponent.latitude,
-                        longitude: global.user.addressComponent.longitude,
+                        district: this.state.serv_offer.district,
+                        city: this.state.serv_offer.city,
+                        province: this.state.serv_offer.province,
+                        country: this.state.serv_offer.country,
+                        latitude: this.state.serv_offer.latitude,
+                        longitude: this.state.serv_offer.longitude,
                         goods_catalog_id: this.state.serv_offer.goods_catalogs_id,
                         via: this.state.serv_offer.via
                     }
@@ -343,7 +343,7 @@ export default class ServOfferConfirm extends Component {
                   <View style={styles.rowView}>
                     <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b_location.png')} />
                     <View style={styles.rowTextView}>
-                      <Text style={styles.contentText}>{global.user.addressComponent.district}，{global.user.addressComponent.city}，{global.user.addressComponent.province}，{global.user.addressComponent.country}</Text>
+                      <Text style={styles.contentText}>{this.state.serv_offer.district}，{this.state.serv_offer.city}，{this.state.serv_offer.province}，{this.state.serv_offer.country}</Text>
                     </View>
                   </View>
 
