@@ -490,15 +490,15 @@ const ServItem = ({
       }}>
         <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }}>{serv.serv_title}</Text>
         <Text style={{ fontSize: 12, color: '#999999', marginBottom: 4 }}>{serv.catalog}</Text>
-        <View style={{ flexDirection:'row' }}>
-          <Image style={{ width: 12, height: 12 }} source={require('../resource/g-location-s.png')}/>
-          <Text style={{ fontSize: 12, color: '#b8b8b8' }}>{serv.district}</Text>
+        <View style={{ flexDirection:'row', marginTop: 3}}>
+          <Image style={{ width: 18, height: 18}} source={require('../resource/g-location-s.png')}/>
+          <Text style={{ fontSize: 12, color: '#b8b8b8'}}>{serv.district}</Text>
         </View>
       </View>
       <View style={styles.cardUserInfoView}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <CachedImage
-            style={{height: 22, width: 22, borderRadius: 15}}
+            style={{height: 24, width: 24, borderRadius: 15}}
             source={{uri: servUser.avatar}}
             defaultSource={require('../resource/img_default_avatar.png')}
           />
@@ -514,7 +514,7 @@ const ServItem = ({
                 activeOpacity={0.75}
                 onPress={onCall}
                 >
-                <Image style={{height: 18, width: 18}} source={require('../resource/y-chat.png')}/>
+                <Image style={{height: 22, width: 22}} source={require('../resource/y-chat.png')}/>
             </TouchableOpacity>:<View></View>
         }
       </View>

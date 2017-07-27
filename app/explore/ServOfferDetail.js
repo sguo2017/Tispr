@@ -718,9 +718,12 @@ export default class ServOfferDetail extends Component {
                     animationType='slide'
                     transparent={true}
                     visible={this.state.isMine}
+                    onRequestClose={()=>{}}
                 >
+                <TouchableWithoutFeedback style={{flex: 1}} onPress={() => this.setState({isMine: false})}>
                     <View style={styles.container}> 
                     <View style={styles.modal}>
+                        <TouchableWithoutFeedback  onPress={() => {}}>
                         <View style={{ borderRadius: 16, backgroundColor: 'white',  marginBottom: 6}}>
                             <TouchableOpacity 
                                 style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
@@ -743,6 +746,7 @@ export default class ServOfferDetail extends Component {
                                 <Text style={[styles.modalText, {color: 'red'}]}>删除</Text>
                             </TouchableOpacity>
                         </View>
+                        </TouchableWithoutFeedback>
                         <TouchableOpacity
                             onPress={() => this.setState({isMine: false})} 
                             style={{alignItems: 'center', justifyContent: 'center', borderRadius: 16, backgroundColor: 'white', height: 56}}>
@@ -751,6 +755,7 @@ export default class ServOfferDetail extends Component {
 
                     </View>
                     </View>
+                </TouchableWithoutFeedback>
                 </Modal>    
             </View>
         )
