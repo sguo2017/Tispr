@@ -152,11 +152,11 @@ class ExploreList extends PureComponent {
             exploreparams.sort_by = "order_cnt"
         if(this.state.via == 'local'){
             exploreparams.via = 'local'
+            exploreparams.city = this.state.location;
         }
         if(this.state.via == 'remote'){
             exploreparams.via = 'remote'
-        }
-        exploreparams.city = this.state.location;
+        }   
         if (goods_catalog[0]) {
             goods_catalog.map((item, index, input) => { input[index] = true });
         }
@@ -293,13 +293,23 @@ class ExploreList extends PureComponent {
                                     <TouchableOpacity onPress={() => this.setState({ show: false })}>
                                         <Text style={styles.themeColorText}
                                               onPress=
-                                                {() => {this.setState({
-                                                    sortBy: this.state.transiSortBy,
-                                                    classify: this.state.transiClassify,
-                                                    location: this.state.initArea[1]+"市",
-                                                    show: false,
-                                                });
-                                                this.state.location = this.state.initArea[1]+"市";
+                                                {() => {
+                                                if(this.state.via == 'remote'){
+                                                    this.setState({
+                                                        sortBy: this.state.transiSortBy,
+                                                        classify: this.state.transiClassify,
+                                                        location: "远程",
+                                                        show: false,
+                                                    });
+                                                }else{
+                                                    this.setState({
+                                                        sortBy: this.state.transiSortBy,
+                                                        classify: this.state.transiClassify,
+                                                        location: this.state.initArea[1]+"市",
+                                                        show: false,
+                                                    });
+                                                    this.state.location = this.state.initArea[1]+"市";
+                                                } 
                                                 this.refresh();
                                                 }}
                                         >完成</Text>
