@@ -75,8 +75,7 @@ class ExploreList extends PureComponent {
 
 
     componentDidMount() {
-        let longitude = global.user.addressComponent.longitude, latitude = global.user.addressComponent.latitude;
-        
+        let longitude = global.user.addressComponent.longitude, latitude = global.user.addressComponent.latitude;        
         Geolocation.getCurrentPosition().then(
             (data) => {
                 this.setState({

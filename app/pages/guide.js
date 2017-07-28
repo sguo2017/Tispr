@@ -112,6 +112,9 @@ export default class Guide extends React.Component {
             if (null != accessToken && global.user.addressComponent != null) {
                 this.verifyToken(accessToken);
             }
+            else{
+                this._navigate('Login');
+            }
             return;
         } catch (error) {
             //console.log('existsToken error:' + error)

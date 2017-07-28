@@ -23,7 +23,8 @@ import AutoTextInput from '../components/AutoTextInput';
 import Loading from '../components/Loading';
 import forgetPassword from './forgetPassword';
 import nationWarning from '../sys/others/nationWarning';
-
+import fetchers from '../common/netRequest'
+import offline from '../sys/others/offline'
 export default class Login extends Component {
 
   constructor() {
@@ -32,7 +33,7 @@ export default class Login extends Component {
       num: "13911551595",
       email: "38359504@qq.com",
       // num: "18210034398",
-      // email: "a3@qq.com",
+      // email: "lin@qq.com",
       password: "123456",
       password2: '123456',
       error: "",
@@ -86,16 +87,9 @@ export default class Login extends Component {
     if (Platform.OS == 'ios' && __DEV__) {
       global.user.addressComponent = this.state.addressComponent;
     }
-    InteractionManager.runAfterInteractions(() => {
-      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_LOGIN;
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user: {
+    let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_LOGIN;
+    let data = {
+      user: {
             email: this.state.email,
             password: this.state.password,
             district: global.user.addressComponent.district,
@@ -105,9 +99,9 @@ export default class Login extends Component {
             latitude: global.user.addressComponent.latitude,
             longitude: global.user.addressComponent.longitude,
           }
-        })
-      }).then(response => response.json())
-      .then((result) => {
+      }
+    fetchers.post(url, data , 
+      (result) => {
         if(result.error){
             Alert.alert(
               '登录失败',
@@ -128,21 +122,26 @@ export default class Login extends Component {
           //console.log(JSON.stringify(global.user))
           this._navigateHome();
         }
-      }).catch(()=>{
+      },
+      (error)=>{
         this.setState({ error: error });
         console.log("error " + error);
-        Alert.alert(
+        if(error.message === 'request timeout'){
+          this.props.navigator.push({component: offline})
+        }else{
+          Alert.alert(
           '登录失败',
           '网络连接错误',
           [
             { text: '确定', onPress: () => console.log('确定') },
           ]
         )
+        }
         this.setState({ showProgress: false });
-      });
-    });
+      }
+    )
   }
-
+    
   async _smsSend() {
     try {
       let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SMS_SEND_ADD;

@@ -22,6 +22,7 @@ import others from './others';
 import signup from '../pages/signup';
 import Constant from '../common/constants'
 import PhoneSetting from './account/PhoneSetting';
+import UserDefaults from '../common/UserDefaults';
 export default class Setting extends Component {
 
 	constructor(props) {
@@ -58,6 +59,7 @@ export default class Setting extends Component {
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
 				//console.log('退出登录成功');
+				UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
                 this.props.navigator.resetTo({component:signup}); 
             } else {
                 let error = res;
@@ -143,7 +145,9 @@ export default class Setting extends Component {
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
 
+
 					{/* <TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:inviteFriend,name:'inviteFriend'})}>
+					{/*<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:inviteFriend,name:'inviteFriend'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
 								邀请好友
