@@ -46,9 +46,10 @@ class ExploreList extends PureComponent {
             sps: [false, false, false, false],//排序按钮操作
             cps: [false, false, false, false, false, false, false],//类型按钮操作
             searchText: this.props.searchText,
-            via: 'remote',
+            via: '',
             initArea: ['广东', '广州', '番禺区'],
-            zoom: 18
+            zoom: 18,
+            showCancel: false
         };
     }
     componentWillMount() {
@@ -156,6 +157,7 @@ class ExploreList extends PureComponent {
         }
         if(this.state.via == 'remote'){
             exploreparams.via = 'remote'
+            exploreparams.city = undefined;
         }   
         if (goods_catalog[0]) {
             goods_catalog.map((item, index, input) => { input[index] = true });
@@ -236,7 +238,9 @@ class ExploreList extends PureComponent {
               <View style={styles.container}>
                   <View style={styles.searchBox}>
                       <Image source={require('../resource/w-search.png')} style={styles.searchIcon} />
-                      <TextInput style={styles.inputText}
+                      <TextInput 
+                        ref = "searchInput"
+                        style={styles.inputText}
                          underlineColorAndroid='transparent'
                          keyboardType='web-search'
                          value={this.state.exploretitle}
@@ -251,11 +255,33 @@ class ExploreList extends PureComponent {
                              explore.title = val;
                              this.setState({ exploreparams: explore, exploretitle:val })
                          }}
+                         onFocus = {()=>this.setState({showCancel:true})}
+                         obBlur = {()=> this.setState({showCancel: false})}
                       />
                 </View>
-                <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} onPress={() => this.props.navigator.push({component: MarkList})}>
-                    <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
-                </TouchableOpacity>
+                {
+                    this.state.showCancel?
+                    <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} 
+                        onPress={() => {
+                            let explore = this.state.exploreparams;
+                            this.refs["searchInput"].blur()
+                             explore.title = '';
+                             this.setState({
+                                showCancel:false,
+                                exploreparams: explore, 
+                                exploretitle:''
+                            });
+                            this.state.exploreparams=explore;
+                            this.refresh()
+                        }}
+                    >
+                        <Text style={{color: '#fff'}}>取消</Text>
+                    </TouchableOpacity>:
+                    <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} onPress={() => this.props.navigator.push({component: MarkList})}>
+                        <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
+                    </TouchableOpacity>
+                }
+                
               </View>
               <View style={{ flexDirection: 'row', paddingVertical: 6, backgroundColor: 'rgba(0,0,0,0.16)'}}>
                   <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'recentPublish', show: true });}}>

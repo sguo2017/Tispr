@@ -193,6 +193,8 @@ export default class ServOfferList extends Component {
     });
     if(exploreparams.via == 'local' ){
         exploreparams.city = this.props.location;
+    }else{
+        exploreparams.city = undefined;
     }
     exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
     dispatch(fetchExploreList(1, exploreparams));
