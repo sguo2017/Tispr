@@ -145,6 +145,8 @@ export default class Setting extends Component {
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
 
+
+					{/* <TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:inviteFriend,name:'inviteFriend'})}>
 					{/*<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:inviteFriend,name:'inviteFriend'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
@@ -161,7 +163,7 @@ export default class Setting extends Component {
 			  				</Text>
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
-					</TouchableOpacity>*/}
+					</TouchableOpacity> */}
 					{/*<View style={{ height: 16, backgroundColor: '#f7f7f7' }} />*/}
 					<TouchableOpacity style={[styles.rectangle_view, { marginTop: 16, borderTopColor: '#dedfe0', borderTopWidth: 0.5 }]} onPress={this.logout.bind(this)}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>

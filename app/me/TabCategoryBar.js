@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: screenW*0.2,
-        borderLeftWidth: 1,
-        borderLeftColor:  global.gColors.themeColor,
+        // borderLeftWidth: 1,
+        // borderLeftColor:  global.gColors.themeColor,
     },
     indicatorContainer: {
         position: 'absolute',

@@ -411,7 +411,7 @@ export default class ServOfferList extends Component {
                     {/*<View style={{height:80}}>
                         <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
                     </View>*/}
-                    <TextInput
+                    <AutoTextInput
                         ref={(textInput) => { this.modelTextInput = textInput; }}
                         multiline={true}
                         onChangeText={(text) => 
