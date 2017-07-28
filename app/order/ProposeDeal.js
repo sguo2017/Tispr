@@ -71,16 +71,16 @@ export default class ProposeDeal extends Component{
                 catalog: 2
             }
         }
-        // fetchers.post(URL, data, (response)=>{
-        //         console.log("成功创建会话")
-        //     }
-        // )
-        Util.post(URL,data,
-            (response)=>{
+        fetchers.post(URL, data, (response)=>{
                 console.log("成功创建会话")
-            },
-            this.props.navigator
+            }
         )
+        // Util.post(URL,data,
+        //     (response)=>{
+        //         console.log("成功创建会话")
+        //     },
+        //     this.props.navigator
+        // )
     }
 
     render(){
