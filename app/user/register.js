@@ -37,7 +37,7 @@ export default class Register extends Component {
       code: "",
       isEmail: true,
       nameValid: true,
-      seePassword: true,
+      seePassword: false,
       passwordValid: true
     }
   }

@@ -216,7 +216,7 @@ export default class forgetPassword extends Component {
                     <Image source={require('../resource/b_key.png')} style={{width: 32, height: 32, marginRight: 10}}/>
                     <Text style={{color: '#1B2833', fontSize: 14, fontWeight: 'bold', lineHeight: 25}}>重置密码</Text>
                 </View>
-
+                <Text style={{color:'#999999', fontSize: 12, marginTop: 26}}>我们将向您注册的手机号码发送验证短信</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: 16, minHeight: 48 }}>
                     <TouchableOpacity style={styles.countryButton} onPress={()=>this.props.navigator.push({component:nationWarning,name:'nationWarning'})}>
                         <Image style={{ height: 12, width: 18, marginRight: 9 }} source={require('../resource/ico-china.png')} />
