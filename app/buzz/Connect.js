@@ -286,10 +286,11 @@ const styles = StyleSheet.create({
         borderColor: global.gColors.themeColor,
         padding:5,
         height: 36,
-        width:Platform.OS === 'ios'? 260: 210,
+        width:Platform.OS === 'ios'? 250: 210,
         marginRight: 20,
         marginBottom: 8,
-        borderRadius: 2
+        borderRadius: 2,
+        justifyContent: 'center'
     },
     selectedButton:{
         borderWidth: 1,
@@ -297,10 +298,11 @@ const styles = StyleSheet.create({
         backgroundColor: global.gColors.themeColor,
         padding:5,
         height: 36,
-        width:Platform.OS === 'ios'? 260: 210,
+        width:Platform.OS === 'ios'? 250: 210,
         marginRight: 20,
         marginBottom: 8,
-        borderRadius: 2
+        borderRadius: 2,
+        justifyContent: 'center'
     },
     cardImageContent: {
         height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,

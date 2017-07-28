@@ -880,7 +880,8 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginBottom: 8,
         borderRadius: 4,
-        width:Platform.OS === 'ios'? 260: 210
+        width:Platform.OS === 'ios'? 250: 210,
+        justifyContent: 'center'
     },
     selectedButton: {
        borderWidth: 1,
@@ -891,7 +892,8 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginBottom:8,
         borderRadius: 4,
-        width:Platform.OS === 'ios'? 260: 210
+        width:Platform.OS === 'ios'? 250: 210,
+        justifyContent: 'center'
     },
     avatar: {
         width: 60,

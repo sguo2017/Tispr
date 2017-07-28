@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginBottom:20,
         borderRadius: 4,
+        justifyContent: 'center'
     },
     selectedButton:{
         borderWidth: 1,
@@ -160,6 +161,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginBottom:20,
         borderRadius: 4,
+        justifyContent: 'center'
     },
     themeColorText:{
         color:global.gColors.themeColor,

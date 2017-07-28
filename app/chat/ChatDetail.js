@@ -226,7 +226,7 @@ export default class ChatDetail extends Component {
           rightIcon={{uri:feed.offer_user_id == global.user.id?feed.request_user_avatar:feed.offer_user_avatar} }
           rightIconSize={32}
           rightIconAction={() => this.setState({show: true})}
-          rightIconRadius={16}
+          rightIconRadius={300}
         />
         <View style={[styles.cardImageContent]}>
           <TouchableOpacity onPress={this.clickJump.bind(this)} style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', padding: 10, backgroundColor: 'white' }}>
