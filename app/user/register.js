@@ -259,7 +259,7 @@ export default class Register extends Component {
             multiline = {false}
             onSubmitEditing={() => this.focusNextField('3')}
             onBlur = {
-              ()=>{let reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+              ()=>{let reg = /^([a-zA-Z0-9_-_.])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
               this.setState({isEmail: reg.test(this.state.email)});
             }}  
           >

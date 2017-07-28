@@ -2,12 +2,20 @@ import React, {PureComponent} from 'react'
 import {
     View,
     Platform,
-    StatusBar
+    StatusBar,
+    StyleSheet
 } from 'react-native';
 import NavigationExperimental from 'react-native-deprecated-custom-components';
 import {observer} from 'mobx-react/native'
 import Splash from '../pages/Splash'
 import RootStore from '../mobx'
+
+const MyStatusBar = ({backgroundColor, ...props}) => (
+  <View style={[styles.statusBar, { backgroundColor }]}>
+    <StatusBar backgroundColor={backgroundColor} {...props} />
+  </View>
+);
+
 
 @observer
 export default class App extends PureComponent {
@@ -32,7 +40,8 @@ export default class App extends PureComponent {
 
         return (
             <View style={{flex: 1}}>
-                <StatusBar barStyle={RootStore.barStyle}/>
+                <MyStatusBar backgroundColor={global.gColors.themeColor} barStyle="light-content" />
+                <View style={styles.appBar} />
                 <NavigationExperimental.Navigator
                     initialRoute={{name: initialPageName, component: initialPage}}
                     configureScene={this._configureScene}
@@ -42,3 +51,23 @@ export default class App extends PureComponent {
         )
     }
 }
+
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
+const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 0;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  statusBar: {
+    height: STATUSBAR_HEIGHT,
+  },
+  appBar: {
+    backgroundColor:'#79B45D',
+    height: APPBAR_HEIGHT,
+  },
+  content: {
+    flex: 1,
+    backgroundColor: '#33373B',
+  },
+});
