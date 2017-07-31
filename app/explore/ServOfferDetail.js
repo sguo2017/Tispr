@@ -493,28 +493,23 @@ export default class ServOfferDetail extends Component {
                             feed.via == 'all'?<Text>提供远程服务，以及提供{feed.province}{feed.city}{feed.district}{Constant.offer_range[feed.range]}的服务</Text>:<Text></Text>
                         }
                     </View>
-                    {
-                        Platform.OS === 'ios'
-                            ?
-                            <View></View>
-                            :
-                            <MapView
-                                trafficEnabled={this.state.trafficEnabled}
-                                baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
-                                zoom={this.state.zoom}
-                                mapType={this.state.mapType}
-                                center={this.state.center}
-                                marker={this.state.marker}
-                                markers={this.state.markers}
-                                style={styles.map}
-                                onMarkerClick={(e) => {
-                                    console.warn(JSON.stringify(e));
-                                }}
-                                onMapClick={(e) => {
-                                }}
-                            >
-                            </MapView>
-                    }
+        
+                        <MapView
+                            trafficEnabled={this.state.trafficEnabled}
+                            baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
+                            zoom={this.state.zoom}
+                            mapType={this.state.mapType}
+                            center={this.state.center}
+                            marker={this.state.marker}
+                            markers={this.state.markers}
+                            style={styles.map}
+                            onMarkerClick={(e) => {
+                                console.warn(JSON.stringify(e));
+                            }}
+                            onMapClick={(e) => {
+                            }}
+                        >
+                        </MapView>
                     {
                         this.state.offerList.length > 0 ?
                             <View style={{ justifyContent: 'space-around', alignItems: 'center', marginTop: 2, backgroundColor: '#eeee' }}>
