@@ -191,6 +191,7 @@ export default class RequestMsgDetail extends Component {
                     animationType='slide'
                     transparent={true}
                     visible={this.state.show_modal}
+                    onRequestClose={() => {}}
                 >
                     <View style={styles.container}> 
                     <View style={styles.modal}>

@@ -13,7 +13,7 @@ import {
     Navigator,
     Linking,
 } from 'react-native'
-import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { ScrollableTabBar, DefaultTabBar} from 'react-native-scrollable-tab-view';
 import { CachedImage } from "react-native-img-cache";
 import OffersList from './page/offersList';
 import RequestsList from './page/requestsList';
@@ -219,6 +219,7 @@ export default class MeInfo extends Component {
               </View>
           </View>
           <ScrollableTabView
+              locked={true}
               renderTabBar={() => <ScrollableTabBar tabNames={titles} style={{ height: 44 }}/>}
               tabBarPosition='top'
               scrollWithoutAnimation={false}

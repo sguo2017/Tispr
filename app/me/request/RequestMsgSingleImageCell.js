@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
+    ScrollView,
     View,
     Text,
     TouchableOpacity,
@@ -15,8 +16,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     paddingHorizontal: 8,
     paddingVertical: 4,
+    overflow: 'scroll',
   },
   cardContainer: {
+    width: screenW,
     padding: 15,
     backgroundColor: '#fff',
     borderRadius: 4,
@@ -27,6 +30,21 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 3,
     shadowOpacity: 0.3,
+  },
+  mark: {
+    marginLeft: 4,
+    backgroundColor: '#fff',
+    borderRadius: 4,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.3,
+    width: 60,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   dot: {
     width: 4,
@@ -45,7 +63,7 @@ const RequestMsgSingleImageItem = ({
 }) => {
   const createDate = DateUtil.dataStrToSmartDate(created_at);
   return (
-    <View style={styles.container} >
+    <ScrollView style={styles.container} horizontal={true} showsHorizontalScrollIndicator={false}>
       <TouchableOpacity
         elevation={5}
         activeOpacity={0.75}
@@ -61,7 +79,10 @@ const RequestMsgSingleImageItem = ({
           <Text style={{fontSize:12, color: '#4A90E2'}}>1/5投标</Text>
         </View>
       </TouchableOpacity>
-  </View>
+      <TouchableOpacity style={styles.mark}>
+        <Text style={{color: '#4a90e2'}}>存档</Text>
+      </TouchableOpacity>
+    </ScrollView>
   )
 };
 
