@@ -423,11 +423,11 @@ class ExploreList extends PureComponent {
                             <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
+                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
                                         <Text style={styles.themeColorText}>返回</Text>
                                     </TouchableOpacity>
                                     <Text style={styles.blackText}>选择排序</Text>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
+                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
                                         <Text style={styles.themeColorText}>确定</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -468,12 +468,12 @@ class ExploreList extends PureComponent {
                             <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
+                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
                                         <Text style={styles.themeColorText}>返回</Text>
                                     </TouchableOpacity>
 
                                     <Text style={{ color: 'black', fontSize: 16 }}>选择分类</Text>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
+                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
                                         <Text style={styles.themeColorText}>确定</Text>
                                     </TouchableOpacity>
 
@@ -536,11 +536,11 @@ class ExploreList extends PureComponent {
                             <View style={[styles.subView]}>
                                     <View>
                                         <View style={styles.modalHead}>
-                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
+                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
                                                 <Text style={styles.themeColorText}>返回</Text>
                                             </TouchableOpacity>
                                             <Text style={{ color: 'black', fontSize: 16 }}>位置</Text>
-                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'index' })}>
+                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
                                                 <Text style={styles.themeColorText}>确定</Text>
                                             </TouchableOpacity>
                                         </View>
