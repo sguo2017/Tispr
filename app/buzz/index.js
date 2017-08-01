@@ -430,7 +430,7 @@ export default class BussList extends Component {
                     }}
                 >
                     <Text style={{
-                        fontSize: 20,
+                        fontSize: 16,
                         color: '#FFF',
                         alignSelf: 'center'
                     }}>发布服务</Text>

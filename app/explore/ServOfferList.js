@@ -30,6 +30,8 @@ import noConnectTimes from '../buzz/noConnectTimes';
 import AutoTextInput from '../components/AutoTextInput'
 import ChatDetail from '../chat/ChatDetail'
 import Util from '../common/utils'
+import NavPage from '../server/nav/index'
+
 const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: 'row',
@@ -104,10 +106,9 @@ const styles = StyleSheet.create({
         padding:5,
         height: 36,
         marginRight: 20,
-        marginBottom:8,
+        marginBottom: 8,
         borderRadius: 4,
-        width:Platform.OS === 'ios'? 250: 210,
-        justifyContent: 'center'
+        width:Platform.OS === 'ios'? 260: 210
     },
     selectedButton:{
         borderWidth: 1,
@@ -118,8 +119,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginBottom:8,
         borderRadius: 4,
-        width:Platform.OS === 'ios'? 250: 210,
-        justifyContent: 'center'
+        width:Platform.OS === 'ios'? 260: 210
     },
     avatar: {
         width: 60,
@@ -329,6 +329,19 @@ export default class ServOfferList extends Component {
     });
   }
 
+  clickNavigationJump(serv) {        
+        const { navigator } = this.props; 
+        let goods_tpye = serv;
+        let fromExplore = true;
+        if (navigator&&goods_tpye) {
+            navigator.resetTo({
+                name: 'NavPage',  
+                component: NavPage,  
+                passProps: {goods_tpye, fromExplore},
+            });
+        }
+    }
+
   render() {
     const { ServOfferList } = this.props;
     return(
@@ -384,7 +397,20 @@ export default class ServOfferList extends Component {
                 <ActivityIndicator />
                 <Text style={{fontSize: 14, marginLeft: 5}}>正在加载更多的数据...</Text>
               </View>
-            ) : null
+            ) : 
+            <View style={{marginTop: 66, alignItems: 'center', justifyContent: 'center', marginBottom: 60}}>
+                <Image source={require('../resource/list-noresult.png')} style={{height: 128, width: 128}}/>
+                <Text style={{color: '#1B2833', fontSize: 14, marginBottom: 32, marginTop: 24}}>没有找到想要的服务？</Text>
+                <TouchableOpacity style={{backgroundColor: '#4A90E2' , height: 28, width: 135, alignItems: 'center', justifyContent: 'center', borderRadius: 2, marginBottom: 8}}>
+                    <Text style={{color: 'white'}}>搜索本地服务</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {this.clickNavigationJump("serv_request")}}
+                    style={{backgroundColor: '#FFC400' , height: 28, width: 135, alignItems: 'center', justifyContent: 'center', borderRadius: 2}}
+                >
+                    <Text  style={{color: 'white'}}>发布新的需求</Text> 
+                </TouchableOpacity>
+            </View>
           }
         </ScrollView>
         }
