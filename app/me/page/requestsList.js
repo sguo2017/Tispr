@@ -115,10 +115,14 @@ class KnowledgeItem extends Component {
         onPress && onPress(feed)
     };
 
+    _archivedPress = () => {
+        const { feed, archived } = this.props;
+        console.log(feed.serv_detail)
+    }
     render() {
         const { feed: { serv_detail, created_at, catalog } } = this.props;
         const cellData = { serv_detail, created_at, catalog };
-        return <RequestMsgSingleImageCell {...cellData} onPress={this._onPress} />
+        return <RequestMsgSingleImageCell {...cellData} onPress={this._onPress} archivedPress={this._archivedPress}/>
     }
 }
 

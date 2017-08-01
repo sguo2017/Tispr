@@ -60,6 +60,7 @@ const RequestMsgSingleImageItem = ({
   created_at,
   catalog,
   onPress,
+  archivedPress
 }) => {
   const createDate = DateUtil.dataStrToSmartDate(created_at);
   return (
@@ -79,7 +80,7 @@ const RequestMsgSingleImageItem = ({
           <Text style={{fontSize:12, color: '#4A90E2'}}>1/5投标</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.mark}>
+      <TouchableOpacity style={styles.mark} onPress={archivedPress}>
         <Text style={{color: '#4a90e2'}}>存档</Text>
       </TouchableOpacity>
     </ScrollView>

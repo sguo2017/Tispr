@@ -378,7 +378,6 @@ export default class ServOfferDetail extends Component {
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
                 global.user.offer_count--;
-                console.log(global.user.offer_count--)
                 let resObject =JSON.parse(res);
                 if(resObject.status==0){
                     this.props.navigator.pop()
