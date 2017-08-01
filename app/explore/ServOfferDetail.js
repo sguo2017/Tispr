@@ -15,7 +15,8 @@ import {
     Alert,
     Platform,
     AsyncStorage,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ToastAndroid
 } from 'react-native'
 import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
 import { observer } from 'mobx-react/native'
@@ -23,6 +24,7 @@ import { reaction } from 'mobx'
 import { connect } from 'react-redux';
 import { CachedImage } from "react-native-img-cache";
 import Swiper from 'react-native-swiper';
+import * as WeChat from 'react-native-wechat';
 import Loading from '../components/Loading'
 import LoadMoreFooter from '../components/LoadMoreFooter'
 import Toast from 'react-native-easy-toast'
@@ -47,6 +49,7 @@ const msg3 = '我想看一下你的更多作品。';
 export default class ServOfferDetail extends Component {
     constructor(props) {
         super(props);
+        WeChat.registerApp('wxa2a9d26bbc09d4ac');
         this.state = {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2,
@@ -551,11 +554,54 @@ export default class ServOfferDetail extends Component {
                         <TouchableWithoutFeedback  onPress={() => {}}>
                         <View style={{ borderRadius: 16, backgroundColor: 'white', height: 112}}>
                             <View style={styles.share}>
-                                <TouchableOpacity style={styles.item}>
+                                <TouchableOpacity style={styles.item} onPress={() => {
+                                    console.log("558yes")
+                  WeChat.isWXAppInstalled()
+                    .then((isInstalled) => {
+                        console.log("561yes")
+                      if (isInstalled) {
+                          console.log("563yes")
+                        WeChat.shareToSession({title: feed.serv_title,
+                          description: feed.serv_detail,
+                          thumbImage: _images[0],
+                          type: 'news',
+                          webpageUrl: 'http://'+Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + '/goods_show?id='+ feed.id})
+                        .catch((error) => {
+                          console.log("566"+JSON.stringify(error));
+                        });
+                      } else {
+                        console.log('没有安装微信软件，请您安装微信之后再试');
+                      }
+                    });
+              }}>
                                     <Image source={require('../resource/ico-wechat.png')} style={styles.img}></Image>
                                     <Text style={styles.text}>微信</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.item}>
+                                <TouchableOpacity style={styles.item}
+                                    onPress={() => {
+                                WeChat.isWXAppInstalled()
+                                    .then((isInstalled) => {
+                                    if (isInstalled) {
+                                WeChat.shareToTimeline({title:feed.serv_title,
+                          description: feed.serv_detail,
+                          thumbImage: _images[0],
+                          type: 'news',
+                          webpageUrl: 'http://'+Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + '/goods_show?id='+ feed.id})
+                                        .catch((error) => {
+                                        console.log("583"+JSON.stringify(error));
+
+                                          if (error instanceof WeChat.WechatError) {
+                                                console.error(error.stack);
+                                            } else {
+                                                throw error;
+                                            }
+                                        });
+                                    } else {
+                                        console.log('没有安装微信软件，请您安装微信之后再试');
+                                    }
+                                    });
+                            }}
+                                >
                                     <Image source={require('../resource/ico-friend.png')} style={styles.img}></Image>
                                     <Text style={styles.text}>朋友圈</Text>
                                 </TouchableOpacity>
