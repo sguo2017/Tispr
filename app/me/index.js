@@ -21,6 +21,9 @@ import BookmarksList from './page/bookmarksList';
 import PersonInfo from './personalinfoEdit';
 import Setting from '../sys/Setting';
 import Constant from '../common/constants';
+import Util from '../common/utils';
+import breakdown from '../sys/others/breakdown';
+import offline from '../sys/others/offline';
 export default class MeInfo extends Component {
     constructor(props) {
       super(props);
@@ -46,43 +49,35 @@ export default class MeInfo extends Component {
         this._getUserInfo();
       }
     }
-    async _getUserInfo(){
-      try {
-        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_PERSON_INFO + `/${this.props.id}?token=${global.user.authentication_token}`
 
-        fetch(url, {
-          method: 'GET',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-          },
-        }).then(response => {
-          if (response.status == 200) return response.json()
-          return null
-        }).then(responseData => {
-          if (responseData) {
-              let thisUser = JSON.parse(responseData.user);
-              console.log("用户信息"+JSON.stringify(thisUser));
-              this.setState({
-                avatar: thisUser.avatar,
-                info: thisUser.profile,
-                country: thisUser.country,
-                province: thisUser.province,
-                city: thisUser.city,
-                district: thisUser.district,
-                name: thisUser.name,
-                offer_count: thisUser.offer_count,
-                request_count: thisUser.request_count,
-                favorites_count: thisUser.favorites_count,
-              });
-          } else {
-          }
-        }).catch(error => {
-          console.log(`Fetch evaluating list error: ${error}`)         
-        })
-      } catch (error) {
-        console.log(`Fetch evaluating list error: ${error}`)
-      }      
+    async _getUserInfo(){
+      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_PERSON_INFO + `/${this.props.id}?token=${global.user.authentication_token}`      
+      
+      Util.get(
+        url,
+        (response) => {
+            let thisUser = JSON.parse(response.user);
+            this.setState({
+              avatar: thisUser.avatar,
+              info: thisUser.profile,
+              country: thisUser.country,
+              province: thisUser.province,
+              city: thisUser.city,
+              district: thisUser.district,
+              name: thisUser.name,
+              offer_count: thisUser.offer_count,
+              request_count: thisUser.request_count,
+              favorites_count: thisUser.favorites_count,
+            });
+        },
+        (error) => {
+            if(error.message == 'Network request failed'){
+                this.props.navigator.push({component: offline})
+            }else{
+                this.props.navigator.push({component: breakdown})
+            }
+        }
+      )            
     }
     clickJump(toPage) {
         let _this = this;

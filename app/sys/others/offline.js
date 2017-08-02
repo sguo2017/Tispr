@@ -16,7 +16,7 @@ export default class offline extends Component{
             justifyContent:'center',alignItems:'center'}}>
                     <Image style={{width:280,height:280,margin:20}} source={require('../../resource/pupop_offline.png')}/>
                     <Text style={{color:'black',fontSize:20,margin:20}}>深海模式</Text>
-                    <Text style={{color:'black',fontSize:14}}>您已离线，请重新登录</Text>
+                    <Text style={{color:'black',fontSize:14}}>您已离线，请连接网络后再次尝试</Text>
                     {/* <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                        <TouchableOpacity
                             activeOpacity={0.75}

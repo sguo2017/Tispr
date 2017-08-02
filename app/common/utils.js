@@ -58,8 +58,11 @@ let Util = {
             successCallback(JSON.parse(responseText));
         })
         .catch((err) => {
-            console.log("请求时发生错误："+err)
-            navigator.push({component: breakdown});
+            if(err.message == 'Network request failed'){
+                navigator.push({component: offline})
+            }else{
+                navigator.push({component: breakdown})
+            }
         });
     },
     patch: (url, data, successCallback, navigator, exploreparams) => {

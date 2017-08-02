@@ -36,6 +36,7 @@ import totalResTimes from './totalResTimes';
 import ChatDetail from '../chat/ChatDetail';
 import Util from '../common/utils'
 import breakdown from '../sys/others/breakdown';
+import offline from '../sys/others/offline';
 import TabBarView from '../containers/TabBarView';
 const KNOWLEDGE_ID = 3
 
@@ -275,7 +276,11 @@ export default class BussList extends Component {
                     });
                 },
                 (error) => {
-                    this.props.navigator.push({component: breakdown})
+                    if(error.message == 'Network request failed'){
+                        this.props.navigator.push({component: offline})
+                    }else{
+                        this.props.navigator.push({component: breakdown})
+                    }
                 }
             )       
     }

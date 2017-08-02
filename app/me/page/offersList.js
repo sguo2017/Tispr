@@ -31,7 +31,7 @@ class OffersList extends PureComponent {
       Util.noToken(this.props.navigator);
     }
     const { dispatch, userId } = this.props;
-    dispatch(fetchOfferList(1, userId));
+    dispatch(fetchOfferList(1, userId, this.props.navigator));
   }
 
   _onMomentumScrollEnd(event) {
@@ -43,7 +43,7 @@ class OffersList extends PureComponent {
     let viewBottomY = contentOffset.y + layoutMeasurement.height;
 
     if (Math.abs(viewBottomY - contentSizeH) <= 40) {
-      dispatch(fetchOfferList(MeOfferList.page + 1, userId));
+      dispatch(fetchOfferList(MeOfferList.page + 1, userId, this.props.navigator));
     }
   }
 
@@ -52,7 +52,7 @@ class OffersList extends PureComponent {
       Util.noToken(this.props.navigator);
     }
     const { dispatch, userId } = this.props;
-    dispatch(fetchOfferList(1, userId));
+    dispatch(fetchOfferList(1, userId, this.props.navigator));
   }
 
   _onPressCell(feed) {

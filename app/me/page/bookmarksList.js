@@ -67,7 +67,7 @@ class BookmarksList extends PureComponent {
       Util.noToken(this.props.navigator);
     }
     const { dispatch } = this.props;
-    dispatch(fetchMarkList(1));
+    dispatch(fetchMarkList(1, this.props.navigator));
   }
 
   _onMomentumScrollEnd(event) {
@@ -79,7 +79,7 @@ class BookmarksList extends PureComponent {
     let viewBottomY = contentOffset.y + layoutMeasurement.height;
 
     if (Math.abs(viewBottomY - contentSizeH) <= 40) {
-      dispatch(fetchMarkList(MeMarkList.page + 1));
+      dispatch(fetchMarkList(MeMarkList.page + 1, this.props.navigator));
     }
   }
 
@@ -88,7 +88,7 @@ class BookmarksList extends PureComponent {
       Util.noToken(this.props.navigator);
     }
     const { dispatch } = this.props;
-    dispatch(fetchMarkList(1));
+    dispatch(fetchMarkList(1, this.props.navigator));
   }
 
   _onPressCell(feed) {

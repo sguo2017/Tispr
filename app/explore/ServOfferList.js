@@ -172,7 +172,7 @@ export default class ServOfferList extends Component {
     let viewBottomY = contentOffset.y + layoutMeasurement.height;
 
     if (Math.abs(viewBottomY - contentSizeH) <= 40) {
-      dispatch(fetchExploreList(ServOfferList.page + 1));
+      dispatch(fetchExploreList(ServOfferList.page + 1,{}, this.props.navigator));
     }
   }
 
@@ -199,7 +199,7 @@ export default class ServOfferList extends Component {
         exploreparams.city = undefined;
     }
     exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
-    dispatch(fetchExploreList(1, exploreparams));
+    dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
   }
 
   _onPressCell(feed) {

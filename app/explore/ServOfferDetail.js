@@ -40,6 +40,8 @@ import AutoTextInput from '../components/AutoTextInput';
 import offerEdit from '../me/offerEdit';
 import Util from '../common/utils';
 import Me from '../me/index';
+import breakdown from '../sys/others/breakdown';
+import offline from '../sys/others/offline';
 const screenW = Dimensions.get('window').width;
 
 const msg1 = '你发布的专业服务很棒！';
@@ -137,7 +139,11 @@ export default class ServOfferDetail extends Component {
                 });
             },
             (error) => {
-                this.props.navigator.push({component: breakdown})
+                if(error.message == 'Network request failed'){
+                    this.props.navigator.push({component: offline})
+                }else{
+                    this.props.navigator.push({component: breakdown})
+                }
             }
         )       
     }

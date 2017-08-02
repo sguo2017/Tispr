@@ -22,6 +22,9 @@ import Constant from '../../common/constants';
 import ServIndex from '../index';
 import ServOffer from '../offer/title';
 import ServRequest from '../request/title';
+import Util from '../../common/utils';
+import breakdown from '../../sys/others/breakdown';
+import offline from '../../sys/others/offline';
 const screenW = Dimensions.get('window').width;
 const _image = {
     21: require('../../resource/industry/21.png'),
@@ -102,35 +105,23 @@ export default class navpage extends Component {
     }
 
     async getGoodsCatalog(){
-        try {
-            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_GOODS_CATALOG + global.user.authentication_token + `&level=1`;
-  
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-            }).then(response => {
-                if (response.status == 200) return response.json()
-                return null
-            }).then(responseData => {
-                if (responseData) {
-                    let goods_catalog_I = this.state.goods_catalog_I;
-                    goods_catalog_I = JSON.parse(responseData.feeds);
-                    global.goods_catalog_I = goods_catalog_I;
-                    this.setState({goods_catalog_I:goods_catalog_I})
-                    console.log(global.goods_catalog_I)
-                } else {
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_GOODS_CATALOG + global.user.authentication_token + `&level=1`;        
+        Util.get(url,
+            (response)=>{
+                let goods_catalog_I = this.state.goods_catalog_I;
+                goods_catalog_I = JSON.parse(response.feeds);
+                global.goods_catalog_I = goods_catalog_I;
+                this.setState({goods_catalog_I:goods_catalog_I})
+                console.log(global.goods_catalog_I)
+            },
+            (error)=>{
+                if(error.message == 'Network request failed'){
+                    this.props.navigator.push({component: offline})
+                }else{
+                    this.props.navigator.push({component: breakdown})
                 }
-            }).catch(error => {
-                console.log(`Fetch evaluating list error: ${error}`)
-               
-            })
-        } catch (error) {
-            this.setState({ error: error });
-            this.setState({ showProgress: false });
-        }      
+            }
+        )    
     } 
 
     jump(goods_catalogs_id, goods_catalogs_name) {

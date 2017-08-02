@@ -97,43 +97,31 @@ class ExploreList extends PureComponent {
         if(!global.user.authentication_token){
                Util.noToken(this.props.navigator);
         }
-        try {
-            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_GOODS_CATALOG + global.user.authentication_token + `&level=1`;
-
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-            }).then(response => {
-                if (response.status == 200) return response.json()
-                return null
-            }).then(responseData => {
-                if (responseData) {
-                    let goods_catalog_I = this.state.goods_catalog_I;
-                    goods_catalog_I = JSON.parse(responseData.feeds);
-                    global.goods_catalog_I = goods_catalog_I;
-                    for(let i = 0;i< goods_catalog_I.length;i++){
-                        let ids=[];
-                        goods_catalogs_II[i] = JSON.parse(goods_catalog_I[i].goods_catalogs_II);
-                        for(let j=0;j < goods_catalogs_II[i].length;j++){
-                            if(goods_catalogs_II[i][j].id)
-                                ids.push(goods_catalogs_II[i][j].id);
-                        }
-                        goods_catalogs_II_id[i]=ids;
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_GOODS_CATALOG + global.user.authentication_token + `&level=1`;
+        Util.get(url,
+            (response)=>{
+                 let goods_catalog_I = this.state.goods_catalog_I;
+                goods_catalog_I = JSON.parse(response.feeds);
+                global.goods_catalog_I = goods_catalog_I;
+                for(let i = 0;i< goods_catalog_I.length;i++){
+                    let ids=[];
+                    goods_catalogs_II[i] = JSON.parse(goods_catalog_I[i].goods_catalogs_II);
+                    for(let j=0;j < goods_catalogs_II[i].length;j++){
+                        if(goods_catalogs_II[i][j].id)
+                            ids.push(goods_catalogs_II[i][j].id);
                     }
-                    global.goods_catalogs_II_id = goods_catalogs_II_id;
-                    //console.log("goods_catalog_I:"+JSON.stringify(goods_catalog_I))
-                } else {
+                    goods_catalogs_II_id[i]=ids;
                 }
-            }).catch(error => {
-                console.log(`Fetch evaluating list error: ${error}`)
-
-            })
-        } catch (error) {
-            console.log("error:" + error)
-        }
+                global.goods_catalogs_II_id = goods_catalogs_II_id;
+            },
+            (error) => {
+                if(error.message == 'Network request failed'){
+                    this.props.navigator.push({component: offline})
+                }else{
+                    this.props.navigator.push({component: breakdown})
+                }
+            }
+        )
     }
     refresh() {
         if(!global.user.authentication_token){
@@ -169,7 +157,7 @@ class ExploreList extends PureComponent {
             }
         });
         exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
-        dispatch(fetchExploreList(page, exploreparams));
+        dispatch(fetchExploreList(page, exploreparams, this.props.navigator));
     }
 
     _createAreaData() {
