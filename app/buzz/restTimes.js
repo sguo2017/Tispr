@@ -25,7 +25,7 @@ export default class offline extends Component{
                     <View style={{flexDirection:'row', justifyContent:'space-between',marginTop:20}}>
                         <TouchableOpacity 
                         style={{borderRadius:5,width:100,height:44,justifyContent:'center',alignItems:'center', marginRight:40}}
-                        onPress={() => this.props.navigator.pop()}
+                        onPress={() => this.props.connect?this.props.navigator.popN(2):this.props.navigator.pop() }
                         >
                             <Text style={{color:'#9E9E9E'}}>再看看</Text>
                             </TouchableOpacity> 

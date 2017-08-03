@@ -99,7 +99,8 @@ export default class Connect extends Component {
                 if(resObject.status==0){
                     this._createChat(newOrder,avaliableTimes);            
                 }else if(resObject.status==-2){
-                    this.props.navigator.push({component: noConnectTimes})
+                    let connect = true;
+                    this.props.navigator.push({component: noConnectTimes, passProps: {connect}})
                 }
             } else {
                 let error = res;
@@ -147,9 +148,11 @@ export default class Connect extends Component {
                         hasSeenTotalRestimesPage[global.user.id] = true
                         UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
                     })
-                    this.props.navigator.push({component:totalResTimes, passProps:{feed: newOrder,type}});
+                    let connect = true;
+                    this.props.navigator.push({component:totalResTimes, passProps:{connect, feed: newOrder,type}});
                 }else if(avaliableTimes == 5){
-                    this.props.navigator.push({component:resTimes, passProps:{feed: newOrder,type}});
+                    let connect = true;
+                    this.props.navigator.push({component:resTimes, passProps:{ connect, feed: newOrder,type}});
                 }else{
                     this.props.navigator.resetTo({component:ChatDetail, passProps: {feed: newOrder, newChat: true}});
                 }       
