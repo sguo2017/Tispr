@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 15,
+    paddingHorizontal: 8,
     paddingVertical: 8,
     borderTopWidth: 0.5,
     borderColor: '#eeeeee',
@@ -517,10 +517,10 @@ const ServItem = ({
       />
       <View style={{
         width: width,
-        paddingHorizontal: 15,
+        paddingHorizontal: 7,
         paddingVertical: 8,
       }}>
-        <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }}>{serv.serv_title}</Text>
+        <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }} numberOfLines={3}>{serv.serv_title}</Text>
         <Text style={{ fontSize: 12, color: '#999999', marginBottom: 4 }}>{serv.catalog}</Text>
         <View style={{ flexDirection:'row', marginTop: 3}}>
           <Image style={{ width: 18, height: 18}} source={require('../resource/g-location-s.png')}/>

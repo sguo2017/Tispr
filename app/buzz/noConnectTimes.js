@@ -19,7 +19,7 @@ export default class offline extends Component{
                     <View style={{flexDirection:'row', justifyContent:'center',marginTop:20}}>
                         <TouchableOpacity 
                         style={{borderRadius:5,width:200,height:40,justifyContent:'center',alignItems:'center',backgroundColor:global.gColors.buttonColor}}
-                        onPress={() => this.props.navigator.popN(2)}
+                        onPress={() => {this.props.connect?this.props.navigator.popN(2):this.props.navigator.pop()}}
                         >
                             <Text style={{color:'white'}}>知道了</Text>
                         </TouchableOpacity>
