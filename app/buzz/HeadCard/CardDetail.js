@@ -43,7 +43,7 @@ export default class CardDetail extends Component {
     }
 
     componentWillMount() {
-        this._getSameTypeOffer();
+        // this._getSameTypeOffer();
         this._getbidder();
     }
     componentDidMount() {
@@ -200,7 +200,7 @@ export default class CardDetail extends Component {
                         >
                         </MapView>
                         <View style={{flexDirection: 'row', marginTop: 20, height: 48, justifyContent: 'space-between'}}>
-                            <Text style={{fontSize: 16, color: 'black'}}>投标&nbsp;&nbsp;&nbsp;{this.state.bidderListLength}/5</Text>
+                            <Text style={{fontSize: 16, color: 'black'}}>投标&nbsp;&nbsp;&nbsp;{this.state.bidderListLength}</Text>
                             <TouchableOpacity style={{backgroundColor: '#4A90E2', borderRadius: 2, height: Platform === 'ios'?35:28, width: 72}}>
                                 <Text style={{color: 'white', marginHorizontal: 8, marginVertical: 4}}>增加投标</Text>
                             </TouchableOpacity>
@@ -225,7 +225,7 @@ export default class CardDetail extends Component {
                             <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>联系TA</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 12}}>
+                    {/*<View style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 12}}>
                        <Text style={{color: '#9E9E9E', fontSize: 14}}>相关服务</Text>
                     </View>
                     <View style ={{flexDirection: 'row',flexWrap:'wrap'}}>
@@ -241,7 +241,7 @@ export default class CardDetail extends Component {
                         })
                         
                     }
-                    </View>
+                    </View>*/}
                 </ScrollView>
                 </View>
             </View>
