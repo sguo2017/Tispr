@@ -22,7 +22,7 @@ export default class MarkList extends Component {
                     leftIconAction={() => this.props.navigator.pop()}
                     style={{ height: 50 }}
                 />
-                <BookMarkList/>
+                <BookMarkList navigator={this.props.navigator}/>
             </View>
         )
     }

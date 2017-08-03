@@ -211,7 +211,7 @@ export default class Connect extends Component {
                         >
                             <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
                         </TouchableHighlight>
-                        <TextInput
+                        <AutoTextInput
                             ref={(textInput) => { this.modelTextInput = textInput; }}
                             multiline={true}
                             onChangeText={(text) => 
@@ -224,14 +224,13 @@ export default class Connect extends Component {
                             onBlur={() => {
                                 this.setState({editable: false})}
                             }
+                            underlineColorAndroid="rgba(0,0,0,0.12)"
                             style={{fontSize: 16, color: '#1B2833', marginBottom: 8, height: 100}}
                             value={name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')+content}
                             editable={this.state.editable}
                         />
-                        <View style={{height: 1, backgroundColor: 'rgba(0,0,0,0.12)', marginVertical: 13.7}}></View>
 
                         <Text onPress={()=> {
-                            {/* this.setState({editable: true}); */}
                             this.focusOnTextInput();
                             }} style={[styles.themeColorText]}>
                             自定义信息
@@ -247,11 +246,12 @@ export default class Connect extends Component {
                             <Image source={require('../resource/g_chevron right.png')} style={{justifyContent: 'flex-end'}}></Image>
                         </View> */}
                     </View>
-                
-                <TouchableOpacity style={{height: 44, backgroundColor: '#FFC400'}}  onPress={this._createDeal.bind(this)}>
-                    <Text style={{fontSize: 16, color: 'white', marginVertical: 10, marginHorizontal: 164}}>发送</Text>
+                </ScrollView>
+                <TouchableOpacity 
+                    style={{height: 44, backgroundColor: '#FFC400', alignItems: 'center', justifyContent: 'center'}}  
+                    onPress={this._createDeal.bind(this)}>
+                    <Text style={{fontSize: 16, color: 'white',}}>发送</Text>
                 </TouchableOpacity>
-            </ScrollView>
             </View>
         );
     }
