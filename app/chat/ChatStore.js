@@ -56,7 +56,7 @@ export default class ChatStore {
                     resolve(JSON.parse(response.feeds))
                 },
                 (error) => {
-                    reject()
+                    reject(error)
                 }
             );           
         })

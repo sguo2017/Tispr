@@ -610,14 +610,14 @@ export default class ServOfferDetail extends Component {
                                     <Image source={require('../resource/ico-friend.png')} style={styles.img}></Image>
                                     <Text style={styles.text}>朋友圈</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.item}>
+                                {/*<TouchableOpacity style={styles.item}>
                                     <Image source={require('../resource/ico-qq.png')} style={styles.img}></Image>
                                     <Text style={styles.text}>QQ</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity>
                                     <Image source={require('../resource/ico-weibo.png')} style={styles.img}></Image>
                                     <Text style={styles.text}>新浪微博</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity>*/}
                             </View>
                         </View>
                         </TouchableWithoutFeedback>

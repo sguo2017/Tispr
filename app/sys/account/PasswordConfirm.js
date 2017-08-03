@@ -63,7 +63,7 @@ export default class PasswordConfirm extends Component {
     }
     render() {
         return (
-            <View style={{ height: global.gScreen.height, backgroundColor: '#fff' }}>
+            <View style={{ flex: 1, backgroundColor: '#fff' }}>
                 <Header
                     title='密码验证'
                     leftIcon={require('../../resource/ic_back_white.png')}
@@ -111,7 +111,7 @@ export default class PasswordConfirm extends Component {
                 >
                     <Text style={{ fontSize: 16, color: global.gColors.themeColor }}>忘记密码？</Text>
                 </TouchableOpacity>
-                <TouchableHighlight onPress={this._check.bind(this)} style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom: 22, flexShrink: 0, width: global.gScreen.width }]}>
+                <TouchableHighlight onPress={this._check.bind(this)} style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom: 0, flexShrink: 0, width: global.gScreen.width }]}>
                     <Text style={styles.buttonText}>
                         确定
                     </Text>
@@ -131,11 +131,14 @@ const styles = StyleSheet.create({
         // borderColor: '#48bbec'
     },
     button: {
-        height: 50,
-        backgroundColor: global.gColors.themeColor,
-        alignSelf: 'stretch',
-        marginTop: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: global.gColors.buttonColor,
+        position: 'absolute',
+        bottom: 0,
+        right:0,
+        left: 0,
+        height: 44,
     },
     buttonText: {
         fontSize: 22,

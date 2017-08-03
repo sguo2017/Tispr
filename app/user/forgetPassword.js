@@ -200,7 +200,7 @@ export default class forgetPassword extends Component {
                 placeholderTextColor = '#cccccc'
             />
             </ScrollView>
-            <TouchableHighlight style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:22, flexShrink: 0, width: global.gScreen.width }]}
+            <TouchableHighlight style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:0, flexShrink: 0, width: global.gScreen.width }]}
                 onPress={this.sendEmail.bind(this)}
             >
                 <Text style={styles.buttonText}>
@@ -267,7 +267,7 @@ export default class forgetPassword extends Component {
                     </Text>
                 </TouchableOpacity>
             </ScrollView>
-            <TouchableHighlight style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:22, flexShrink: 0, width: global.gScreen.width }]}
+            <TouchableHighlight style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom: 0, flexShrink: 0, width: global.gScreen.width }]}
                 onPress={this.passwordComfirm.bind(this)}
             >
                 <Text style={styles.buttonText}>
@@ -278,7 +278,7 @@ export default class forgetPassword extends Component {
         );
 
         return(
-            <View style={{height:global.gScreen.height,backgroundColor: 'white'}}>
+            <View style={{ flex: 1, backgroundColor: 'white'}}>
                 <Header
 					title='重置密码'
 					leftIcon={require('../resource/ic_back_white.png')}

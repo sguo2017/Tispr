@@ -13,6 +13,7 @@ import {
     Alert,
     ListView
 } from 'react-native';
+import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
 import Header from '../../components/HomeNavigation';
 import Swiper from 'react-native-swiper';
 import Constant from '../../common/constants';
@@ -45,7 +46,35 @@ export default class CardDetail extends Component {
         this._getSameTypeOffer();
         this._getbidder();
     }
+    componentDidMount() {
+        let longitude = 116.406568, latitude = 39.915156 //缺省是天安门位置
+        if (this.props.feed.latitude != undefined || this.props.feed.longitude != undefined) {
+            longitude = Number(this.props.feed.longitude), latitude = Number(this.props.feed.latitude)
+        }
+        Geolocation.getCurrentPosition().then(
+            (data) => {
+                this.setState({
+                    zoom: 18,
+                    markers: [{
+                        latitude: data.latitude,
+                        longitude: data.longitude,
+                        title: '我的位置'
+                    }, {
+                        longitude: longitude,
+                        latitude: latitude,
+                        title: "对方位置"
+                    }],
+                    center: {
+                        latitude: latitude,
+                        longitude: longitude,
+                    }
+                })
+            }
+        ).catch(error => {
+            console.warn(error, 'error')
+        })
 
+    }
     async _getbidder(){
         let serv_id =this.props.feed.serv_id;
         try {
@@ -154,6 +183,22 @@ export default class CardDetail extends Component {
                             </Swiper>
                         }
                         <Text style={{color: '#424242', fontSize: 16, lineHeight: 24}}>{feed.serv_detail}</Text> 
+                        <MapView
+                            trafficEnabled={this.state.trafficEnabled}
+                            baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
+                            zoom={this.state.zoom}
+                            mapType={this.state.mapType}
+                            center={this.state.center}
+                            marker={this.state.marker}
+                            markers={this.state.markers}
+                            style={styles.map}
+                            onMarkerClick={(e) => {
+                                console.warn(JSON.stringify(e));
+                            }}
+                            onMapClick={(e) => {
+                            }}
+                        >
+                        </MapView>
                         <View style={{flexDirection: 'row', marginTop: 20, height: 48, justifyContent: 'space-between'}}>
                             <Text style={{fontSize: 16, color: 'black'}}>投标&nbsp;&nbsp;&nbsp;{this.state.bidderListLength}/5</Text>
                             <TouchableOpacity style={{backgroundColor: '#4A90E2', borderRadius: 2, height: Platform === 'ios'?35:28, width: 72}}>
@@ -298,5 +343,10 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         borderTopWidth: 0.5,
         borderColor: '#eeeeee',
+    },
+    map: {
+        width: Dimensions.get('window').width - 40,
+        height: Dimensions.get('window').height - 500,
+        marginBottom: 10,
     },
 })

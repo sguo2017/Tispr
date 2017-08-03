@@ -55,7 +55,7 @@ export default class PasswordConfirm extends Component{
 
     render(){
         return(
-            <View style={{height:global.gScreen.height, backgroundColor: '#fff'}}>
+            <View style={{flex:1, backgroundColor: '#fff'}}>
                 <Header
 					title='重置密码'
 					leftIcon={require('../../resource/ic_back_white.png')}
@@ -88,7 +88,7 @@ export default class PasswordConfirm extends Component{
                         }
                     </View>
                 </View>
-                <TouchableHighlight onPress={this._changePassword.bind(this)} style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:22, flexShrink: 0, width: global.gScreen.width }]}>
+                <TouchableHighlight onPress={this._changePassword.bind(this)} style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:0, flexShrink: 0, width: global.gScreen.width }]}>
                     <Text style={styles.buttonText}>
                         确定
                     </Text>
