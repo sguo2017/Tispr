@@ -247,7 +247,7 @@ export default class Register extends Component {
             onBlur ={()=>{if(this.state.name){this.setState({nameValid: true})}else{this.setState({nameValid: false})}}}
             >
           </TextInput>
-          {this.state.nameValid? <Text style={styles.greyText}>2-4个中文汉字</Text>:<Text style ={styles.redText}>姓名不能为空</Text>}
+          {this.state.nameValid? <Text style={styles.greyText}></Text>:<Text style ={styles.redText}>姓名不能为空</Text>}
           <TextInput
             ref = "2"
             onChangeText={(text) => this.setState({ email: text })}
@@ -264,7 +264,7 @@ export default class Register extends Component {
             }}  
           >
           </TextInput>
-          {this.state.isEmail?<Text style={{color: '#4A90E2'}}>该电子邮箱可用于登录和接收奇客平台的邮件信息</Text>:<Text style ={styles.redText}>邮箱格式不正确</Text>}
+          {this.state.isEmail?<Text style={{color: '#4A90E2'}}>该电子邮箱可作为账号用于登录和密码找回</Text>:<Text style ={styles.redText}>邮箱格式不正确</Text>}
           <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minHeight: 48}}>
             <View style={{ flex: 1, justifyContent: 'center'}}>
               <TextInput
