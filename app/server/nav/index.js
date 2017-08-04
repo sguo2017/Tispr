@@ -210,7 +210,7 @@ export default class navpage extends Component {
                                                     <TouchableOpacity key={item.item.id} onPress={() => { this.jump(item.item.id, item.item.name) }}>
                                                         <CachedImage style={{
                                                             width: screenW,
-                                                            height: 170,
+                                                            height: screenW/720*336,
                                                             justifyContent: 'center',
                                                             alignItems: 'center',
                                                             }}
