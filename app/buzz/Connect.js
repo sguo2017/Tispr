@@ -196,24 +196,13 @@ export default class Connect extends Component {
                         
                         {/*</View>*/}
                         <View style={{marginTop: 8}}>                     
-                        <TouchableHighlight 
-                            style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
-                            onPress={()=>this.setState({button1: !this.state.button1})}
-                        >
-                            <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight 
-                            style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton]} 
-                            onPress={()=>this.setState({button2: !this.state.button2})}
-                        >
-                            <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight 
-                            style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton]} 
-                            onPress={()=>this.setState({button3: !this.state.button3})}
-                        >
-                            <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
-                        </TouchableHighlight>
+                        
+                        <Text onPress={()=>this.setState({button1: !this.state.button1})} style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText,{width:Platform.OS === 'ios'?240:190}]}>{msg1}</Text>
+
+                        <Text onPress={()=>this.setState({button2: !this.state.button2})} style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText,{width:Platform.OS === 'ios'?220:176}]}>{msg2}</Text>
+
+                        <Text onPress={()=>this.setState({button3: !this.state.button3})} style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText,{width:Platform.OS === 'ios'?260:204}]}>{msg3}</Text>
+                        
                         <AutoTextInput
                             ref={(textInput) => { this.modelTextInput = textInput; }}
                             multiline={true}
@@ -235,7 +224,7 @@ export default class Connect extends Component {
 
                         <Text onPress={()=> {
                             this.focusOnTextInput();
-                            }} style={[styles.themeColorText]}>
+                            }} style={[styles.themeColorText2]}>
                             自定义信息
                         </Text>
                         <View>
@@ -278,11 +267,32 @@ const styles = StyleSheet.create({
     },
     themeColorText:{
         color:global.gColors.themeColor,
-        fontSize:16
+        fontSize:16,
+        padding:5,
+        borderColor: global.gColors.themeColor,
+        borderWidth:1,
+        marginBottom:10,
+        borderRadius:4,
+    },
+    themeColorText2:{
+        color:global.gColors.themeColor,
+        fontSize:16,
+        padding:5,
+        borderColor: global.gColors.themeColor,
+        borderWidth:1,
+        marginBottom:10,
+        borderRadius:4,
+        width:100
     },
     whiteText: {
         color:'#fff',
-        fontSize:16
+        fontSize:16,
+        padding:5,
+        backgroundColor: global.gColors.themeColor,
+        borderColor: global.gColors.themeColor,
+        borderWidth:1,
+        marginBottom:10,
+        borderRadius:4,
     },
     notSelectedButton: {
         borderWidth: 1,
@@ -324,7 +334,7 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30,
-        marginHorizontal: 130,
+        alignSelf: 'center',
         marginVertical: 20
     }
 })
