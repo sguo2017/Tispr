@@ -483,7 +483,15 @@ export default class ServOfferDetail extends Component {
                         feed.user_id == global.user.id ?
                             <View style={{ paddingBottom: 16, backgroundColor: 'white' }}></View> :
                             <View style={{ backgroundColor: 'white', paddingTop: 23, paddingBottom: 16 }}>
-                                <TouchableOpacity style={{ backgroundColor: '#FFC400', borderRadius: 4, height: 44, marginHorizontal: 16, paddingHorizontal: 138, paddingVertical: 10 }}
+                                <TouchableOpacity 
+                                    style={{ 
+                                        backgroundColor: '#FFC400', 
+                                        borderRadius: 4, 
+                                        height: 44, 
+                                        marginHorizontal: 16, 
+                                        alignItems: 'center',
+                                        paddingVertical: 10,
+                                    }}
                                     onPress={() => this._p(feed)}
                                 >
                                     <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>联系TA</Text>

@@ -52,18 +52,19 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: (Common.window.width - 24) / 2,
     margin: 4,
-    backgroundColor: '#fff',
+    backgroundColor: 'red',
     borderRadius: 4,
     overflow: 'hidden',
   },
   cardUserInfoView: {
+    backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 8,
     paddingVertical: 8,
-    borderTopWidth: 0.5,
-    borderColor: '#eeeeee',
+    borderTopWidth: 1,
+    borderTopColor: '#eeeeee',
   },
    // modal的样式
     modalStyle: {
@@ -519,6 +520,7 @@ const ServItem = ({
         width: width,
         paddingHorizontal: 7,
         paddingVertical: 8,
+        backgroundColor: 'white',
       }}>
         <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }} numberOfLines={3}>{serv.serv_title}</Text>
         <Text style={{ fontSize: 12, color: '#999999', marginBottom: 4 }}>{serv.catalog}</Text>
@@ -528,14 +530,14 @@ const ServItem = ({
         </View>
       </View>
       <View style={styles.cardUserInfoView}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
           <CachedImage
             style={{height: 24, width: 24, borderRadius: 15}}
             source={{uri: servUser.avatar}}
             defaultSource={require('../resource/img_default_avatar.png')}
           />
           <Text
-            style={{fontSize: 14, color: 'gray', marginLeft: 8, width: width * 0.4}}
+            style={{ fontSize: 14, color: 'gray', marginLeft: 8, width: width * 0.4 }}
             numberOfLines={1}
           >
             {servUser.name}

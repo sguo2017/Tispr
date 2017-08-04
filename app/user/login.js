@@ -31,9 +31,11 @@ export default class Login extends Component {
     super();
     this.state = {
       num: "13911551595",
-      email: "38359504@qq.com",
+      // email: "38359504@qq.com",
+      email: "guoshan@ztesoft.com",
       // num: "18210034398",
       // email: "lin@qq.com",
+      password: "cc111111",
       password: "123456",
       password2: '123456',
       error: "",
@@ -85,6 +87,7 @@ export default class Login extends Component {
   onLoginPressed = () => {
     this.setState({ showProgress: true });
     if (Platform.OS == 'ios' && __DEV__) {
+      global.user = {};
       global.user.addressComponent = this.state.addressComponent;
     }
     let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_LOGIN;
@@ -244,8 +247,8 @@ export default class Login extends Component {
           <Image source={require('../resource/b-reg-smail.png')} style={{width: 32, height: 32, marginRight: 10}}/>
           <Text style={{color: '#1B2833', fontSize: 14, fontWeight: 'bold', lineHeight: 25}}>欢迎回来</Text>
         </View>
-        <View style={{ justifyContent: 'center', minHeight: 48}}>
-          <AutoTextInput
+        <View style={{ justifyContent: 'center', height: 32, minHeight: 48, borderBottomWidth: 1, borderBottomColor: '#eeeeee' }}>
+          <TextInput
             ref="1"
             style={styles.input}
             underlineColorAndroid="transparent"
@@ -260,10 +263,10 @@ export default class Login extends Component {
           />
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minHeight: 48}}>
-          <View style={{ flex: 1, justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee',}}>
+          <View style={{ flex: 1, height: 32, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee',}}>
             <TextInput
               ref="2"
-              style={[styles.input, { borderWidth: 0 }]}
+              style={styles.input}
               underlineColorAndroid="transparent"
               multiline = {false}
               onChangeText={(text) => this.setState({ password: text })}
@@ -275,10 +278,10 @@ export default class Login extends Component {
               returnKeyLabel = 'done'
               onSubmitEditing={() => {this.onLoginPressed()}}
             />
+            <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword: !this.state.seePassword })}>
+              <Image style={{ width: 25, height: 20 }} source={this.state.seePassword? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword: !this.state.seePassword })}>
-            <Image style={{ width: 25, height: 20 }} source={this.state.seePassword? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
-          </TouchableOpacity>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <TouchableOpacity onPress={() => this.setState({ loginWay: 'phonenumber' })}>
@@ -314,8 +317,8 @@ export default class Login extends Component {
             <Text style={{ fontSize: 16, color: '#1b2833' }}>+86</Text>
             <Image style={{ height: 24, width: 24 }} source={require('../resource/g-arrow-drop-down.png')} />
           </TouchableOpacity>
-          <View style={{ flex: 1, justifyContent: 'center'}}>
-            <AutoTextInput
+          <View style={{ flex: 1, height: 32, justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee' }}>
+            <TextInput
               keyboardType='numeric'
               ref = "3"
               style={styles.input}
@@ -333,10 +336,10 @@ export default class Login extends Component {
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, minHeight: 48 }}>
-          <View style={{ flex: 1, justifyContent: 'center'}}>
+          <View style={{ flex: 1, height: 32, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee'}}>
             <TextInput
               ref = "4"
-              style={[styles.input, { borderWidth: 0 }]}
+              style={styles.input}
               underlineColorAndroid="transparent"
               multiline = {false}
               onChangeText={(text) => this.setState({ password2: text })}
@@ -348,11 +351,10 @@ export default class Login extends Component {
               returnKeyLabel = 'done'
               onSubmitEditing = {this._smsCodeLogin.bind(this)}
             />
+            <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword2: !this.state.seePassword2 })}>
+              <Image style={{ width: 25, height: 20 }} source={this.state.seePassword2? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
+            </TouchableOpacity>
           </View>
-          
-          <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={()=>this.setState({ seePassword2: !this.state.seePassword2 })}>
-            <Image style={{ width: 25, height: 20 }} source={this.state.seePassword2? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
-          </TouchableOpacity>
         </View>       
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <TouchableOpacity onPress={() => this.setState({ loginWay: 'email' })}>
@@ -399,8 +401,6 @@ const styles = StyleSheet.create({
     maxHeight: 32,
     padding: 0,
     fontSize: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eeeeee',
   },
   loginButton: {
     justifyContent: 'center',
