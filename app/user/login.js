@@ -48,6 +48,7 @@ export default class Login extends Component {
       lastPosition: 'unknown',
       addressComponent: {"buildingName":null,"street":"XXX","district":"XXX","city":"XXX","latitude":23.021835,"altitude":5e-324,"buildingId":null,"radius":300,"province":"XXX","direction":-1,"address":"XXX","countryCode":"0","streetNumber":null,"longitude":113.29391,"country":"XXX","cityCode":"0"},
       seePassword:true,
+      agree: true
     };
   }
 
@@ -86,6 +87,9 @@ export default class Login extends Component {
   }
 
   onLoginPressed = () => {
+    if (!this.state.agree) {
+
+    }
     this.setState({ showProgress: true });
     if (Platform.OS == 'ios' && __DEV__) {
       global.user = {};
@@ -298,13 +302,19 @@ export default class Login extends Component {
         </View>
         </ScrollView>
         <View style={{height: 100, position: 'absolute',bottom: 0,right:0,left: 0, alignItems: 'center'}}>
-          <Text style={{color: 'black', fontSize: 14}}>我已阅读并同意服务协议</Text>
+          <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 16}} onPress={() => this.setState({agree: !this.state.agree})}>
+            <Image 
+              style={{height: 16, width: 16}}
+              source={this.state.agree?require('../resource/y-check.png'):require('../resource/b-check.png')}/>
+             <Text style={{color: 'black', fontSize: 14, paddingBottom:3 }}>我已阅读并同意服务协议</Text> 
+          </TouchableOpacity>
+          
           <TouchableOpacity onPress={()=>{this.onLoginPressed()}} style={styles.loginButton}>
             <Text  style={styles.loginButtonText}>
               登录
             </Text>
           </TouchableOpacity>
-        </View>       
+        </View>      
       </View>
     );
     const smsView = (
@@ -374,7 +384,13 @@ export default class Login extends Component {
         </View>
         </ScrollView>
         <View style={{height: 100, position: 'absolute',bottom: 0,right:0,left: 0, alignItems: 'center'}}>
-          <Text style={{color: 'black', fontSize: 14}}>我已阅读并同意服务协议</Text>
+          <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 16}} onPress={() => this.setState({agree: !this.state.agree})}>
+            <Image 
+              style={{height: 16, width: 16}}
+              source={this.state.agree?require('../resource/y-check.png'):require('../resource/b-check.png')}/>
+             <Text style={{color: 'black', fontSize: 14, paddingBottom:3 }}>我已阅读并同意服务协议</Text> 
+          </TouchableOpacity>
+          
           <TouchableOpacity onPress={()=>{this.onLoginPressed()}} style={styles.loginButton}>
             <Text  style={styles.loginButtonText}>
               登录
