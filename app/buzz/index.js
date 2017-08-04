@@ -13,6 +13,7 @@ import {
     Alert,
     Dimensions,
     InteractionManager,
+    Platform,
 } from 'react-native';
 import { observer } from 'mobx-react/native'
 import { reaction } from 'mobx'
@@ -480,41 +481,55 @@ export default class BussList extends Component {
             return introduceSwiper;
         }
     }
-    render() {
-        const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
+    renderHeader = () => {
         let cardArray = this.state.sys_msgs;
         return (
-            <View style={styles.listView}>
-                <View style={{height: 50, justifyContent: 'center', alignItems: 'center', backgroundColor: '#4a90e2'}}>
-                    <Image source={require('../resource/navbar-w-logo.png')}/>
-                </View>
+            <View>
                 <Text style={styles.text1}>{cardArray && cardArray.length > 0 ? "您有重要更新" : "想要更多机会?"}</Text>
-                {this.generateSwiper()}
+                {this.generateSwiper()} 
                 <View style={[styles.view, { marginTop: 10 }]}>
                     <View style={styles.line}></View>
                     <Text style={styles.text2}>奇客动态</Text>
                     <View style={styles.line}></View>
                 </View>
-                {!isFetching &&
-                    <ListView
-                        dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
-                        renderRow={this._renderRow}
-                        renderFooter={this._renderFooter}
-                        enableEmptySections
-                        initialListSize={3}
-                        onScroll={this._onScroll}
-                        onEndReached={this._onEndReach}
-                        onEndReachedThreshold={30}
-                        removeClippedSubviews={false}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={isRefreshing}
-                                onRefresh={this._onRefresh}
-                                colors={['rgb(217, 51, 58)']}
-                            />
-                        }
-                    />
-                }
+            </View>
+        );
+    };
+    render() {
+        const { feedList, isRefreshing, isFetching } = this.knowledgeListStore
+        let cardArray = this.state.sys_msgs;
+        return (
+            <View style={styles.listView}>
+                <View style={{
+                    height: Platform.OS === 'android' ? 44 : 64,
+                    paddingTop: Platform.OS === 'android' ? 0 : 20, 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    backgroundColor: '#4a90e2'
+                }}>
+                    <Image source={require('../resource/navbar-w-logo.png')}/>
+                </View>
+                {/* {!isFetching && */}
+                <ListView
+                    renderHeader={()=>this.renderHeader()}
+                    dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
+                    renderRow={this._renderRow}
+                    renderFooter={this._renderFooter}
+                    enableEmptySections
+                    initialListSize={3}
+                    onScroll={this._onScroll}
+                    onEndReached={this._onEndReach}
+                    onEndReachedThreshold={30}
+                    removeClippedSubviews={false}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isRefreshing}
+                            onRefresh={this._onRefresh}
+                            colors={['rgb(217, 51, 58)']}
+                        />
+                    }
+                />
+                {/* } */}
                 <Loading isShow={isFetching} />
                 <Toast ref={toast => this.toast = toast} />
 

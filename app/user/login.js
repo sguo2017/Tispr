@@ -32,8 +32,10 @@ export default class Login extends Component {
     this.state = {
       num: "13911551595",
       email: "38359504@qq.com",
+      // email: "guoshan@ztesoft.com",
       // num: "18210034398",
       // email: "lin@qq.com",
+      // password: "cc111111",
       password: "123456",
       password2: '123456',
       error: "",
@@ -256,6 +258,7 @@ export default class Login extends Component {
             returnKeyLabel = 'next'
             value ={this.state.email}
             multiline = {false}
+            onKeyPress={() => this.focusNextField('2')}
             onSubmitEditing={() => this.focusNextField('2')}
           />
         </View>
@@ -273,6 +276,7 @@ export default class Login extends Component {
               value ={this.state.password}
               returnKeyType = 'done'
               returnKeyLabel = 'done'
+              onKeyPress={() => {this.onLoginPressed()}}
               onSubmitEditing={() => {this.onLoginPressed()}}
             />
           </View>
