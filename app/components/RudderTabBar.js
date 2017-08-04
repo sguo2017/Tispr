@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
       height: 3
     },
     shadowRadius: 5,
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.3,
   },
   centerBackground: {
     position: 'absolute',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
       height: 3
     },
     shadowRadius: 5,
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.3,
   },
   centerCover: {
     position: 'absolute',

@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     paddingVertical: 8,
-    borderTopWidth: 0.5,
+    borderTopWidth: 1,
     borderColor: '#eeeeee',
   },
 });

@@ -404,6 +404,7 @@
 		E1551BCA1F0F8F3F008370DD /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		E1551BCC1F0F90E7008370DD /* RCTBaiduMap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBaiduMap.xcodeproj; path = "../node_modules/react-native-baidu-map/ios/RCTBaiduMap.xcodeproj"; sourceTree = "<group>"; };
 		E1551BD91F0F9391008370DD /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = mapapi.bundle; path = "../node_modules/react-native-baidu-map/ios/lib/BaiduMapAPI_Map.framework/Resources/mapapi.bundle"; sourceTree = "<group>"; };
+		E18EC2B71F3425B00049236F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		E19E306E1F130F1C00B24C94 /* BaiduMapAPI_Base.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Base.framework; path = "../node_modules/react-native-baidu-map/ios/lib/BaiduMapAPI_Base.framework"; sourceTree = "<group>"; };
 		E19E306F1F130F1C00B24C94 /* BaiduMapAPI_Cloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Cloud.framework; path = "../node_modules/react-native-baidu-map/ios/lib/BaiduMapAPI_Cloud.framework"; sourceTree = "<group>"; };
 		E19E30701F130F1C00B24C94 /* BaiduMapAPI_Location.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Location.framework; path = "../node_modules/react-native-baidu-map/ios/lib/BaiduMapAPI_Location.framework"; sourceTree = "<group>"; };
@@ -1360,6 +1361,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				13B07FB21A68108700A75B9A /* Base */,
+				E18EC2B71F3425B00049236F /* zh-Hans */,
 			);
 			name = LaunchScreen.xib;
 			path = qike;
@@ -1688,6 +1690,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1729,6 +1732,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;

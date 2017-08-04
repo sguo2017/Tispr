@@ -215,8 +215,9 @@ export default class MeInfo extends Component {
           </View>
           <ScrollableTabView
               locked={true}
-              renderTabBar={() => <ScrollableTabBar tabNames={titles} style={{ height: 44 }}/>}
+              renderTabBar={() => <ScrollableTabBar tabNames={titles} />}
               tabBarPosition='top'
+              initialPage={0}
               scrollWithoutAnimation={false}
               tabBarActiveTextColor="#4a90e2"
               tabBarInactiveTextColor="#1b2833"
