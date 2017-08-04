@@ -41,23 +41,6 @@ export default class Personinfoedit extends Component {
             address: `${global.user.addressComponent.country}${global.user.addressComponent.province}${global.user.addressComponent.city}${global.user.addressComponent.district}`
         }
     }
-  
-    _save(){
-        let { navigator } = this.props;
-        if(this.props.newUser){
-            navigator.resetTo({
-                component: TabBarView,
-                name: 'TabBarView'
-            });
-        }else{
-            if (this.props.getdata) {
-                this.props.getdata(global.user.avatar, this.state.selfintroduce, this.state.website);
-            }
-            if (navigator) {
-                navigator.pop();
-            }
-        }
-    }
     _back(){
         let { navigator } = this.props;
         if(this.props.newUser){
@@ -66,6 +49,7 @@ export default class Personinfoedit extends Component {
                 name: 'TabBarView'
             });
         }else{
+            navigator.pop();
             if (this.props.getdata) {
                 this.props.getdata(global.user.avatar, global.user.profile, global.user.website, global.user.name);
             }
@@ -196,9 +180,26 @@ export default class Personinfoedit extends Component {
                     global.user.addressComponent= this.state.addressComponent;
                     Alert.alert(
                         '提示',
-                        '成功',
+                        '个人信息更新成功',
                         [
-                            { text: '个人信息更新成功' , onPress: () => this._save.bind(this)},
+                            { text: '确定' , onPress: () => {
+                                let { navigator } = this.props;
+                                if(this.props.newUser){
+                                    navigator.resetTo({
+                                        component: TabBarView,
+                                        name: 'TabBarView'
+                                    });
+                                }else{
+                                    navigator.pop();
+                                    if (this.props.getdata) {
+                                        this.props.getdata(global.user.avatar, global.user.profile, global.user.website, global.user.name);
+                                    }
+                                    if (navigator) {
+                                        navigator.pop();
+                                    }
+                                }
+                            
+                            }},
                         ]
                     )
                     global.user.avatar=this.state.avatar;
