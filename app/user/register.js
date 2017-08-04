@@ -11,7 +11,8 @@ import {
   Alert,
   Image,
   Platform,
-  ScrollView
+  ScrollView,
+  ToastAndroid
 } from 'react-native';
 
 import TabBarView from '../containers/TabBarView';
@@ -21,6 +22,7 @@ import UserDefaults from '../common/UserDefaults';
 import AutoTextInput from '../components/AutoTextInput';
 import nationWarning from '../sys/others/nationWarning';
 import personalinfoEdit from '../me/personalinfoEdit';
+import fetchers from '../common/netRequest'
 export default class Register extends Component {
   constructor() {
     super();
@@ -38,7 +40,8 @@ export default class Register extends Component {
       isEmail: true,
       nameValid: true,
       seePassword: false,
-      passwordValid: true
+      passwordValid: true,
+      time: '',
     }
   }
   _navigate(routeName) {
@@ -145,26 +148,36 @@ export default class Register extends Component {
     }
   }
 
-  async _smsSend() {
-    try {
-      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_SPI_SMS_SEND_REGISTER_PHONE;
-      let response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sms_send: {
-            recv_num: this.state.num,
-            sms_type: "code",
-          }
-        })
+   _smsSend = ()=> {
+    let reg = /^1[3|4|5|7|8][0-9]{9}$/;
+    if(!reg.test(this.state.num)){
+      ToastAndroid.show('请正确输入手机号码', ToastAndroid.SHORT);
+      return;
+    }
+    let currentTime = 60;
+    this.setState({
+      sendingCode: true
+    });
+    let countTime = setInterval(()=>{
+      this.setState({time: currentTime});
+      currentTime = currentTime - 1 ;
+    }, 1000)
+    setTimeout(()=>{
+      clearInterval(countTime)
+      this.setState({
+        sendingCode: false,
+        time: '',
       });
-      let res = await response.text();
-      let result = JSON.parse(res);
-      if (response.status >= 200 && response.status < 300) {
-        if(result.status == -1){
+    } , 62000)
+    let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_SPI_SMS_SEND_REGISTER_PHONE;
+    let data = {
+      sms_send: {
+        recv_num: this.state.num,
+        sms_type: "code",
+      }
+    };
+    fetchers.post(url, data, (result)=>{
+      if(result.status == -1){
           Alert.alert(
             '提示',
             '手机号已被注册',
@@ -182,21 +195,20 @@ export default class Register extends Component {
             ]
           )
         }
-      } else {
-        let error = res;
-        throw error;
+      },
+      (error)=> {
+        this.setState({ error: error });
+        Alert.alert(
+          '提示',
+          '失败',
+          [
+            { text: '短信验证发送失败', onPress: () => console.log('确定') },
+          ]
+        )
+        this.setState({ showProgress: false });
       }
-    } catch (error) {
-      this.setState({ error: error });
-      Alert.alert(
-        '提示',
-        '失败',
-        [
-          { text: '短信验证发送失败', onPress: () => console.log('确定') },
-        ]
-      )
-      this.setState({ showProgress: false });
-    }
+    )
+
   }
 
   _navigateMain() {
@@ -322,7 +334,6 @@ export default class Register extends Component {
               />
             </View>
           </View>
-
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, minHeight: 48 }}>
             <View style={{ flex: 1, justifyContent: 'center'}}>
               <AutoTextInput
@@ -340,8 +351,8 @@ export default class Register extends Component {
                 onSubmitEditing={this.onRegisterPressed.bind(this)}
               />
             </View>
-            <TouchableOpacity onPress={this._smsSend.bind(this)} style={styles.smsCodeButton}>
-              <Text style={styles.smsCodeButtonText}>获取短信验证码</Text>
+            <TouchableOpacity  disabled={this.state.sendingCode} onPress={this._smsSend.bind(this)} style={styles.smsCodeButton}>
+              <Text style={[styles.themeText, this.state.sendingCode&&styles.greyText]}>获取短信验证码{this.state.time}</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => this.setState({ firstPage: true })}>
@@ -436,5 +447,8 @@ const styles = StyleSheet.create({
   },
   greyText: {
     color: '#C1C1C1'
+  },
+  themeText:{
+    color: global.gColors.themeColor,
   }
 });

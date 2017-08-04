@@ -254,7 +254,7 @@ export default class Login extends Component {
             style={styles.input}
             underlineColorAndroid="transparent"
             onChangeText={(text) => this.setState({ email: text })}
-            placeholder="邮箱11"
+            placeholder="邮箱"
             placeholderTextColor="#cccccc"
             returnKeyType = 'next'
             returnKeyLabel = 'next'

@@ -279,11 +279,32 @@ const styles = StyleSheet.create({
     },
     themeColorText:{
         color:global.gColors.themeColor,
-        fontSize:16
+        fontSize:16,
+        padding:5,
+        borderColor: global.gColors.themeColor,
+        borderWidth:1,
+        marginBottom:10,
+        borderRadius:4,
+    },
+    themeColorText2:{
+        color:global.gColors.themeColor,
+        fontSize:16,
+        padding:5,
+        borderColor: global.gColors.themeColor,
+        borderWidth:1,
+        marginBottom:10,
+        borderRadius:4,
+        width:100
     },
     whiteText: {
         color:'#fff',
-        fontSize:16
+        fontSize:16,
+        padding:5,
+        backgroundColor: global.gColors.themeColor,
+        borderColor: global.gColors.themeColor,
+        borderWidth:1,
+        marginBottom:10,
+        borderRadius:4,
     },
     notSelectedButton: {
         borderWidth: 1,
@@ -323,6 +344,10 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30,
+<<<<<<< HEAD
+=======
+        alignSelf: 'center',
+>>>>>>> 76fd7d64f597f66a15f52c24ec58078b7ffa5ca9
         marginVertical: 20
     }
 })
