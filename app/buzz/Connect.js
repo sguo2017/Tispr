@@ -17,7 +17,6 @@ import {
     Alert,
     ScrollView,
 } from 'react-native'
-import ImagePicker from 'react-native-image-picker';
 import Header from '../components/HomeNavigation';
 import UselessTextInput from '../components/UselessTextInput';
 import UserDefaults from '../common/UserDefaults';
@@ -238,9 +237,9 @@ export default class Connect extends Component {
                             }} style={[styles.themeColorText]}>
                             自定义信息
                         </Text>
-                        <View>
+                        {/* <View>
                             <Text style={{color: '#999999', marginVertical: 36}}>获得更多竞标</Text>
-                        </View>
+                        </View> */}
                         </View>  
                         
                         {/*<View style={{flexDirection: 'row', marginTop: -10, marginBottom: 26}}>

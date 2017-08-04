@@ -291,14 +291,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
     avatarContainer: {
-        borderColor: '#9B9B9B',
-        borderWidth: 1 / PixelRatio.get(),
+       // borderColor: '#9B9B9B',
+       // borderWidth: 1 / PixelRatio.get(),
         justifyContent: 'center',
         alignItems: 'center'
     },
     avatar: {
-        width: 90,
-		height: 90,
+        width: 100,
+		height: 100,
 		borderRadius: 4
     },
 });

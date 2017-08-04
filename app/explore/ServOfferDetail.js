@@ -461,13 +461,13 @@ export default class ServOfferDetail extends Component {
                         </View>
                         {
                             _images.length == 1 ?
-                                <Image style={{ height: 300, width: 328, marginBottom: 10 }}  source={{ uri: _images[0] }}></Image>
+                                <Image style={{ height: 300, width: screenW-32, marginBottom: 10 }}  source={{ uri: _images[0] }}></Image>
                                 :
                                 <Swiper height={320} paginationStyle={{ alignSelf: 'center' }}>
                                     {
                                         _images.map((data, index) => {
                                             return (
-                                                <Image style={{ height: 300, width: 328, marginBottom: 10 }} key={index} source={{ uri: data }}></Image>
+                                                <Image style={{ height: 300, width: screenW-32, marginBottom: 10 }} key={index} source={{ uri: data }}></Image>
                                             )
                                         })
                                     }
@@ -565,28 +565,28 @@ export default class ServOfferDetail extends Component {
                     <View style={styles.container}>
                     <View style={styles.modal}>
                         <TouchableWithoutFeedback  onPress={() => {}}>
-                        <View style={{ borderRadius: 16, backgroundColor: 'white', height: 112}}>
+                        <View style={{ borderRadius: 10, backgroundColor: 'white', height: 112, alignItems: 'center', justifyContent: 'center'}}>
                             <View style={styles.share}>
                                 <TouchableOpacity style={styles.item} onPress={() => {
                                     console.log("558yes")
-                  WeChat.isWXAppInstalled()
-                    .then((isInstalled) => {
-                        console.log("561yes")
-                      if (isInstalled) {
-                          console.log("563yes")
-                        WeChat.shareToSession({title: feed.serv_title,
-                          description: feed.serv_detail,
-                          thumbImage: _images[0],
-                          type: 'news',
-                          webpageUrl: 'http://'+Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + '/goods_show?id='+ feed.id})
-                        .catch((error) => {
-                          console.log("566"+JSON.stringify(error));
-                        });
-                      } else {
-                        console.log('没有安装微信软件，请您安装微信之后再试');
-                      }
-                    });
-              }}>
+                                    WeChat.isWXAppInstalled()
+                                        .then((isInstalled) => {
+                                            console.log("561yes")
+                                        if (isInstalled) {
+                                            console.log("563yes")
+                                            WeChat.shareToSession({title: feed.serv_title,
+                                            description: feed.serv_detail,
+                                            thumbImage: _images[0],
+                                            type: 'news',
+                                            webpageUrl: 'http://'+Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + '/goods_show?id='+ feed.id})
+                                            .catch((error) => {
+                                            console.log("566"+JSON.stringify(error));
+                                            });
+                                        } else {
+                                            console.log('没有安装微信软件，请您安装微信之后再试');
+                                        }
+                                        });
+                                }}>
                                     <Image source={require('../resource/ico-wechat.png')} style={styles.img}></Image>
                                     <Text style={styles.text}>微信</Text>
                                 </TouchableOpacity>
@@ -631,7 +631,7 @@ export default class ServOfferDetail extends Component {
                         </TouchableWithoutFeedback>
                         <TouchableOpacity 
                             onPress={() => this.setState({ show_share: false })} 
-                            style={{ alignItems: 'center', justifyContent: 'center',marginTop: 6, borderRadius: 16, backgroundColor: 'white', height: 56}}>
+                            style={{ alignItems: 'center', justifyContent: 'center',marginTop: 6, borderRadius: 10, backgroundColor: 'white', height: 56}}>
                             <Text style={styles.cancel}>取消</Text>
                         </TouchableOpacity>
                     </View>
@@ -723,7 +723,7 @@ export default class ServOfferDetail extends Component {
                     <View style={styles.container}> 
                     <View style={styles.modal}>
                         <TouchableWithoutFeedback  onPress={() => {}}>
-                        <View style={{ borderRadius: 16, backgroundColor: 'white'}}>
+                        <View style={{ borderRadius: 10, backgroundColor: 'white'}}>
                             <TouchableOpacity 
                                 style={[styles.modalItem, {alignItems: 'center', justifyContent:'center',}]}
                                 onPress={()=>{
@@ -754,14 +754,14 @@ export default class ServOfferDetail extends Component {
                                 </View>
                             </TouchableOpacity>:
                             <View style={[styles.modalItem, {justifyContent: 'center', alignItems: 'center' }]}>
-                                <Text style={{ fontSize: 14, lineHeight: 20 }}>已举报</Text>
+                                <Text style={{ fontSize: 14}}>已举报</Text>
                             </View>
                             }    
                         </View>
                         </TouchableWithoutFeedback>
                         <TouchableOpacity 
                             onPress={() => this.setState({ show_report: false })} 
-                            style={{ alignItems: 'center', justifyContent: 'center', marginTop: 6, borderRadius: 16, backgroundColor: 'white', height: 56}}>
+                            style={{ alignItems: 'center', justifyContent: 'center', marginTop: 6, borderRadius: 10, backgroundColor: 'white', height: 56}}>
                             <Text style={styles.modalText}>取消</Text>
                         </TouchableOpacity>
                     </View>
@@ -778,7 +778,7 @@ export default class ServOfferDetail extends Component {
                     <View style={styles.container}> 
                     <View style={styles.modal}>
                         <TouchableWithoutFeedback  onPress={() => {}}>
-                        <View style={{ borderRadius: 16, backgroundColor: 'white',  marginBottom: 6}}>
+                        <View style={{ borderRadius: 10, backgroundColor: 'white',  marginBottom: 6}}>
                             <TouchableOpacity 
                                 style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
                                 onPress={() => {
@@ -803,7 +803,7 @@ export default class ServOfferDetail extends Component {
                         </TouchableWithoutFeedback>
                         <TouchableOpacity
                             onPress={() => this.setState({isMine: false})} 
-                            style={{alignItems: 'center', justifyContent: 'center', borderRadius: 16, backgroundColor: 'white', height: 56}}>
+                            style={{alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: 'white', height: 56}}>
                             <Text style={styles.modalText}>取消</Text>
                         </TouchableOpacity>
 
@@ -839,13 +839,14 @@ const styles = StyleSheet.create({
         bottom: 0,
         height: 180, 
         borderTopWidth: 0,
-         paddingHorizontal: 8, 
-         backgroundColor: 'transparent'
+        paddingHorizontal: 8, 
+        backgroundColor: 'transparent'
     },
     share: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: 20
+        alignItems: 'center',
+        //marginTop: 20
     },
     item: {
         marginRight: 40,

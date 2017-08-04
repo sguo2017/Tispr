@@ -296,11 +296,14 @@ export default class Login extends Component {
           </TouchableOpacity>
         </View>
         </ScrollView>
-        <TouchableOpacity onPress={()=>{this.onLoginPressed()}} style={styles.loginButton}>
-          <Text  style={styles.loginButtonText}>
-            登录
-          </Text>
-        </TouchableOpacity>
+        <View style={{height: 100, position: 'absolute',bottom: 0,right:0,left: 0, alignItems: 'center'}}>
+          <Text style={{color: 'black', fontSize: 14}}>我已阅读并同意服务协议</Text>
+          <TouchableOpacity onPress={()=>{this.onLoginPressed()}} style={styles.loginButton}>
+            <Text  style={styles.loginButtonText}>
+              登录
+            </Text>
+          </TouchableOpacity>
+        </View>       
       </View>
     );
     const smsView = (
@@ -369,9 +372,14 @@ export default class Login extends Component {
           </TouchableOpacity>
         </View>
         </ScrollView>
-        <TouchableOpacity onPress={this._smsCodeLogin.bind(this)} style={styles.loginButton}>
-          <Text style={styles.loginButtonText}>登录</Text>
-        </TouchableOpacity>
+        <View style={{height: 100, position: 'absolute',bottom: 0,right:0,left: 0, alignItems: 'center'}}>
+          <Text style={{color: 'black', fontSize: 14}}>我已阅读并同意服务协议</Text>
+          <TouchableOpacity onPress={()=>{this.onLoginPressed()}} style={styles.loginButton}>
+            <Text  style={styles.loginButtonText}>
+              登录
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
     let title = this.state.loginWay == 'email' ?'邮箱登录':'手机登录';

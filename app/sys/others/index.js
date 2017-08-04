@@ -90,11 +90,6 @@ export default class others extends Component {
 						<Image source={require('../../resource/ic_my_setting_selected.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>		
 				</ScrollView>
-				<TouchableOpacity
-					style={styles.button}
-					onPress={() => { _scrollView.scrollTo({ y: 0 }); }}>
-					<Text>回到顶部</Text>
-				</TouchableOpacity>
 			</View>
 		);
 	}
