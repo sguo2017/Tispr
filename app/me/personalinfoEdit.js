@@ -154,7 +154,9 @@ export default class Personinfoedit extends Component {
                 return
             }
         }
-        
+        if(this.state.name == '' || this.state.address == ''){
+            return
+        }
         let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_AVAT_UPDATE + global.user.id+'?token='+global.user.authentication_token;
         let data = {
             user: {
@@ -265,8 +267,13 @@ export default class Personinfoedit extends Component {
                     </View>
                     
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
-                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_name.png')}/>
-                        <AutoTextInput
+                        {   
+                            this.state.name == ''?
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/g_name.png')}/>
+                            :
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/b_name.png')}/>                           
+                        }
+                        <TextInput
                           maxLength={20}
                           placeholder='请填写您的真实姓名'
                           placeholderTextColor='#CCCCCC'
@@ -281,24 +288,36 @@ export default class Personinfoedit extends Component {
                     
                     <Text style={styles.text}>1-20个字符</Text>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 16 }}>
-                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_location.png')}/>
-                        <AutoTextInput
-                          placeholder='获取当前地址'
-                          placeholderTextColor='#CCCCCC'
-                          style={styles.textInput}
-                          underlineColorAndroid="transparent"
-                          numberOfLines={1}
-                          multiline={true}
-                          value ={this.state.address}
-                          onChangeText={(val) => {this.setState({ address: val })}}
-                        />
-                        <TouchableOpacity style={{ zIndex: 999, position: 'absolute', right: 8 }} onPress={this.onReplay.bind(this)}>
-                            <Image style={{ width: 24, height: 24 }} source={require('../resource/g-replay.png')}></Image>
-                        </TouchableOpacity>
+                        {
+                            this.state.address == ''?
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/g_location.png')}/>
+                            :
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/b_location.png')}/>                           
+                        }
+                        <View style={{ flex: 1, marginLeft: 16, flexDirection:'row', borderBottomWidth: 1, borderBottomColor: '#eeeeee' }}>
+                            <TextInput
+                                placeholder='获取当前地址'
+                                placeholderTextColor='#CCCCCC'
+                                style={[styles.textInput, { marginLeft: 0, borderBottomWidth: 0 }]}
+                                underlineColorAndroid="transparent"
+                                numberOfLines={1}
+                                multiline={true}
+                                value ={this.state.address}
+                                onChangeText={(val) => {this.setState({ address: val })}}
+                            />
+                            <TouchableOpacity style={{ marginRight: 8 }} onPress={this.onReplay.bind(this)}>
+                                <Image style={{ width: 24, height: 24 }} source={require('../resource/g-replay.png')}></Image>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
-                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_info.png')}/>
-                        <AutoTextInput
+                        {
+                            this.state.selfintroduce == ''?
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/g_info.png')}/>
+                            :
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/b_info.png')}/>                           
+                        }
+                        <TextInput
                           placeholder='介绍下自己，获得更多关注'
                           placeholderTextColor='#CCCCCC'
                           style={styles.textInput}
@@ -313,8 +332,13 @@ export default class Personinfoedit extends Component {
                         <Text style={styles.lengthText}>{this.state.selfintroduce?this.state.selfintroduce.length:'0'}/200</Text>
                     </View>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
-                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_earth_nor.png')}/>
-                        <AutoTextInput
+                        {
+                            this.state.website == ''?
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/g_earth_nor.png')}/>
+                            :
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/b_earth.png')}/>                           
+                        }
+                        <TextInput
                           placeholder='添加网页链接'
                           placeholderTextColor='#CCCCCC'
                           style={styles.textInput}

@@ -296,13 +296,11 @@ class ExploreList extends PureComponent {
                     {
                       this.state.tabName == 'index' ?
                         <View style={styles.modalStyle}>
-                            <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
                                     <TouchableOpacity onPress={() => this.setState({ cps: [true, false, false, false, false, false, false], transiSortBy: '综合排序', transiClassify: '全部分类' })}>
                                         <Text style={styles.themeColorText}>重置</Text>
                                     </TouchableOpacity>
-
                                     <Text style={{ color: 'black', fontSize: 16 }}>筛选</Text>
                                     <TouchableOpacity onPress={() => this.setState({ show: false })}>
                                         <Text style={styles.themeColorText}
@@ -330,7 +328,7 @@ class ExploreList extends PureComponent {
                                     </TouchableOpacity>
                                 </View>
                                 <ScrollableTabView
-                                  style={{ marginTop: 20, marginRight: 5, marginLeft: 5, borderRadius: 5 }}
+                                  style={{ flex: 1, marginTop: 20, marginRight: 5, marginLeft: 5, borderRadius: 5 }}
                                   renderTabBar={() => <TabCategoryBar tabNames={titles} />}
                                   tabBarPosition='top'
                                   scrollWithoutAnimation={false}
@@ -400,7 +398,6 @@ class ExploreList extends PureComponent {
                                     </View>
                                 </ScrollableTabView>
                             </View>
-                            </TouchableWithoutFeedback>
                         </View>                       
                         : <View></View>
                   }
@@ -408,7 +405,6 @@ class ExploreList extends PureComponent {
                   {
                       this.state.tabName == 'recentPublish' ?
                         <View style={styles.modalStyle}>
-                            <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
                                     <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
@@ -446,14 +442,12 @@ class ExploreList extends PureComponent {
                                     </TouchableOpacity>*/}
                                 </View>
                             </View>
-                            </TouchableWithoutFeedback>
                         </View>
                         : <View></View>
                   }
                   {
                       this.state.tabName == 'allTalentedPeople' ?
                         <View style={styles.modalStyle}>
-                            <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
                                     <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
@@ -513,55 +507,47 @@ class ExploreList extends PureComponent {
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                            </TouchableWithoutFeedback>
                         </View>
                         : <View></View>
                   }
                   {
                       this.state.tabName == 'selectLocation' ?
-                        <View style={[styles.modalStyle]}>
-                            <TouchableWithoutFeedback  onPress={() => {}}>
-                            <View style={[styles.subView]}>
-                                    <View>
-                                        <View style={styles.modalHead}>
-                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
-                                                <Text style={styles.themeColorText}>返回</Text>
-                                            </TouchableOpacity>
-                                            <Text style={{ color: 'black', fontSize: 16 }}>位置</Text>
-                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
-                                                <Text style={styles.themeColorText}>确定</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 12 }}>
-                                            <TouchableOpacity
-                                            style={{flexDirection: 'row'}}
-                                            onPress={this._showAreaPicker.bind(this)}
-                                            >
-                                                <Image style={styles.headIcon} source={require('../resource/b_location.png')} />
-                                                <Text style={[styles.themeColorText]}>{this.state.initArea[0]}, {this.state.initArea[1]}, {this.state.initArea[2]} </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{ flexDirection: 'row', marginLeft: 12 }}>
-                                            <MapView
-                                                trafficEnabled={this.state.trafficEnabled}
-                                                baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
-                                                zoom={this.state.zoom}
-                                                mapType={this.state.mapType}
-                                                center={this.state.center}
-                                                marker={this.state.marker}
-                                                markers={this.state.markers}
-                                                style={styles.map}
-                                                onMarkerClick={(e) => {
-                                                    console.warn(JSON.stringify(e));
-                                                }}
-                                                onMapClick={(e) => {
-                                                }}
-                                            >
-                                            </MapView>
-                                        </View>
-                                    </View>                                                      
+                        <View style={styles.modalStyle}>
+                            <View style={styles.subView}>
+                                <View style={styles.modalHead}>
+                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
+                                        <Text style={styles.themeColorText}>返回</Text>
+                                    </TouchableOpacity>
+                                    <Text style={{ color: 'black', fontSize: 16 }}>位置</Text>
+                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
+                                        <Text style={styles.themeColorText}>确定</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 12 }}>
+                                    <TouchableOpacity
+                                    style={{flexDirection: 'row'}}
+                                    onPress={this._showAreaPicker.bind(this)}
+                                    >
+                                        <Image style={styles.headIcon} source={require('../resource/b_location.png')} />
+                                        <Text style={[styles.themeColorText]}>{this.state.initArea[0]}, {this.state.initArea[1]}, {this.state.initArea[2]} </Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <MapView
+                                    trafficEnabled={this.state.trafficEnabled}
+                                    baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
+                                    zoom={this.state.zoom}
+                                    mapType={this.state.mapType}
+                                    center={this.state.center}
+                                    marker={this.state.marker}
+                                    markers={this.state.markers}
+                                    style={styles.map}
+                                    onMarkerClick={(e) => {
+                                        console.warn(JSON.stringify(e));
+                                    }}
+                                    onMapClick={(e) => {
+                                    }}
+                                />
                             </View>
-                            </TouchableWithoutFeedback>
                         </View>
                         : <View></View>
                   }
@@ -698,7 +684,7 @@ const styles = StyleSheet.create({
     subView: {
         alignSelf: 'stretch',
         justifyContent: 'flex-start',
-        borderWidth: 0.5,
+        borderWidth: 1,
         borderColor: '#4990E2',
         backgroundColor: '#fff',
         height: 300,
@@ -711,10 +697,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12
     },
     map: {
-        width: Dimensions.get('window').width - 40,
-        height: Dimensions.get('window').height - 500,
+        flex: 1,
         marginBottom: 10,
-        marginLeft: 20,
+        marginHorizontal: 20,
     },
 })
 

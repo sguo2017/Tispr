@@ -987,7 +987,7 @@ const OfferItem = ({
             onPress={onPress}
         >
             <CachedImage
-                style={{ width: width, height: imageH, borderRadius: 4 }}
+                style={{ width: width, height: imageH, borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
                 defaultSource={require('../resource/qk_nav_default.png')}
                 source={serv_image}
             />
