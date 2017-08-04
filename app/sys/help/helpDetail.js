@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
         answer: {
             color: 'black',
             fontSize: 16,
+            lineHeight: 30
         },
         container: {
             flex: 1,

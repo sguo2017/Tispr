@@ -173,7 +173,8 @@ export default class UserAgreement extends Component {
 const styles = StyleSheet.create({
     text: {
         color: "#000",
-        fontSize:16
+        fontSize:16,
+        lineHeight: 30
     },
     title: {
         fontSize: 16,

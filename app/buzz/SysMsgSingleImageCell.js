@@ -77,7 +77,7 @@ const SysMsgSingleImageItem = ({
                                 </Text>
                             </Text>
                             :
-                            <Text onPress={onPressOffer} numberOfLines={2} style={{ flex: 1, color: '#4a90e2', fontSize: 14 }}>{action_desc}</Text>                            
+                            <Text onPress={onPressOffer} numberOfLines={2} style={{ flex: 1, color: '#4a90e2', fontSize: 14, lineHeight: 24 }}>{action_desc}</Text>                            
                         }          
                     
                 </View>

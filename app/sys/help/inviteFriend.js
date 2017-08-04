@@ -99,11 +99,6 @@ export default class UseHelp extends Component {
 
 					
 				</ScrollView>
-				<TouchableOpacity
-					style={styles.button}
-					onPress={() => { _scrollView.scrollTo({ y: 0 }); }}>
-					<Text>回到顶部</Text>
-				</TouchableOpacity>
 			</View>
 		);
 	}
