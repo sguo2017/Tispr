@@ -40,8 +40,10 @@ export default class App extends PureComponent {
 
         return (
             <View style={{flex: 1}}>
-                <MyStatusBar backgroundColor={global.gColors.themeColor} barStyle="light-content" />
-                <View style={styles.appBar} />
+                {
+                    Platform.OS === 'ios' ?<View></View>:
+                    <MyStatusBar backgroundColor={global.gColors.themeColor} barStyle="light-content" />
+                }
                 <NavigationExperimental.Navigator
                     initialRoute={{name: initialPageName, component: initialPage}}
                     configureScene={this._configureScene}
@@ -53,18 +55,12 @@ export default class App extends PureComponent {
 }
 
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
-const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 0;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   statusBar: {
     height: STATUSBAR_HEIGHT,
-  },
-  appBar: {
-    backgroundColor:'#79B45D',
-    height: APPBAR_HEIGHT,
   },
   content: {
     flex: 1,
