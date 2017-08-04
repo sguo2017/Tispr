@@ -455,14 +455,14 @@ export default class BussList extends Component {
                         <Text style={[styles.CardText, {fontSize: 18, fontWeight: 'bold', marginBottom: 15, marginTop: 5}]}>欢迎{global.user.name}</Text>
                         <Text style={styles.CardText}>这是您的客户需求卡片组，可以向左或</Text>
                         <Text style={styles.CardText}>向右滑动，快试试看！</Text>
-                        <Image style={{ width: global.gScreen.width - 16, flex: 1}} source={require('../resource/card_l_guide_b.png')} />
+                        <Image style={{ width: this.state.swiper_1_height / 228 * 344, flex: 1}} source={require('../resource/card_l_guide_b.png')} />
                     </View>
                 </View>
                 <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiper_1_height }]}>
-                    <Image resizeMode='stretch' style={{ flex: 1, width: global.gScreen.width - 16 }} source={require('../resource/card-l-guide-2.png')} />
+                    <Image resizeMode='stretch' style={{ flex: 1, width: this.state.swiper_1_height / 228 * 344 }} source={require('../resource/card-l-guide-2.png')} />
                 </View>
                 <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiper_1_height }]}>
-                    <Image resizeMode='stretch' style={{ flex: 1, flexDirection: 'row', width: global.gScreen.width - 16 }} source={require('../resource/card-l-guide-3.png')}>
+                    <Image resizeMode='stretch' style={{ flex: 1, flexDirection: 'row', width: this.state.swiper_1_height / 228 * 344 }} source={require('../resource/card-l-guide-3.png')}>
                         <TouchableOpacity style={styles.swiperBeginButton} onPress={() => this._onPressSwiperBeginButton()}>
                             <Text style={styles.swiperBeginButtonText}>立即开始</Text>
                         </TouchableOpacity>

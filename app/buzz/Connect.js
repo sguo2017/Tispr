@@ -344,10 +344,6 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30,
-<<<<<<< HEAD
-=======
-        alignSelf: 'center',
->>>>>>> 76fd7d64f597f66a15f52c24ec58078b7ffa5ca9
-        marginVertical: 20
+        marginVertical: 20,
     }
 })
