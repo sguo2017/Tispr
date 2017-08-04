@@ -243,7 +243,7 @@ export default class Personinfoedit extends Component {
             console.warn(e, 'error');           
         })
         this.setState({
-            address: global.user.addressComponent.country + global.user.addressComponent.province +
+            address: global.user.addressComponent.province +
                      global.user.addressComponent.city + global.user.addressComponent.district
         })
         console.log('addr');

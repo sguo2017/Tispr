@@ -246,39 +246,42 @@ export default class Register extends Component {
             <Image source={require('../resource/b-reg-smail.png')} style={{width:40, height:40}}/>
             <Text style={{fontWeight: 'bold', fontSize: 14, color: 'black', lineHeight: 30, marginLeft: 16}} >让更多人认识您</Text>
           </View>
-          <TextInput
-            ref = "1"
-            onChangeText={(text) => this.setState({ name: text })}
-            style={styles.input} placeholder="怎样称呼您"
-            value={this.state.name}
-            underlineColorAndroid="transparent"
-            returnKeyType = 'next'
-            placeholderTextColor  = '#ccc'
-            multiline = {false}
-            onSubmitEditing={() => this.focusNextField('2')}
-            onBlur ={()=>{if(this.state.name){this.setState({nameValid: true})}else{this.setState({nameValid: false})}}}
-            >
-          </TextInput>
+          <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee' }} >
+            <TextInput
+              ref = "1"
+              onChangeText={(text) => this.setState({ name: text })}
+              style={styles.input} placeholder="怎样称呼您"
+              value={this.state.name}
+              underlineColorAndroid="transparent"
+              returnKeyType = 'next'
+              placeholderTextColor  = '#ccc'
+              multiline = {false}
+              onSubmitEditing={() => this.focusNextField('2')}
+              onBlur ={()=>{if(this.state.name){this.setState({nameValid: true})}else{this.setState({nameValid: false})}}}
+            />
+          </View>
+          
           {this.state.nameValid? <Text style={styles.greyText}></Text>:<Text style ={styles.redText}>姓名不能为空</Text>}
-          <TextInput
-            ref = "2"
-            onChangeText={(text) => this.setState({ email: text })}
-            style={styles.input} placeholder="您的电子邮箱"
-            value={this.state.email}
-            underlineColorAndroid="transparent"
-            returnKeyType = 'next'
-            placeholderTextColor  = '#ccc'
-            multiline = {false}
-            onSubmitEditing={() => this.focusNextField('3')}
-            onBlur = {
-              ()=>{let reg = /^([a-zA-Z0-9_-_.])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-              this.setState({isEmail: reg.test(this.state.email)});
-            }}  
-          >
-          </TextInput>
+          <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee' }} >
+            <TextInput
+              ref = "2"
+              onChangeText={(text) => this.setState({ email: text })}
+              style={styles.input} placeholder="您的电子邮箱"
+              value={this.state.email}
+              underlineColorAndroid="transparent"
+              returnKeyType = 'next'
+              placeholderTextColor  = '#ccc'
+              multiline = {false}
+              onSubmitEditing={() => this.focusNextField('3')}
+              onBlur = {
+                ()=>{let reg = /^([a-zA-Z0-9_-_.])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+                this.setState({isEmail: reg.test(this.state.email)});
+              }}  
+            />
+          </View>
           {this.state.isEmail?<Text style={{color: '#4A90E2'}}>该电子邮箱可作为账号用于登录和密码找回</Text>:<Text style ={styles.redText}>邮箱格式不正确</Text>}
           <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minHeight: 48}}>
-            <View style={{ flex: 1, justifyContent: 'center'}}>
+            <View style={{ flex: 1, justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee' }}>
               <TextInput
                 ref = "3"
                 onChangeText={(text) => this.setState({ password: text })}
@@ -388,8 +391,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 4,
     fontSize: 18,
-    borderBottomWidth: 1,
-    borderBottomColor: '#EDEDED',
   },
   button: {
     height: 50,
