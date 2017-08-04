@@ -277,34 +277,13 @@ const styles = StyleSheet.create({
         bottom: 5,
         backgroundColor: '#81d49c'
     },
-    themeColorText:{
+    themeColorText: {
         color:global.gColors.themeColor,
         fontSize:16,
-        padding:5,
-        borderColor: global.gColors.themeColor,
-        borderWidth:1,
-        marginBottom:10,
-        borderRadius:4,
-    },
-    themeColorText2:{
-        color:global.gColors.themeColor,
-        fontSize:16,
-        padding:5,
-        borderColor: global.gColors.themeColor,
-        borderWidth:1,
-        marginBottom:10,
-        borderRadius:4,
-        width:100
     },
     whiteText: {
         color:'#fff',
         fontSize:16,
-        padding:5,
-        backgroundColor: global.gColors.themeColor,
-        borderColor: global.gColors.themeColor,
-        borderWidth:1,
-        marginBottom:10,
-        borderRadius:4,
     },
     notSelectedButton: {
         borderWidth: 1,
