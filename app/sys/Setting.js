@@ -81,7 +81,7 @@ export default class Setting extends Component {
 					<View style={{ height: 40, backgroundColor: '#f7f7f7', justifyContent: 'center', paddingLeft: 20 }}>
 						<Text style={{ color: '#999999' }}>账户</Text>
 					</View>
-					<TouchableOpacity style={[styles.rectangle_view, { borderTopColor: '#dedfe0', borderTopWidth: 0.5 }]} onPress={() => this.props.navigator.push({component:PasswordConfirm,name:'PasswordConfirm'})}>
+					<TouchableOpacity style={[styles.rectangle_view, { borderTopColor: '#dedfe0', borderTopWidth: 1 }]} onPress={() => this.props.navigator.push({component:PasswordConfirm,name:'PasswordConfirm'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text}>账户</Text>
 						</View>
@@ -114,7 +114,7 @@ export default class Setting extends Component {
 					<View style={{ height: 40, backgroundColor: '#f7f7f7',justifyContent:'center',paddingLeft:20 }}>
 						<Text style={{color:'#999999'}}>帮助</Text>
 					</View>
-					<TouchableOpacity style={[styles.rectangle_view, { borderTopColor: '#dedfe0', borderTopWidth: 0.5 }]} onPress={() => this.props.navigator.push({component:UseHelp,name:'UseHelp'})}>
+					<TouchableOpacity style={[styles.rectangle_view, { borderTopColor: '#dedfe0', borderTopWidth: 1 }]} onPress={() => this.props.navigator.push({component:UseHelp,name:'UseHelp'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >使用帮助</Text>
 						</View>
@@ -165,7 +165,7 @@ export default class Setting extends Component {
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity> */}
 					{/*<View style={{ height: 16, backgroundColor: '#f7f7f7' }} />*/}
-					<TouchableOpacity style={[styles.rectangle_view, { marginTop: 16, borderTopColor: '#dedfe0', borderTopWidth: 0.5 }]} onPress={this.logout.bind(this)}>
+					<TouchableOpacity style={[styles.rectangle_view, { marginTop: 16, borderTopColor: '#dedfe0', borderTopWidth: 1 }]} onPress={this.logout.bind(this)}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
 								退出登录
@@ -212,8 +212,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		backgroundColor: 'white',
-		borderBottomColor: '#dedfe0',
-		borderBottomWidth: 0.5,
+		borderBottomColor: '#eeeeee',
+		borderBottomWidth: 1,
 		height:50
 	},
 	rectangle_text: {
