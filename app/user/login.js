@@ -31,11 +31,9 @@ export default class Login extends Component {
     super();
     this.state = {
       num: "13911551595",
-      // email: "38359504@qq.com",
-      email: "guoshan@ztesoft.com",
+      email: "38359504@qq.com",
       // num: "18210034398",
       // email: "lin@qq.com",
-      password: "cc111111",
       password: "123456",
       password2: '123456',
       error: "",
@@ -253,7 +251,7 @@ export default class Login extends Component {
             style={styles.input}
             underlineColorAndroid="transparent"
             onChangeText={(text) => this.setState({ email: text })}
-            placeholder="邮箱11"
+            placeholder="邮箱"
             placeholderTextColor="#cccccc"
             returnKeyType = 'next'
             returnKeyLabel = 'next'
