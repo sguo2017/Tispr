@@ -88,7 +88,15 @@ export default class Login extends Component {
 
   onLoginPressed = () => {
     if (!this.state.agree) {
-
+      Alert.alert(
+          '提示',
+          '请勾选服务协议',
+          [{
+            text: '确定',
+            onPress: () => {}
+          }
+          ])
+      return;
     }
     this.setState({ showProgress: true });
     if (Platform.OS == 'ios' && __DEV__) {
