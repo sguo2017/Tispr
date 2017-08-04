@@ -170,7 +170,9 @@ export default class Personinfoedit extends Component {
                 return
             }
         }
-        
+        if(this.state.name == '' || this.state.address == ''){
+            return
+        }
         let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_AVAT_UPDATE + global.user.id+'?token='+global.user.authentication_token;
         let data = {
             user: {
@@ -264,7 +266,12 @@ export default class Personinfoedit extends Component {
                     </View>
                     
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
-                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_name.png')}/>
+                        {
+                            this.state.name == ''?
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/g_name.png')}/>
+                            :
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/b_name.png')}/>                           
+                        }
                         <AutoTextInput
                           maxLength={20}
                           placeholder='请填写您的真实姓名'
@@ -280,7 +287,12 @@ export default class Personinfoedit extends Component {
                     
                     <Text style={styles.text}>1-20个字符</Text>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 16 }}>
-                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_location.png')}/>
+                        {
+                            this.state.address == ''?
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/g_location.png')}/>
+                            :
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/b_location.png')}/>                           
+                        }
                         <AutoTextInput
                           placeholder='获取当前地址'
                           placeholderTextColor='#CCCCCC'
@@ -296,7 +308,12 @@ export default class Personinfoedit extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
-                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_info.png')}/>
+                        {
+                            this.state.selfintroduce == ''?
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/g_info.png')}/>
+                            :
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/b_info.png')}/>                           
+                        }
                         <AutoTextInput
                           placeholder='介绍下自己，获得更多关注'
                           placeholderTextColor='#CCCCCC'
@@ -312,7 +329,12 @@ export default class Personinfoedit extends Component {
                         <Text style={styles.lengthText}>{this.state.selfintroduce?this.state.selfintroduce.length:'0'}/200</Text>
                     </View>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
-                        <Image style={{ width: 24, height: 24 }} source={require('../resource/g_earth_nor.png')}/>
+                        {
+                            this.state.website == ''?
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/g_earth_nor.png')}/>
+                            :
+                            <Image style={{ width: 24, height: 24 }} source={require('../resource/b_earth.png')}/>                           
+                        }
                         <AutoTextInput
                           placeholder='添加网页链接'
                           placeholderTextColor='#CCCCCC'
