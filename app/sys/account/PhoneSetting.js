@@ -128,7 +128,7 @@ export default class PhoneSetting extends Component {
     }
 	render() {
 		return (
-			<View style={{backgroundColor: '#fff'}}>
+			<View style={{backgroundColor: '#fff', flex: 1}}>
 				<Header
 					title='电话设置'
 					leftIcon={require('../../resource/ic_back_white.png')}
