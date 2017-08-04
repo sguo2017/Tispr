@@ -123,22 +123,24 @@ export default class ServOfferTitle extends Component {
                 <Image style={styles.headIcon} source={require('../../resource/b-aixin-xl.png')} />
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>提供什么服务</Text>
                 <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 14 }}>一句话概括表述您的服务名称</Text>
-                <AutoTextInput
-                    editable = {true}
-                    style={styles.textInput}
-                    maxLength={80}
-                    underlineColorAndroid="transparent"
-                    multiline={true}
-                    numberOfLines={0}
-                    value ={this.state.serv_offer.serv_title}
-                    autoFocus
-                    onChangeText={(val) => {
-                      let offer=this.state.serv_offer;
-                      offer.serv_title = val;
-                      offer.title_length = val.length;
-                      this.setState({ serv_offer: offer})
-                    }}
-                />
+                <View style={{ marginHorizontal: 15, paddingHorizontal: 5, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#eeeeee', }}>
+                    <AutoTextInput
+                        editable = {true}
+                        style={styles.textInput}
+                        maxLength={80}
+                        underlineColorAndroid="transparent"
+                        multiline={true}
+                        numberOfLines={0}
+                        value ={this.state.serv_offer.serv_title}
+                        autoFocus
+                        onChangeText={(val) => {
+                        let offer=this.state.serv_offer;
+                        offer.serv_title = val;
+                        offer.title_length = val.length;
+                        this.setState({ serv_offer: offer})
+                        }}
+                    />
+                </View>
                 <View style={styles.contentRemindText}>
                     <Text style={{ color: "#a8a6b9", fontSize: 12 }}>不少于8个字符</Text>
                     <Text style={styles.textLengthText}>
@@ -183,9 +185,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     backgroundColor: 'white',
     fontSize: 16,
-    paddingHorizontal: 5,
-    marginHorizontal: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eeeeee',
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
 });

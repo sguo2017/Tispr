@@ -107,23 +107,24 @@ export default class ServOfferDetail extends Component {
                 <Image style={styles.headIcon} source={require('../../resource/b-zanshi-xl.png')} />
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>服务有什么特点</Text>
                 <Text style={{ alignSelf: 'center', color: "#a8a6b9", fontSize: 14, marginHorizontal:16 }}>详细描述服务内容，包括您的优势，专业性，价格以及时间等</Text>
-                <AutoTextInput
-                  editable = {true}
-                  style={styles.textInput}
-                  maxLength={1000}
-                  underlineColorAndroid="transparent"
-                  multiline={true}
-                  numberOfLines={3}
-                  value ={this.state.serv_offer.serv_detail}
-                  autoFocus
-                  onChangeText={(val) => {
-                    let offer = this.state.serv_offer;
-                    offer.serv_detail = val;
-                    offer.detail_length = val.length;
-                    this.setState({ serv_offer: offer })
-                  }}
-                />
-
+                <View style={{ marginHorizontal: 15, paddingHorizontal: 5, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#eeeeee', }}>
+                  <AutoTextInput
+                    editable = {true}
+                    style={styles.textInput}
+                    maxLength={1000}
+                    underlineColorAndroid="transparent"
+                    multiline={true}
+                    numberOfLines={3}
+                    value ={this.state.serv_offer.serv_detail}
+                    autoFocus
+                    onChangeText={(val) => {
+                      let offer = this.state.serv_offer;
+                      offer.serv_detail = val;
+                      offer.detail_length = val.length;
+                      this.setState({ serv_offer: offer })
+                    }}
+                  />
+                </View>
                 <View style={styles.contentRemindText}>
                   <Text style={{ color: "#a8a6b9", fontSize: 12 }}>不少于25个字符</Text>
                   <Text style={styles.textLengthText}>
@@ -168,9 +169,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     backgroundColor: 'white',
     fontSize: 16,
-    paddingHorizontal: 5,
-    marginHorizontal: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eeeeee',
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
 });
