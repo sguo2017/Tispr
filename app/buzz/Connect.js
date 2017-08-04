@@ -189,59 +189,6 @@ export default class Connect extends Component {
                 />
                 <ScrollView>
                     <View style={{paddingHorizontal: 20}}>
-<<<<<<< HEAD
-                        
-                        <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>                                
-                        {/*<View style={{marginBottom: 8, height: 80}}>*/}
-                        
-                        {/*</View>*/}
-                        <View style={{marginTop: 8}}>                     
-                        <TouchableHighlight 
-                            style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
-                            onPress={()=>this.setState({button1: !this.state.button1})}
-                        >
-                            <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight 
-                            style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton]} 
-                            onPress={()=>this.setState({button2: !this.state.button2})}
-                        >
-                            <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight 
-                            style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton]} 
-                            onPress={()=>this.setState({button3: !this.state.button3})}
-                        >
-                            <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
-                        </TouchableHighlight>
-                        <AutoTextInput
-                            ref={(textInput) => { this.modelTextInput = textInput; }}
-                            multiline={true}
-                            onChangeText={(text) => 
-                                {
-                                    length= (name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')).length;
-                                    this.setState({content: text.substring(length)});
-
-                                }
-                            }
-                            onBlur={() => {
-                                this.setState({editable: false})}
-                            }
-                            underlineColorAndroid="rgba(0,0,0,0.12)"
-                            style={{fontSize: 16, color: '#1B2833', marginBottom: 8, height: 100}}
-                            value={name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')+content}
-                            editable={this.state.editable}
-                        />
-
-                        <Text onPress={()=> {
-                            this.focusOnTextInput();
-                            }} style={[styles.themeColorText]}>
-                            自定义信息
-                        </Text>
-                        {/* <View>
-                            <Text style={{color: '#999999', marginVertical: 36}}>获得更多竞标</Text>
-                        </View> */}
-=======
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar} />
                         </View>
@@ -291,10 +238,9 @@ export default class Connect extends Component {
                                 }} style={[styles.themeColorText]}>
                                 自定义信息
                             </Text>
-                            <View>
+                            {/* <View>
                                 <Text style={{color: '#999999', marginVertical: 36}}>获得更多竞标</Text>
-                            </View>
->>>>>>> 6c59b7e53732d0a5821b3a3c50052c50358d5e6d
+                            </View> */}
                         </View>  
                         
                         {/*<View style={{flexDirection: 'row', marginTop: -10, marginBottom: 26}}>
