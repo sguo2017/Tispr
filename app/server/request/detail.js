@@ -112,23 +112,25 @@ export default class ServOfferDetail extends Component {
                 {this.renderProgressView()}
                 <Image style={styles.headIcon} source={require('../../resource/b-xuqiu-xl.png')} />
                 <Text style={{ alignSelf: 'center', color: "#000", fontSize: 16, margin: 10 }}>您的具体需求是什么</Text>
-                <AutoTextInput
-                  editable = {true}
-                  style={styles.textInput}
-                  maxLength={1000}
-                  underlineColorAndroid="transparent"
-                  multiline={true}
-                  numberOfLines={3}
-                  value ={this.state.serv_offer.serv_detail}
-                  placeholderTextColor="#cccccc"
-                  autoFocus
-                  onChangeText={(val) => {
-                    let offer = this.state.serv_offer;
-                    offer.serv_detail = val;
-                    offer.detail_length = val.length;
-                    this.setState({ serv_offer: offer })
-                  }}
-                />
+                <View style={{ marginHorizontal: 15, paddingHorizontal: 5, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#eeeeee', }}>
+                    <AutoTextInput
+                    editable = {true}
+                    style={styles.textInput}
+                    maxLength={1000}
+                    underlineColorAndroid="transparent"
+                    multiline={true}
+                    numberOfLines={3}
+                    value ={this.state.serv_offer.serv_detail}
+                    placeholderTextColor="#cccccc"
+                    autoFocus
+                    onChangeText={(val) => {
+                        let offer = this.state.serv_offer;
+                        offer.serv_detail = val;
+                        offer.detail_length = val.length;
+                        this.setState({ serv_offer: offer })
+                    }}
+                    />
+                </View>
                 <View style={styles.contentRemindText}>
                   <Text style={{ color: "#a8a6b9", fontSize: 12 }}>不少于25个字符</Text>
                   <Text style={styles.textLengthText}>
@@ -173,9 +175,7 @@ let styles = StyleSheet.create({
     marginTop: 25,
     backgroundColor: 'white',
     fontSize: 16,
-    paddingHorizontal: 5,
-    marginHorizontal: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eeeeee',
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
 });

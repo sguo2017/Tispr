@@ -266,13 +266,13 @@ export default class Personinfoedit extends Component {
                     </View>
                     
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
-                        {
+                        {   
                             this.state.name == ''?
                             <Image style={{ width: 24, height: 24 }} source={require('../resource/g_name.png')}/>
                             :
                             <Image style={{ width: 24, height: 24 }} source={require('../resource/b_name.png')}/>                           
                         }
-                        <AutoTextInput
+                        <TextInput
                           maxLength={20}
                           placeholder='请填写您的真实姓名'
                           placeholderTextColor='#CCCCCC'
@@ -293,19 +293,21 @@ export default class Personinfoedit extends Component {
                             :
                             <Image style={{ width: 24, height: 24 }} source={require('../resource/b_location.png')}/>                           
                         }
-                        <AutoTextInput
-                          placeholder='获取当前地址'
-                          placeholderTextColor='#CCCCCC'
-                          style={styles.textInput}
-                          underlineColorAndroid="transparent"
-                          numberOfLines={1}
-                          multiline={true}
-                          value ={this.state.address}
-                          onChangeText={(val) => {this.setState({ address: val })}}
-                        />
-                        <TouchableOpacity style={{ zIndex: 999, position: 'absolute', right: 8 }} onPress={this.onReplay.bind(this)}>
-                            <Image style={{ width: 24, height: 24 }} source={require('../resource/g-replay.png')}></Image>
-                        </TouchableOpacity>
+                        <View style={{ flex: 1, marginLeft: 16, flexDirection:'row', borderBottomWidth: 1, borderBottomColor: '#eeeeee' }}>
+                            <TextInput
+                                placeholder='获取当前地址'
+                                placeholderTextColor='#CCCCCC'
+                                style={[styles.textInput, { marginLeft: 0, borderBottomWidth: 0 }]}
+                                underlineColorAndroid="transparent"
+                                numberOfLines={1}
+                                multiline={true}
+                                value ={this.state.address}
+                                onChangeText={(val) => {this.setState({ address: val })}}
+                            />
+                            <TouchableOpacity style={{ marginRight: 8 }} onPress={this.onReplay.bind(this)}>
+                                <Image style={{ width: 24, height: 24 }} source={require('../resource/g-replay.png')}></Image>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={{ flexDirection:'row', alignItems:'center', marginBottom: 8 }}>
                         {
@@ -314,7 +316,7 @@ export default class Personinfoedit extends Component {
                             :
                             <Image style={{ width: 24, height: 24 }} source={require('../resource/b_info.png')}/>                           
                         }
-                        <AutoTextInput
+                        <TextInput
                           placeholder='介绍下自己，获得更多关注'
                           placeholderTextColor='#CCCCCC'
                           style={styles.textInput}
@@ -335,7 +337,7 @@ export default class Personinfoedit extends Component {
                             :
                             <Image style={{ width: 24, height: 24 }} source={require('../resource/b_earth.png')}/>                           
                         }
-                        <AutoTextInput
+                        <TextInput
                           placeholder='添加网页链接'
                           placeholderTextColor='#CCCCCC'
                           style={styles.textInput}

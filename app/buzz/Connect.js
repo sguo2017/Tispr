@@ -190,46 +190,58 @@ export default class Connect extends Component {
                 />
                 <ScrollView>
                     <View style={{paddingHorizontal: 20}}>
-                        
-                        <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar}></Image>                                
-                        {/*<View style={{marginBottom: 8, height: 80}}>*/}
-                        
-                        {/*</View>*/}
-                        <View style={{marginTop: 8}}>                     
-                        
-                        <Text onPress={()=>this.setState({button1: !this.state.button1})} style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText,{width:Platform.OS === 'ios'?240:190}]}>{msg1}</Text>
-
-                        <Text onPress={()=>this.setState({button2: !this.state.button2})} style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText,{width:Platform.OS === 'ios'?220:176}]}>{msg2}</Text>
-
-                        <Text onPress={()=>this.setState({button3: !this.state.button3})} style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText,{width:Platform.OS === 'ios'?260:204}]}>{msg3}</Text>
-                        
-                        <AutoTextInput
-                            ref={(textInput) => { this.modelTextInput = textInput; }}
-                            multiline={true}
-                            onChangeText={(text) => 
-                                {
-                                    length= (name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')).length;
-                                    this.setState({content: text.substring(length)});
-
-                                }
-                            }
-                            onBlur={() => {
-                                this.setState({editable: false})}
-                            }
-                            underlineColorAndroid="rgba(0,0,0,0.12)"
-                            style={{fontSize: 16, color: '#1B2833', marginBottom: 8, height: 100}}
-                            value={name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')+content}
-                            editable={this.state.editable}
-                        />
-
-                        <Text onPress={()=> {
-                            this.focusOnTextInput();
-                            }} style={[styles.themeColorText2]}>
-                            自定义信息
-                        </Text>
-                        <View>
-                            <Text style={{color: '#999999', marginVertical: 36}}>获得更多竞标</Text>
+                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: feed.user.avatar}} style={styles.avatar} />
                         </View>
+                        <View style={{ marginTop: 8 }} >
+                            <View style={{ alignItems: 'flex-start' }}>
+                                <TouchableOpacity 
+                                    style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
+                                    onPress={()=>this.setState({button1: !this.state.button1})}
+                                >
+                                    <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity 
+                                    style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton]} 
+                                    onPress={()=>this.setState({button2: !this.state.button2})}
+                                >
+                                    <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity 
+                                    style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton]} 
+                                    onPress={()=>this.setState({button3: !this.state.button3})}
+                                >
+                                    <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ borderBottomColor: '#eeeeee', borderBottomWidth: 1, marginBottom: 8 }}>
+                                <TextInput
+                                    ref={(textInput) => { this.modelTextInput = textInput; }}
+                                    multiline={true}
+                                    onChangeText={(text) => 
+                                        {
+                                            length= (name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')).length;
+                                            this.setState({content: text.substring(length)});
+
+                                        }
+                                    }
+                                    onBlur={() => {
+                                        this.setState({editable: false})}
+                                    }
+                                    underlineColorAndroid="rgba(0,0,0,0.12)"
+                                    style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
+                                    value={name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')+content}
+                                    editable={this.state.editable}
+                                />
+                            </View>
+                            <Text onPress={()=> {
+                                this.focusOnTextInput();
+                                }} style={[styles.themeColorText]}>
+                                自定义信息
+                            </Text>
+                            <View>
+                                <Text style={{color: '#999999', marginVertical: 36}}>获得更多竞标</Text>
+                            </View>
                         </View>  
                         
                         {/*<View style={{flexDirection: 'row', marginTop: -10, marginBottom: 26}}>
@@ -297,25 +309,23 @@ const styles = StyleSheet.create({
     notSelectedButton: {
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
-        padding:5,
+        paddingHorizontal: 10,
         height: 36,
-        width:Platform.OS === 'ios'? 250: 210,
-        marginRight: 20,
         marginBottom: 8,
         borderRadius: 2,
-        justifyContent: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     selectedButton:{
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
         backgroundColor: global.gColors.themeColor,
-        padding:5,
+        paddingHorizontal: 10,
         height: 36,
-        width:Platform.OS === 'ios'? 250: 210,
-        marginRight: 20,
         marginBottom: 8,
         borderRadius: 2,
-        justifyContent: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     cardImageContent: {
         height: Constant.window.height - (Platform.OS === 'ios' ? 64 : 50) - 44,
@@ -334,7 +344,6 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30,
-        alignSelf: 'center',
-        marginVertical: 20
+        marginVertical: 20,
     }
 })
