@@ -487,11 +487,11 @@ export default class BussList extends Component {
             <View>
                 <Text style={styles.text1}>{cardArray && cardArray.length > 0 ? "您有重要更新" : "想要更多机会?"}</Text>
                 {this.generateSwiper()} 
-                <View style={[styles.view, { marginTop: 10 }]}>
+                {/* <View style={[styles.view, { marginTop: 10 }]}>
                     <View style={styles.line}></View>
                     <Text style={styles.text2}>奇客动态</Text>
                     <View style={styles.line}></View>
-                </View>
+                </View> */}
             </View>
         );
     };
@@ -512,6 +512,17 @@ export default class BussList extends Component {
                 {/* {!isFetching && */}
                 <ListView
                     renderHeader={()=>this.renderHeader()}
+                    renderSectionHeader = {() => {
+                        return (
+                            <View>
+                                <View style={[styles.view, { marginTop: 0 }]}>
+                                    <View style={styles.line}></View>
+                                    <Text style={styles.text2}>奇客动态</Text>
+                                    <View style={styles.line}></View>
+                                </View> 
+                            </View>
+                        );
+                    }}
                     dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
                     renderRow={this._renderRow}
                     renderFooter={this._renderFooter}

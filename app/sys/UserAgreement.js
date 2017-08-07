@@ -179,6 +179,6 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 16,
         color: global.gColors.themeColor,
-        marginVertical: 10
+        marginVertical: 18,
     }
 })

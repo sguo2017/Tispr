@@ -72,28 +72,30 @@ export default class PasswordConfirm extends Component {
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20, paddingRight: 20, marginTop: 10 }}>
                     <Image style={{ width: 30, height: 30, top: 5 }} source={require('../../resource/b_key.png')} />
                     <View style={{ flexDirection: 'row' }}>
-                        <TextInput
-                            onChangeText={(text) => this.setState({ password: text })}
-                            style={[styles.input, { width: global.gScreen.width * 0.7 }]}
-                            placeholder="请输入密码"
-                            underlineColorAndroid="#dedfe0"
-                            secureTextEntry={this.state.seePassword}>
-                        </TextInput>
-                        {
-                            this.state.seePassword ?
-                                <TouchableOpacity onPress={() => this.setState({ seePassword: false })}>
-                                    <Image style={{
-                                        marginLeft: 5, marginRight: 8, marginTop: 25, width: 25, height: 20,
-                                        resizeMode: 'stretch'
-                                    }} source={require('../../resource/g_eyes_close.png')} />
-                                </TouchableOpacity> :
-                                <TouchableOpacity onPress={() => this.setState({ seePassword: true })}>
-                                    <Image style={{
-                                        marginLeft: 5, marginRight: 8, marginTop: 25, width: 25, height: 20,
-                                        resizeMode: 'stretch'
-                                    }} source={require('../../resource/g_eyes_open.png')} />
-                                </TouchableOpacity>
-                        }
+                        <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#eeeeee', marginBottom: 5 }} >
+                            <TextInput
+                                onChangeText={(text) => this.setState({ password: text })}
+                                style={[styles.input, { width: global.gScreen.width * 0.7 }]}
+                                placeholder="请输入密码"
+                                underlineColorAndroid="transparent"
+                                secureTextEntry={this.state.seePassword}>
+                            </TextInput>
+                            {
+                                this.state.seePassword ?
+                                    <TouchableOpacity onPress={() => this.setState({ seePassword: false })}>
+                                        <Image style={{
+                                            marginLeft: 5, marginRight: 8, marginTop: 25, width: 25, height: 20,
+                                            resizeMode: 'stretch'
+                                        }} source={require('../../resource/g_eyes_close.png')} />
+                                    </TouchableOpacity> :
+                                    <TouchableOpacity onPress={() => this.setState({ seePassword: true })}>
+                                        <Image style={{
+                                            marginLeft: 5, marginRight: 8, marginTop: 25, width: 25, height: 20,
+                                            resizeMode: 'stretch'
+                                        }} source={require('../../resource/g_eyes_open.png')} />
+                                    </TouchableOpacity>
+                            }
+                        </View>
                     </View>
                 </View>
                 <View style={{ paddingLeft: 53, paddingRight: 20 }}>
