@@ -9,7 +9,8 @@ import {
     TouchableHighlight,
     ScrollView,
 } from 'react-native';
-
+import signup from '../../pages/signup'
+import aboutqike from  '../help/aboutQike'
 export default class feedbackSuccess extends Component{
     render(){
         return(
@@ -22,13 +23,13 @@ export default class feedbackSuccess extends Component{
                         <View style={{flexDirection:'row', justifyContent:'space-between',marginTop:20}}>
                             <TouchableOpacity 
                             style={{borderRadius:5,width:100,height:40,justifyContent:'center',alignItems:'center',backgroundColor:'#f0f0f0',marginRight:40}}
-                            onPress={() => this.props.navigator.pop()}
+                            onPress={() => this.props.navigator.resetTo({component: aboutqike})}
                             >
                                 <Text style={{color:'black'}}>联系奇客</Text>
                                 </TouchableOpacity> 
                             <TouchableOpacity 
                             style={{borderRadius:5,width:100,height:40,justifyContent:'center',alignItems:'center',backgroundColor:global.gColors.buttonColor}}
-                            onPress={() => this.props.navigator.pop()}
+                            onPress={() => this.props.navigator.resetTo({component: signup})}
                             >
                                 <Text style={{color:'white'}}>确定</Text>
                             </TouchableOpacity>

@@ -92,7 +92,7 @@ export default class Guide extends React.Component {
             }
         }
         Util.post( URL, data, (response) => {
-            if(response.status == Constant.error_type.USER_IS_NIL){
+            if(response.status == Constant.error_type.USER_IS_NIL || response.status == Constant.error_type.USER_IS_LOCK){
                 this._navigate('Login');
                 return
             }

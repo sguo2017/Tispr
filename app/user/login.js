@@ -25,15 +25,16 @@ import forgetPassword from './forgetPassword';
 import nationWarning from '../sys/others/nationWarning';
 import fetchers from '../common/netRequest'
 import offline from '../sys/others/offline'
+import accountBan from '../sys/others/accountBan'
 export default class Login extends Component {
 
   constructor() {
     super();
     this.state = {
       num: "13911551595",
-      // email: "38359504@qq.com",
+      email: "38359504@qq.com",
       // email: "guoshan@ztesoft.com",
-      email: "p1@qq.com",
+      //email: "p1@qq.com",
       // num: "18210034398",
       // email: "lin@qq.com",
       // password: "cc111111",
@@ -128,6 +129,9 @@ export default class Login extends Component {
             )
             this.setState({ showProgress: false });
         }        
+        if(result.status == Constant.error_type.USER_IS_LOCK){
+          this.props.navigator.push({component:accountBan})
+        }
         if(result.user && result.token){
           let userdetail = JSON.parse(result.user);
           UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token);
@@ -219,17 +223,21 @@ export default class Login extends Component {
       });
       let res = await response.text();
       let result = JSON.parse(res);
-      let userdetail = JSON.parse(result.user);
-      if (response.status >= 200 && response.status < 300 && result.token) {
-        UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
-        let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
-        //console.log("79 accessToken:" + JSON.stringify(t));
-        let address = global.user.addressComponent;
-        global.user = userdetail;
-        global.user.addressComponent = address;
-        global.user.authentication_token = result.token;
-        //console.log(JSON.stringify(global.user))
-        this._navigateHome();
+      if (response.status >= 200 && response.status < 300 ) {
+        if(result.status && result.status == Constant.error_type.USER_IS_LOCK){
+          this.props.navigator.push({component:accountBan})
+        }else if( result.token){
+          let userdetail = JSON.parse(result.user);
+          UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
+          let t = await UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
+          //console.log("79 accessToken:" + JSON.stringify(t));
+          let address = global.user.addressComponent;
+          global.user = userdetail;
+          global.user.addressComponent = address;
+          global.user.authentication_token = result.token;
+          //console.log(JSON.stringify(global.user))
+          this._navigateHome();
+        }
       } else {
         UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
         let error = res;
@@ -239,7 +247,7 @@ export default class Login extends Component {
       this.setState({ error: error });
       Alert.alert(
         '提示',
-        '失败',
+        error.message,
         [
           { text: '登录失败', onPress: () => console.log('确定') },
         ]
@@ -399,7 +407,7 @@ export default class Login extends Component {
              <Text style={{color: 'black', fontSize: 14, paddingBottom:3 }}>我已阅读并同意服务协议</Text> 
           </TouchableOpacity>
           
-          <TouchableOpacity onPress={()=>{this.onLoginPressed()}} style={styles.loginButton}>
+          <TouchableOpacity onPress={()=>{this._smsCodeLogin()}} style={styles.loginButton}>
             <Text  style={styles.loginButtonText}>
               登录
             </Text>
