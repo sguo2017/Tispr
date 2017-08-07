@@ -514,14 +514,12 @@ export default class BussList extends Component {
                     renderHeader={()=>this.renderHeader()}
                     renderSectionHeader = {() => {
                         return (
-                            <View style={{
-                                flexDirection: 'row',
-                                backgroundColor: 'white',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                height: 40,
-                            }}>
-                                <Text style={{ color: '#9E9E9E', fontSize: 14 }}>奇客动态</Text>
+                            <View>
+                                <View style={[styles.view, { marginTop: 0 }]}>
+                                    <View style={styles.line}></View>
+                                    <Text style={styles.text2}>奇客动态</Text>
+                                    <View style={styles.line}></View>
+                                </View> 
                             </View>
                         );
                     }}
