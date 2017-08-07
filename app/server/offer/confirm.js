@@ -313,7 +313,7 @@ export default class ServOfferConfirm extends Component {
                     (
                       <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                           <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5,  }]}>
-                              <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
+                              <Image style={{ width: 90, height: 90, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                           </View>
                       </TouchableOpacity>
                     )
@@ -390,8 +390,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     avatar: {
-        width: 100,
-        height: 100,
+        width: 90,
+        height: 90,
     },
     rowView: {
         marginHorizontal: 16,
