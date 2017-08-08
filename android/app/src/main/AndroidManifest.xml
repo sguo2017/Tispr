@@ -20,12 +20,13 @@
       android:icon="@mipmap/ic_launcher"
       android:theme="@style/AppTheme">
 
-      <meta-data android:name="com.baidu.lbsapi.API_KEY" android:value="ShCFlbXeNnWuuqs1zPNagAdXTIMPBT49"/>
+        <meta-data android:name="com.baidu.lbsapi.API_KEY" android:value="ShCFlbXeNnWuuqs1zPNagAdXTIMPBT49"/>
+        <meta-data android:name="JPUSH_CHANNEL" android:value="${APP_CHANNEL}"/>
+        <meta-data android:name="JPUSH_APPKEY" android:value="${JPUSH_APPKEY}"/>
 
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
-        android:exported="false"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
         android:windowSoftInputMode="adjustResize">
         <intent-filter>
@@ -34,6 +35,8 @@
             <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>    
         </intent-filter>
       </activity>
+
+       
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
           <!-- 微信Activity -->
       <activity

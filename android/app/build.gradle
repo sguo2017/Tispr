@@ -102,6 +102,10 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+        manifestPlaceholders = [
+                JPUSH_APPKEY: "550e59c50b9bb72ad34ab473", //在此替换你的APPKey
+                APP_CHANNEL: "developer-default"    //应用渠道号
+        ]
     }
     signingConfigs {
         debug {
@@ -157,6 +161,8 @@ dependencies {
     compile project(':react-native-baidu-map')
     compile project(':RCTWeChat')
     compile fileTree(dir: "libs", include: ["*.jar"])
+    compile project(':jpush-react-native')  // 添加 jpush 依赖
+    compile project(':jcore-react-native')  // 添加 jcore 依赖
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
 }
