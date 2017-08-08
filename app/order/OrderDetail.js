@@ -55,7 +55,8 @@ export default class OrderDetail extends Component {
                 deal_id: _deal_id,
                 chat_content: "我同意了您提出的价格",
                 user_id: global.user.id,
-                catalog: 2
+                catalog: 2,
+                 receive_user_id: this.props.feed.offer_user_id
             }
         }
         Util.post(URL, data, ()=>{console.log("创建会话成功")}, this.props.navigator)
