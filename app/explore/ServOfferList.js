@@ -277,6 +277,7 @@ export default class ServOfferList extends Component {
   }
 
   async _createChat(newOrder, avaliableTimes, chat_content){
+        let feed = this.state.connectServ;  
         try {
             let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + `${global.user.authentication_token}`;
             let response = await fetch(URL, {
@@ -291,7 +292,8 @@ export default class ServOfferList extends Component {
                     deal_id: newOrder.id,
                     chat_content: chat_content,
                     user_id: global.user.id,
-                    catalog: 2
+                    catalog: 2,
+                    receive_user_id: feed.user_id,
                     }
                 })
             });

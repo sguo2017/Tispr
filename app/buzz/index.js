@@ -64,10 +64,8 @@ var styles = StyleSheet.create({
     },
     view: {
         backgroundColor: '#FFFFFF',
-        height: 40,
         flexDirection: 'row',
-        marginBottom: -2,
-        marginTop: 40
+        marginTop: 40,
     },
     line: {
         flex: 1,
@@ -339,7 +337,8 @@ export default class BussList extends Component {
                         deal_id: newOrder.id,
                         chat_content: chat_content,
                         user_id: global.user.id,
-                        catalog: 2
+                        catalog: 2,
+                        receive_user_id: this.props.feed.user_id,
                     }
                 })
             });
@@ -523,6 +522,7 @@ export default class BussList extends Component {
                             </View>
                         );
                     }}
+                    stickySectionHeadersEnabled={true}
                     dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
                     renderRow={this._renderRow}
                     renderFooter={this._renderFooter}

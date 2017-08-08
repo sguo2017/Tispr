@@ -230,7 +230,8 @@ export default class ServOfferDetail extends Component {
                         deal_id: _deal_id,
                         chat_content: chat_content,
                         user_id: global.user.id,
-                        catalog: 2
+                        catalog: 2,
+                        receive_user_id: this.props.feed.user_id,
                     }
                 })
             });
