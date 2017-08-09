@@ -62,6 +62,7 @@ export default class ProposeDeal extends Component{
     }
 
     async _createChat(_deal_id,chat_content){
+        const { feed } = this.props;
         let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
         let data = {
             chat: {
@@ -69,7 +70,7 @@ export default class ProposeDeal extends Component{
                 chat_content: chat_content,
                 user_id: global.user.id,
                 catalog: 2,
-                receive_user_id: this.props.feed.offer_user_id
+                receive_user_id:  feed.offer_user_id==global.user.id?feed.request_user_id:feed.offer_user_id,
             }
         }
         fetchers.post(URL, data, (response)=>{
