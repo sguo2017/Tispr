@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: (Common.window.width - 24) / 2,
     margin: 4,
-    backgroundColor: 'red',
+    backgroundColor: 'white',
     borderRadius: 4,
     overflow: 'hidden',
   },
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderTopWidth: 1,
     borderTopColor: '#eeeeee',
+    borderRadius: 4
   },
    // modal的样式
     modalStyle: {
