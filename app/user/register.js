@@ -322,7 +322,7 @@ export default class Register extends Component {
               <Text style={{ fontSize: 16, color: '#1b2833' }}>+86</Text>
               <Image style={{ height: 24, width: 24 }} source={require('../resource/g-arrow-drop-down.png')} />
             </TouchableOpacity>
-            <View style={{ flex: 1, justifyContent: 'center'}}>
+            <View style={{ flex: 1, justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee'}}>
               <AutoTextInput
                 ref = "4"
                 style={styles.input}
@@ -338,7 +338,7 @@ export default class Register extends Component {
             </View>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, minHeight: 48 }}>
-            <View style={{ flex: 1, justifyContent: 'center'}}>
+            <View style={{ flex: 1, justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee'}}>
               <AutoTextInput
                 ref = "5"
                 style={styles.input}
@@ -358,11 +358,6 @@ export default class Register extends Component {
               <Text style={[styles.themeText, this.state.sendingCode&&styles.greyText]}>获取短信验证码{this.state.time}</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={() => this.setState({ firstPage: true })}>
-            <Text style={{ color: '#4A90E2'}}>
-              上一步
-            </Text>
-          </TouchableOpacity>
           <TouchableOpacity onPress={this.onRegisterPressed.bind(this)} style={styles.loginButton}>
             <Text style={styles.loginButtonText}>注册</Text>
           </TouchableOpacity>
@@ -422,6 +417,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     height: 32,
     marginRight: 18,
+    marginTop: 10
   },
   smsCodeButton: {
     position: 'absolute',
