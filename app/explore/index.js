@@ -49,7 +49,8 @@ class ExploreList extends PureComponent {
             via: '',
             initArea: ['广东', '广州', '番禺区'],
             zoom: 18,
-            showCancel: false
+            showCancel: false,
+            showSearchPage: false
         };
     }
     componentWillMount() {
@@ -127,18 +128,18 @@ class ExploreList extends PureComponent {
         if(!global.user.authentication_token){
             Util.noToken(this.props.navigator);
         }
-       
+        this.setState({showSearchPage: false})
         const { dispatch, categoryId } = this.props;
         page = 1;
         let exploreparams = this.state.exploreparams;
         let goods_catalog = this.state.cps;
 
-        if(this.state.transiSortBy == "最近发布")
-            exploreparams.sort_by = "created_at"
-        if(this.state.transiSortBy == "最多收藏")
-            exploreparams.sort_by = "favorites_count"
-        if(this.state.transiSortBy == "最多联系")
-            exploreparams.sort_by = "order_cnt"
+        // if(this.state.transiSortBy == "最近发布")
+        //     exploreparams.sort_by = "created_at"
+        // if(this.state.transiSortBy == "最多收藏")
+        //     exploreparams.sort_by = "favorites_count"
+        // if(this.state.transiSortBy == "最多联系")
+        //     exploreparams.sort_by = "order_cnt"
         if(this.state.via == 'local'){
             exploreparams.via = 'local'
             exploreparams.city = this.state.location;
@@ -157,6 +158,7 @@ class ExploreList extends PureComponent {
             }
         });
         exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
+        console.log(exploreparams.goods_catalog_I)
         dispatch(fetchExploreList(page, exploreparams, this.props.navigator));
     }
 
@@ -222,32 +224,32 @@ class ExploreList extends PureComponent {
     render() {
         let page = this.state.via =='local'?0:1
         return (
-          <View style={styles.listView}>
-              <View style={styles.container}>
-                  <View style={styles.searchBox}>
-                      <Image source={require('../resource/w-search.png')} style={styles.searchIcon} />
-                      <TextInput 
-                        ref = "searchInput"
-                        style={styles.inputText}
-                         underlineColorAndroid='transparent'
-                         keyboardType='web-search'
-                         value={this.state.exploretitle}
-                         placeholder='搜索'
-                         returnKeyType = 'search'
-                         returnKeyLabel = 'search'
-                         placeholderTextColor='white'
-                         selectTextOnFocus ={true}
-                         onSubmitEditing = {() => this.refresh()}
-                         onChangeText={(val) => {
-                             let explore = this.state.exploreparams;
-                             explore.title = val;
-                             this.setState({ exploreparams: explore, exploretitle:val })
-                         }}
-                         onFocus = {()=>this.setState({showCancel:true})}
-                         obBlur = {()=> this.setState({showCancel: false})}
-                      />
-                </View>
-                {
+            <View style={styles.listView}>
+                <View style={styles.container}>
+                    <View style={styles.searchBox}>
+                        <Image source={require('../resource/w-search.png')} style={styles.searchIcon} />
+                        <TextInput 
+                            ref = "searchInput"
+                            style={styles.inputText}
+                            underlineColorAndroid='transparent'
+                            keyboardType='web-search'
+                            value={this.state.exploretitle}
+                            placeholder='搜索'
+                            returnKeyType = 'search'
+                            returnKeyLabel = 'search'
+                            placeholderTextColor='white'
+                            selectTextOnFocus ={true}
+                            onSubmitEditing = {() => this.refresh()}
+                            onChangeText={(val) => {
+                                let explore = this.state.exploreparams;
+                                explore.title = val;
+                                this.setState({ exploreparams: explore, exploretitle:val })
+                            }}
+                            onFocus = {()=>this.setState({showCancel:true, showSearchPage: true})}
+                            obBlur = {()=> this.setState({showCancel: false, showSearchPage: false})}
+                        />
+                    </View>
+                    {
                     this.state.showCancel?
                     <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} 
                         onPress={() => {
@@ -257,7 +259,8 @@ class ExploreList extends PureComponent {
                              this.setState({
                                 showCancel:false,
                                 exploreparams: explore, 
-                                exploretitle:''
+                                exploretitle:'',
+                                showSearchPage: false
                             });
                             this.state.exploreparams=explore;
                             this.refresh()
@@ -268,28 +271,41 @@ class ExploreList extends PureComponent {
                     <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} onPress={() => this.props.navigator.push({component: MarkList})}>
                         <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
                     </TouchableOpacity>
+                    }                
+                </View>
+                {
+                !this.state.showSearchPage?
+                <View style={{ flexDirection: 'row', paddingVertical: 6, backgroundColor: 'rgba(0,0,0,0.16)'}}>
+                    <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'recentPublish', show: true });}}>
+                        <Text style={styles.whiteText}>{this.state.sortBy}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'allTalentedPeople', show: true });}}>
+                        <Text style={styles.whiteText}>{this.state.classify}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'selectLocation', show: true });}}>
+                        <Image source={require('../resource/w-location.png')} style={{ width: 14, height: 14 }}></Image>
+                        <Text style={styles.whiteText}>{this.state.location}</Text>
+                    </TouchableOpacity>
+                </View>:
+                <View style={{backgroundColor: 'white', flex: 1, padding: 16}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <Text style={{color: '#999999', fontSize: 14}}>您搜过的</Text>
+                        <TouchableOpacity>
+                            <Text style={{fontSize: 14, color: '#4A90E2'}}>清空</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
                 }
-                
-              </View>
-              <View style={{ flexDirection: 'row', paddingVertical: 6, backgroundColor: 'rgba(0,0,0,0.16)'}}>
-                  <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'recentPublish', show: true });}}>
-                      <Text style={styles.whiteText}>{this.state.sortBy}</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'allTalentedPeople', show: true });}}>
-                      <Text style={styles.whiteText}>{this.state.classify}</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'selectLocation', show: true });}}>
-                      <Image source={require('../resource/w-location.png')} style={{ width: 14, height: 14 }}></Image>
-                      <Text style={styles.whiteText}>{this.state.location}</Text>
-                  </TouchableOpacity>
-              </View>
-              <ServOfferList exploreparams={this.state.exploreparams} cps={this.state.cps} location={this.state.location} {...this.props} />
-              <Modal
-                animationType='slide'
-                transparent={true}
-                visible={this.state.show}
-                onShow={() => { }}
-                onRequestClose={() => { }}
+
+                {this.state.showSearchPage? null:
+                <ServOfferList exploreparams={this.state.exploreparams} cps={this.state.cps} location={this.state.location} {...this.props} />}
+                <Modal
+                    animationType='slide'
+                    transparent={true}
+                    visible={this.state.show}
+                    onShow={() => { }}
+                    onRequestClose={() => { }}
                 >
                 <TouchableWithoutFeedback style={{flex: 1}} onPress={() => this.setState({show: false})}>
                 <View style={styles.cover}>
@@ -298,7 +314,7 @@ class ExploreList extends PureComponent {
                         <View style={styles.modalStyle}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
-                                    <TouchableOpacity onPress={() => this.setState({ cps: [true, false, false, false, false, false, false], transiSortBy: '综合排序', transiClassify: '全部分类' })}>
+                                    <TouchableOpacity onPress={() => this.setState({ cps: [true, false, false, false, false, false, false], transiSortBy: '综合排序', transiClassify: '全部人才' })}>
                                         <Text style={styles.themeColorText}>重置</Text>
                                     </TouchableOpacity>
                                     <Text style={{ color: 'black', fontSize: 16 }}>筛选</Text>
@@ -429,17 +445,6 @@ class ExploreList extends PureComponent {
                                     >
                                         <Text style={[styles.themeColorText, this.state.sps[1] && styles.whiteText]}>最近发布</Text>
                                     </TouchableOpacity>
-                                    {/*<TouchableOpacity
-                                      style={[styles.selectButton, this.state.sps[2] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => { this.setState({ transiSortBy: '最多收藏', sps: [false, false, true, false] }) }}
-                                    >
-                                        <Text style={[styles.themeColorText, this.state.sps[2] && styles.whiteText]}>最多收藏</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                      style={[styles.selectButton, this.state.sps[3] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiSortBy: '最多联系', sps: [false, false, false, true] })}>
-                                        <Text style={[styles.themeColorText, this.state.sps[3] && styles.whiteText]}>最多联系</Text>
-                                    </TouchableOpacity>*/}
                                 </View>
                             </View>
                         </View>
@@ -455,7 +460,12 @@ class ExploreList extends PureComponent {
                                     </TouchableOpacity>
 
                                     <Text style={{ color: 'black', fontSize: 16 }}>选择分类</Text>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
+                                    <TouchableOpacity onPress={() => {
+                                        this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}});
+                                        this.state.cps.map((cp, index) => {
+                                            if (cp) this.setState({transiClassify: global.goods_catalog_I[index-1].name})
+                                        })
+                                    }}>
                                         <Text style={styles.themeColorText}>确定</Text>
                                     </TouchableOpacity>
 
@@ -470,38 +480,56 @@ class ExploreList extends PureComponent {
                                 </View>
                                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 12 }}>
                                     <TouchableHighlight
-                                      style={[styles.selectButton, this.state.cps[1] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiClassify: global.goods_catalog_I[0].name, cps: [false, !this.state.cps[1], this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] })}
+                                        style={[styles.selectButton, this.state.cps[1] && { backgroundColor: global.gColors.themeColor }]}
+                                        onPress={() => {
+                                            if (!this.state.cps[1]) this.setState({transiClassify: global.goods_catalog_I[0].name})
+                                            this.setState({cps: [false, !this.state.cps[1], this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] });
+                                        }}
                                     >
                                         <Text style={[styles.themeColorText, this.state.cps[1] && styles.whiteText]}>{global.goods_catalog_I[0].name}</Text>
                                     </TouchableHighlight>
                                     <TouchableOpacity
-                                      style={[styles.selectButton, this.state.cps[2] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiClassify: global.goods_catalog_I[1].name, cps: [false, this.state.cps[1] && true, !this.state.cps[2], this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] })}
+                                        style={[styles.selectButton, this.state.cps[2] && { backgroundColor: global.gColors.themeColor }]}
+                                        onPress={() => {
+                                            if (!this.state.cps[2]) this.setState({transiClassify: global.goods_catalog_I[1].name})
+                                            this.setState({ cps: [false, this.state.cps[1] && true, !this.state.cps[2], this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] })
+                                        }}
                                     >
                                         <Text style={[styles.themeColorText, this.state.cps[2] && styles.whiteText]}>{global.goods_catalog_I[1].name}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                       style={[styles.selectButton, this.state.cps[3] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiClassify: global.goods_catalog_I[2].name, cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, !this.state.cps[3], this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] })}
+                                      onPress={() => {
+                                          if (!this.state.cps[3]) this.setState({transiClassify: global.goods_catalog_I[2].name})
+                                          this.setState({cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, !this.state.cps[3], this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] })}
+                                      }
                                     >
                                         <Text style={[styles.themeColorText, this.state.cps[3] && styles.whiteText]}>{global.goods_catalog_I[2].name}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                       style={[styles.selectButton, this.state.cps[4] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiClassify: global.goods_catalog_I[3].name, cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, !this.state.cps[4], this.state.cps[5] && true, this.state.cps[6] && true] })}
+                                      onPress={() => {
+                                          if (!this.state.cps[4]) this.setState({transiClassify: global.goods_catalog_I[3].name})
+                                          this.setState({cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, !this.state.cps[4], this.state.cps[5] && true, this.state.cps[6] && true] })}
+                                      }
                                     >
                                         <Text style={[styles.themeColorText, this.state.cps[4] && styles.whiteText]}>{global.goods_catalog_I[3].name}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                       style={[styles.selectButton, this.state.cps[5] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiClassify: global.goods_catalog_I[4].name, cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, !this.state.cps[5], this.state.cps[6] && true] })}
+                                      onPress={() => {
+                                          if (!this.state.cps[5]) this.setState({transiClassify: global.goods_catalog_I[4].name})
+                                          this.setState({ cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, !this.state.cps[5], this.state.cps[6] && true] })}
+                                      }
                                     >
                                         <Text style={[styles.themeColorText, this.state.cps[5] && styles.whiteText]}>{global.goods_catalog_I[4].name}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                       style={[styles.selectButton, this.state.cps[6] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiClassify: global.goods_catalog_I[5].name, cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, !this.state.cps[6]] })}
+                                      onPress={() => {
+                                          if (!this.state.cps[6]) this.setState({transiClassify: global.goods_catalog_I[5].name})
+                                          this.setState({cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, !this.state.cps[6]] })}
+                                      }
                                     >
                                         <Text style={[styles.themeColorText, this.state.cps[6] && styles.whiteText]}>{global.goods_catalog_I[5].name}</Text>
                                     </TouchableOpacity>
