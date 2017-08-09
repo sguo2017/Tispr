@@ -12,6 +12,7 @@ import Login from './signup';
 import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 import Util from '../common/utils';
+import accountBan from '../sys/others/accountBan'
 export default class Guide extends React.Component {
 
     constructor() {
@@ -42,9 +43,39 @@ export default class Guide extends React.Component {
 
     componentDidMount() {
         // 在收到点击事件之前调用此接口
-        console.log("推送注册ID11122")
         this.onGetRegistrationIdPress()
 
+        JPushModule.notifyJSDidLoad((resultCode) => {
+            if (resultCode === 0) {
+            }
+        });
+        JPushModule.addReceiveNotificationListener((map) => {
+            console.log("alertContent: " + map.alertContent);
+            console.log("extras: " + map.extras);
+        });
+        JPushModule.addReceiveOpenNotificationListener((map) => {
+            console.log("Opening notification!");
+            console.log("map.extra: " + map.extras);
+            let type = JSON.parse(map.extras).type;
+            if(type == "0"){
+                this.props.navigator.push({component: TabBarView, passProps: { initialPage: 3}})
+            }
+            if(type == "1"){
+                this.props.navigator.push({component: TabBarView, passProps: { initialPage: 1}})
+            }
+            if(type == "2"){
+                this.props.navigator.push({component: TabBarView, passProps: { initialPage: 4}})
+            }
+            if(type == "3"){
+                this.props.navigator.push({component: TabBarView, passProps: { initialPage: 1}})
+            }
+            if(type == "4"){
+                this.props.navigator.push({component:accountBan })
+            }
+            if(type == "5"){
+                this.props.navigator.push({component: Login})
+            }
+        });
         Geolocation.getCurrentPosition()
         .then(data => {
             console.log("获取经纬度"+JSON.stringify(data));   
