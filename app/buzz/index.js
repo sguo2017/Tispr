@@ -286,7 +286,7 @@ export default class BussList extends Component {
 
     _renderFooter = () => <LoadMoreFooter />
 
-    async _changeSysMsgStatus(newStatus, id, lately_chat_content) {
+    async _changeSysMsgStatus(newStatus, id, lately_chat_content, receive_user_id) {
         let t = global.user.authentication_token;
         let url = 'http:\/\/' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SSRV_API_SYS_MSGS_TIMELINES + id + '?token=' + t;
         let data ={
@@ -302,7 +302,7 @@ export default class BussList extends Component {
                     let avaliableTimes =resObject.avaliable;
                     let newOrder = resObject.feed;
                     if (resObject.status == 0) {
-                        this._createChat(newOrder,avaliableTimes, lately_chat_content);
+                        this._createChat(newOrder,avaliableTimes, lately_chat_content, receive_user_id);
                     } else if (resObject.status == -2) {
                         this.props.navigator.push({component: noConnectTimes});
                     } else if (resObject.status == -1) {
@@ -322,7 +322,7 @@ export default class BussList extends Component {
         )
         
     }
-    async _createChat(newOrder, avaliableTimes, chat_content) {
+    async _createChat(newOrder, avaliableTimes, chat_content, receive_user_id) {
         try {
             let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
             let response = await fetch(URL, {
@@ -338,7 +338,7 @@ export default class BussList extends Component {
                         chat_content: chat_content,
                         user_id: global.user.id,
                         catalog: 2,
-                        receive_user_id: this.props.feed.user_id,
+                        receive_user_id: receive_user_id,
                     }
                 })
             });
@@ -371,7 +371,7 @@ export default class BussList extends Component {
             console.log("error " + error);
         }
     }
-    _updateCard(index, newStatus, id, lately_chat_content) {
+    _updateCard(index, newStatus, id, lately_chat_content, receive_user_id) {
         let arr = d.state.sys_msgs;
         if (!arr || arr == undefined || arr.length < 1) { return }
         if (index == arr.length - 1) {
@@ -386,7 +386,7 @@ export default class BussList extends Component {
             initCard: index,
         });
         InteractionManager.runAfterInteractions(() => {
-            d._changeSysMsgStatus(newStatus, id, lately_chat_content);
+            d._changeSysMsgStatus(newStatus, id, lately_chat_content, receive_user_id);
         });
     }
     generateSwiper = () => {

@@ -206,18 +206,16 @@ export default class CardDetail extends Component {
                             </TouchableOpacity>
                         </View>                                                                    
                     </View>
+                    <View style={{backgroundColor: '#FFFFFF', height: 64, flexDirection: 'row',flexWrap: 'wrap', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12}}>
+                    
                     {
                         this.state.bidderList.map((data, index)=>{
                             return(
-                                <View key={index} style={{backgroundColor: '#FFFFFF', height: 64, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12}}>
-                                    <Image source={{uri: data.offer_user_avatar}} style={{borderRadius: 20, width: 40, height: 40}}></Image>
-                                    <Text style={{color: '#1B2833', fontSize: 16, flexShrink: 0, marginLeft: 12}}>{data.offer_user}</Text>
-                                    <Image source={require('../../resource/g_chevron right.png')} style={{position: 'absolute', right: 16}}></Image>
-                                </View>
+                                    <Image  key={index} source={{uri: data.offer_user_avatar}} style={{borderRadius: 20, width: 40, height: 40, margin: 10}}></Image>
                             ) 
                         })
                     }
-
+                    </View>
                     <View style={{backgroundColor: 'white', paddingTop: 23, paddingBottom: 10}}>
                         <TouchableOpacity style={{backgroundColor: '#FFC400', borderRadius: 4, height: 44, marginHorizontal: 16, paddingHorizontal: 138, paddingVertical: 10}}
                             onPress={() => this._p(feed)}

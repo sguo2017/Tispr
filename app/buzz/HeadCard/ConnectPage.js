@@ -126,7 +126,8 @@ export default class ConnectPage extends Component{
                             this.props.discardIndex,
                             Constant.sys_msgs_status.FINISHED,
                             this.props.feed.smt_id, 
-                            this.state.send_default_chat_conteng?default_msg :this.state.msg);
+                            this.state.send_default_chat_conteng?default_msg :this.state.msg,
+                            this.props.feed.user_id);
                         this.props.navigator.pop()}}
 
                 >
