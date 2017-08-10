@@ -13,6 +13,7 @@ import {
 import Header from '../../components/HomeNavigation';
 import Setting from '../Setting';
 import HelpDetail from './helpDetail'
+import aboutQike from './aboutQike'
 
 export default class UseHelp extends Component {
 
@@ -34,6 +35,10 @@ export default class UseHelp extends Component {
 		
 	}
 
+	_aboutQike = () => {
+		this.props.navigator.push({component:aboutQike,name:'aboutQike'})
+	}
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -42,6 +47,7 @@ export default class UseHelp extends Component {
 					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={this._onBack.bind(this)}
 					rightButton='联系我们'
+					rightButtonAction={this._aboutQike}
 				/>
 				<View style={{backgroundColor: '#4a90e2', height: 40, marginTop: -2, paddingLeft: 16}}>
 					<View style={styles.searchBox}>

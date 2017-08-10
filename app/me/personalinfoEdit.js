@@ -317,7 +317,7 @@ export default class Personinfoedit extends Component {
                             :
                             <Image style={{ width: 24, height: 24 }} source={require('../resource/b_info.png')}/>                           
                         }
-                        <TextInput
+                        <AutoTextInput
                           placeholder='介绍下自己，获得更多关注'
                           placeholderTextColor='#CCCCCC'
                           style={styles.textInput}
