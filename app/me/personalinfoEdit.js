@@ -38,7 +38,7 @@ export default class Personinfoedit extends Component {
             fileName: this.props.fileName,
             fileSource: this.props.source,
             addressComponent: global.user.addressComponent,
-            address: `${global.user.addressComponent.country}${global.user.addressComponent.province}${global.user.addressComponent.city}${global.user.addressComponent.district}`
+            address: global.user.addressComponent.country?`${global.user.addressComponent.country}${global.user.addressComponent.province}${global.user.addressComponent.city}${global.user.addressComponent.district}`:''
         }
     }
     _back(){

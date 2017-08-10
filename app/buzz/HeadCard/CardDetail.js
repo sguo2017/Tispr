@@ -202,9 +202,9 @@ export default class CardDetail extends Component {
                         </MapView>
                         <View style={{flexDirection: 'row', marginTop: 20, height: 48, justifyContent: 'space-between'}}>
                             <Text style={{fontSize: 16, color: 'black'}}>投标&nbsp;&nbsp;&nbsp;{this.state.bidderListLength}</Text>
-                            <TouchableOpacity style={{backgroundColor: '#4A90E2', borderRadius: 2, height: Platform === 'ios'?35:28, width: 72}}>
+                            {/*<TouchableOpacity style={{backgroundColor: '#4A90E2', borderRadius: 2, height: Platform === 'ios'?35:28, width: 72}}>
                                 <Text style={{color: 'white', marginHorizontal: 8, marginVertical: 4}}>增加投标</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity>*/}
                         </View>                                                                    
                     </View>
                     <View style={{backgroundColor: '#FFFFFF',  flexDirection: 'row',flexWrap: 'wrap', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12}}>
