@@ -62,12 +62,12 @@ let error_type = {
     DEFAULT: -1,
 }
 
-let default_img={
-    AVATAR:'http://123.56.157.233:8080/group1/M00/00/04/ezid6Vk98BqAFb5QAAAQGOym6eI771.jpg'
-}
 // let default_img={
-//     AVATAR:'http://47.92.27.52:8080/group1/M00/00/04/ezid6Vk98BqAFb5QAAAQGOym6eI771.jpg'
+//     AVATAR:'http://123.56.157.233:8080/group1/M00/00/04/ezid6Vk98BqAFb5QAAAQGOym6eI771.jpg'
 // }
+let default_img={
+    AVATAR:'http://47.92.27.52:8080/group1/M00/00/04/ezid6Vk98BqAFb5QAAAQGOym6eI771.jpg'
+}
 
 let offer_range = ["不上门","5公里内","10公里内","15公里内","25公里内","50公里内","100公里内"];
 
@@ -78,7 +78,7 @@ let url = {
      SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
      //////////////////<<<<   API接口  >>>>>//////////////////////////////
      SERV_API_ADDR: `47.92.27.52`,
-     SERV_API_PORT: `8081`,
+     SERV_API_PORT: `80`,
      //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
      // IMG_SERV_ADDR: "123.56.157.233",
      // IMG_SERV_PORT: "9090",
@@ -121,38 +121,11 @@ let url = {
      
 }
 
-let mapper = {
-    'calory': {name: '热量', unit: ''},
-    'protein': {name: '蛋白质', unit: '克'},
-    'fat': {name: '脂肪', unit: '克'},
-    'carbohydrate': {name: '碳水化合物', unit: '克'},
-    'fiber_dietary': {name: '膳食纤维', unit: '克'},
-    'vitamin_a': {name: '维生素A', unit: 'IU'},
-    'vitamin_c': {name: '维生素C', unit: '毫克'},
-    'vitamin_e': {name: '维生素E', unit: '毫克'},
-    'carotene': {name: '胡萝卜素', unit: '微克'},
-    'thiamine': {name: '维生素B1', unit: '毫克'},
-    'lactoflavin': {name: '维生素B2', unit: '毫克'},
-    'niacin': {name: '烟酸', unit: '毫克'},
-    'cholesterol': {name: '胆固醇', unit: '毫克'},
-    'magnesium': {name: '镁', unit: '毫克'},
-    'calcium': {name: '钙', unit: '毫克'},
-    'iron': {name: '铁', unit: '毫克'},
-    'zinc': {name: '锌', unit: '毫克'},
-    'copper': {name: '铜', unit: '毫克'},
-    'manganese': {name: '锰', unit: '毫克'},
-    'kalium': {name: '钾', unit: '毫克'},
-    'phosphor': {name: '磷', unit: '毫克'},
-    'natrium': {name: '钠', unit: '毫克'},
-    'selenium': {name: '硒', unit: '毫克'}
-}
-
 export default {
     url: url,
     window: window,
     colors: colors,
     storeKeys: storeKeys,
-    ingredientMapper: mapper,
     sysMsgCatalog: sysMsgCatalog,
     sys_msgs_status: sys_msgs_status,
     serv_qry_type: serv_qry_type,
