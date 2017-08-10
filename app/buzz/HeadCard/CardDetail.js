@@ -19,6 +19,7 @@ import Swiper from 'react-native-swiper';
 import Constant from '../../common/constants';
 import ConnectPage from './ConnectPage'
 import { CachedImage } from "react-native-img-cache";
+import Me from '../../me/index';
 const screenW = Dimensions.get('window').width;
 
 export default class CardDetail extends Component {
@@ -211,7 +212,21 @@ export default class CardDetail extends Component {
                     {
                         this.state.bidderList.map((data, index)=>{
                             return(
-                                    <Image  key={index} source={{uri: data.offer_user_avatar}} style={{borderRadius: 20, width: 40, height: 40, margin: 10}}></Image>
+                                <TouchableOpacity onPress={
+                                    ()=> this.props.navigator.push({
+                                        component:Me, 
+                                        passProps:{
+                                            isBrowseMode: true,
+                                            close: () => {
+                                                this.props.navigator.pop();
+                                            },
+                                            id: data.offer_user_id
+                                        }
+                                    }
+                                    )} key={index}
+                                >
+                                    <Image   source={{uri: data.offer_user_avatar}} style={{borderRadius: 20, width: 40, height: 40, margin: 10}}></Image>
+                                </TouchableOpacity>
                             ) 
                         })
                     }
