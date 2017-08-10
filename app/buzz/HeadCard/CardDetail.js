@@ -78,7 +78,7 @@ export default class CardDetail extends Component {
     async _getbidder(){
         let serv_id =this.props.feed.serv_id;
         try {
-            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_LIST + `${global.user.authentication_token}&scence=${Constant.order_qry_type.BIDDER}&serv_id=${serv_id}&page=1`;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_LIST + `${global.user.authentication_token}&scence=${Constant.order_qry_type.BIDDER}&serv_id=${serv_id}`;
             // console.log("148:"+url)
             fetch(url, {
                 method: 'GET',
@@ -206,7 +206,7 @@ export default class CardDetail extends Component {
                             </TouchableOpacity>
                         </View>                                                                    
                     </View>
-                    <View style={{backgroundColor: '#FFFFFF', height: 64, flexDirection: 'row',flexWrap: 'wrap', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12}}>
+                    <View style={{backgroundColor: '#FFFFFF',  flexDirection: 'row',flexWrap: 'wrap', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12}}>
                     
                     {
                         this.state.bidderList.map((data, index)=>{
