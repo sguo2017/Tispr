@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   cardUserInfoView: {
-    backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -65,7 +64,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderTopWidth: 1,
     borderTopColor: '#eeeeee',
-    borderRadius: 4
   },
    // modal的样式
     modalStyle: {
@@ -523,24 +521,24 @@ const ServItem = ({
         width: width,
         paddingHorizontal: 7,
         paddingVertical: 8,
-        backgroundColor: 'white',
+        //backgroundColor: 'white',
       }}>
         <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }} numberOfLines={3}>{serv.serv_title}</Text>
         <Text style={{ fontSize: 12, color: '#999999', marginBottom: 4 }}>{serv.catalog}</Text>
-        <View style={{ flexDirection:'row', marginTop: 3}}>
-          <Image style={{ width: 18, height: 18}} source={require('../resource/g-location-s.png')}/>
+        <View style={{ flexDirection:'row'}}>
+          <Image style={{ width: 18, height: 18, marginLeft: -4}} source={require('../resource/g-location-s.png')}/>
           <Text style={{ fontSize: 12, color: '#b8b8b8'}}>{serv.district}</Text>
         </View>
       </View>
       <View style={styles.cardUserInfoView}>
-        <View style={{flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <CachedImage
             style={{height: 24, width: 24, borderRadius: 15}}
             source={{uri: servUser.avatar}}
             defaultSource={require('../resource/img_default_avatar.png')}
           />
           <Text
-            style={{ fontSize: 14, color: 'gray', marginLeft: 8, width: width * 0.4 }}
+            style={{ fontSize: 14, color: 'grey', marginLeft: 8, width: width * 0.4 }}
             numberOfLines={1}
           >
             {servUser.name}
