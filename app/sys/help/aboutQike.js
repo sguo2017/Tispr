@@ -12,7 +12,7 @@ import {
 import Header from '../../components/HomeNavigation';
 
 
-export default class UseHelp extends Component {
+export default class abloutQike extends Component {
 
 	constructor(props) {
 		super(props);

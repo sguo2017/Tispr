@@ -147,7 +147,8 @@ export default class ServOfferList extends Component {
         connectServ: '',
         hasSeenTotalTimes: false,
         content: '',
-        editable: false
+        editable: false,
+        exploreparams: this.props.exploreparams
       };
       UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -164,6 +165,7 @@ export default class ServOfferList extends Component {
   }
 
   _onMomentumScrollEnd(event) {
+    console.log('listend');
     const {dispatch, ServOfferList} = this.props;
     if ( !ServOfferList.canLoadMore || ServOfferList.isLoadMore ) return;
 
@@ -172,34 +174,31 @@ export default class ServOfferList extends Component {
     let viewBottomY = contentOffset.y + layoutMeasurement.height;
 
     if (Math.abs(viewBottomY - contentSizeH) <= 40) {
-      dispatch(fetchExploreList(ServOfferList.page + 1,{}, this.props.navigator));
+        console.log(this.props.exploreparams)
+      dispatch(fetchExploreList(ServOfferList.page + 1,this.props.exploreparams, this.props.navigator));
     }
   }
 
   _onRefresh() {
+    console.log('listfresh');
     if(!global.user.authentication_token){
         Util.noToken(this.props.navigator);
     }
     const { dispatch } = this.props;
-    //console.log('this.state.exploreparams:'+this.state.exploreparams);
     let exploreparams = this.props.exploreparams;
-    let goods_catalog = this.props.cps;
-    if(goods_catalog[0]){
-        goods_catalog.map((item,index,input)=>{input[index]=true});
+    
+    if (!exploreparams.via) {
+        UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
+            if (historyKey == null) {
+                historyKey = {};
+            }
+            exploreparams = historyKey[global.user.id];
+            this.setState({exploreparams: historyKey[global.user.id]});
+            dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
+        })
     }
-    let goods_catalog_paramas = [];
-    goods_catalog.map((item,index,input)=>{
-        if (item&&index>0) {
-            goods_catalog_paramas=goods_catalog_paramas.concat(global.goods_catalogs_II_id[index-1]);
-        }
-    });
-    if(exploreparams.via == 'local' ){
-        exploreparams.city = this.props.location;
-    }else{
-        exploreparams.city = undefined;
-    }
-    exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
-    dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
+    
+    
   }
 
   _onPressCell(feed) {

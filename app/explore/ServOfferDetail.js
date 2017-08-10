@@ -142,7 +142,6 @@ export default class ServOfferDetail extends Component {
                 if(error.message == 'Network request failed'){
                     this.props.navigator.push({component: offline})
                 }else{
-                    console.log("servOfferDetail错误信息"+error)
                     this.props.navigator.push({component: breakdown})
                 }
             }
@@ -258,14 +257,12 @@ export default class ServOfferDetail extends Component {
 
     _selectMessage = (feed) => {
         let connectUser = feed.user
-        if(connectUser){
-            this.setState({
-                connectUserAvatar: connectUser.avatar,
-                connectUserName: connectUser.name,
-                show: true,
-                connectServ: feed,
-            })
-        }
+        this.setState({
+            connectUserAvatar: connectUser.avatar,
+            connectUserName: connectUser.name,
+            show: true,
+            connectServ: feed,
+        })
     }
 
     _switch() {
@@ -891,7 +888,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 15,
+        paddingHorizontal: 8,
         paddingVertical: 8,
         borderTopWidth: 0.5,
         borderColor: '#eeeeee',
@@ -983,11 +980,7 @@ const OfferItem = ({
     let width = (screenW - 24) / 2;
     let imageH = 120;
     let offerUser = offer.user;
-    let offerUserNil = offer.user && true;
     let serv_image = offer.serv_images && offer.serv_images != 'undefined' ? { uri: offer.serv_images.split(',')[0] } : require('../resource/qk_nav_default.png');
-    if(!offerUserNil){
-        return (<View></View>)
-    }
     return (
         <TouchableOpacity
             activeOpacity={0.75}
@@ -1001,35 +994,35 @@ const OfferItem = ({
             />
             <View style={{
                 width: width,
-                paddingHorizontal: 15,
+                paddingHorizontal: 7,
                 paddingVertical: 8,
             }}>
                 <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }} numberOfLines={2}>{offer.serv_title}</Text>
                 <Text style={{ fontSize: 12, color: '#999999', marginBottom: 4 }}>{offer.catalog}</Text>
                 <View style={{ flexDirection: 'row' }}>
-                    <Image style={{ width: 12, height: 12 }} source={require('../resource/g-location-s.png')} />
+                    <Image style={{ width: 18, height: 18, marginLeft: -4}} source={require('../resource/g-location-s.png')} />
                     <Text style={{ fontSize: 12, color: '#b8b8b8' }}>{offer.district}</Text>
                 </View>
             </View>
             <View style={styles.cardUserInfoView}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <CachedImage
-                        style={{ height: 22, width: 22, borderRadius: 15 }}
-                        source={{ uri: offerUserNil && offerUser.avatar }}
+                        style={{ height: 24, width: 24, borderRadius: 15 }}
+                        source={{ uri: offerUser.avatar }}
                         defaultSource={require('../resource/img_default_avatar.png')}
                     />
                     <Text
                         style={{ fontSize: 14, color: 'gray', marginLeft: 8, width: width * 0.4 }}
                         numberOfLines={1}
                     >
-                        {offerUserNil && offerUser.name}
+                        {offerUser.name}
                     </Text>
                 </View>
                 <TouchableOpacity
                     activeOpacity={0.75}
                     onPress={onCall}
                 >
-                    <Image style={{ height: 18, width: 18 }} source={require('../resource/y-chat.png')} />
+                    <Image style={{ height: 22, width: 22 }} source={require('../resource/y-chat.png')} />
                 </TouchableOpacity>
             </View>
         </TouchableOpacity>
