@@ -441,7 +441,7 @@ export default class ServOfferDetail extends Component {
                 
                 <ScrollView>
                     <View style={{ paddingHorizontal: 16, justifyContent: 'space-between', backgroundColor: 'white' }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, height: 48, }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 8, height: 48}}>
                             <View style={{ justifyContent: 'space-around', flexDirection: 'row', }}>
                                 <TouchableOpacity onPress={this._onPressAvatar.bind(this, feed.user.id)}>
                                     <Image style={{ width: 32, height: 32, borderRadius: 16 }} source={{ uri: feed.user.avatar }} defaultsource={require('../resource/user_default_image.png')}></Image>
@@ -453,13 +453,13 @@ export default class ServOfferDetail extends Component {
                                             <Text style={{ color: '#999999', fontSize: 12 }}>{feed.catalog}</Text>
                                             : <Text style={{ color: '#999999', fontSize: 12 }}>视频</Text>
                                     }
-
                                 </View>
                             </View>
                             <View>
                                 <Text style={{ color: '#999999', fontSize: 12 }}>{feed.created_at.substring(0, 4) + '/' + feed.created_at.substring(5, 7) + '/' + feed.created_at.substring(8, 10)}</Text>
                             </View>
                         </View>
+                        <View style={{height: 1, backgroundColor: '#EDEDED', width: screenW, marginLeft: -16, marginBottom: 16}}></View>
                         {
                             _images.length == 1 ?
                                 <Image style={{ height: 300, width: screenW-32, marginBottom: 10 }}  source={{ uri: _images[0] }}></Image>

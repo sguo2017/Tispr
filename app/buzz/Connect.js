@@ -215,7 +215,7 @@ export default class Connect extends Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={{ borderBottomColor: '#eeeeee', borderBottomWidth: 1, marginBottom: 8 }}>
-                                <TextInput
+                                <AutoTextInput
                                     ref={(textInput) => { this.modelTextInput = textInput; }}
                                     multiline={true}
                                     onChangeText={(text) => 
@@ -228,8 +228,8 @@ export default class Connect extends Component {
                                     onBlur={() => {
                                         this.setState({editable: false})}
                                     }
-                                    underlineColorAndroid="rgba(0,0,0,0.12)"
-                                    style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
+                                    underlineColorAndroid="transparent"
+                                    style={{fontSize: 16, color: '#1B2833'}}
                                     value={name+'您好！'+(button1?msg1: '')+(button2?msg2: '')+(button3?msg3: '')+content}
                                     editable={this.state.editable}
                                 />
