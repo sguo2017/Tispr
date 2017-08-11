@@ -48,9 +48,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 15,
+    paddingHorizontal: 8,
     paddingVertical: 8,
-    borderTopWidth: 0.5,
+    borderTopWidth: 1,
     borderColor: '#eeeeee',
   },
 });
@@ -210,31 +210,31 @@ const MarkItem = ({
       onPress={onPress}
     >
       <CachedImage
-        style={{ width: width, height: imageH, borderRadius: 4 }}
+        style={{ width: width, height: imageH, borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
         defaultSource={require('../../resource/qk_nav_default.png')}
         source={serv_image}
       />
       <View style={{
         width: width,
-        paddingHorizontal: 15,
+        paddingHorizontal: 7,
         paddingVertical: 8,
       }}>
         <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }}>{mark.serv_title}</Text>
         <Text style={{ fontSize: 12, color: '#999999', marginBottom: 4 }}>{mark.catalog}</Text>
         <View style={{ flexDirection:'row' }}>
-          <Image style={{ width: 12, height: 12 }} source={require('../../resource/g-location-s.png')}/>
+          <Image style={{ width: 18, height: 18, marginLeft: -4 }} source={require('../../resource/g-location-s.png')}/>
           <Text style={{ fontSize: 12, color: '#b8b8b8' }}>{mark.district}</Text>
         </View>
       </View>
       <View style={styles.cardUserInfoView}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <CachedImage
-            style={{height: 22, width: 22, borderRadius: 15}}
+            style={{height: 24, width: 24, borderRadius: 15}}
             source={{uri: markUser.avatar}}
             defaultSource={require('../../resource/img_default_avatar.png')}
           />
           <Text
-            style={{fontSize: 14, color: 'gray', marginLeft: 8, width: width * 0.4}}
+            style={{fontSize: 14, color: 'grey', marginLeft: 8, width: width * 0.4}}
             numberOfLines={1}
           >
             {markUser.name}
@@ -244,7 +244,7 @@ const MarkItem = ({
           activeOpacity={0.75}
           onPress={onCall}
         >
-          <Image style={{height: 18, width: 18}} source={require('../../resource/y-chat.png')}/>
+          <Image style={{height: 22, width: 22}} source={require('../../resource/y-chat.png')}/>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>

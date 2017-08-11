@@ -77,7 +77,7 @@ export default class PasswordConfirm extends Component {
                                 onChangeText={(text) => this.setState({ password: text })}
                                 style={[styles.input, { width: global.gScreen.width * 0.7 }]}
                                 placeholder="请输入密码"
-                                underlineColorAndroid="#dedfe0"
+                                underlineColorAndroid="transparent"
                                 secureTextEntry={this.state.seePassword}>
                             </TextInput>
                             {

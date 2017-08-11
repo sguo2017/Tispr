@@ -13,6 +13,8 @@ import {
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import PasswordConfirm from '../sys/account/changePassword'
+import nationWarning from '../sys/others/nationWarning'
+
 export default class forgetPassword extends Component {
     constructor(props) {
 		super(props);
@@ -178,6 +180,10 @@ export default class forgetPassword extends Component {
         }
     }
 
+    focusNextField = (nextField) => {
+        this.refs[nextField].focus();
+    };
+
     render(){
         const emailView = (
         <View style={{ flex: 1, padding: 16 }}>
@@ -186,19 +192,21 @@ export default class forgetPassword extends Component {
                 <Image source={require('../resource/b_key.png')} style={{width: 33, height: 32, marginRight: 10}}/>
                 <Text style={{color: '#1B2833', fontSize: 14, fontWeight: 'bold', lineHeight: 25}}>重置密码</Text>
             </View>
-            <Text style={{color:'#999999', fontSize: 12, marginTop: 26}}>我们将向您注册的电子邮箱发送验证码</Text>
-            <TextInput
-                style={styles.input}
-                multiline = {false}
-                underlineColorAndroid="#eeeeee"
-                value={this.state.email}
-                onChangeText={(val)=>this.setState({ email: val})}
-                returnKeyType = 'done'
-                returnKeyLabel = 'done'
-                onSubmitEditing = {this.sendEmail.bind(this)}
-                placeholder = '填写您注册时使用的电子邮箱'
-                placeholderTextColor = '#cccccc'
-            />
+            <Text style={{color:'#999999', fontSize: 12, marginTop: 26, marginBottom: 10}}>我们将向您注册的电子邮箱发送验证码</Text>
+            <View style={{ flex: 1, borderBottomWidth: 1, borderBottomColor: '#eeeeee',}}>
+                <TextInput
+                    style={styles.input}
+                    multiline = {false}
+                    underlineColorAndroid="transparent"
+                    value={this.state.email}
+                    onChangeText={(val)=>this.setState({ email: val})}
+                    returnKeyType = 'done'
+                    returnKeyLabel = 'done'
+                    onSubmitEditing = {this.sendEmail.bind(this)}
+                    placeholder = '填写您注册时使用的电子邮箱'
+                    placeholderTextColor = '#cccccc'
+                />
+            </View> 
             </ScrollView>
             <TouchableHighlight style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom:0, flexShrink: 0, width: global.gScreen.width }]}
                 onPress={this.sendEmail.bind(this)}
@@ -223,12 +231,12 @@ export default class forgetPassword extends Component {
                         <Text style={{ fontSize: 16, color: '#1b2833' }}>+86</Text>
                         <Image style={{ height: 24, width: 24 }} source={require('../resource/g-arrow-drop-down.png')} />
                     </TouchableOpacity>
-                    <View style={{ flex: 1, justifyContent: 'center'}}>
+                    <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee', flex: 1 }} >
                         <TextInput
                         keyboardType='numeric'
                         ref = "3"
                         style={styles.input}
-                        underlineColorAndroid="#eeeeee"
+                        underlineColorAndroid="transparent"
                         multiline = {false}
                         onChangeText={(text) => this.setState({ num: text })}
                         placeholder="输入您注册时的手机号"
@@ -241,17 +249,17 @@ export default class forgetPassword extends Component {
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, minHeight: 48 }}>
-                    <View style={{ flex: 1, justifyContent: 'center', marginRight: -4}}>
+                    <View style={{ flex: 1, borderBottomWidth: 1, borderBottomColor: '#eeeeee', marginRight: -4, marginBottom: 7,}}>
                         <TextInput
                             ref = "4"
-                            underlineColorAndroid="#eeeeee"
+                            underlineColorAndroid="transparent"
                             multiline = {false}
                             onChangeText={(text) => this.setState({ code: text })}
                             placeholder="输入短信验证码"
                             placeholderTextColor="#cccccc"
                             returnKeyType = 'done'
                             returnKeyLabel = 'done'
-                            style={{fontSize: 16}}
+                            style={styles.input}
                         />
                     </View>
                     <TouchableOpacity 
@@ -292,12 +300,8 @@ export default class forgetPassword extends Component {
 
 const styles = StyleSheet.create({
   input: {
-    height: 50,
-    marginTop: 10,
-    //padding: 4,
+    height: 40,
     fontSize: 16,
-    borderWidth: 0,
-    // borderColor: '#48bbec'
   },
   countryButton: {
     flexDirection: 'row',

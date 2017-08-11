@@ -5,12 +5,14 @@ import {
     TouchableOpacity,
     Alert
 } from 'react-native';
+import JPushModule from 'jpush-react-native';
 import { Geolocation } from 'react-native-baidu-map';
 import TabBarView from '../containers/TabBarView';
 import Login from './signup';
 import Constant from '../common/constants';
 import UserDefaults from '../common/UserDefaults';
 import Util from '../common/utils';
+import accountBan from '../sys/others/accountBan'
 export default class Guide extends React.Component {
 
     constructor() {
@@ -20,51 +22,86 @@ export default class Guide extends React.Component {
             lastPosition: 'unknown',
             addressComponent: { "country": "中国", "country_code": 0, "province": "广东省", "city": "广州市", "district": "番禺区", "adcode": "440113", "street": "石北路", "street_number": "", "direction": "", "distance": "" }
         };
+        
+		this.onGetRegistrationIdPress = this.onGetRegistrationIdPress.bind(this);
     }
+    
+    onGetRegistrationIdPress() {
+		JPushModule.getRegistrationID((registrationId) => {
+            console.log("1111:"+registrationId)
+            if(!global.user){
+                global.user = {};
+            }
+            global.user.registrationId = registrationId;
+			
+		});
+        JPushModule.getInfo((map) => {
+            console.log("设备ID"+map.myDeviceId)
+            global.user.device_type = map.myDeviceId
+        });
+	}
 
     componentDidMount() {
-        // 免登陆
-        // const { navigator } = this.props;
-        // this.timer = setTimeout(() => {
-        //      this.existsToken();
-        // }, 2000);
+        // 在收到点击事件之前调用此接口
+        this.onGetRegistrationIdPress()
 
-        // navigator获取geo不稳定 
-        // navigator.geolocation.getCurrentPosition(
-        //   (position) => {
-        //       var initialPosition = JSON.stringify(position);
-        //       this.setState({ initialPosition });
-        //   },
-        //   (error) => alert(JSON.stringify(error)),
-        //   { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
-        // );
-
-        // this.watchID = navigator.geolocation.watchPosition((position) => {
-        //     var lastPosition = JSON.stringify(position);
-        //     this.setState({ lastPosition });
-        //     this.getGeoLocation();
-        // });
-
-        let _that = this
-
+        JPushModule.notifyJSDidLoad((resultCode) => {
+            if (resultCode === 0) {
+            }
+        });
+        JPushModule.addReceiveNotificationListener((map) => {
+            console.log("alertContent: " + map.alertContent);
+            console.log("extras: " + map.extras);
+        });
+        JPushModule.addReceiveOpenNotificationListener((map) => {
+            console.log("Opening notification!");
+            console.log("map.extra: " + map.extras);
+            let type = JSON.parse(map.extras).type;
+            let accessToken =UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
+            if (!accessToken) {
+                this.props.navigator.resetTo({component: Login})
+                return
+            }
+            if(type == "0"){
+                this.props.navigator.resetTo({component: TabBarView, passProps: { initialPage: 3}})
+            }
+            if(type == "1"){
+                this.props.navigator.resetTo({component: TabBarView, passProps: { initialPage: 1}})
+            }
+            if(type == "2"){
+                this.props.navigator.resetTo({component: TabBarView, passProps: { initialPage: 4}})
+            }
+            if(type == "3"){
+                this.props.navigator.resetTo({component: TabBarView, passProps: { initialPage: 4}})
+            }
+            if(type == "4"){
+                this.props.navigator.resetTo({component:accountBan })
+            }
+            if(type == "5"){
+                this.props.navigator.resetTo({component: Login})
+            }
+        });
         Geolocation.getCurrentPosition()
         .then(data => {
             console.log("获取经纬度"+JSON.stringify(data));   
-            if(data != null){
-                global.user = {};
+            if(data.city && data.city !=null){
+                if(!global.user){
+                    global.user = {};
+                }
                 global.user.addressComponent = data;
                 global.user.addressComponent.latitude = data.latitude;
                 global.user.addressComponent.longitude = data.longitude;
                 UserDefaults.setObject(Constant.storeKeys.ADDRESS_COMPONENT, global.user.addressComponent);
             }else{
+                global.user.addressComponent = {}
                 this.setState({ showProgress: false });
-                // Alert.alert(
-                //     null,
-                //     `请开启奇客的定位权限`,
-                //     [
-                //      { text: '确定' },
-                //     ]
-                // )
+                Alert.alert(
+                    null,
+                    `请开启奇客的定位权限`,
+                    [
+                     { text: '确定' },
+                    ]
+                )
             }
          })
         .then(() => {
@@ -89,10 +126,12 @@ export default class Guide extends React.Component {
                 country: global.user.addressComponent.country,
                 latitude: global.user.addressComponent.latitude,
                 longitude: global.user.addressComponent.longitude,
+                regist_id: global.user.registrationId,
+                device_type: global.user.device_type,
             }
         }
         Util.post( URL, data, (response) => {
-            if(response.status == Constant.error_type.USER_IS_NIL){
+            if(response.status == Constant.error_type.USER_IS_NIL || response.status == Constant.error_type.USER_IS_LOCK){
                 this._navigate('Login');
                 return
             }
@@ -140,7 +179,7 @@ export default class Guide extends React.Component {
 
     render() {
         return (
-            <TouchableOpacity onPress={() => { const { navigator } = this.props; navigator.resetTo({ component: Login, name: 'Login' }) }} >
+           <TouchableOpacity onPress={() => { const { navigator } = this.props; navigator.resetTo({ component: Login, name: 'Login' }) }} >
                 <Image
                     style={{
                         width: Constant.window.width,

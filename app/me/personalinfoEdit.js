@@ -38,7 +38,7 @@ export default class Personinfoedit extends Component {
             fileName: this.props.fileName,
             fileSource: this.props.source,
             addressComponent: global.user.addressComponent,
-            address: `${global.user.addressComponent.country}${global.user.addressComponent.province}${global.user.addressComponent.city}${global.user.addressComponent.district}`
+            address: global.user.addressComponent.country?`${global.user.addressComponent.country}${global.user.addressComponent.province}${global.user.addressComponent.city}${global.user.addressComponent.district}`:''
         }
     }
     _back(){
@@ -317,7 +317,7 @@ export default class Personinfoedit extends Component {
                             :
                             <Image style={{ width: 24, height: 24 }} source={require('../resource/b_info.png')}/>                           
                         }
-                        <TextInput
+                        <AutoTextInput
                           placeholder='介绍下自己，获得更多关注'
                           placeholderTextColor='#CCCCCC'
                           style={styles.textInput}

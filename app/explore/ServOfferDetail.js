@@ -142,6 +142,7 @@ export default class ServOfferDetail extends Component {
                 if(error.message == 'Network request failed'){
                     this.props.navigator.push({component: offline})
                 }else{
+                    console.log("servOfferDetail错误信息"+error)
                     this.props.navigator.push({component: breakdown})
                 }
             }
@@ -230,7 +231,8 @@ export default class ServOfferDetail extends Component {
                         deal_id: _deal_id,
                         chat_content: chat_content,
                         user_id: global.user.id,
-                        catalog: 2
+                        catalog: 2,
+                        receive_user_id: this.props.feed.user_id,
                     }
                 })
             });
@@ -256,12 +258,14 @@ export default class ServOfferDetail extends Component {
 
     _selectMessage = (feed) => {
         let connectUser = feed.user
-        this.setState({
-            connectUserAvatar: connectUser.avatar,
-            connectUserName: connectUser.name,
-            show: true,
-            connectServ: feed,
-        })
+        if(connectUser){
+            this.setState({
+                connectUserAvatar: connectUser.avatar,
+                connectUserName: connectUser.name,
+                show: true,
+                connectServ: feed,
+            })
+        }
     }
 
     _switch() {
@@ -887,7 +891,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 15,
+        paddingHorizontal: 8,
         paddingVertical: 8,
         borderTopWidth: 0.5,
         borderColor: '#eeeeee',
@@ -979,7 +983,11 @@ const OfferItem = ({
     let width = (screenW - 24) / 2;
     let imageH = 120;
     let offerUser = offer.user;
+    let offerUserNil = offer.user && true;
     let serv_image = offer.serv_images && offer.serv_images != 'undefined' ? { uri: offer.serv_images.split(',')[0] } : require('../resource/qk_nav_default.png');
+    if(!offerUserNil){
+        return (<View></View>)
+    }
     return (
         <TouchableOpacity
             activeOpacity={0.75}
@@ -1007,14 +1015,14 @@ const OfferItem = ({
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <CachedImage
                         style={{ height: 22, width: 22, borderRadius: 15 }}
-                        source={{ uri: offerUser.avatar }}
+                        source={{ uri: offerUserNil && offerUser.avatar }}
                         defaultSource={require('../resource/img_default_avatar.png')}
                     />
                     <Text
                         style={{ fontSize: 14, color: 'gray', marginLeft: 8, width: width * 0.4 }}
                         numberOfLines={1}
                     >
-                        {offerUser.name}
+                        {offerUserNil && offerUser.name}
                     </Text>
                 </View>
                 <TouchableOpacity

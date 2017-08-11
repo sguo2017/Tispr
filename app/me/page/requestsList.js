@@ -17,6 +17,8 @@ import RequestMsgDetail from '../request/RequestMsgDetail'
 import RequestMsgStore from '../request/RequestMsgStore'
 import Toast from 'react-native-easy-toast'
 import Util from '../../common/utils'
+import Constant from '../../common/constants'
+
 const KNOWLEDGE_ID = 3
 
 @observer
@@ -44,7 +46,7 @@ export default class RequestsList extends Component {
         errorMsg && this.toast.show(errorMsg);
     }
 
-    _renderRow = feed => <KnowledgeItem onPress={this._onPressCell} feed={feed} />
+    _renderRow = feed => <KnowledgeItem onPress={this._onPressCell} refreshList={this._onRefresh} feed={feed} />
 
 
     _onPressCell = feed => {
@@ -115,9 +117,24 @@ class KnowledgeItem extends Component {
         onPress && onPress(feed)
     };
 
+    _onRefresh(){
+        const { refreshList } = this.props;
+        console.log("刷新")
+        refreshList && refreshList()
+    }
     _archivedPress = () => {
         const { feed, archived } = this.props;
         console.log(feed.serv_detail)
+        let t = global.user.authentication_token;
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_COLLECT + t;
+        let data ={
+            favorite: {
+                obj_id: this.props.feed.id,
+                obj_type: 'serv_offer',
+                user_id: global.user.id,
+            }
+        };
+        Util.post(url, data, ()=>{this._onRefresh}, this.props.navigator);
     }
     render() {
         const { feed: { serv_detail, created_at, catalog } } = this.props;

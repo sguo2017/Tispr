@@ -199,12 +199,12 @@ export default class ServOfferConfirm extends Component {
                         serv_images: uploadedImages,
                         serv_catagory: this.state.serv_offer.goods_tpye,
                         catalog: this.state.serv_offer.goods_catalogs_name,
-                        district: global.user.addressComponent.district,
-                        city: global.user.addressComponent.city,
-                        province: global.user.addressComponent.province,
-                        country: global.user.addressComponent.country,
-                        latitude: global.user.addressComponent.latitude,
-                        longitude: global.user.addressComponent.longitude,
+                        district: this.state.serv_offer.district,
+                        city: this.state.serv_offer.city,
+                        province: this.state.serv_offer.province,
+                        country: this.state.serv_offer.country,
+                        latitude: this.state.serv_offer.latitude,
+                        longitude: this.state.serv_offer.longitude,
                         goods_catalog_id: this.state.serv_offer.goods_catalogs_id,
                         via: this.state.serv_offer.via,
                         range: this.state.serv_offer.range,
@@ -313,7 +313,7 @@ export default class ServOfferConfirm extends Component {
                     (
                       <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                           <View style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5,  }]}>
-                              <Image style={{ width: 100, height: 100, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
+                              <Image style={{ width: 90, height: 90, alignSelf: 'center' }} source={require('../../resource/t_img_upload_nil.png')} />
                           </View>
                       </TouchableOpacity>
                     )
@@ -390,8 +390,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     avatar: {
-        width: 100,
-        height: 100,
+        width: 90,
+        height: 90,
     },
     rowView: {
         marginHorizontal: 16,

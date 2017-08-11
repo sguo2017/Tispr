@@ -129,7 +129,8 @@ export default class Connect extends Component {
                     deal_id: newOrder.id,
                     chat_content: chat_content,
                     user_id: global.user.id,
-                    catalog: 2
+                    catalog: 2,
+                    receive_user_id: this.props.feed.user_id,
                     }
                 })
             });

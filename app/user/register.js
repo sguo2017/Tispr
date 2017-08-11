@@ -279,7 +279,7 @@ export default class Register extends Component {
               }}  
             />
           </View>
-          {this.state.isEmail?<Text style={{color: '#4A90E2'}}>该电子邮箱可作为账号用于登录和密码找回</Text>:<Text style ={styles.redText}>邮箱格式不正确</Text>}
+          {this.state.isEmail?<Text style={{color: '#4A90E2', marginTop: 4}}>该电子邮箱可作为账号用于登录和密码找回</Text>:<Text style ={styles.redText}>邮箱格式不正确</Text>}
           <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', minHeight: 48}}>
             <View style={{ flex: 1, justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee' }}>
               <TextInput
@@ -302,7 +302,7 @@ export default class Register extends Component {
             <Image style={{ width: 25, height: 20 }} source={this.state.seePassword? require('../resource/g_eyes_close.png') : require('../resource/g_eyes_open.png')}/>
           </TouchableOpacity>
           </View>
-          {this.state.passwordValid? <Text style={{color: '#B8B8B8'}}>8-16位字符组成，不能包含空格</Text>:<Text style ={styles.redText}>密码不能为空</Text>}
+          {this.state.passwordValid? <Text style={{color: '#B8B8B8', marginTop: 4}}>8-16位字符组成，不能包含空格</Text>:<Text style ={styles.redText}>密码不能为空</Text>}
         </ScrollView>
       </View>
     );
@@ -322,7 +322,7 @@ export default class Register extends Component {
               <Text style={{ fontSize: 16, color: '#1b2833' }}>+86</Text>
               <Image style={{ height: 24, width: 24 }} source={require('../resource/g-arrow-drop-down.png')} />
             </TouchableOpacity>
-            <View style={{ flex: 1, justifyContent: 'center'}}>
+            <View style={{ flex: 1, justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee'}}>
               <AutoTextInput
                 ref = "4"
                 style={styles.input}
@@ -338,7 +338,7 @@ export default class Register extends Component {
             </View>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, minHeight: 48 }}>
-            <View style={{ flex: 1, justifyContent: 'center'}}>
+            <View style={{ flex: 1, justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: '#eeeeee'}}>
               <AutoTextInput
                 ref = "5"
                 style={styles.input}
@@ -358,11 +358,6 @@ export default class Register extends Component {
               <Text style={[styles.themeText, this.state.sendingCode&&styles.greyText]}>获取短信验证码{this.state.time}</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={() => this.setState({ firstPage: true })}>
-            <Text style={{ color: '#4A90E2'}}>
-              上一步
-            </Text>
-          </TouchableOpacity>
           <TouchableOpacity onPress={this.onRegisterPressed.bind(this)} style={styles.loginButton}>
             <Text style={styles.loginButtonText}>注册</Text>
           </TouchableOpacity>
@@ -422,6 +417,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     height: 32,
     marginRight: 18,
+    marginTop: 10
   },
   smsCodeButton: {
     position: 'absolute',
@@ -444,7 +440,8 @@ const styles = StyleSheet.create({
     height: 44,
   },
   redText: {
-    color: 'red'
+    color: 'red',
+    marginTop: 4
   },
   greyText: {
     color: '#C1C1C1'

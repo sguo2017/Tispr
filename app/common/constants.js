@@ -17,6 +17,7 @@ let storeKeys = {
     ADDRESS_COMPONENT: 'ADDRESS_COMPONENT',
     HAS_SEEN_SWIPER_USER: 'HAS_SEEN_SWIPER_USER',
     HAS_SEEN_TOTAL_RESTIMES_PAGE: 'HAS_SEEN_TOTAL_RESTIMES_PAGE',
+    SEARCH_HISTORY_TITLE: 'SEARCH_HISTORY_TITLE'
 }
 
 let orderStatus = {
@@ -57,6 +58,7 @@ let order_qry_type = {
 
 let error_type = {
     USER_IS_NIL: -101,
+    USER_IS_LOCK: -102,
     DEFAULT: -1,
 }
 
@@ -76,14 +78,14 @@ let url = {
      SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
      //////////////////<<<<   API接口  >>>>>//////////////////////////////
      SERV_API_ADDR: `47.92.27.52`,
-     SERV_API_PORT: `8081`,
-    //  //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
-    //  IMG_SERV_ADDR: "123.56.157.233",
-    //  IMG_SERV_PORT: "9090",
-    //  SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
-    //  //////////////////<<<<   API接口  >>>>>//////////////////////////////
-    //  SERV_API_ADDR: `123.56.157.233`,
-    //  SERV_API_PORT: `8082`,
+     SERV_API_PORT: `80`,
+     //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
+     // IMG_SERV_ADDR: "123.56.157.233",
+     // IMG_SERV_PORT: "9090",
+     // SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
+     // //////////////////<<<<   API接口  >>>>>//////////////////////////////
+     // SERV_API_ADDR: `123.56.157.233`,
+     // SERV_API_PORT: `8082`,
      SERV_API_USER_LOGIN: `/api/users/sessions`,//登录接口
      SERV_API_USER_REGI: `/api/users/registrations`, //注册接口
      SERV_API_USER_PASSWORD: `/api/users/passwords`,//忘记密码接口
@@ -119,38 +121,11 @@ let url = {
      
 }
 
-let mapper = {
-    'calory': {name: '热量', unit: ''},
-    'protein': {name: '蛋白质', unit: '克'},
-    'fat': {name: '脂肪', unit: '克'},
-    'carbohydrate': {name: '碳水化合物', unit: '克'},
-    'fiber_dietary': {name: '膳食纤维', unit: '克'},
-    'vitamin_a': {name: '维生素A', unit: 'IU'},
-    'vitamin_c': {name: '维生素C', unit: '毫克'},
-    'vitamin_e': {name: '维生素E', unit: '毫克'},
-    'carotene': {name: '胡萝卜素', unit: '微克'},
-    'thiamine': {name: '维生素B1', unit: '毫克'},
-    'lactoflavin': {name: '维生素B2', unit: '毫克'},
-    'niacin': {name: '烟酸', unit: '毫克'},
-    'cholesterol': {name: '胆固醇', unit: '毫克'},
-    'magnesium': {name: '镁', unit: '毫克'},
-    'calcium': {name: '钙', unit: '毫克'},
-    'iron': {name: '铁', unit: '毫克'},
-    'zinc': {name: '锌', unit: '毫克'},
-    'copper': {name: '铜', unit: '毫克'},
-    'manganese': {name: '锰', unit: '毫克'},
-    'kalium': {name: '钾', unit: '毫克'},
-    'phosphor': {name: '磷', unit: '毫克'},
-    'natrium': {name: '钠', unit: '毫克'},
-    'selenium': {name: '硒', unit: '毫克'}
-}
-
 export default {
     url: url,
     window: window,
     colors: colors,
     storeKeys: storeKeys,
-    ingredientMapper: mapper,
     sysMsgCatalog: sysMsgCatalog,
     sys_msgs_status: sys_msgs_status,
     serv_qry_type: serv_qry_type,

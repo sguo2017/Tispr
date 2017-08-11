@@ -52,12 +52,11 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: (Common.window.width - 24) / 2,
     margin: 4,
-    backgroundColor: 'red',
+    backgroundColor: 'white',
     borderRadius: 4,
     overflow: 'hidden',
   },
   cardUserInfoView: {
-    backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -148,7 +147,8 @@ export default class ServOfferList extends Component {
         connectServ: '',
         hasSeenTotalTimes: false,
         content: '',
-        editable: false
+        editable: false,
+        exploreparams: this.props.exploreparams
       };
       UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -165,6 +165,7 @@ export default class ServOfferList extends Component {
   }
 
   _onMomentumScrollEnd(event) {
+    console.log('listend');
     const {dispatch, ServOfferList} = this.props;
     if ( !ServOfferList.canLoadMore || ServOfferList.isLoadMore ) return;
 
@@ -173,34 +174,31 @@ export default class ServOfferList extends Component {
     let viewBottomY = contentOffset.y + layoutMeasurement.height;
 
     if (Math.abs(viewBottomY - contentSizeH) <= 40) {
-      dispatch(fetchExploreList(ServOfferList.page + 1,{}, this.props.navigator));
+        console.log(this.props.exploreparams)
+      dispatch(fetchExploreList(ServOfferList.page + 1,this.props.exploreparams, this.props.navigator));
     }
   }
 
   _onRefresh() {
+    console.log('listfresh');
     if(!global.user.authentication_token){
         Util.noToken(this.props.navigator);
     }
     const { dispatch } = this.props;
-    //console.log('this.state.exploreparams:'+this.state.exploreparams);
     let exploreparams = this.props.exploreparams;
-    let goods_catalog = this.props.cps;
-    if(goods_catalog[0]){
-        goods_catalog.map((item,index,input)=>{input[index]=true});
+    
+    if (!exploreparams.via) {
+        UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
+            if (historyKey == null) {
+                historyKey = {};
+            }
+            exploreparams = historyKey[global.user.id];
+            this.setState({exploreparams: historyKey[global.user.id]});
+            dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
+        })
     }
-    let goods_catalog_paramas = [];
-    goods_catalog.map((item,index,input)=>{
-        if (item&&index>0) {
-            goods_catalog_paramas=goods_catalog_paramas.concat(global.goods_catalogs_II_id[index-1]);
-        }
-    });
-    if(exploreparams.via == 'local' ){
-        exploreparams.city = this.props.location;
-    }else{
-        exploreparams.city = undefined;
-    }
-    exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
-    dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
+    
+    
   }
 
   _onPressCell(feed) {
@@ -277,6 +275,7 @@ export default class ServOfferList extends Component {
   }
 
   async _createChat(newOrder, avaliableTimes, chat_content){
+        let feed = this.state.connectServ;  
         try {
             let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + `${global.user.authentication_token}`;
             let response = await fetch(URL, {
@@ -291,7 +290,8 @@ export default class ServOfferList extends Component {
                     deal_id: newOrder.id,
                     chat_content: chat_content,
                     user_id: global.user.id,
-                    catalog: 2
+                    catalog: 2,
+                    receive_user_id: feed.user_id,
                     }
                 })
             });
@@ -520,24 +520,24 @@ const ServItem = ({
         width: width,
         paddingHorizontal: 7,
         paddingVertical: 8,
-        backgroundColor: 'white',
+        //backgroundColor: 'white',
       }}>
         <Text style={{ fontSize: 14, color: '#1b2833', marginBottom: 4 }} numberOfLines={3}>{serv.serv_title}</Text>
         <Text style={{ fontSize: 12, color: '#999999', marginBottom: 4 }}>{serv.catalog}</Text>
-        <View style={{ flexDirection:'row', marginTop: 3}}>
-          <Image style={{ width: 18, height: 18}} source={require('../resource/g-location-s.png')}/>
+        <View style={{ flexDirection:'row'}}>
+          <Image style={{ width: 18, height: 18, marginLeft: -4}} source={require('../resource/g-location-s.png')}/>
           <Text style={{ fontSize: 12, color: '#b8b8b8'}}>{serv.district}</Text>
         </View>
       </View>
       <View style={styles.cardUserInfoView}>
-        <View style={{flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <CachedImage
             style={{height: 24, width: 24, borderRadius: 15}}
             source={{uri: servUser.avatar}}
             defaultSource={require('../resource/img_default_avatar.png')}
           />
           <Text
-            style={{ fontSize: 14, color: 'gray', marginLeft: 8, width: width * 0.4 }}
+            style={{ fontSize: 14, color: 'grey', marginLeft: 8, width: width * 0.4 }}
             numberOfLines={1}
           >
             {servUser.name}

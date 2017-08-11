@@ -188,7 +188,8 @@ export default class ChatDetail extends Component {
             deal_id: feed.deal_id,
             chat_content: chat_content,
             user_id: global.user.id,
-            catalog: 2
+            catalog: 2,
+            receive_user_id: feed.offer_user_id==global.user.id?feed.request_user_id:feed.offer_user_id,
           }
         })
       });
