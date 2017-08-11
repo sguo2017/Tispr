@@ -159,10 +159,31 @@ export default class ServOfferList extends Component {
         })
   }
 
-  componentDidMount() {
-      const { dispatch } = this.props;
-      this._onRefresh();
-  }
+    componentDidMount() {
+        const { dispatch } = this.props;
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
+        let exploreparams = this.props.exploreparams;
+        console.log(exploreparams)
+        if (!exploreparams.via) {
+            UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
+                if (historyKey == null) {
+                    historyKey = {};
+                } else if (historyKey[global.user.id]) {
+                    console.log("listmount")
+                    exploreparams = historyKey[global.user.id];
+                    console.log(exploreparams)
+                    exploreparams.title = this.props.title;
+                    console.log(exploreparams)
+                    this.setState({exploreparams: historyKey[global.user.id]});
+                    dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
+                } else {
+                    dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
+                }
+            })
+        }
+    }
 
   _onMomentumScrollEnd(event) {
     console.log('listend');
@@ -181,22 +202,22 @@ export default class ServOfferList extends Component {
 
   _onRefresh() {
     console.log('listfresh');
-    if(!global.user.authentication_token){
-        Util.noToken(this.props.navigator);
-    }
-    const { dispatch } = this.props;
-    let exploreparams = this.props.exploreparams;
+    // if(!global.user.authentication_token){
+    //     Util.noToken(this.props.navigator);
+    // }
+    // const { dispatch } = this.props;
+    // let exploreparams = this.props.exploreparams;
     
-    if (!exploreparams.via) {
-        UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
-            if (historyKey == null) {
-                historyKey = {};
-            }
-            exploreparams = historyKey[global.user.id];
-            this.setState({exploreparams: historyKey[global.user.id]});
-            dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
-        })
-    }
+    // if (!exploreparams.via) {
+    //     UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
+    //         if (historyKey == null) {
+    //             historyKey = {};
+    //         }
+    //         exploreparams = historyKey[global.user.id];
+    //         this.setState({exploreparams: historyKey[global.user.id]});
+    //         dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
+    //     })
+    // }
     
     
   }

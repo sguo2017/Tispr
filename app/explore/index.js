@@ -52,11 +52,11 @@ class ExploreList extends PureComponent {
             zoom: 18,
             showCancel: false,
             showSearchPage: false,
-            history: {}
+            history: []
         };
     }
     componentWillMount() {
-        console.log('indexmount');
+        
         const { feed } = this.props;
         this.setState({
             show: false,
@@ -78,25 +78,33 @@ class ExploreList extends PureComponent {
         }
 
         UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_TITLE).then((history) => {
+            console.log('history')
+            console.log(history)
             if (history == null) {
                 history = {};
+            } else if (history[global.user.id]) {
+                this.setState({
+                    history: history[global.user.id],
+                    
+                });
             }
-            this.setState({history: history[global.user.id]});
         })
         UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
-            console.log(historyKey)
-            if (historyKey[global.user.id] == null) {
-                historyKey[global.user.id] = {};
-            } else {
+            console.log('indexmount');
+            console.log(historyKey[global.user.id])
+            if (historyKey == null) {
+                historyKey = {};
+            } else if (historyKey[global.user.id]) {
                 this.setState({
                     sortBy: historyKey[global.user.id].sortBy,
                     transiSortBy: historyKey[global.user.id].sortBy,
                     classify: historyKey[global.user.id].classify,
                     transiClassify: historyKey[global.user.id].classify,
-                    location: historyKey[global.user.id].city?historyKey[global.user.id].city:'远程',
+                    location: historyKey[global.user.id].via == 'local'?historyKey[global.user.id].city:'远程',
                     cps: historyKey[global.user.id].cps,
                     sps: historyKey[global.user.id].sps,
                 });
+                if (historyKey[global.user.id].title) this.setState({exploretitle: historyKey[global.user.id].title})
             }
         })
     }
@@ -150,28 +158,32 @@ class ExploreList extends PureComponent {
             }
         )
     }
+    
     refresh() {
         console.log('indexrefresh');
         if(!global.user.authentication_token){
             Util.noToken(this.props.navigator);
         }
         this.setState({showSearchPage: false})
-
+        let exploreparams = this.state.exploreparams;
         //搜索框输入信息缓存
         UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_TITLE).then((history) => {
             if (history == null) {
                 history = {};
             }
-            if (!history[global.user.id]) history[global.user.id] = '';
-            if (exploreparams.title && history[global.user.id].indexOf(`,${exploreparams.title},`)== -1) 
-                history[global.user.id] += `${exploreparams.title},`;
+            if (!history[global.user.id]) history[global.user.id] = [];
+            if (exploreparams.title) {
+                history[global.user.id].map((item, index) => {
+                    if (item == exploreparams.title) history[global.user.id].splice(index, 1);
+                })
+                history[global.user.id].push(exploreparams.title);
+            }
             UserDefaults.setObject(Constant.storeKeys.SEARCH_HISTORY_TITLE, history);
             this.setState({history: history[global.user.id]});
         })
 
         const { dispatch, categoryId } = this.props;
-        let exploreparams = this.state.exploreparams;
-        
+
         if(this.state.via == 'local'){
             exploreparams.via = 'local'
             exploreparams.city = this.state.location;
@@ -196,17 +208,20 @@ class ExploreList extends PureComponent {
             }
         });
         exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
-        
+        //传入缓存
         UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
             if (historyKey == null) {
                 historyKey = {};
             }
             historyKey[global.user.id] = exploreparams;
+            console.log('传入筛选缓存')
+            console.log(historyKey[global.user.id])
             UserDefaults.setObject(Constant.storeKeys.SEARCH_HISTORY_KEY, historyKey);
             this.setState({exploreparams: historyKey[global.user.id]});
+            page = 1;
+            dispatch(fetchExploreList(page, exploreparams, this.props.navigator));
         })
-        page = 1;
-        dispatch(fetchExploreList(page, exploreparams, this.props.navigator));
+        
     }
 
     _createAreaData() {
@@ -347,8 +362,8 @@ class ExploreList extends PureComponent {
                     </View>
                     {this.state.history?
                     <View style={{flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, flexWrap: 'wrap'}}>
-                        {this.state.history.split(',').map((item, index) => {
-                            if (index < this.state.history.split(',').length-1)
+                         {this.state.history.map((item, index) => {
+                           // if (index < this.state.history.split(',').length-1)
                                 return(
                                     <TouchableOpacity
                                         onPress={() => {this.setState({exploretitle: item, exploreparams: {title: item}})}}
@@ -359,14 +374,14 @@ class ExploreList extends PureComponent {
                                         <Text style={{fontSize: 14, color: '#4A90E2'}}>{item}</Text>
                                     </TouchableOpacity>
                                 )
-                        })}
+                        })} 
                     </View>: <View></View>
                     }
                 </View>
                 }
 
                 {this.state.showSearchPage? null:
-                <ServOfferList exploreparams={this.state.exploreparams} cps={this.state.cps} location={this.state.location} {...this.props} />}
+                <ServOfferList title={this.state.exploretitle} exploreparams={this.state.exploreparams} cps={this.state.cps} location={this.state.location} {...this.props} />}
                 <Modal
                     animationType='slide'
                     transparent={true}
