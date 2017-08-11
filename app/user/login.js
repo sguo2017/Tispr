@@ -32,9 +32,9 @@ export default class Login extends Component {
     super();
     this.state = {
       num: "13911551595",
-      email: "38359504@qq.com",
+      // email: "38359504@qq.com",
       // email: "guoshan@ztesoft.com",
-      //email: "p1@qq.com",
+      email: "a4@qq.com",
       // num: "18210034398",
       // email: "lin@qq.com",
       // password: "cc111111",

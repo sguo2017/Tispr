@@ -456,12 +456,12 @@ export default class ServOfferList extends Component {
                     </TouchableOpacity>
                 </View>
                 <ScrollView>
-                <View style={{ marginLeft: 20 }}>
+                <View style={{ marginHorizontal: 20 }}>
                     <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: this.state.connectUserAvatar}} style={styles.avatar}></Image>
                     {/*<View style={{height:80}}>
                         <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
                     </View>*/}
-                    <AutoTextInput
+                    <TextInput
                         ref={(textInput) => { this.modelTextInput = textInput; }}
                         multiline={true}
                         onChangeText={(text) => 
@@ -474,7 +474,7 @@ export default class ServOfferList extends Component {
                         onBlur={() => {
                             this.setState({editable: false})}
                         }
-                        style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
+                        style={{ fontSize: 16, color: '#1B2833', marginBottom: 8 }}
                         value={this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')+this.state.content}
                         underlineColorAndroid={'transparent'}
                         editable={this.state.editable}
@@ -524,7 +524,7 @@ const ServItem = ({
 }) => {
   let width = (Common.window.width - 24) / 2;
   let imageH = 120;
-  let servUser = serv.user;
+  let servUser = serv.user?serv.user:global.user
   let serv_image = serv.serv_images && serv.serv_images != 'undefined' ? {uri: serv.serv_images.split(',')[0]} : require('../resource/qk_nav_default.png');
   return (
     <TouchableOpacity

@@ -41,6 +41,7 @@ export default class MeInfo extends Component {
         offer_count: global.user.offer_count,
         request_count: global.user.request_count,
         favorites_count: global.user.favorites_count,
+        phoneNum: global.user.num
       }
     }
 
@@ -68,6 +69,7 @@ export default class MeInfo extends Component {
               offer_count: thisUser.offer_count,
               request_count: thisUser.request_count,
               favorites_count: thisUser.favorites_count,
+              phoneNum: thisUser.num?thisUser.num:10000
             });
         },
         (error) => {
@@ -168,7 +170,7 @@ export default class MeInfo extends Component {
                   }
                   {
                     this.props.isBrowseMode ?
-                      <TouchableOpacity style={{ borderRadius: 10, position: 'absolute', right: 0, bottom: 0 }} onPress={() => {this.clickCall('10000', global.user.name)}}>
+                      <TouchableOpacity style={{ borderRadius: 10, position: 'absolute', right: 0, bottom: 0 }} onPress={() => {this.clickCall(this.state.phoneNum, this.state.name)}}>
                         <Image style={{ width:20, height:20 }}  source={require('../resource/y-call-tx3x.png')}/>
                       </TouchableOpacity>
                       : null

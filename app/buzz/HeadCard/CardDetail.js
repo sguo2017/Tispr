@@ -19,6 +19,7 @@ import Swiper from 'react-native-swiper';
 import Constant from '../../common/constants';
 import ConnectPage from './ConnectPage'
 import { CachedImage } from "react-native-img-cache";
+import Me from '../../me/index';
 const screenW = Dimensions.get('window').width;
 
 export default class CardDetail extends Component {
@@ -201,9 +202,9 @@ export default class CardDetail extends Component {
                         </MapView>
                         <View style={{flexDirection: 'row', marginTop: 20, height: 48, justifyContent: 'space-between'}}>
                             <Text style={{fontSize: 16, color: 'black'}}>投标&nbsp;&nbsp;&nbsp;{this.state.bidderListLength}</Text>
-                            <TouchableOpacity style={{backgroundColor: '#4A90E2', borderRadius: 2, height: Platform === 'ios'?35:28, width: 72}}>
+                            {/*<TouchableOpacity style={{backgroundColor: '#4A90E2', borderRadius: 2, height: Platform === 'ios'?35:28, width: 72}}>
                                 <Text style={{color: 'white', marginHorizontal: 8, marginVertical: 4}}>增加投标</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity>*/}
                         </View>                                                                    
                     </View>
                     <View style={{backgroundColor: '#FFFFFF',  flexDirection: 'row',flexWrap: 'wrap', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12}}>
@@ -211,7 +212,21 @@ export default class CardDetail extends Component {
                     {
                         this.state.bidderList.map((data, index)=>{
                             return(
-                                    <Image  key={index} source={{uri: data.offer_user_avatar}} style={{borderRadius: 20, width: 40, height: 40, margin: 10}}></Image>
+                                <TouchableOpacity onPress={
+                                    ()=> this.props.navigator.push({
+                                        component:Me, 
+                                        passProps:{
+                                            isBrowseMode: true,
+                                            close: () => {
+                                                this.props.navigator.pop();
+                                            },
+                                            id: data.offer_user_id
+                                        }
+                                    }
+                                    )} key={index}
+                                >
+                                    <Image   source={{uri: data.offer_user_avatar}} style={{borderRadius: 20, width: 40, height: 40, margin: 10}}></Image>
+                                </TouchableOpacity>
                             ) 
                         })
                     }

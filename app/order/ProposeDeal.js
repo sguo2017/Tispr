@@ -11,7 +11,8 @@ import {
     ScrollView,
     Platform,
     Dimensions,
-    Alert
+    Alert,
+    KeyboardAvoidingView,
 } from 'react-native';
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
@@ -96,20 +97,24 @@ export default class ProposeDeal extends Component{
                 <View style={{alignItems:'center', padding:16,flex: 1,}}>
                     <Image source={require('../resource/b-xuqiu-xl.png')}/>
                     <Text style={{fontSize:16,color:'black', marginTop: 12, marginBottom: 36}}>提出交易条件，如果对方接受，交易达成!</Text>
-                    <Text style={{color: '#9E9E9E', fontSize: 14}}>我提议本次交易按以下价格及方式进行</Text>
+                    <Text style={{color: '#9E9E9E', fontSize: 14}} onPress={() => { this.refs.textInput.focus() }}>我提议本次交易按以下价格及方式进行</Text>
                     <AutoTextInput
+                        ref="textInput"
                         onChangeText={(val) => this.setState({new_price:val})}
-                        placeholderTextColor='black'
+                        placeholderTextColor="black"
                         underlineColorAndroid="transparent"
                         style={styles.input}
                     />
+                </View>
+                <View style={{ flex: 1 }} /> 
+                <KeyboardAvoidingView behavior="position" contentContainerStyle={styles.button}>
                     <TouchableOpacity
-                    style ={styles.button}
-                    onPress={this.state.new_price?this.askPrice.bind(this):console.log('dd')}
+                        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                        onPress={this.state.new_price?this.askPrice.bind(this):console.log('dd')}
                     >
                         <Text style={{fontSize: 16, color: 'white'}}>发送</Text>
                     </TouchableOpacity>
-                </View>
+                </KeyboardAvoidingView>
             </View>
         )
     }
@@ -131,10 +136,7 @@ styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: global.gColors.buttonColor,
-        position: 'absolute',
-        bottom: 0,
-        right:0,
-        left: 0,
         height: 44,
+        width: global.gScreen.width,
     },
 })

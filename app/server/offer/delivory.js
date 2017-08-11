@@ -132,6 +132,16 @@ export default class ServOfferDelivory extends Component {
     clickJump() {
         let _this = this;
         const { navigator } = this.props;
+        if(this.state.serv_offer.city == undefined){
+            Alert.alert(
+                null,
+                `请开启奇客的定位权限`,
+                [
+                { text: '确定' },
+                ]
+            )
+            return
+        }
         if(this.state.localSwitchIsOn && this.state.remoteSwitchIsOn){
             this.state.serv_offer.via = 'all';
         }else if(this.state.localSwitchIsOn){
@@ -191,13 +201,21 @@ export default class ServOfferDelivory extends Component {
         Geolocation.getCurrentPosition()
         .then(data => {
             console.log("获取经纬度"+JSON.stringify(data));   
-            if(data != null){
+            if(data.city && data.city != null){
                 this.state.serv_offer.district = data.district;
                 this.state.serv_offer.city = data.city;
                 this.state.serv_offer.province = data.province;
                 this.state.serv_offer.country = data.country;
                 this.state.serv_offer.latitude = data.latitude;
                 this.state.serv_offer.longitude = data.longitude;
+            }else{
+                Alert.alert(
+                    null,
+                    `请开启奇客的定位权限`,
+                    [
+                    { text: '确定' },
+                    ]
+                )
             }
          })
          .catch(e =>{

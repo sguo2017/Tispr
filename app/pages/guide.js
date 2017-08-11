@@ -3,7 +3,8 @@ import {
     Image,
     AsyncStorage,
     TouchableOpacity,
-    Alert
+    Alert,
+    Platform,
 } from 'react-native';
 import JPushModule from 'jpush-react-native';
 import { Geolocation } from 'react-native-baidu-map';
@@ -27,28 +28,32 @@ export default class Guide extends React.Component {
     }
     
     onGetRegistrationIdPress() {
+        if(!global.user){
+            global.user = {};
+            global.user.addressComponent = {};
+        }
 		JPushModule.getRegistrationID((registrationId) => {
-            console.log("1111:"+registrationId)
-            if(!global.user){
-                global.user = {};
-            }
+            console.log("1111:"+registrationId);
             global.user.registrationId = registrationId;
-			
-		});
-        JPushModule.getInfo((map) => {
-            console.log("设备ID"+map.myDeviceId)
-            global.user.device_type = map.myDeviceId
         });
+        if (Platform.OS === 'ios') {
+            global.user.device_type = 'iOS';
+        } else {
+            JPushModule.getInfo((map) => {
+                console.log("设备ID"+map.myDeviceId)
+                global.user.device_type = map.myDeviceId
+            });
+        }
 	}
 
     componentDidMount() {
         // 在收到点击事件之前调用此接口
         this.onGetRegistrationIdPress()
 
-        JPushModule.notifyJSDidLoad((resultCode) => {
-            if (resultCode === 0) {
-            }
-        });
+        // JPushModule.notifyJSDidLoad((resultCode) => {
+        //     if (resultCode === 0) {
+        //     }
+        // });
         JPushModule.addReceiveNotificationListener((map) => {
             console.log("alertContent: " + map.alertContent);
             console.log("extras: " + map.extras);
@@ -57,29 +62,34 @@ export default class Guide extends React.Component {
             console.log("Opening notification!");
             console.log("map.extra: " + map.extras);
             let type = JSON.parse(map.extras).type;
+            let accessToken =UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
+            if (!accessToken) {
+                this.props.navigator.resetTo({component: Login})
+                return
+            }
             if(type == "0"){
-                this.props.navigator.push({component: TabBarView, passProps: { initialPage: 3}})
+                this.props.navigator.resetTo({component: TabBarView, passProps: { initialPage: 3}})
             }
             if(type == "1"){
-                this.props.navigator.push({component: TabBarView, passProps: { initialPage: 1}})
+                this.props.navigator.resetTo({component: TabBarView, passProps: { initialPage: 1}})
             }
             if(type == "2"){
-                this.props.navigator.push({component: TabBarView, passProps: { initialPage: 4}})
+                this.props.navigator.resetTo({component: TabBarView, passProps: { initialPage: 4}})
             }
             if(type == "3"){
-                this.props.navigator.push({component: TabBarView, passProps: { initialPage: 1}})
+                this.props.navigator.resetTo({component: TabBarView, passProps: { initialPage: 4}})
             }
             if(type == "4"){
-                this.props.navigator.push({component:accountBan })
+                this.props.navigator.resetTo({component:accountBan })
             }
             if(type == "5"){
-                this.props.navigator.push({component: Login})
+                this.props.navigator.resetTo({component: Login})
             }
         });
         Geolocation.getCurrentPosition()
         .then(data => {
             console.log("获取经纬度"+JSON.stringify(data));   
-            if(data != null){
+            if(data.city && data.city !=null){
                 if(!global.user){
                     global.user = {};
                 }
@@ -87,15 +97,15 @@ export default class Guide extends React.Component {
                 global.user.addressComponent.latitude = data.latitude;
                 global.user.addressComponent.longitude = data.longitude;
                 UserDefaults.setObject(Constant.storeKeys.ADDRESS_COMPONENT, global.user.addressComponent);
-            }else{
+            } else {
                 this.setState({ showProgress: false });
-                // Alert.alert(
-                //     null,
-                //     `请开启奇客的定位权限`,
-                //     [
-                //      { text: '确定' },
-                //     ]
-                // )
+                Alert.alert(
+                    null,
+                    `请开启奇客的定位权限`,
+                    [
+                     { text: '确定' },
+                    ]
+                )
             }
          })
         .then(() => {
