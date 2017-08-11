@@ -893,7 +893,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 8,
         paddingVertical: 8,
-        borderTopWidth: 0.5,
+        borderTopWidth: 1,
         borderColor: '#eeeeee',
     },
 

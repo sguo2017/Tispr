@@ -416,17 +416,14 @@ class ExploreList extends PureComponent {
                                   renderTabBar={() => <TabCategoryBar tabNames={titles} />}
                                   tabBarPosition='top'
                                   scrollWithoutAnimation={false}
-                                  tabBarBackgroundColor= '#1B2833'
                                   ref={(tabView) => { this.tabView = tabView; }}
                                   onChangeTab ={({i, ref, from, })=>{
                                       if(i==0){
                                           this.state.via = 'local';
-                                          }
-                                          
-                                      else if(i==1){
+                                      } else if (i==1) {
                                           this.state.via = 'remote';
-                                          }
-                                          }}
+                                      }
+                                  }}
                                 >
                                     <View tabLabel='本地'>
                                         <View style={{ flexDirection: 'row' }}>

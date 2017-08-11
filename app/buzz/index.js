@@ -451,10 +451,11 @@ export default class BussList extends Component {
             >
                 <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiper_1_height }]}>
                     <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-                        <Text style={[styles.CardText, {fontSize: 18, fontWeight: 'bold', marginBottom: 15, marginTop: 5}]}>欢迎{global.user.name}</Text>
-                        <Text style={styles.CardText}>这是您的客户需求卡片组，可以向左或</Text>
+                        <Text style={[styles.CardText, {fontSize: 18, fontWeight: 'bold', marginBottom: 12, marginTop: 24}]}>欢迎{global.user.name}</Text>
+                        <Text style={[styles.CardText,{ marginBottom: 3 }]}>这是您的客户需求卡片组，可以向左或</Text>
                         <Text style={styles.CardText}>向右滑动，快试试看！</Text>
-                        <Image style={{ width: this.state.swiper_1_height / 228 * 344, flex: 1}} source={require('../resource/card_l_guide_b.png')} />
+                        <View style={{ flex: 1 }} />
+                        <Image style={{ width: this.state.swiper_1_height / 228 * 344, height: 105 / 342 * this.state.swiper_1_height / 228 * 344 }} source={require('../resource/card_l_guide_b.png')} />
                     </View>
                 </View>
                 <View style={[styles.cardWrapper, { width: global.gScreen.width, height: this.state.swiper_1_height }]}>

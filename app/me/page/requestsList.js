@@ -134,7 +134,7 @@ class KnowledgeItem extends Component {
                 user_id: global.user.id,
             }
         };
-        Util.post(url, data, ()=>{this._onRefresh}, this.props.navigator);
+        Util.post(url, data, ()=>{this._onRefresh()}, this.props.navigator);
     }
     render() {
         const { feed: { serv_detail, created_at, catalog } } = this.props;

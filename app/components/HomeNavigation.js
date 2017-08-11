@@ -54,7 +54,7 @@ export default class HomeNavigation extends Component {
                     style={styles.rightIcon}
                     onPress={this.props.rightIconAction}
                 >
-                    <Image style={{height: this.props.rightIconSize || 20, width: this.props.rightIconSize || 20, borderRadius: this.props.rightIconRadius || 20 }} source={this.props.rightIcon} resizeMode={'contain'}/>
+                    <Image style={{height: this.props.rightIconSize || 20, width: this.props.rightIconSize || 20, borderRadius: this.props.rightIconRadius || 10 }} source={this.props.rightIcon} resizeMode={'contain'}/>
                 </TouchableOpacity>
             )
         }
@@ -67,7 +67,7 @@ export default class HomeNavigation extends Component {
                     style={styles.rightIcon2}
                     onPress={this.props.rightIcon2Action}
                 >
-                    <Image style={{height: this.props.rightIcon2Size || 20, width: this.props.rightIcon2Size || 20, borderRadius: this.props.rightIcon2Radius || 20 }} source={this.props.rightIcon2} resizeMode={'contain'}/>
+                    <Image style={{height: this.props.rightIcon2Size || 20, width: this.props.rightIcon2Size || 20, borderRadius: this.props.rightIcon2Radius || 10 }} source={this.props.rightIcon2} resizeMode={'contain'}/>
                 </TouchableOpacity>
             )
         }
@@ -79,7 +79,7 @@ export default class HomeNavigation extends Component {
                     style={styles.rightIcon3}
                     onPress={this.props.rightIcon3Action}
                 >
-                    <Image style={{height: this.props.rightIcon3Size || 20, width: this.props.rightIcon3Size || 20, borderRadius: this.props.rightIcon3Radius || 20 }} source={this.props.rightIcon3} resizeMode={'contain'}/>
+                    <Image style={{height: this.props.rightIcon3Size || 20, width: this.props.rightIcon3Size || 20, borderRadius: this.props.rightIcon3Radius || 10 }} source={this.props.rightIcon3} resizeMode={'contain'}/>
                 </TouchableOpacity>
             )
         }
