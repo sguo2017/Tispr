@@ -130,7 +130,7 @@ class KnowledgeItem extends Component {
         let data ={
             favorite: {
                 obj_id: this.props.feed.id,
-                obj_type: 'serv_offer',
+                obj_type: 'serv_request',
                 user_id: global.user.id,
             }
         };
