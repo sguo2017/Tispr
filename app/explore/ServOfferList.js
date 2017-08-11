@@ -503,7 +503,7 @@ const ServItem = ({
 }) => {
   let width = (Common.window.width - 24) / 2;
   let imageH = 120;
-  let servUser = serv.user;
+  let servUser = serv.user?serv.user:global.user
   let serv_image = serv.serv_images && serv.serv_images != 'undefined' ? {uri: serv.serv_images.split(',')[0]} : require('../resource/qk_nav_default.png');
   return (
     <TouchableOpacity
