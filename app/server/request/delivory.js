@@ -164,6 +164,16 @@ export default class ServOfferDelivory extends Component {
 
   clickJump() {
     let _this = this;
+    if(this.state.serv_offer.city == undefined){
+      Alert.alert(
+          null,
+          `请开启奇客的定位权限`,
+          [
+          { text: '确定' },
+          ]
+      )
+      return
+    }
     if (this.state.localSwitchIsOn && this.state.remoteSwitchIsOn) {
       this.state.serv_offer.via = 'all';
     } else if (this.state.localSwitchIsOn) {
