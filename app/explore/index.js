@@ -47,7 +47,7 @@ class ExploreList extends PureComponent {
             sps: [false, false],//排序按钮操作
             cps: [false, false, false, false, false, false, false],//类型按钮操作
             searchText: this.props.searchText,
-            via: '',
+            via: 'local',
             initArea: ['广东', '广州', '番禺区'],
             zoom: 18,
             showCancel: false,
@@ -216,6 +216,7 @@ class ExploreList extends PureComponent {
             historyKey[global.user.id] = exploreparams;
             console.log('传入筛选缓存')
             console.log(historyKey[global.user.id])
+            exploreparams.title = this.state.exploretitle;
             UserDefaults.setObject(Constant.storeKeys.SEARCH_HISTORY_KEY, historyKey);
             this.setState({exploreparams: historyKey[global.user.id]});
             page = 1;
@@ -363,17 +364,19 @@ class ExploreList extends PureComponent {
                     {this.state.history?
                     <View style={{flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, flexWrap: 'wrap'}}>
                          {this.state.history.map((item, index) => {
-                           // if (index < this.state.history.split(',').length-1)
-                                return(
-                                    <TouchableOpacity
-                                        onPress={() => {this.setState({exploretitle: item, exploreparams: {title: item}})}}
-                                        key={index}
-                                        style={{borderColor: '#4A90E2', borderWidth: 1, borderRadius: 14, paddingHorizontal:8, paddingVertical: 4, marginRight: 12, marginTop: 12}}
-                                    
-                                    >
-                                        <Text style={{fontSize: 14, color: '#4A90E2'}}>{item}</Text>
-                                    </TouchableOpacity>
-                                )
+                            return(
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        this.setState({exploretitle: item, exploreparams: {title: item}});
+                                        this.refresh()
+                                    }}
+                                    key={index}
+                                    style={{borderColor: '#4A90E2', borderWidth: 1, borderRadius: 14, paddingHorizontal:8, paddingVertical: 4, marginRight: 12, marginTop: 12}}
+                                
+                                >
+                                    <Text style={{fontSize: 14, color: '#4A90E2'}}>{item}</Text>
+                                </TouchableOpacity>
+                            )
                         })} 
                     </View>: <View></View>
                     }

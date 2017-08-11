@@ -202,24 +202,6 @@ export default class ServOfferList extends Component {
 
   _onRefresh() {
     console.log('listfresh');
-    // if(!global.user.authentication_token){
-    //     Util.noToken(this.props.navigator);
-    // }
-    // const { dispatch } = this.props;
-    // let exploreparams = this.props.exploreparams;
-    
-    // if (!exploreparams.via) {
-    //     UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
-    //         if (historyKey == null) {
-    //             historyKey = {};
-    //         }
-    //         exploreparams = historyKey[global.user.id];
-    //         this.setState({exploreparams: historyKey[global.user.id]});
-    //         dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
-    //     })
-    // }
-    
-    
   }
 
   _onPressCell(feed) {
