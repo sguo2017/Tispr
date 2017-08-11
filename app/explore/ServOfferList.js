@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     notSelectedButton: {
+        justifyContent: 'center',
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
         padding:5,
@@ -111,6 +112,7 @@ const styles = StyleSheet.create({
         width:Platform.OS === 'ios'? 260: 210
     },
     selectedButton:{
+        justifyContent: 'center',
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
         backgroundColor: global.gColors.themeColor,
@@ -535,7 +537,7 @@ const ServItem = ({
       <View style={styles.cardUserInfoView}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <CachedImage
-            style={{height: 24, width: 24, borderRadius: 15}}
+            style={{height: 24, width: 24, borderRadius: 12}}
             source={{uri: servUser.avatar}}
             defaultSource={require('../resource/img_default_avatar.png')}
           />
