@@ -435,12 +435,12 @@ export default class ServOfferList extends Component {
                     </TouchableOpacity>
                 </View>
                 <ScrollView>
-                <View style={{ marginLeft: 20 }}>
+                <View style={{ marginHorizontal: 20 }}>
                     <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: this.state.connectUserAvatar}} style={styles.avatar}></Image>
                     {/*<View style={{height:80}}>
                         <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
                     </View>*/}
-                    <AutoTextInput
+                    <TextInput
                         ref={(textInput) => { this.modelTextInput = textInput; }}
                         multiline={true}
                         onChangeText={(text) => 
@@ -453,7 +453,7 @@ export default class ServOfferList extends Component {
                         onBlur={() => {
                             this.setState({editable: false})}
                         }
-                        style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
+                        style={{ fontSize: 16, color: '#1B2833', marginBottom: 8 }}
                         value={this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')+this.state.content}
                         underlineColorAndroid={'transparent'}
                         editable={this.state.editable}

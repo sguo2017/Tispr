@@ -7,7 +7,8 @@ import {
     StyleSheet,
     Navigator,
     TouchableHighlight,
-    TouchableOpacity
+    TouchableOpacity,
+    KeyboardAvoidingView,
 } from 'react-native'
 import Header from '../../components/HomeNavigation';
 import accountSetting from './accountSetting';
@@ -113,17 +114,19 @@ export default class PasswordConfirm extends Component {
                 >
                     <Text style={{ fontSize: 16, color: global.gColors.themeColor }}>忘记密码？</Text>
                 </TouchableOpacity>
-                <TouchableHighlight onPress={this._check.bind(this)} style={[styles.button, { backgroundColor: global.gColors.buttonColor, position: 'absolute', bottom: 0, flexShrink: 0, width: global.gScreen.width }]}>
-                    <Text style={styles.buttonText}>
-                        确定
-                    </Text>
-                </TouchableHighlight>
+                <View style={{ flex: 1 }} /> 
+                <KeyboardAvoidingView behavior="position" contentContainerStyle={styles.button}>
+                    <TouchableHighlight onPress={this._check.bind(this)} >
+                        <Text style={styles.buttonText}>
+                            确定
+                        </Text>
+                    </TouchableHighlight>
+                </KeyboardAvoidingView>
             </View>
         )
     }
 }
 const styles = StyleSheet.create({
-
     input: {
         height: 50,
         marginTop: 10,
@@ -136,15 +139,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: global.gColors.buttonColor,
-        position: 'absolute',
-        bottom: 0,
-        right:0,
-        left: 0,
         height: 44,
+        width: global.gScreen.width,
     },
     buttonText: {
         fontSize: 22,
         color: '#FFF',
         alignSelf: 'center'
     },
-})
+});

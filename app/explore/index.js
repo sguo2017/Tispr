@@ -56,6 +56,7 @@ class ExploreList extends PureComponent {
         };
     }
     componentWillMount() {
+        UserDefaults.setObject(Constant.storeKeys.SEARCH_HISTORY_KEY, {});
         console.log('indexmount');
         const { feed } = this.props;
         this.setState({

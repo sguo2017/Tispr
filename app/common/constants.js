@@ -72,20 +72,20 @@ let default_img={
 let offer_range = ["不上门","5公里内","10公里内","15公里内","25公里内","50公里内","100公里内"];
 
 let url = {
-    //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
-     IMG_SERV_ADDR: "47.92.27.52",
+    // //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
+    //  IMG_SERV_ADDR: "47.92.27.52",
+    //  IMG_SERV_PORT: "9090",
+    //  SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
+    //  //////////////////<<<<   API接口  >>>>>//////////////////////////////
+    //  SERV_API_ADDR: `47.92.27.52`,
+    //  SERV_API_PORT: `80`,
+     ////////////////<<<<   图片服务器  >>>>>//////////////////////////////
+     IMG_SERV_ADDR: "123.56.157.233",
      IMG_SERV_PORT: "9090",
      SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
      //////////////////<<<<   API接口  >>>>>//////////////////////////////
-     SERV_API_ADDR: `47.92.27.52`,
-     SERV_API_PORT: `80`,
-     //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
-     // IMG_SERV_ADDR: "123.56.157.233",
-     // IMG_SERV_PORT: "9090",
-     // SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
-     // //////////////////<<<<   API接口  >>>>>//////////////////////////////
-     // SERV_API_ADDR: `123.56.157.233`,
-     // SERV_API_PORT: `8082`,
+     SERV_API_ADDR: `123.56.157.233`,
+     SERV_API_PORT: `8082`,
      SERV_API_USER_LOGIN: `/api/users/sessions`,//登录接口
      SERV_API_USER_REGI: `/api/users/registrations`, //注册接口
      SERV_API_USER_PASSWORD: `/api/users/passwords`,//忘记密码接口

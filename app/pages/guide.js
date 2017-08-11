@@ -3,7 +3,8 @@ import {
     Image,
     AsyncStorage,
     TouchableOpacity,
-    Alert
+    Alert,
+    Platform,
 } from 'react-native';
 import JPushModule from 'jpush-react-native';
 import { Geolocation } from 'react-native-baidu-map';
@@ -27,28 +28,32 @@ export default class Guide extends React.Component {
     }
     
     onGetRegistrationIdPress() {
+        if(!global.user){
+            global.user = {};
+            global.user.addressComponent = {};
+        }
 		JPushModule.getRegistrationID((registrationId) => {
-            console.log("1111:"+registrationId)
-            if(!global.user){
-                global.user = {};
-            }
+            console.log("1111:"+registrationId);
             global.user.registrationId = registrationId;
-			
-		});
-        JPushModule.getInfo((map) => {
-            console.log("设备ID"+map.myDeviceId)
-            global.user.device_type = map.myDeviceId
         });
+        if (Platform.OS === 'ios') {
+            global.user.device_type = 'iOS';
+        } else {
+            JPushModule.getInfo((map) => {
+                console.log("设备ID"+map.myDeviceId)
+                global.user.device_type = map.myDeviceId
+            });
+        }
 	}
 
     componentDidMount() {
         // 在收到点击事件之前调用此接口
         this.onGetRegistrationIdPress()
 
-        JPushModule.notifyJSDidLoad((resultCode) => {
-            if (resultCode === 0) {
-            }
-        });
+        // JPushModule.notifyJSDidLoad((resultCode) => {
+        //     if (resultCode === 0) {
+        //     }
+        // });
         JPushModule.addReceiveNotificationListener((map) => {
             console.log("alertContent: " + map.alertContent);
             console.log("extras: " + map.extras);
@@ -92,8 +97,7 @@ export default class Guide extends React.Component {
                 global.user.addressComponent.latitude = data.latitude;
                 global.user.addressComponent.longitude = data.longitude;
                 UserDefaults.setObject(Constant.storeKeys.ADDRESS_COMPONENT, global.user.addressComponent);
-            }else{
-                global.user.addressComponent = {}
+            } else {
                 this.setState({ showProgress: false });
                 Alert.alert(
                     null,
