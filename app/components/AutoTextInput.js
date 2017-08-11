@@ -14,8 +14,10 @@ export default class AutoTextInput extends Component {
     };
   }
   onContentSizeChange(event) {
-    let height = event.nativeEvent.contentSize.height;
-    this.changeHeight(height);
+    if (Platform.OS === 'android') {
+      let height = event.nativeEvent.contentSize.height;
+      this.changeHeight(height);
+    }
   }
   onChange(event) {
     if (Platform.OS === 'android') {
@@ -41,6 +43,10 @@ export default class AutoTextInput extends Component {
     this.textInput.focus();
   }
   render() {
+    let heightStyle = {};
+    if (Platform.OS === 'android') {
+      heightStyle = { height: this.state.height };
+    }
     return (
       <TextInput
         {...this.props}
@@ -48,7 +54,7 @@ export default class AutoTextInput extends Component {
         multiline
         onContentSizeChange={this.onContentSizeChange}
         onChange={this.onChange}
-        style={[this.props.style, {height: this.state.height}]}
+        style={[this.props.style, heightStyle]}
       />
     )
   }

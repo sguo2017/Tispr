@@ -60,8 +60,10 @@ const RequestMsgSingleImageItem = ({
   created_at,
   catalog,
   onPress,
-  archivedPress
+  archivedPress,
+  archivedNotShow
 }) => {
+  
   const createDate = DateUtil.dataStrToSmartDate(created_at);
   return (
     <ScrollView style={styles.container} horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -80,9 +82,10 @@ const RequestMsgSingleImageItem = ({
           <Text style={{fontSize:12, color: '#4A90E2'}}>1/5投标</Text>
         </View>
       </TouchableOpacity>
+      {!archivedNotShow?
       <TouchableOpacity style={styles.mark} onPress={archivedPress}>
         <Text style={{color: '#4a90e2'}}>存档</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>:<View></View>}
     </ScrollView>
   )
 };

@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     notSelectedButton: {
+        justifyContent: 'center',
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
         padding:5,
@@ -111,6 +112,7 @@ const styles = StyleSheet.create({
         width:Platform.OS === 'ios'? 260: 210
     },
     selectedButton:{
+        justifyContent: 'center',
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
         backgroundColor: global.gColors.themeColor,
@@ -159,10 +161,31 @@ export default class ServOfferList extends Component {
         })
   }
 
-  componentDidMount() {
-      const { dispatch } = this.props;
-      this._onRefresh();
-  }
+    componentDidMount() {
+        const { dispatch } = this.props;
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
+        let exploreparams = this.props.exploreparams;
+        console.log(exploreparams)
+        if (!exploreparams.via) {
+            UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
+                if (historyKey == null) {
+                    historyKey = {};
+                } else if (historyKey[global.user.id]) {
+                    console.log("listmount")
+                    exploreparams = historyKey[global.user.id];
+                    console.log(exploreparams)
+                    exploreparams.title = this.props.title;
+                    console.log(exploreparams)
+                    this.setState({exploreparams: historyKey[global.user.id]});
+                    dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
+                } else {
+                    dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
+                }
+            })
+        }
+    }
 
   _onMomentumScrollEnd(event) {
     console.log('listend');
@@ -181,24 +204,6 @@ export default class ServOfferList extends Component {
 
   _onRefresh() {
     console.log('listfresh');
-    if(!global.user.authentication_token){
-        Util.noToken(this.props.navigator);
-    }
-    const { dispatch } = this.props;
-    let exploreparams = this.props.exploreparams;
-    
-    if (!exploreparams.via) {
-        UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
-            if (historyKey == null) {
-                historyKey = {};
-            }
-            exploreparams = historyKey[global.user.id];
-            this.setState({exploreparams: historyKey[global.user.id]});
-            dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
-        })
-    }
-    
-    
   }
 
   _onPressCell(feed) {
@@ -532,7 +537,7 @@ const ServItem = ({
       <View style={styles.cardUserInfoView}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <CachedImage
-            style={{height: 24, width: 24, borderRadius: 15}}
+            style={{height: 24, width: 24, borderRadius: 12}}
             source={{uri: servUser.avatar}}
             defaultSource={require('../resource/img_default_avatar.png')}
           />

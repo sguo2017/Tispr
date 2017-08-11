@@ -24,9 +24,17 @@ export default class Guide extends React.Component {
             addressComponent: { "country": "中国", "country_code": 0, "province": "广东省", "city": "广州市", "district": "番禺区", "adcode": "440113", "street": "石北路", "street_number": "", "direction": "", "distance": "" }
         };
         
-		this.onGetRegistrationIdPress = this.onGetRegistrationIdPress.bind(this);
+        this.onGetRegistrationIdPress = this.onGetRegistrationIdPress.bind(this);
+        
+        AppState.removeEventListener('change', this._handleAppStateChange);
     }
-    
+
+    _handleAppStateChange = (nextAppState) => {
+        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active'&&Platform.OS === 'ios') {
+            JPushModule.setBadge(0, (success) => {});
+        }
+    }
+
     onGetRegistrationIdPress() {
         if(!global.user){
             global.user = {};
@@ -48,20 +56,32 @@ export default class Guide extends React.Component {
 
     componentDidMount() {
         // 在收到点击事件之前调用此接口
-        this.onGetRegistrationIdPress()
+        this.onGetRegistrationIdPress();
+        // App状态更新
+        AppState.addEventListener('change', this._handleAppStateChange);
 
-        // JPushModule.notifyJSDidLoad((resultCode) => {
-        //     if (resultCode === 0) {
-        //     }
-        // });
+        if (Platform.OS === 'android') {
+            JPushModule.notifyJSDidLoad((resultCode) => {
+                if (resultCode === 0) {
+                }
+            });
+        }
+        
         JPushModule.addReceiveNotificationListener((map) => {
             console.log("alertContent: " + map.alertContent);
             console.log("extras: " + map.extras);
         });
         JPushModule.addReceiveOpenNotificationListener((map) => {
             console.log("Opening notification!");
-            console.log("map.extra: " + map.extras);
-            let type = JSON.parse(map.extras).type;
+            // console.log("map: " + JSON.parse(map));
+            // console.log("map.extra: " + map.extras);
+            let type = '0';
+            if (Platform.OS === 'ios') {
+                JPushModule.setBadge(0, (success) => {});
+                type = map.type;
+            } else {
+                type = JSON.parse(map.extras).type;
+            }
             let accessToken =UserDefaults.cachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
             if (!accessToken) {
                 this.props.navigator.resetTo({component: Login})
