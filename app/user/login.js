@@ -100,10 +100,10 @@ export default class Login extends Component {
       return;
     }
     this.setState({ showProgress: true });
-    if (Platform.OS == 'ios' && __DEV__) {
-      global.user = {};
-      global.user.addressComponent = this.state.addressComponent;
-    }
+    // if (Platform.OS == 'ios' && __DEV__) {
+    //   global.user = {};
+    //   global.user.addressComponent = this.state.addressComponent;
+    // }
     let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_USER_LOGIN;
     let data = {
       user: {
