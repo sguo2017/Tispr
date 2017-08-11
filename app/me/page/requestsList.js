@@ -46,7 +46,7 @@ export default class RequestsList extends Component {
         errorMsg && this.toast.show(errorMsg);
     }
 
-    _renderRow = feed => <KnowledgeItem onPress={this._onPressCell} refreshList={this._onRefresh} feed={feed} />
+    _renderRow = feed => <KnowledgeItem onPress={this._onPressCell} refreshList={this._onRefresh} feed={feed} archivedNotShow={this.props.archivedNotShow}/>
 
 
     _onPressCell = feed => {
@@ -130,15 +130,15 @@ class KnowledgeItem extends Component {
         let data ={
             favorite: {
                 obj_id: this.props.feed.id,
-                obj_type: 'serv_offer',
+                obj_type: 'serv_request',
                 user_id: global.user.id,
             }
         };
         Util.post(url, data, ()=>{this._onRefresh()}, this.props.navigator);
     }
     render() {
-        const { feed: { serv_detail, created_at, catalog } } = this.props;
-        const cellData = { serv_detail, created_at, catalog };
+        const { feed: { serv_detail, created_at, catalog }, archivedNotShow} = this.props;
+        const cellData = { serv_detail, created_at, catalog, archivedNotShow};
         return <RequestMsgSingleImageCell {...cellData} onPress={this._onPress} archivedPress={this._archivedPress}/>
     }
 }
