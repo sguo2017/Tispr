@@ -16,7 +16,7 @@ import {
     Platform,
     AsyncStorage,
     TouchableWithoutFeedback,
-    ToastAndroid
+    ToastAndroid,
 } from 'react-native'
 import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
 import { observer } from 'mobx-react/native'
@@ -74,7 +74,7 @@ export default class ServOfferDetail extends Component {
             hasSeenTotalTimes: false,
             editable: false,
             content: '',
-            isReported: this.props.feed.isReported
+            isReported: this.props.feed.isReported,
         };
         UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -428,6 +428,9 @@ export default class ServOfferDetail extends Component {
         let mine = feed.user.id === global.user.id? true : false;
         return (
             <View style={styles.listView}>
+                {this.state.show_share||this.state.show_report||this.state.isMine?
+                <View style={styles.cover}></View>
+                :null}
                 <Header
                     title='服务'
                     leftIcon={require('../resource/w-back.png')}
@@ -438,7 +441,16 @@ export default class ServOfferDetail extends Component {
                         }
                     }
                     rightIcon2={require('../resource/w-share.png')}
-                    rightIcon2Action={() => this.setState({ show_share: true })}
+                    rightIcon2Action={() => {
+                        this.setState({ show_share: true });
+                        {/* Animated.timing(
+                            this.state.fadeAnim,
+                            {
+                                toValue: 1,
+                                //duration: 5000,
+                            }
+                        ).start(); */}
+                    }}
                     style={{ height: 50 }}
                 />
                 
@@ -555,7 +567,7 @@ export default class ServOfferDetail extends Component {
                             })
 
                         }
-                    </View>
+                    </View>                    
                 </ScrollView>
                 {/*分享弹窗*/}
                 <Modal
@@ -642,6 +654,7 @@ export default class ServOfferDetail extends Component {
                     </View>
                     </TouchableWithoutFeedback>
                 </Modal>
+
                 {/*相关服务列表快捷回复弹窗*/}
                 <Modal
                     animationType='slide'
@@ -821,20 +834,29 @@ export default class ServOfferDetail extends Component {
 }
 
 const styles = StyleSheet.create({
+    cover: {
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        height: global.gScreen.height, 
+        width: global.gScreen.width, 
+        zIndex: 99
+    },
     container:{  
         flex:1,  
-        backgroundColor: 'rgba(0, 0, 0, 0.25)',  
-        position: 'absolute',  
-        top: 0,  
-        bottom: 0,  
-        left: 0,  
-        right: 0,  
+        backgroundColor: 'transparent',  
+        // position: 'absolute',  
+        // top: 0,  
+        // bottom: 0,  
+        // left: 0,  
+        // right: 0,  
         justifyContent:'center',  
         alignItems:'center'  
     },  
     listView: {
         flex: 1,
-       // backgroundColor: '#fff',
+        position: 'relative'
     },
     modal: {
         marginTop: 300,

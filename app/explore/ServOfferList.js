@@ -65,6 +65,15 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#eeeeee',
   },
+  cover: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        height: global.gScreen.height, 
+        width: global.gScreen.width, 
+        zIndex: 99
+    },
    // modal的样式
     modalStyle: {
         zIndex: 999,
@@ -353,6 +362,9 @@ export default class ServOfferList extends Component {
     const { ServOfferList } = this.props;
     return(
       <View style={styles.container}>
+        {this.state.show?
+        <View style={styles.cover}></View>
+        :null}
         {!ServOfferList.isLoading &&
         <ScrollView
           ref={scrollView => this.scrollView = scrollView}
@@ -428,7 +440,6 @@ export default class ServOfferList extends Component {
           visible={this.state.show}
           onRequestClose={() => { }}
         >
-          <View style={{ position: 'absolute', zIndex: 1, backgroundColor: 'black', width: gScreen.width, height: gScreen.height, opacity: 0.5 }} />
           <View style={styles.modalStyle}>
             <View style={[styles.subView, {height: 430}]}>
                 <View style={styles.modalHead}>
