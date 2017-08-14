@@ -91,7 +91,7 @@ class ExploreList extends PureComponent {
         })
         UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
             console.log('indexmount');
-            console.log(historyKey[global.user.id])
+           // console.log(historyKey[global.user.id])
             if (historyKey == null) {
                 historyKey = {};
             } else if (historyKey[global.user.id]) {

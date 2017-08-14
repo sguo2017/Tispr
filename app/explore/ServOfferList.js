@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     notSelectedButton: {
-        justifyContent: 'center',
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
         padding:5,
@@ -112,7 +111,6 @@ const styles = StyleSheet.create({
         width:Platform.OS === 'ios'? 260: 210
     },
     selectedButton:{
-        justifyContent: 'center',
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
         backgroundColor: global.gColors.themeColor,
@@ -172,6 +170,7 @@ export default class ServOfferList extends Component {
             UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
                 if (historyKey == null) {
                     historyKey = {};
+                    dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
                 } else if (historyKey[global.user.id]) {
                     console.log("listmount")
                     exploreparams = historyKey[global.user.id];
@@ -184,6 +183,8 @@ export default class ServOfferList extends Component {
                     dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
                 }
             })
+        } else {
+            dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
         }
     }
 
@@ -445,7 +446,7 @@ export default class ServOfferList extends Component {
                     {/*<View style={{height:80}}>
                         <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
                     </View>*/}
-                    <TextInput
+                    <AutoTextInput
                         ref={(textInput) => { this.modelTextInput = textInput; }}
                         multiline={true}
                         onChangeText={(text) => 
@@ -537,7 +538,7 @@ const ServItem = ({
       <View style={styles.cardUserInfoView}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <CachedImage
-            style={{height: 24, width: 24, borderRadius: 12}}
+            style={{height: 24, width: 24, borderRadius: 15}}
             source={{uri: servUser.avatar}}
             defaultSource={require('../resource/img_default_avatar.png')}
           />
