@@ -20,6 +20,7 @@ import Constant from '../../common/constants';
 import UserDefaults from '../../common/UserDefaults';
 import Report from '../../sys/others/report';
 import Util from '../../common/utils';
+import Me from '../../me/index'
 const screenW = Dimensions.get('window').width;
 
 @observer
@@ -125,6 +126,19 @@ export default class RequestMsgDetail extends Component {
         });
     }
 
+    _onPressAvatar = (id) => {
+        this.props.navigator.push({
+            component: Me,
+            passProps: {
+                isBrowseMode: true,
+                close: () => {
+                    this.props.navigator.pop();
+                },
+                id: id
+            }
+        });
+    }
+
     render() {
         const { feed } = this.props;
           let platformMargin = Platform.OS === 'ios' ? -40 : -30;
@@ -149,7 +163,9 @@ export default class RequestMsgDetail extends Component {
                         <View style={{paddingHorizontal: 16, justifyContent: 'space-between', backgroundColor: 'white'}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, height: 48, }}>
                                 <View style={{justifyContent: 'space-around', flexDirection: 'row',}}>
-                                    <Image style={{width: 32, height: 32, borderRadius: 16}} source={{ uri: feed.user.avatar }} defaultsource={require('../../resource/user_default_image.png')}></Image>
+                                    <TouchableOpacity onPress={this._onPressAvatar.bind(this, feed.user.id)}>
+                                        <Image style={{width: 32, height: 32, borderRadius: 16}} source={{ uri: feed.user.avatar }} defaultsource={require('../../resource/user_default_image.png')}></Image>
+                                    </TouchableOpacity>
                                     <View style={{marginLeft: 8, marginTop: -5}}>
                                         <Text style={{fontSize: 14, lineHeight: 20}}>{feed.user_name}</Text>
                                         {
