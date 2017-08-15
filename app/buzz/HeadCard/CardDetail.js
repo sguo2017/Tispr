@@ -135,7 +135,18 @@ export default class CardDetail extends Component {
             console.log(`Fetch evaluating list error: ${error}`)
         }      
     }
-
+    _onPressAvatar = (id) => {
+        this.props.navigator.push({
+            component: Me,
+            passProps: {
+                isBrowseMode: true,
+                close: () => {
+                    this.props.navigator.pop();
+                },
+                id: id
+            }
+        });
+    }
 
     render() {
         const { feed } = this.props;
@@ -154,7 +165,9 @@ export default class CardDetail extends Component {
                     <View style={{paddingHorizontal: 16, justifyContent: 'space-between', backgroundColor: 'white'}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, height: 48, }}>
                             <View style={{justifyContent: 'space-around', flexDirection: 'row',}}>
-                                <Image style={{width: 32, height: 32, borderRadius: 16}} source={{ uri: feed.avatar }} defaultsource={require('../../resource/user_default_image.png')}></Image>
+                                <TouchableOpacity onPress={this._onPressAvatar.bind(this, feed.user_id)}>
+                                    <Image style={{width: 32, height: 32, borderRadius: 16}} source={{ uri: feed.avatar }} defaultsource={require('../../resource/user_default_image.png')}></Image>
+                                </TouchableOpacity>
                                 <View style={{marginLeft: 8, marginTop: -5}}>
                                     <Text style={{fontSize: 14, lineHeight: 20}}>{feed.user_name}</Text>
                                     {
