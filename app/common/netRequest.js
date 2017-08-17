@@ -4,7 +4,7 @@ export default fetcher = {
         Promise.race([
             post_promise(url, data),
             new Promise(function (resolve, reject) {
-                setTimeout(() => reject(new Error('request timeout')), 10000)
+                setTimeout(() => reject(new Error('request timeout')), 100000)
             })
         ])
         .then((value) => successCallback(value))

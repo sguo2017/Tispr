@@ -86,6 +86,7 @@ let url = {
      //////////////////<<<<   API接口  >>>>>//////////////////////////////
      SERV_API_ADDR: `123.56.157.233`,
      SERV_API_PORT: `8082`,
+     SERV_API_SOCKET_PORT: `4000`,
      SERV_API_USER_LOGIN: `/api/users/sessions`,//登录接口
      SERV_API_USER_REGI: `/api/users/registrations`, //注册接口
      SERV_API_USER_PASSWORD: `/api/users/passwords`,//忘记密码接口

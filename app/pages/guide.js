@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     Alert,
     Platform,
+    AppState
 } from 'react-native';
 import JPushModule from 'jpush-react-native';
 import { Geolocation } from 'react-native-baidu-map';
