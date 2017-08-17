@@ -130,8 +130,8 @@ export default class feedback extends Component {
                         this.state.avatarSourceArray.map((source, i) => {
                             return (
                                 <View key={i} style={[styles.avatar, styles.avatarContainer, { marginBottom: 5, marginLeft: 5, }]}>
-                                    <TouchableOpacity style={{ position: 'absolute', right: 0, top: 0, zIndex: 9999,}} onPress={() => { this.deletePhoto(i) }}>
-                                        <Image style={{ width: 20, height: 20, borderRadius: 10, backgroundColor: '#FFC400' }} source={require('../../resource/w-cancel-line-nor.png')} />
+                                    <TouchableOpacity style={{ position: 'absolute', right: 0, top: 0, zIndex: 9999,borderRadius: 10, backgroundColor: '#FFC400'}} onPress={() => { this.deletePhoto(i) }}>
+                                        <Image style={{ width: 20, height: 20, borderRadius: 10,  }} source={require('../../resource/w-cancel-line-nor.png')} />
                                     </TouchableOpacity>
                                     <Image style={styles.avatar} source={source} />
                                 </View>
