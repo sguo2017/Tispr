@@ -21,7 +21,7 @@ export default class CloseDeal extends Component{
                     activeOpacity={0.75}
                     style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',borderTopColor: '#ccc',
                    marginTop: 30, backgroundColor: '#81d49c',width: 300,height:44}}
-                   onPress={() => this.props.navigator.resetTo({component:TabBarView})}
+                   onPress={() => this.props.navigator.resetTo({component:TabBarView, passProps:{initialPage: 3}})}
                 >
                     <Text style={{ fontSize: 22, color: '#FFF' }}>
                        知道了

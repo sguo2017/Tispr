@@ -49,7 +49,7 @@ export default class ProposeDeal extends Component{
         };
         Util.patch(url,data,
             (response)=>{
-             this._createChat(order_id, this.state.new_price);
+             this._createChat(this.props.chatRoomId, this.state.new_price);
                 Alert.alert(
                     '提示',
                     '已向对方询价，待对方确认',
@@ -62,28 +62,18 @@ export default class ProposeDeal extends Component{
         )
     }
 
-    async _createChat(_deal_id,chat_content){
-        const { feed } = this.props;
-        let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
+    async _createChat(room_id,chat_content){
+        let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + '/api/chats/chat_rooms/' +room_id +'/chat_messages?token='+global.user.authentication_token
         let data = {
-            chat: {
-                deal_id: _deal_id,
-                chat_content: chat_content,
+            chat_message: {
+                message: chat_content,
                 user_id: global.user.id,
-                catalog: 2,
-                receive_user_id:  feed.offer_user_id==global.user.id?feed.request_user_id:feed.offer_user_id,
             }
         }
         fetchers.post(URL, data, (response)=>{
                 console.log("成功创建会话")
             }
         )
-        // Util.post(URL,data,
-        //     (response)=>{
-        //         console.log("成功创建会话")
-        //     },
-        //     this.props.navigator
-        // )
     }
 
     render(){

@@ -12,7 +12,7 @@ import {
 import Constant from '../common/constants';
 import CloseDeal from './CloseDeal';
 import Util from '../common/utils'
-
+import fetchers from '../common/netRequest'
 export default class OrderConfirm extends Component{
 
     constructor(props) {
@@ -21,18 +21,20 @@ export default class OrderConfirm extends Component{
 
     async clickJump() {
         let t = global.user.authentication_token;
+        let chatRoomId = this.props.chatRoomId;
         let order_id = this.props.order_id;
         let url ='http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ORDER_UPDATE +'/' +order_id +'?token='+ t;            
         let data = {
             order: {
-                    status: Constant.orderStatus.CONFIRMED,
+                status: Constant.orderStatus.CONFIRMED,
+                lately_chat_content:  "我同意了你提出的价格",
             }
         };
         Util.patch(
             url,
             data,
             (response)=>{
-                this._createChat(order_id);
+                this._createChat(chatRoomId);
                 const { navigator } = this.props;
                 if (navigator) {
                 navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
@@ -45,18 +47,18 @@ export default class OrderConfirm extends Component{
         )    
     }
 
-    async _createChat(_deal_id){
-        let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
+    async _createChat(room_id){
+        let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + '/api/chats/chat_rooms/' +room_id +'/chat_messages?token='+global.user.authentication_token
         let data = {
-            chat: {
-                deal_id: _deal_id,
-                chat_content: "我同意了您提出的价格",
+            chat_message: {
+                message: "我同意了你提出的价格",
                 user_id: global.user.id,
-                catalog: 2,
-                receive_user_id: this.props.receive_user_id,
             }
         }
-        Util.post(URL, data, ()=>{console.log("创建会话成功")}, this.props.navigator)
+        fetchers.post(URL, data, (response)=>{
+                console.log("成功创建会话")
+            }
+        )
     }
 
     render(){

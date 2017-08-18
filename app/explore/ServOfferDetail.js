@@ -186,24 +186,10 @@ export default class ServOfferDetail extends Component {
             if (response.status >= 200 && response.status < 300) {
                 //console.log("line:153");
                 let resObject = JSON.parse(res);
+                 let newOrder = resObject.feed;
                 let avaliableTimes = resObject.avaliable;
-                let type = 'offer';
                 if (resObject.status == 0) {
-                    this._createChat(resObject.id, default_msg);
-                    if (!this.state.hasSeenTotalTimes) {
-                        UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
-                            if (hasSeenTotalRestimesPage == null) {
-                                hasSeenTotalRestimesPage = {};
-                            }
-                            hasSeenTotalRestimesPage[global.user.id] = true
-                            UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
-                        })
-                        this.props.navigator.push({ component: totalResTimes, passProps: { avaliableTimes, type } });
-                    } else if (avaliableTimes == 5) {
-                        this.props.navigator.push({ component: resTimes, passProps: { avaliableTimes, type } });
-                    } else {
-                        this.props.navigator.resetTo({ component: TabBarView, passProps: { initialPage: 3 } });
-                    }
+                    this._createChat(newOrder, avaliableTimes, default_msg);
                 } else if (resObject.status == -2) {
                     this.props.navigator.push({component: noConnectTimes})
                 }
@@ -216,39 +202,24 @@ export default class ServOfferDetail extends Component {
         }
     }
 
-    async _createChat(_deal_id, chat_content) {
-        try {
-            let URL = `http://` + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + `${global.user.authentication_token}`;
-            let response = await fetch(URL, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-
-                body: JSON.stringify({
-                    chat: {
-                        deal_id: _deal_id,
-                        chat_content: chat_content,
-                        user_id: global.user.id,
-                        catalog: 2,
-                        receive_user_id: this.props.feed.user_id,
-                    }
-                })
-            });
-
-            let res = await response.text();
-            if (response.status >= 200 && response.status < 300) {
-                console.log("line:99");
-            } else {
-                let error = res;
-                throw error;
+    async _createChat(newOrder, avaliableTimes, chat_content){
+    let type = 'offer';
+        /*当前用户没有看过每天联系总数量的提示时 */
+    if (!this.state.hasSeenTotalTimes) {
+        UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+            if (hasSeenTotalRestimesPage == null) {
+                hasSeenTotalRestimesPage = {};
             }
-        } catch (error) {
-            console.log("error " + error);
-        }
-    }
-
+            hasSeenTotalRestimesPage[global.user.id] = true
+            UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
+        })
+        this.props.navigator.push({component:totalResTimes, passProps:{feed: newOrder,type}});
+    }else if(avaliableTimes == 5){
+        this.props.navigator.push({component:resTimes, passProps:{feed: newOrder,type}});
+    }else{
+        this.props.navigator.resetTo({component:ChatRoom, passProps: {feed: newOrder, newChat: true}});
+    }      
+  }
     _onPressCell(feed) {
         this.props.navigator.push({
             component: ServOfferDetail,

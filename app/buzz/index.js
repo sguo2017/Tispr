@@ -34,7 +34,7 @@ import ServOfferDetail from '../explore/ServOfferDetail'
 import resTimes from './restTimes';
 import noConnectTimes from './noConnectTimes';
 import totalResTimes from './totalResTimes';
-import ChatDetail from '../chat/ChatDetail';
+import ChatRoom from '../chat/ChatRoom';
 import Util from '../common/utils'
 import breakdown from '../sys/others/breakdown';
 import offline from '../sys/others/offline';
@@ -302,7 +302,7 @@ export default class BussList extends Component {
                     let avaliableTimes =resObject.avaliable;
                     let newOrder = resObject.feed;
                     if (resObject.status == 0) {
-                        this._createChat(newOrder,avaliableTimes, lately_chat_content, receive_user_id);
+                        this._createChat(newOrder,avaliableTimes, lately_chat_content);
                     } else if (resObject.status == -2) {
                         this.props.navigator.push({component: noConnectTimes});
                     } else if (resObject.status == -1) {
@@ -322,54 +322,23 @@ export default class BussList extends Component {
         )
         
     }
-    async _createChat(newOrder, avaliableTimes, chat_content, receive_user_id) {
-        try {
-            let URL = 'http:\/\/' + Constant.url.IMG_SERV_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CHAT + global.user.authentication_token;
-            let response = await fetch(URL, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-
-                body: JSON.stringify({
-                    chat: {
-                        deal_id: newOrder.id,
-                        chat_content: chat_content,
-                        user_id: global.user.id,
-                        catalog: 2,
-                        receive_user_id: receive_user_id,
-                    }
-                })
-            });
-
-            let res = await response.text();
-            if (response.status >= 200 && response.status < 300) {
-                let resObject =JSON.parse(res);
-                let type = 'offer';
-                 /*当前用户没有看过每天联系总数量的提示时 */
-                if (!this.state.hasSeenTotalTimes) {
-                    UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
-                        if (hasSeenTotalRestimesPage == null) {
-                            hasSeenTotalRestimesPage = {};
-                        }
-                        hasSeenTotalRestimesPage[global.user.id] = true
-                        UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
-                    })
-                    this.props.navigator.push({component:totalResTimes, passProps:{feed: newOrder,type}});
-                }else if(avaliableTimes == 5){
-                    this.props.navigator.push({component:resTimes, passProps:{feed: newOrder,type}});
-                }else{
-                    this.props.navigator.resetTo({component:ChatDetail, passProps: {feed: newOrder, newChat: true}});
-                }       
-            } else {
-                let error = res;
-                throw error;
-            }
-
-        } catch (error) {
-            console.log("error " + error);
-        }
+    async _createChat(newOrder, avaliableTimes, chat_content) {
+        let type = 'offer';
+            /*当前用户没有看过每天联系总数量的提示时 */
+        if (!this.state.hasSeenTotalTimes) {
+            UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+                if (hasSeenTotalRestimesPage == null) {
+                    hasSeenTotalRestimesPage = {};
+                }
+                hasSeenTotalRestimesPage[global.user.id] = true
+                UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
+            })
+            this.props.navigator.push({component:totalResTimes, passProps:{feed: newOrder,type}});
+        }else if(avaliableTimes == 5){
+            this.props.navigator.push({component:resTimes, passProps:{feed: newOrder,type}});
+        }else{
+            this.props.navigator.resetTo({component:ChatRoom, passProps: {feed: newOrder, newChat: true}});
+        }       
     }
     _updateCard(index, newStatus, id, lately_chat_content, receive_user_id) {
         let arr = d.state.sys_msgs;
