@@ -524,9 +524,9 @@ export default class ServOfferDetail extends Component {
 
 
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: '#eeee' }}>
-                        {
-
-                            this.state.offerList.map((data, index) => {
+                        <View>
+                            {this.state.offerList.map((data, index) => {
+                                if (index%2 === 1) return;
                                 return (
                                     <OfferItem
                                         key={`${data.id}-${index}`}
@@ -535,9 +535,21 @@ export default class ServOfferDetail extends Component {
                                         onCall={() => this._selectMessage(data)}
                                     />
                                 )
-                            })
-
-                        }
+                            })}
+                        </View>
+                        <View>
+                            {this.state.offerList.map((data, index) => {
+                                if (index%2 === 0) return;
+                                return (
+                                    <OfferItem
+                                        key={`${data.id}-${index}`}
+                                        offer={data}
+                                        onPress={() => this._onPressCell(data)}
+                                        onCall={() => this._selectMessage(data)}
+                                    />
+                                )
+                            })}
+                        </View>
                     </View>                    
                 </ScrollView>
                 {/*分享弹窗*/}
@@ -1018,12 +1030,13 @@ const OfferItem = ({
                         {offerUserNil && offerUser.name}
                     </Text>
                 </View>
+                {offer.user.id == global.user.id?<View></View>:
                 <TouchableOpacity
                     activeOpacity={0.75}
                     onPress={onCall}
                 >
                     <Image style={{ height: 18, width: 18 }} source={require('../resource/y-chat.png')} />
-                </TouchableOpacity>
+                </TouchableOpacity>}
             </View>
         </TouchableOpacity>
     );
