@@ -10,7 +10,8 @@ import {
   AppState, 
   Alert,
   Image,
-  Modal
+  Modal,
+  Linking
 } from 'react-native';
 
 import GiftedMessenger from 'react-native-gifted-messenger';
@@ -49,9 +50,12 @@ export default class ChatRoom extends Component {
 
     this._messages = [];
     this.senderId = global.user.id;
-    this.senderEmail = global.user.name;
+    this.senderName = global.user.name;
+    this.senderAvatar = global.user.avatar;
+    this.recipientPhoneNum = global.user.id == this.props.feed.request_user_id?this.props.feed.offer_user_num :this.props.feed.request_user_num;
     this.recipientId = global.user.id == this.props.feed.request_user_id?this.props.feed.offer_user_id :this.props.feed.request_user_id;
-    this.recipientEmail = global.user.id == this.props.feed.request_user_id?this.props.feed.offer_user:this.props.feed.request_user;
+    this.recipientName = global.user.id == this.props.feed.request_user_id?this.props.feed.offer_user:this.props.feed.request_user;
+    this.recipientAvatar = global.user.id == this.props.feed.request_user_id?this.props.feed.offer_user_avatar :this.props.feed.request_user_avatar;
     this.state = {
       messages: this._messages,
       isLoadingEarlierMessages: false,
@@ -83,7 +87,7 @@ export default class ChatRoom extends Component {
       console.log('new message', JSON.stringify(data));
       that.handleReceive({
         text: data.message,
-        name: this.recipientEmail,
+        name: this.recipientName,
         image: null,
         position: 'left',
         date: new Date(),
@@ -190,8 +194,7 @@ export default class ChatRoom extends Component {
           // }
           earlierMessages.push({
             text: msg.message,
-            name: (msg.user_id == this.senderId) ? this.senderEmail : this.recipientEmail,
-            image: null,
+            image:(msg.user_id == this.senderId) ? this.senderAvatar : this.recipientAvatar,
             position: (msg.user_id == this.senderId) ? 'right' : 'left',
             date: new Date(msg.created_at),
             uniqueId: msg.id
@@ -216,7 +219,7 @@ export default class ChatRoom extends Component {
     
     // append the message
     this.setState({
-      messages: messages,
+      messages: this._messages,
     });
   }
 
@@ -234,11 +237,43 @@ export default class ChatRoom extends Component {
   }
 
   handleReceive(message = {}) {
+    message.image = this.recipientAvatar
     // make sure that your message contains :
     // text, name, image, position: 'left', date, uniqueId
     this.setMessages(this._messages.concat(message));
   }
-
+  clickCall = () => {
+    let phoneNum = this.recipientPhoneNum;
+    let username = this.recipientName;
+    Linking.canOpenURL(`tel:${phoneNum}`).then(supported => {
+      if (!supported) {
+        Alert.alert(
+          '提示',
+          '该设备暂不支持拨打功能',
+          [
+            { text: '确定', onPress: null },
+          ]
+        )
+      } else {
+        Alert.alert(
+          null,
+          `是否呼叫${username}`,
+          [
+            { text: '否', onPress: null },
+            { text: '是', onPress: () => {Linking.openURL(`tel:${phoneNum}`)} },
+          ]
+        )
+      }
+    }).catch(err => {
+      Alert.alert(
+        null,
+        '拨打出错,请重试',
+        [
+          { text: '确定', onPress: null },
+        ]
+      );
+    });
+  }
   render() {
     const { feed } = this.props;
     let obj = {};
@@ -283,14 +318,23 @@ export default class ChatRoom extends Component {
           blurOnSubmit={true}
           submitOnReturn={true}
           keyboardShouldPersistTaps="never"
-          maxHeight={Dimensions.get('window').height - NavigationExperimental.Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT-100}
-
+          maxHeight={Dimensions.get('window').height - NavigationExperimental.Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT-60}
+          forceRenderImage = {true}
           messages={this.state.messages}
           handleSend={this.handleSend.bind(this)}
-
+          dateLocale= 'zh-cn'
+          sendButtonText = '发送'
+          placeholder = '新消息'
+          textInputRightIcon = {require('../resource/y-call.png')}
+          textInputLeftIcon = {require('../resource/y-ico-add.png')}
+          textInputRightIconAction = {this.clickCall.bind(this)}
+          textInputLeftIconAction = {()=>{console.log("press left button")}}
+          loadEarlierMessagesButtonText = '查看更早的消息'
           loadEarlierMessagesButton={!this.state.allLoaded}
           isLoadingEarlierMessages={this.state.isLoadingEarlierMessages}
           onLoadEarlierMessages={this._getChatMessages.bind(this)}
+          senderName = {global.user.name}
+          senderImage = {this.senderAvatar}
         />
 
         <Modal
