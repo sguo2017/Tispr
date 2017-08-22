@@ -325,10 +325,10 @@ export default class ChatRoom extends Component {
           dateLocale= 'zh-cn'
           sendButtonText = '发送'
           placeholder = '新消息'
-          textInputRightIcon = {require('../resource/y-call.png')}
-          textInputLeftIcon = {require('../resource/y-ico-add.png')}
-          textInputRightIconAction = {this.clickCall.bind(this)}
-          textInputLeftIconAction = {()=>{console.log("press left button")}}
+          textInputRightIcon = {require('../resource/y-ico-add.png')}
+          textInputLeftIcon = {require('../resource/y-call.png')}
+          textInputRightIconToggle = {require('../resource/input_keyboard.png')}
+          textInputLeftIconAction = {this.clickCall.bind(this)}
           loadEarlierMessagesButtonText = '查看更早的消息'
           loadEarlierMessagesButton={!this.state.allLoaded}
           isLoadingEarlierMessages={this.state.isLoadingEarlierMessages}
