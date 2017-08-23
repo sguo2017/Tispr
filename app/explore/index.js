@@ -397,6 +397,7 @@ class ExploreList extends PureComponent {
                     {
                       this.state.tabName == 'index' ?
                         <View style={styles.modalStyle}>
+                            <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
                                     <TouchableOpacity onPress={() => this.setState({ cps: [true, false, false, false, false, false, false], transiSortBy: '综合排序', transiClassify: '全部人才' })}>
@@ -494,8 +495,9 @@ class ExploreList extends PureComponent {
                                             </TouchableOpacity>
                                         </View>
                                     </View>
-                                </ScrollableTabView>
+                                </ScrollableTabView> 
                             </View>
+                            </TouchableWithoutFeedback>
                         </View>                       
                         : <View></View>
                   }
@@ -503,6 +505,7 @@ class ExploreList extends PureComponent {
                   {
                       this.state.tabName == 'recentPublish' ?
                         <View style={styles.modalStyle}>
+                            <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
                                     <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
@@ -529,12 +532,14 @@ class ExploreList extends PureComponent {
                                     </TouchableOpacity>
                                 </View>
                             </View>
+                            </TouchableWithoutFeedback>
                         </View>
                         : <View></View>
                   }
                   {
                       this.state.tabName == 'allTalentedPeople' ?
                         <View style={styles.modalStyle}>
+                            <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
                                     <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
@@ -611,12 +616,14 @@ class ExploreList extends PureComponent {
                                     </TouchableOpacity>
                                 </View>
                             </View>
+                            </TouchableWithoutFeedback>
                         </View>
                         : <View></View>
                   }
                   {
                       this.state.tabName == 'selectLocation' ?
                         <View style={styles.modalStyle}>
+                            <TouchableWithoutFeedback  onPress={() => {}}>
                             <View style={styles.subView}>
                                 <View style={styles.modalHead}>
                                     <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
@@ -652,6 +659,7 @@ class ExploreList extends PureComponent {
                                     }}
                                 />
                             </View>
+                            </TouchableWithoutFeedback>
                         </View>
                         : <View></View>
                   }
