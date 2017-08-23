@@ -20,6 +20,7 @@ export default class Guide extends React.Component {
     constructor() {
         super();
         this.state = {
+            currentAppState: AppState.currentState,
             initialPosition: 'unknown',//
             lastPosition: 'unknown',
             addressComponent: { "country": "中国", "country_code": 0, "province": "广东省", "city": "广州市", "district": "番禺区", "adcode": "440113", "street": "石北路", "street_number": "", "direction": "", "distance": "" }
@@ -31,9 +32,10 @@ export default class Guide extends React.Component {
     }
 
     _handleAppStateChange = (nextAppState) => {
-        if (this.state.appState.match(/inactive|background/) && nextAppState === 'active'&&Platform.OS === 'ios') {
+        if (this.state.currentAppState.match(/inactive|background/) && nextAppState === 'active'&&Platform.OS === 'ios') {
             JPushModule.setBadge(0, (success) => {});
         }
+        this.setState({currentAppState: nextAppState});
     }
 
     onGetRegistrationIdPress() {
