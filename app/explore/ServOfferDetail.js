@@ -577,7 +577,7 @@ export default class ServOfferDetail extends Component {
                                             description: feed.serv_detail,
                                             thumbImage: _images[0],
                                             type: 'news',
-                                            webpageUrl: 'http://'+Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + '/goods_show?id='+ feed.id})
+                                            webpageUrl: 'http://'+Constant.url.SHARE_SERV_ADDR + ':' + Constant.url.SHARE_SERV_PORT + '/goods_show?id='+ feed.id})
                                             .catch((error) => {
                                             console.log("566"+JSON.stringify(error));
                                             });
@@ -598,7 +598,7 @@ export default class ServOfferDetail extends Component {
                           description: feed.serv_detail,
                           thumbImage: _images[0],
                           type: 'news',
-                          webpageUrl: 'http://'+Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + '/goods_show?id='+ feed.id})
+                          webpageUrl: 'http://'+Constant.url.SHARE_SERV_ADDR + ':' + Constant.url.SHARE_SERV_PORT + '/goods_show?id='+ feed.id})
                                         .catch((error) => {
                                         console.log("583"+JSON.stringify(error));
 
