@@ -12,7 +12,8 @@ import {
   Image,
   Platform,
   ScrollView,
-  ToastAndroid
+  ToastAndroid,
+  Modal
 } from 'react-native';
 
 import TabBarView from '../containers/TabBarView';
@@ -42,6 +43,8 @@ export default class Register extends Component {
       seePassword: false,
       passwordValid: true,
       time: '',
+      showModal: false,
+      invitationCode:''
     }
   }
   _navigate(routeName) {
@@ -65,6 +68,11 @@ export default class Register extends Component {
         passProps: {newUser: true}
       })
     }
+  }
+  showInvitationCodeModal(){
+    this.setState({
+      showModal:true
+    })
   }
 
   async onRegisterPressed() {
@@ -230,6 +238,44 @@ export default class Register extends Component {
   focusNextField = (nextField) => {
     this.refs[nextField].focus();
   };
+  validateCode(){
+    let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_VALIDATE_CODE;
+    data={code: this.state.invitationCode}
+    fetchers.post(url, data, (result)=>{
+        if(result.status == -1){
+          Alert.alert(
+            '提示',
+            '邀请码已失效',
+            [
+              { text: '确定'},
+            ]
+          )
+        }
+        if(result.status == 0){
+          this.setState({showModal:false})
+           this.onRegisterPressed()
+        }
+        if(result.status == -1){
+          Alert.alert(
+            '提示',
+            '邀请码不正确',
+            [
+              { text: '确定'},
+            ]
+          )
+        }
+      },
+      (error)=> {
+        Alert.alert(
+          '提示',
+          '失败',
+          [
+             { text: '确定'},
+          ]
+        )
+      }
+    )
+  }
 
   render() {
     const mailRegister = (
@@ -358,21 +404,84 @@ export default class Register extends Component {
               <Text style={[styles.themeText, this.state.sendingCode&&styles.greyText]}>获取短信验证码{this.state.time}</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={this.onRegisterPressed.bind(this)} style={styles.loginButton}>
+          <TouchableOpacity onPress={this.showInvitationCodeModal.bind(this)} style={styles.loginButton}>
             <Text style={styles.loginButtonText}>注册</Text>
           </TouchableOpacity>
         </View>
       </View>
     )
+    const invitationCodeModal = (
+      <Modal  
+           animationType='slide'  
+           transparent={true}  
+           visible={this.state.showModal}  
+           onShow={() => {}}  
+           onRequestClose={() => {}} >  
+           <View style={styles.modalStyle}>  
+             <View style={styles.subView}>  
+               <Text style={styles.titleText}>  
+                 请输入邀请码 
+               </Text>  
+               <Text style={styles.contentText}>  
+                邀请码
+               </Text>  
+               <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee' ,marginLeft:10,marginRight:10}} >
+                <TextInput
+                  onChangeText={(val) => this.setState({ invitationCode: val })}
+                  style={styles.input} 
+                  value={this.state.invitationCode}
+                  underlineColorAndroid="transparent"
+                  returnKeyType = 'next'
+                  placeholderTextColor  = '#ccc'
+                  multiline = {false}
+                  placeholder ="heh"
+                />
+              </View>
+               <View style={styles.buttonView}>  
+                 <TouchableHighlight 
+                   style={styles.button1Style}  
+                   onPress={()=>this.setState({showModal:false})}
+                 >  
+                   <Text style={{color:'#808080',fontSize:16}}>  
+                     残忍的拒绝  
+                   </Text>  
+                 </TouchableHighlight>  
+                 <TouchableHighlight
+                   style={styles.button2Style}  
+                   onPress={() => this.validateCode()}
+                   disabled={false}
+                 >  
+                   <Text style={{color:'#000',fontSize:16}}>  
+                     提交 
+                   </Text>  
+                 </TouchableHighlight>  
+               </View>  
+             </View>  
+           </View>  
+        </Modal>  
+    )
     return (
       <View style={styles.container}>
+        {this.state.showModal?
+                <View style={styles.cover}></View>
+                :null}
         {this.state.firstPage? mailRegister : phoneVerify}
+        {invitationCodeModal}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  cover: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    position: 'absolute', 
+    top: 0, 
+    left: 0, 
+    height: global.gScreen.height, 
+    width: global.gScreen.width, 
+    zIndex: 99
+  },
   container: {
     flex: 1,
     justifyContent: 'flex-start',
@@ -448,5 +557,74 @@ const styles = StyleSheet.create({
   },
   themeText:{
     color: global.gColors.themeColor,
-  }
+  },
+   // modal的样式  
+  modalStyle: {  
+    // backgroundColor:'#ccc',  
+    flex:1,  
+    position: 'absolute',
+    top:100,
+    width:400,
+    left:(global.gScreen.width-400)/2
+  },  
+  // modal上子View的样式  
+  subView:{  
+    marginLeft:60,  
+    marginRight:60,  
+    backgroundColor:'#fff',  
+    alignSelf: 'stretch',  
+    justifyContent:'center',  
+    borderRadius: 10,  
+    borderWidth: 0.5,  
+    borderColor:'#ccc',  
+  },  
+  // 标题  
+  titleText:{  
+    marginTop:10,  
+    marginBottom:5,  
+    fontSize:16,  
+    fontWeight:'bold',  
+    textAlign:'center',  
+  },  
+  // 内容  
+  contentText:{  
+    margin:8,  
+    fontSize:16,  
+    textAlign:'left',  
+  },  
+  // 水平的分割线  
+  horizontalLine:{  
+    marginTop:5,  
+    height:0.5,  
+    backgroundColor:'#ccc',  
+  },  
+  // 按钮  
+  buttonView:{  
+    flexDirection: 'row',  
+    alignItems: 'center',  
+  },  
+  button1Style:{  
+    flex:1,  
+    height:44,  
+    alignItems: 'center',  
+    justifyContent:'center',  
+    margin: 10,
+    borderRadius:8
+  },  
+  button2Style:{  
+    flex:1,  
+    height:44,  
+    alignItems: 'center',  
+    justifyContent:'center',  
+    backgroundColor:global.gColors.buttonColor,
+    margin: 10,
+    borderRadius:8
+  }, 
+  // 竖直的分割线  
+  verticalLine:{  
+    width:0.5,  
+    height:44,  
+    backgroundColor:'#ccc',  
+  },  
+  
 });
