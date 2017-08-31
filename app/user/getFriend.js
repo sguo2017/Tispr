@@ -74,7 +74,20 @@ export default class getFriend extends Component {
                     removeClippedSubviews={false}
                     renderItem = {(item)=>{
                         return (
-                                <Text>{item.item.friend_name}{item.item.friend_num}{item.item.status}</Text>                               
+                            <View style={styles.list}>
+                                <Text style={{color: 'black', }}>{item.item.friend_name}</Text>
+                                {item.item.status == 'created'?
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                    <Text>已自动添加为好友</Text>
+                                 <TouchableOpacity style={{marginLeft: 10}}>
+                                     <Text style={{color: 'red', }}>移除好友</Text>
+                                 </TouchableOpacity>
+                                </View>:
+                                 <TouchableOpacity>
+                                     <Text style={{color: '#4a90e2', }}>邀请</Text>
+                                 </TouchableOpacity>
+                                }
+                            </View>                          
                             );
 
                     }}
@@ -119,4 +132,13 @@ const styles = StyleSheet.create({
         left: 0,
         height: 44,
     },
+    list: {
+        height: 40, 
+        borderBottomWidth: 1, 
+        borderColor: '#eeeeee', 
+        alignItems: 'center', 
+        flexDirection: 'row', 
+        justifyContent: 'space-between',
+        marginHorizontal: 16
+    }
 })
