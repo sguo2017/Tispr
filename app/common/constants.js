@@ -74,27 +74,27 @@ let offer_range = ["不上门","5公里内","10公里内","15公里内","25公�
 let url = {
     // 生产环境 begin
     // //////////////////<<<<   图片服务器  >>>>>//////////////////////////////
-     IMG_SERV_ADDR: "47.92.27.52",
-     IMG_SERV_PORT: "9090",
-     SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
-     //////////////////<<<<   API接口  >>>>>//////////////////////////////
-     SERV_API_ADDR: `47.92.27.52`,
-     SERV_API_PORT: `80`,
-     SHARE_SERV_ADDR: 'mobile.weilinwang.cn',
-     SHARE_SERV_PORT: '80',
+    //  IMG_SERV_ADDR: "47.92.27.52",
+    //  IMG_SERV_PORT: "9090",
+    //  SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
+    //  //////////////////<<<<   API接口  >>>>>//////////////////////////////
+    //  SERV_API_ADDR: `47.92.27.52`,
+    //  SERV_API_PORT: `80`,
+    //  SHARE_SERV_ADDR: 'mobile.weilinwang.cn',
+    //  SHARE_SERV_PORT: '80',
     // 生产 end   
 
     // 测试环境 begin
     ////////////////<<<<   图片服务器  >>>>>//////////////////////////////
-    //  IMG_SERV_ADDR: "123.56.157.233",
-    //  IMG_SERV_PORT: "9090",
-    //  SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
-    //  //////////////////<<<<   API接口  >>>>>//////////////////////////////
-    //  SERV_API_ADDR: `123.56.157.233`,
-    //  SERV_API_PORT: `8082`,
-    //  SERV_API_SOCKET_PORT: `4000`,
-    //  SHARE_SERV_ADDR: '123.56.157.233',
-    //  SHARE_SERV_PORT: '8082',
+     IMG_SERV_ADDR: "123.56.157.233",
+     IMG_SERV_PORT: "9090",
+     SERV_API_IMG_UPLOAD_SERVLET: `/FastDFSWeb/servlet/imageUploadServlet`,//图片上传接口
+     //////////////////<<<<   API接口  >>>>>//////////////////////////////
+     SERV_API_ADDR: `123.56.157.233`,
+     SERV_API_PORT: `8082`,
+     SERV_API_SOCKET_PORT: `4000`,
+     SHARE_SERV_ADDR: '123.56.157.233',
+     SHARE_SERV_PORT: '8082',
      // 测试环境 end
      SERV_API_USER_LOGIN: `/api/users/sessions`,//登录接口
      SERV_API_USER_REGI: `/api/users/registrations`, //注册接口
@@ -116,8 +116,11 @@ let url = {
      SERV_API_SMS_SEND_ADD:`/api/sys/sms_sends.json`,//登录生成短信验证码
      SERV_API_SMS_SEND_CHANGE_PHONE:`/api/sys/sms_sends?change_phone=1`,//更改手机号生成短信验证码
      SERV_SPI_SMS_SEND_REGISTER_PHONE:`/api/sys/sms_sends?register_phone=1`,//注册生成短信验证码
+     SERV_API_VALIDATE_PHONE: `/api/users/validate_phone`, //验证手机号api
+     SERV_API_VALIDATE_EMAIL: `/api/users/validate_email`,//验证邮箱api
      SERV_API_PHONE_LOGIN:`/api/users/phone_login`,//短信验证码登录
      SERV_API_CHANGE_PHONE:`/api/users/sms_login?change_phone=1`,//更换手机号码接口
+     SERV_API_CONTACTS_LIST:`/api/friends/friend_list`,//上传手机通讯录API
      SERV_API_TOKEN_LOGIN: `/api/users/token_login?token=`,//token登录
      SERV_API_GOODS_CATALOG:`/api/goods/goods_catalogs?token=`,//商品分类
      SERV_API_SYS_MSGS_QUERIES:`/api/sys_msgs_timelines/sys_msgs_queries?token=`,//系统消息查询API

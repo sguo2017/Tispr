@@ -24,6 +24,9 @@ import AutoTextInput from '../components/AutoTextInput';
 import nationWarning from '../sys/others/nationWarning';
 import personalinfoEdit from '../me/personalinfoEdit';
 import fetchers from '../common/netRequest'
+import util from '../common/utils'
+import getFriend from './getFriend'
+
 export default class Register extends Component {
   constructor() {
     super();
@@ -67,15 +70,21 @@ export default class Register extends Component {
         name: 'personalinfoEdit',
         passProps: {newUser: true}
       })
+    } else if( routeName == 'getFriend'){
+       navigator.push({
+        component: getFriend,
+        name: 'getFriend',
+      })
     }
   }
-  showInvitationCodeModal(){
-    this.setState({
-      showModal:true
-    })
+  async showInvitationCodeModal(){
+    this.setState({showModal:true})
   }
 
+  
+
   async onRegisterPressed() {
+    console.log(127)
     if(global.user == undefined){
       global.user ={}
     }
@@ -99,7 +108,6 @@ export default class Register extends Component {
             password: this.state.password,
             password_confirmation: this.state.password,
             num: this.state.num,
-            code: this.state.code,
             avatar: Constant.default_img.AVATAR,
             district: global.user.addressComponent.district,
             city: global.user.addressComponent.city,
@@ -130,12 +138,13 @@ export default class Register extends Component {
             ]
           )
         }else if(result.user){
+          console.log(181)
           let userdetail =JSON.parse(result.user);    
           UserDefaults.setObject(Constant.storeKeys.ACCESS_TOKEN_TISPR, result.token)
           global.user = global.user = userdetail;
           global.user.addressComponent = address;
           global.user.authentication_token = result.token;  
-          this._navigatePerInfo();
+          this._navigate('getFriend');
         }        
       } else {
         UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
@@ -238,42 +247,71 @@ export default class Register extends Component {
   focusNextField = (nextField) => {
     this.refs[nextField].focus();
   };
+
   validateCode(){
     let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_VALIDATE_CODE;
     data={code: this.state.invitationCode}
-    fetchers.post(url, data, (result)=>{
+    data={code: this.state.invitationCode}
+    util.post(url, data, (result)=>{
         if(result.status == -1){
-          Alert.alert(
-            '提示',
-            '邀请码已失效',
-            [
-              { text: '确定'},
-            ]
-          )
+          console.log('邀请码已失效')
         }
         if(result.status == 0){
           this.setState({showModal:false})
            this.onRegisterPressed()
         }
-        if(result.status == -1){
-          Alert.alert(
-            '提示',
-            '邀请码不正确',
-            [
-              { text: '确定'},
-            ]
-          )
+        if(result.status == -2){
+          console.log('邀请码不正确')
         }
       },
-      (error)=> {
-        Alert.alert(
-          '提示',
-          '失败',
-          [
-             { text: '确定'},
-          ]
-        )
+      this.props.navigator
+    )
+  }
+
+  validateEmail() {
+    let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_VALIDATE_EMAIL;
+    let data = {
+      user: {
+        email: this.state.email
       }
+    }
+    util.post(url, data,
+     (result) => {
+      if(result.status == 0){
+          console.log("验证通过")
+          this.showInvitationCodeModal()
+        }
+        if(result.error){
+          console.log("邮箱已经被注册")
+        }
+      },
+      this.props.navigator
+    )
+  }
+
+  validatePhone(){
+    //this._navigate('getFriend');
+    let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_VALIDATE_PHONE;
+    data = {
+      user:{
+        num:this.state.num,
+        code:this.state.code
+      }
+    }
+    util.post(url, data, 
+      (result)=>{
+        if(result.status == 0){
+          console.log("用户已被推荐")
+        }
+        if(result.status == 1){
+          console.log("用户未推荐，需要邀请码")
+          this.setState({firstPage: false})
+        }
+        if(result.error){
+          console.log("手机号已经被注册，验证码不正确")
+        }
+      },
+      this.props.navigator
     )
   }
 
@@ -283,9 +321,9 @@ export default class Register extends Component {
         <Header
           title='注册'
           leftIcon={require('../resource/ic_back_white.png')}
-          leftIconAction = {this._onBack}
+          leftIconAction = {()=>this.setState({firstPage: false})}
           rightButton='下一步'
-          rightButtonAction={()=> {if(this.state.isEmail && this.state.name && this.state.password){this.setState({firstPage: false});}}}
+          rightButtonAction={()=> {if(this.state.isEmail && this.state.name && this.state.password){this.validateEmail()}}}
         />
         <ScrollView style={{ paddingHorizontal: 16}}>
           <View style={{marginVertical: 16, flexDirection: 'row', height: 40}}>
@@ -340,7 +378,7 @@ export default class Register extends Component {
                 returnKeyType = 'done'
                 secureTextEntry={this.state.seePassword}
                 multiline = {false}
-                onSubmitEditing={()=> {if(this.state.isEmail && this.state.name && this.state.password){this.setState({firstPage: false});}}}
+                onSubmitEditing={this.onRegisterPressed.bind(this)}
                 onBlur ={()=>{if(this.state.password){this.setState({passwordValid: true})}else{this.setState({passwordValid: false})}}}
               />
             </View>
@@ -357,7 +395,7 @@ export default class Register extends Component {
         <Header
           title='注册'
           leftIcon={require('../resource/ic_back_white.png')}
-          leftIconAction = {()=>this.setState({firstPage: true})}
+          leftIconAction = {this._onBack}
         />
         <View style ={{padding: 16}}>
           <Text style={{ color: '#1b2833', fontSize: 14, fontWeight: 'bold' }}>请输入你的手机号码验证账号</Text>
@@ -397,15 +435,14 @@ export default class Register extends Component {
                 returnKeyType = 'done'
                 returnKeyLabel = 'done'
                 multiline = {false}
-                onSubmitEditing={this.onRegisterPressed.bind(this)}
               />
             </View>
             <TouchableOpacity  disabled={this.state.sendingCode} onPress={this._smsSend.bind(this)} style={styles.smsCodeButton}>
               <Text style={[styles.themeText, this.state.sendingCode&&styles.greyText]}>获取短信验证码{this.state.time}</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={this.showInvitationCodeModal.bind(this)} style={styles.loginButton}>
-            <Text style={styles.loginButtonText}>注册</Text>
+          <TouchableOpacity onPress={this.validatePhone.bind(this)} style={styles.loginButton}>
+            <Text style={styles.loginButtonText}>下一步</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -465,7 +502,7 @@ export default class Register extends Component {
         {this.state.showModal?
                 <View style={styles.cover}></View>
                 :null}
-        {this.state.firstPage? mailRegister : phoneVerify}
+        {!this.state.firstPage? mailRegister : phoneVerify}
         {invitationCodeModal}
       </View>
     );
