@@ -17,7 +17,7 @@ import ScrollableTabView, { ScrollableTabBar, DefaultTabBar} from 'react-native-
 import { CachedImage } from "react-native-img-cache";
 import OffersList from './page/offersList';
 import RequestsList from './page/requestsList';
-import BookmarksList from './page/bookmarksList';
+import FriendsList from './page/FriendsList';
 import PersonInfo from './personalinfoEdit';
 import Setting from '../sys/Setting';
 import Constant from '../common/constants';
@@ -139,15 +139,23 @@ export default class MeInfo extends Component {
         );
       });
     }
+
+    imageLoaded() { 
+      console.log(147)
+      let h = findNodeHandle(this.backgroundImage); 
+      console.log('dd'+h); 
+      setTimeout(()=>this.setState({viewRef: h}), 500)
+    }
+
     render() {
       let titles;
       let controllers;
       if (!this.props.isBrowseMode || this.props.id && this.props.id == global.user.id) {
-        titles = ['服务('+global.user.offer_count+')', '需求('+global.user.request_count+')', '收藏('+global.user.favorites_count+')'];
+        titles = ['服务('+global.user.offer_count+')', '需求('+global.user.request_count+')', '好友('+global.user.favorites_count+')'];
         controllers = [
           {categoryId: 1, controller: OffersList},
           {categoryId: 2, controller: RequestsList},
-          {categoryId: 3, controller: BookmarksList},
+          {categoryId: 3, controller: FriendsList},
         ];
       } else {
         titles = ['TA发布的服务('+this.state.offer_count+')'];
@@ -162,7 +170,15 @@ export default class MeInfo extends Component {
                 <View>
                   {
                     this.props.isBrowseMode?
-                    <CachedImage style={{width: 72, height:72, borderRadius: 36 }} source={{ uri: this.state.avatar }} />
+                    <View>
+                    <CachedImage ref={(img) => { this.backgroundImage = img; }} onLoadEnd={this.imageLoaded.bind(this)} style={{width: 72, height:72, borderRadius: 36 }} source={{ uri: this.state.avatar }} />
+                      <BlurView
+                      style={{position: 'absolute', width: 72, height:72, borderRadius: 36}}
+                      viewRef={this.state.viewRef}
+                      blurType="light"
+                      blurAmount={4}
+                    />
+                    </View>
                     :
                     <TouchableOpacity onPress={this.clickJump.bind(this, 'EditInfo')}>
                         <CachedImage style={{width: 72, height:72, borderRadius: 36 }} source={{ uri: this.state.avatar }} />
