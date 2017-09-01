@@ -54,15 +54,59 @@ export default class getFriend extends Component {
         })
     }
     getFriendDetail(){
+        let friendList = [];
         let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CONTACTS_LIST;
         let data= {friends: this.state.friends};
         util.post(url,data, (result)=>{
-                console.log("55:"+result.feeds[0].friend_name + result.feeds[0].status)
-                this.setState({friendList: result.feeds, showList: true})
+            console.log("55:"+result.feeds[0].friend_name + result.feeds[0].status)
+            console.log(result.feeds[2])
+            this.setState({friendList: result.feeds, showList: true})
+            friendList = result.feeds;
+            let url1 = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS;
+            // friendList.map((item, index) => {
+            //     if (item.status == 'created') {
+            //         console.log(70);
+            //         let data1 = {
+            //             user_id:3,
+            //             friend_id: item.id,
+            //             friend_num: item.friend_num,
+            //             friend_name: item.friend_name
+            //         }
+            //         util.post(url1, data1, (result) =>{
+            //             console.log(result.feeds)
+            //         }, this.props.navigator)
+            //     }
+            // })
             },
             this.props.navigator
         )
+        
     }
+
+    async deleteFriend(id) {
+        try {
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DELETE_FRIEND+ id;
+            let response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            });
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+                let resObject =JSON.parse(res);
+                if(resObject.status==0){
+                    console.log(resObject.msg);
+                }else{
+                    console.log(resObject.msg);
+                }
+            }
+        } catch(error) {
+            console.log(107)
+        }
+    }
+
     _keyExtractor = (item, index) => item.id;
     render(){
         var friendListView = (
@@ -79,7 +123,7 @@ export default class getFriend extends Component {
                                 {item.item.status == 'created'?
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                     <Text>已自动添加为好友</Text>
-                                 <TouchableOpacity style={{marginLeft: 10}}>
+                                 <TouchableOpacity style={{marginLeft: 10}} onPress={this.deleteFriend.bind(this, item.item.id)}>
                                      <Text style={{color: 'red', }}>移除好友</Text>
                                  </TouchableOpacity>
                                 </View>:
