@@ -121,6 +121,9 @@ let url = {
      SERV_API_PHONE_LOGIN:`/api/users/phone_login`,//短信验证码登录
      SERV_API_CHANGE_PHONE:`/api/users/sms_login?change_phone=1`,//更换手机号码接口
      SERV_API_CONTACTS_LIST:`/api/friends/friend_list`,//上传手机通讯录API
+     SERV_API_ADD_FRIENDS: `/api/friends/friends`, //添加好友
+     SERV_API_DELETE_FRIEND:`/api/friends/friends/`, //删除好友
+     SERV_API_FRIENDS_LIST: `/api/friends/friends?user_id=3&qry_type=`,//获取好友列表
      SERV_API_TOKEN_LOGIN: `/api/users/token_login?token=`,//token登录
      SERV_API_GOODS_CATALOG:`/api/goods/goods_catalogs?token=`,//商品分类
      SERV_API_SYS_MSGS_QUERIES:`/api/sys_msgs_timelines/sys_msgs_queries?token=`,//系统消息查询API
