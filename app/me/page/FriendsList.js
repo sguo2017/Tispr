@@ -60,18 +60,23 @@ export default class FriendsList extends Component {
                 <View>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <Text style={{color: 'black'}}>你的推荐</Text>
-                        <Text style={{color: '#4a90e2'}}>添加推荐</Text>
+                        <TouchableOpacity>
+                            <Text style={{color: '#4a90e2'}}>添加推荐</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <Text style={{color: 'black'}}>待验证</Text>
-                        <Text style={{color: '#4a90e2'}}>查看全部</Text>
+                        <TouchableOpacity>
+                            <Text style={{color: '#4a90e2'}}>查看全部</Text>
+                        </TouchableOpacity>
+
                     </View>
                     <View>
                         <Text style={{color: 'black'}}>好友</Text>
                          { 
                             friends.map((item, index) => {
                                 return(
-                                    <View style={styles.list}>
+                                    <View style={styles.list} key={item.id}>
                                         <Text style={{color: 'black'}}>{item.friend_name}</Text>
                                     </View>
                                 )
