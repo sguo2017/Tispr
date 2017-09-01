@@ -62,21 +62,21 @@ export default class getFriend extends Component {
             console.log(result.feeds[2])
             this.setState({friendList: result.feeds, showList: true})
             friendList = result.feeds;
-            let url1 = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS;
-            // friendList.map((item, index) => {
-            //     if (item.status == 'created') {
-            //         console.log(70);
-            //         let data1 = {
-            //             user_id:3,
-            //             friend_id: item.id,
-            //             friend_num: item.friend_num,
-            //             friend_name: item.friend_name
-            //         }
-            //         util.post(url1, data1, (result) =>{
-            //             console.log(result.feeds)
-            //         }, this.props.navigator)
-            //     }
-            // })
+            let url1 = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS+ '?token=' + global.user.authentication_token;
+            friendList.map((item, index) => {
+                if (item.status == 'created') {
+                    console.log(70);
+                    let data1 = {
+                        user_id:3,
+                        friend_id: item.id,
+                        friend_num: item.friend_num,
+                        friend_name: item.friend_name
+                    }
+                    util.post(url1, data1, (result) =>{
+                        console.log(result.feeds)
+                    }, this.props.navigator)
+                }
+            })
             },
             this.props.navigator
         )
