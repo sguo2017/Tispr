@@ -14,6 +14,7 @@ import {
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import util from '../common/utils'
+import TabBarView from '../containers/TabBarView';
 var Contacts = require('react-native-contacts')
 export default class getFriend extends Component {
     constructor(props) {
@@ -58,25 +59,10 @@ export default class getFriend extends Component {
         let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CONTACTS_LIST;
         let data= {friends: this.state.friends};
         util.post(url,data, (result)=>{
-            console.log("55:"+result.feeds[0].friend_name + result.feeds[0].status)
-            console.log(result.feeds[2])
-            this.setState({friendList: result.feeds, showList: true})
-            friendList = result.feeds;
-            let url1 = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS+ '?token=' + global.user.authentication_token;
-            friendList.map((item, index) => {
-                if (item.status == 'created') {
-                    console.log(70);
-                    let data1 = {
-                        user_id:3,
-                        friend_id: item.id,
-                        friend_num: item.friend_num,
-                        friend_name: item.friend_name
-                    }
-                    util.post(url1, data1, (result) =>{
-                        console.log(result.feeds)
-                    }, this.props.navigator)
-                }
-            })
+                console.log("55:"+result.feeds[0].friend_name + result.feeds[0].status)
+                console.log(result.feeds[2])
+                this.setState({friendList: result.feeds, showList: true})
+                friendList = result.feeds;
             },
             this.props.navigator
         )
@@ -85,7 +71,7 @@ export default class getFriend extends Component {
 
     async deleteFriend(id) {
         try {
-            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DELETE_FRIEND+ id;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DELETE_FRIEND+'/'+ id + '?token='+ global.user.authentication_token;
             let response = await fetch(url, {
                 method: 'DELETE',
                 headers: {
@@ -105,6 +91,19 @@ export default class getFriend extends Component {
         } catch(error) {
             console.log(107)
         }
+    }
+    addFriend(id){
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS+'/'+id +'?token='+global.user.authentication_token;
+        let data = {
+            status: 'created'
+        }
+        util.patch(url, data,(result)=>{
+            if(result.status == 0){
+                console.log("添加成功");
+            }else{
+                console.log("添加失败");
+            }
+        }, this.props.navigator)
     }
 
     _keyExtractor = (item, index) => item.id;
@@ -126,7 +125,16 @@ export default class getFriend extends Component {
                                  <TouchableOpacity style={{marginLeft: 10}} onPress={this.deleteFriend.bind(this, item.item.id)}>
                                      <Text style={{color: 'red', }}>移除好友</Text>
                                  </TouchableOpacity>
+
                                 </View>:
+                                item.item.status == 'notfriend'?
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                    <Text>已解除好友关系</Text>
+                                 <TouchableOpacity style={{marginLeft: 10}} onPress={this.addFriend.bind(this, item.item.id, item.item.friend_name, item.item.friend_num)}>
+                                     <Text style={{color: 'red', }}>加为好友</Text>
+                                 </TouchableOpacity>
+                                </View>
+                                :
                                  <TouchableOpacity>
                                      <Text style={{color: '#4a90e2', }}>邀请</Text>
                                  </TouchableOpacity>
@@ -144,7 +152,7 @@ export default class getFriend extends Component {
                     <Header
                         title='获取通讯录'
                         leftIcon={require('../resource/ic_back_white.png')}
-                        leftIconAction = {()=>this.props.navigator.pop()}
+                        leftIconAction = {()=>this.props.navigator.resetTo({component: TabBarView})}
                     />
                 </View>
                 {
