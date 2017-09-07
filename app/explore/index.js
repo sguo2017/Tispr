@@ -18,8 +18,10 @@ import {
 import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
 import Picker from 'react-native-picker';
 import { fetchExploreList } from '../actions/ServOfferListActions';
+import { fetchFriendList } from '../actions/FriendListActions';
 import { connect } from 'react-redux';
 import ServOfferList from './ServOfferList';
+import FriendList from './FriendList'
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TabCategoryBar from '../me/TabCategoryBar';
 import Constant from '../common/constants'
@@ -35,96 +37,18 @@ class ExploreList extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            show: false,
-            tabName: this.props.tabName,
-            sortBy: this.props.sortBy,
-            transiSortBy: this.props.transiSortBy,
-            classify: this.props.classify,
-            transiClassify: this.props.transiClassify,
-            location: this.props.location,
-            exploreparams: {},
-            exploretitle:'',
-            sps: [false, false],//排序按钮操作
-            cps: [false, false, false, false, false, false, false],//类型按钮操作
-            searchText: this.props.searchText,
-            via: 'local',
-            initArea: ['广东', '广州', '番禺区'],
-            zoom: 18,
-            showCancel: false,
-            showSearchPage: false,
-            history: []
+            friendSearch:false,
+            communitySearch:false,
+            classSearch: true,
+            searchTitle:''
         };
     }
     componentWillMount() {
         
-        const { feed } = this.props;
-        this.setState({
-            show: false,
-            tabName: this.props.tabName,
-            sortBy: '全部排序',
-            transiSortBy: '全部排序',
-            classify: '全部人才',
-            transiClassify: '全部人才',
-            location: '广州市',
-            searchText: ''
-        });
-        if(this.props.city){
-            this.setState({
-                location: this.props.city
-            });
-        }
-        if (global.goods_catalog_I === undefined) {
-            this.getGoodsCatalog();
-        }
-
-        UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_TITLE).then((history) => {
-            console.log('history')
-            console.log(history)
-            if (history == null) {
-                history = {};
-            } else if (history[global.user.id]) {
-                this.setState({
-                    history: history[global.user.id],
-                    
-                });
-            }
-        })
-        UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
-            console.log('indexmount');
-           // console.log(historyKey[global.user.id])
-            if (historyKey == null) {
-                historyKey = {};
-            } else if (historyKey[global.user.id]) {
-                this.setState({
-                    sortBy: historyKey[global.user.id].sortBy,
-                    transiSortBy: historyKey[global.user.id].sortBy,
-                    classify: historyKey[global.user.id].classify,
-                    transiClassify: historyKey[global.user.id].classify,
-                    location: historyKey[global.user.id].via == 'local'?historyKey[global.user.id].city:'远程',
-                    cps: historyKey[global.user.id].cps,
-                    sps: historyKey[global.user.id].sps,
-                });
-                if (historyKey[global.user.id].title) this.setState({exploretitle: historyKey[global.user.id].title})
-            }
-        })
     }
 
 
     componentDidMount() {
-        let longitude = global.user.addressComponent.longitude, latitude = global.user.addressComponent.latitude;        
-        Geolocation.getCurrentPosition().then(
-            (data) => {
-                this.setState({
-                    zoom: 18,
-                    center: {
-                        latitude: latitude,
-                        longitude: longitude,
-                    }
-                })
-            }
-        ).catch(error => {
-            console.warn(error, 'error')
-        })
 
     }
 
@@ -160,136 +84,34 @@ class ExploreList extends PureComponent {
     }
     
     refresh() {
+        const { dispatch } = this.props;
         console.log('indexrefresh');
         if(!global.user.authentication_token){
             Util.noToken(this.props.navigator);
         }
-        this.setState({showSearchPage: false})
-        let exploreparams = this.state.exploreparams;
-        //搜索框输入信息缓存
-        UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_TITLE).then((history) => {
-            if (history == null) {
-                history = {};
-            }
-            if (!history[global.user.id]) history[global.user.id] = [];
-            if (exploreparams.title) {
-                history[global.user.id].map((item, index) => {
-                    if (item == exploreparams.title) history[global.user.id].splice(index, 1);
-                })
-                history[global.user.id].push(exploreparams.title);
-            }
-            UserDefaults.setObject(Constant.storeKeys.SEARCH_HISTORY_TITLE, history);
-            this.setState({history: history[global.user.id]});
-        })
-
-        const { dispatch, categoryId } = this.props;
-
-        if(this.state.via == 'local'){
-            exploreparams.via = 'local'
-            exploreparams.city = this.state.location;
-        }
-        if(this.state.via == 'remote'){
-            exploreparams.via = 'remote'
-            exploreparams.city = undefined;
-        }
-        exploreparams.classify = this.state.transiClassify;
-        exploreparams.sortBy = this.state.transiSortBy;
-        exploreparams.cps = this.state.cps;
-        exploreparams.sps = this.state.sps;
-
-        let goods_catalog = this.state.cps;        
-        if (goods_catalog[0]) {
-            goods_catalog.map((item, index, input) => { input[index] = true });
-        }
-        let goods_catalog_paramas = [];
-        goods_catalog.map((item, index, input) => {
-            if (item&&index>0) {
-                goods_catalog_paramas=goods_catalog_paramas.concat(goods_catalogs_II_id[index-1]);
-            }
-        });
-        exploreparams.goods_catalog_I = goods_catalog_paramas.length === 0 ? undefined : goods_catalog_paramas;
-        //传入缓存
-        UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
-            if (historyKey == null) {
-                historyKey = {};
-            }
-            historyKey[global.user.id] = exploreparams;
-            console.log('传入筛选缓存')
-            console.log(historyKey[global.user.id])
-            exploreparams.title = this.state.exploretitle;
-            UserDefaults.setObject(Constant.storeKeys.SEARCH_HISTORY_KEY, historyKey);
-            this.setState({exploreparams: historyKey[global.user.id]});
-            page = 1;
-            dispatch(fetchExploreList(page, exploreparams, this.props.navigator));
-        })
+        let page =1
+        let exploreparams = {};
+        dispatch(fetchExploreList(page, exploreparams, this.props.navigator));
         
     }
 
-    _createAreaData() {
-        let data = [];
-        let len = area.length;
-        for(let i=0;i<len;i++){
-            let city = [];
-            for(let j=0,cityLen=area[i]['city'].length;j<cityLen;j++){
-                let _city = {};
-                _city[area[i]['city'][j]['name']] = area[i]['city'][j]['area'];
-                city.push(_city);
-            }
-
-            let _data = {};
-            _data[area[i]['name']] = city;
-            data.push(_data);
-        }
-        return data;
+    friendSearch(){
+        this.setState({
+            friendSearch: !this.state.friendSearch  
+        })
     }
+    communitySearch(){
+        this.setState({
+            communitySearch: !this.state.communitySearch  
+        })
 
-    _showAreaPicker() {
-        Picker.init({
-            pickerData: this._createAreaData(),
-            selectedValue: this.state.initArea,
-            onPickerConfirm: pickedValue => {
-                console.log('area', pickedValue);
-                this.setState({
-                    initArea: pickedValue,
-                });
-                Geolocation.geocode(pickedValue[1]+"市", pickedValue[2])
-                .then((response)=>{
-                    // let lat = response.latitude;
-                    // let lng = response.longitude;
-
-
-                    this.setState({
-                        zoom: 18,
-                        center: {
-                            latitude: response.latitude,
-                            longitude: response.longitude,
-                            rand: Math.random()
-                        }
-                    });                    
-                    console.log("新地址的经度："+response.longitude)
-                    // Geolocation.moveToCenter(lat, lng , 16)
-                })
-                .catch(error => {
-                    console.warn(error, 'error')
-                })    
-            },
-            onPickerCancel: pickedValue => {
-                console.log('area', pickedValue);
-            },
-            pickerTitleText: '选择位置',
-            pickerCancelBtnText: '取消',
-            pickerConfirmBtnText: '确定',
-        });
-        Picker.show();
     }
-
-    _clearHistory() {
-        UserDefaults.setObject(Constant.storeKeys.SEARCH_HISTORY_TITLE, {});
-        this.setState({history: ''})
+    classSearch(){
+        this.setState({
+            classSearch: !this.state.classSearch  
+        })
     }
-
     render() {
-        let page = this.state.via =='local'?0:1
         return (
             <View style={styles.listView}>
                 <View style={styles.container}>
@@ -300,7 +122,7 @@ class ExploreList extends PureComponent {
                             style={styles.inputText}
                             underlineColorAndroid='transparent'
                             keyboardType='web-search'
-                            value={this.state.exploretitle}
+                            value={this.state.searchTitle}
                             placeholder='搜索'
                             returnKeyType = 'search'
                             returnKeyLabel = 'search'
@@ -308,364 +130,29 @@ class ExploreList extends PureComponent {
                             selectTextOnFocus ={true}
                             onSubmitEditing = {() => this.refresh()}
                             onChangeText={(val) => {
-                                let explore = this.state.exploreparams;
-                                explore.title = val;
-                                this.setState({ exploreparams: explore, exploretitle:val })
+                                this.setState({searchTitle: val})
                             }}
-                            onFocus = {()=>this.setState({showCancel:true, showSearchPage: true})}
-                            obBlur = {()=> this.setState({showCancel: false, showSearchPage: false})}
+                            onFocus = {()=>{}}
+                            obBlur = {()=> {}}
                         />
                     </View>
-                    {
-                    this.state.showCancel?
-                    <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} 
-                        onPress={() => {
-                            let explore = this.state.exploreparams;
-                            this.refs["searchInput"].blur()
-                             explore.title = '';
-                             this.setState({
-                                showCancel:false,
-                                exploreparams: explore, 
-                                exploretitle:'',
-                                showSearchPage: false
-                            });
-                            this.state.exploreparams=explore;
-                            this.refresh()
-                        }}
-                    >
-                        <Text style={{color: '#fff'}}>取消</Text>
-                    </TouchableOpacity>:
-                    <TouchableOpacity style={{ marginLeft: 17, marginRight: 8 }} onPress={() => this.props.navigator.push({component: MarkList})}>
-                        <Image source={require('../resource/w-content.png')} style={styles.scanIcon} />
+                </View>
+                <View style={{flexDirection: 'row', paddingVertical: 6, backgroundColor: 'rgba(0,0,0,0.16)'}}>
+                    <TouchableOpacity style={styles.filterButton} onPress={this.classSearch.bind(this)}>
+                        <Text style={styles.whiteText}>职业</Text>
                     </TouchableOpacity>
-                    }                
+                    <TouchableOpacity style={styles.filterButton} onPress={this.communitySearch.bind(this)}>
+                        <Text style={styles.whiteText}>社区</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.filterButton} onPress={this.friendSearch.bind(this)}>
+                        <Text style={styles.whiteText}>好友</Text>
+                    </TouchableOpacity>
                 </View>
                 {
-                !this.state.showSearchPage?
-                <View style={{ flexDirection: 'row', paddingVertical: 6, backgroundColor: 'rgba(0,0,0,0.16)'}}>
-                    <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'recentPublish', show: true });}}>
-                        <Text style={styles.whiteText}>{this.state.sortBy}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'allTalentedPeople', show: true });}}>
-                        <Text style={styles.whiteText}>{this.state.classify}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.filterButton} onPress={() => {this.setState({ tabName: 'selectLocation', show: true });}}>
-                        <Image source={require('../resource/w-location.png')} style={{ width: 14, height: 14 }}></Image>
-                        <Text style={styles.whiteText}>{this.state.location}</Text>
-                    </TouchableOpacity>
-                </View>:
-                <View style={{backgroundColor: 'white', flex: 1, padding: 16}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <Text style={{color: '#999999', fontSize: 14}}>您搜过的</Text>
-                        <TouchableOpacity onPress={this._clearHistory.bind(this)}>
-                            <Text style={{fontSize: 14, color: '#4A90E2'}}>清空</Text>
-                        </TouchableOpacity>
-                    </View>
-                    {this.state.history?
-                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10, flexWrap: 'wrap'}}>
-                         {this.state.history.map((item, index) => {
-                            return(
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        this.setState({exploretitle: item, exploreparams: {title: item}});
-                                        this.refresh()
-                                    }}
-                                    key={index}
-                                    style={{borderColor: '#4A90E2', borderWidth: 1, borderRadius: 14, paddingHorizontal:8, paddingVertical: 4, marginRight: 12, marginTop: 12}}
-                                
-                                >
-                                    <Text style={{fontSize: 14, color: '#4A90E2'}}>{item}</Text>
-                                </TouchableOpacity>
-                            )
-                        })} 
-                    </View>: <View></View>
-                    }
-                </View>
+                    this.state.friendSearch?
+                    <FriendList {...this.props} title={this.state.searchTitle} /> :
+                    <ServOfferList {...this.props} />    
                 }
-
-                {this.state.showSearchPage? null:
-                <ServOfferList title={this.state.exploretitle} exploreparams={this.state.exploreparams} cps={this.state.cps} location={this.state.location} {...this.props} />}
-                <Modal
-                    animationType='slide'
-                    transparent={true}
-                    visible={this.state.show}
-                    onShow={() => { }}
-                    onRequestClose={() => { }}
-                >
-                <TouchableWithoutFeedback style={{flex: 1}} onPress={() => this.setState({show: false})}>
-                <View style={styles.cover}>
-                    {
-                      this.state.tabName == 'index' ?
-                        <View style={styles.modalStyle}>
-                            <TouchableWithoutFeedback  onPress={() => {}}>
-                            <View style={styles.subView}>
-                                <View style={styles.modalHead}>
-                                    <TouchableOpacity onPress={() => this.setState({ cps: [true, false, false, false, false, false, false], transiSortBy: '综合排序', transiClassify: '全部人才' })}>
-                                        <Text style={styles.themeColorText}>重置</Text>
-                                    </TouchableOpacity>
-                                    <Text style={{ color: 'black', fontSize: 16 }}>筛选</Text>
-                                    <TouchableOpacity onPress={() => this.setState({ show: false })}>
-                                        <Text style={styles.themeColorText}
-                                              onPress=
-                                                {() => {
-                                                if(this.state.via == 'remote'){
-                                                    this.setState({
-                                                        sortBy: this.state.transiSortBy,
-                                                        classify: this.state.transiClassify,
-                                                        location: "远程",
-                                                        show: false,
-                                                    });
-                                                }else{
-                                                    this.setState({
-                                                        sortBy: this.state.transiSortBy,
-                                                        classify: this.state.transiClassify,
-                                                        location: this.state.initArea[1]+"市",
-                                                        show: false,
-                                                    });
-                                                    this.state.location = this.state.initArea[1]+"市";
-                                                } 
-                                                this.refresh();
-                                                }}
-                                        >完成</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <ScrollableTabView
-                                  style={{ flex: 1, marginTop: 20, marginRight: 5, marginLeft: 5, borderRadius: 5 }}
-                                  renderTabBar={() => <TabCategoryBar tabNames={titles} />}
-                                  tabBarPosition='top'
-                                  scrollWithoutAnimation={false}
-                                  ref={(tabView) => { this.tabView = tabView; }}
-                                  onChangeTab ={({i, ref, from, })=>{
-                                      if(i==0){
-                                          this.state.via = 'local';
-                                      } else if (i==1) {
-                                          this.state.via = 'remote';
-                                      }
-                                  }}
-                                >
-                                    <View tabLabel='本地'>
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'recentPublish' })} style={styles.filterRow}>
-                                                <Text style={styles.blackText}>排序</Text>
-                                                <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-                                                    <Text style={styles.greyText}>{this.state.transiSortBy}</Text>
-                                                    <Image source={require('../resource/g_chevron right.png')} />
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{borderTopWidth: 1, borderTopColor: '#f0f0f0'}}></View>
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'allTalentedPeople' })} style={styles.filterRow}>
-                                                <Text style={styles.blackText}>类型</Text>
-                                                <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-                                                    <Text style={styles.greyText}>{this.state.transiClassify}</Text>
-                                                    <Image source={require('../resource/g_chevron right.png')} />
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{borderTopWidth: 1, borderTopColor: '#f0f0f0'}}></View>
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'selectLocation' })} style={styles.filterRow}>
-                                                <Text style={styles.blackText}>位置</Text>
-                                                <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-                                                    <Text style={styles.greyText}>{this.state.initArea[1]}</Text>
-                                                    <Image source={require('../resource/g_chevron right.png')} />
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                    <View tabLabel='远程'>
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'recentPublish' })} style={styles.filterRow}>
-                                                <Text style={styles.blackText}>排序</Text>
-                                                <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-                                                    <Text style={styles.greyText}>{this.state.transiSortBy}</Text>
-                                                    <Image source={require('../resource/g_chevron right.png')} />
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{borderTopWidth: 1, borderTopColor: '#f0f0f0'}}></View>
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <TouchableOpacity onPress={() => this.setState({ tabName: 'allTalentedPeople' })} style={styles.filterRow}>
-                                                <Text style={styles.blackText}>类型</Text>
-                                                <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-                                                    <Text style={styles.greyText}>{this.state.transiClassify}</Text>
-                                                    <Image source={require('../resource/g_chevron right.png')} />
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </ScrollableTabView> 
-                            </View>
-                            </TouchableWithoutFeedback>
-                        </View>                       
-                        : <View></View>
-                  }
-
-                  {
-                      this.state.tabName == 'recentPublish' ?
-                        <View style={styles.modalStyle}>
-                            <TouchableWithoutFeedback  onPress={() => {}}>
-                            <View style={styles.subView}>
-                                <View style={styles.modalHead}>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
-                                        <Text style={styles.themeColorText}>返回</Text>
-                                    </TouchableOpacity>
-                                    <Text style={styles.blackText}>选择排序</Text>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
-                                        <Text style={styles.themeColorText}>确定</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 12 }}>
-                                    <TouchableOpacity
-                                      style={[styles.selectButton, { backgroundColor: global.gColors.themeColor }]}
-                                    >
-                                        <Text style={[styles.whiteText]}>全部排序</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 12 }}>
-                                    <TouchableOpacity
-                                      style={[styles.selectButton, this.state.sps[1] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => { this.setState({ transiSortBy: '最近发布', sps: [false, true] }) }}
-                                    >
-                                        <Text style={[styles.themeColorText, this.state.sps[1] && styles.whiteText]}>最近发布</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            </TouchableWithoutFeedback>
-                        </View>
-                        : <View></View>
-                  }
-                  {
-                      this.state.tabName == 'allTalentedPeople' ?
-                        <View style={styles.modalStyle}>
-                            <TouchableWithoutFeedback  onPress={() => {}}>
-                            <View style={styles.subView}>
-                                <View style={styles.modalHead}>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
-                                        <Text style={styles.themeColorText}>返回</Text>
-                                    </TouchableOpacity>
-
-                                    <Text style={{ color: 'black', fontSize: 16 }}>选择分类</Text>
-                                    <TouchableOpacity onPress={() => {
-                                        this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}});
-                                        this.state.cps.map((cp, index) => {
-                                            if (cp && index>0) this.setState({transiClassify: global.goods_catalog_I[index-1].name})
-                                        })
-                                    }}>
-                                        <Text style={styles.themeColorText}>确定</Text>
-                                    </TouchableOpacity>
-
-                                </View>
-                                <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 12 }}>
-                                    <TouchableOpacity
-                                      style={[styles.selectButton, this.state.cps[0] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => this.setState({ transiClassify: '全部人才', cps: [!this.state.cps[0], false, false, false, false, false, false] })}
-                                    >
-                                        <Text style={[styles.themeColorText, this.state.cps[0] && styles.whiteText]}>全部人才</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 12 }}>
-                                    <TouchableHighlight
-                                        style={[styles.selectButton, this.state.cps[1] && { backgroundColor: global.gColors.themeColor }]}
-                                        onPress={() => {
-                                            this.setState({cps: [false, !this.state.cps[1], this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] });
-                                        }}
-                                    >
-                                        <Text style={[styles.themeColorText, this.state.cps[1] && styles.whiteText]}>{global.goods_catalog_I[0].name}</Text>
-                                    </TouchableHighlight>
-                                    <TouchableOpacity
-                                        style={[styles.selectButton, this.state.cps[2] && { backgroundColor: global.gColors.themeColor }]}
-                                        onPress={() => {
-                                            this.setState({ cps: [false, this.state.cps[1] && true, !this.state.cps[2], this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] })
-                                        }}
-                                    >
-                                        <Text style={[styles.themeColorText, this.state.cps[2] && styles.whiteText]}>{global.goods_catalog_I[1].name}</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                      style={[styles.selectButton, this.state.cps[3] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => {
-                                          this.setState({cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, !this.state.cps[3], this.state.cps[4] && true, this.state.cps[5] && true, this.state.cps[6] && true] })}
-                                      }
-                                    >
-                                        <Text style={[styles.themeColorText, this.state.cps[3] && styles.whiteText]}>{global.goods_catalog_I[2].name}</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                      style={[styles.selectButton, this.state.cps[4] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => {
-                                          this.setState({cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, !this.state.cps[4], this.state.cps[5] && true, this.state.cps[6] && true] })}
-                                      }
-                                    >
-                                        <Text style={[styles.themeColorText, this.state.cps[4] && styles.whiteText]}>{global.goods_catalog_I[3].name}</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                      style={[styles.selectButton, this.state.cps[5] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => {
-                                          this.setState({ cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, !this.state.cps[5], this.state.cps[6] && true] })}
-                                      }
-                                    >
-                                        <Text style={[styles.themeColorText, this.state.cps[5] && styles.whiteText]}>{global.goods_catalog_I[4].name}</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                      style={[styles.selectButton, this.state.cps[6] && { backgroundColor: global.gColors.themeColor }]}
-                                      onPress={() => {
-                                          this.setState({cps: [false, this.state.cps[1] && true, this.state.cps[2] && true, this.state.cps[3] && true, this.state.cps[4] && true, this.state.cps[5] && true, !this.state.cps[6]] })}
-                                      }
-                                    >
-                                        <Text style={[styles.themeColorText, this.state.cps[6] && styles.whiteText]}>{global.goods_catalog_I[5].name}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            </TouchableWithoutFeedback>
-                        </View>
-                        : <View></View>
-                  }
-                  {
-                      this.state.tabName == 'selectLocation' ?
-                        <View style={styles.modalStyle}>
-                            <TouchableWithoutFeedback  onPress={() => {}}>
-                            <View style={styles.subView}>
-                                <View style={styles.modalHead}>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
-                                        <Text style={styles.themeColorText}>返回</Text>
-                                    </TouchableOpacity>
-                                    <Text style={{ color: 'black', fontSize: 16 }}>位置</Text>
-                                    <TouchableOpacity onPress={() => this.setState({ tabName: 'index' },()=>{if(this.state.via == 'remote'){this.tabView.goToPage(1)}})}>
-                                        <Text style={styles.themeColorText}>确定</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 12 }}>
-                                    <TouchableOpacity
-                                    style={{flexDirection: 'row'}}
-                                    onPress={this._showAreaPicker.bind(this)}
-                                    >
-                                        <Image style={styles.headIcon} source={require('../resource/b_location.png')} />
-                                        <Text style={[styles.themeColorText]}>{this.state.initArea[0]}, {this.state.initArea[1]}, {this.state.initArea[2]} </Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <MapView
-                                    trafficEnabled={this.state.trafficEnabled}
-                                    baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
-                                    zoom={this.state.zoom}
-                                    mapType={this.state.mapType}
-                                    center={this.state.center}
-                                    marker={this.state.marker}
-                                    markers={this.state.markers}
-                                    style={styles.map}
-                                    onMarkerClick={(e) => {
-                                        console.warn(JSON.stringify(e));
-                                    }}
-                                    onMapClick={(e) => {
-                                    }}
-                                />
-                            </View>
-                            </TouchableWithoutFeedback>
-                        </View>
-                        : <View></View>
-                  }
-                </View>
-                </TouchableWithoutFeedback>
-              </Modal>
           </View>
         )
     }

@@ -173,28 +173,9 @@ export default class ServOfferList extends Component {
         if(!global.user.authentication_token){
             Util.noToken(this.props.navigator);
         }
-        let exploreparams = this.props.exploreparams;
-        console.log(exploreparams)
-        if (!exploreparams.via) {
-            UserDefaults.cachedObject(Constant.storeKeys.SEARCH_HISTORY_KEY).then((historyKey) => {
-                if (historyKey == null) {
-                    historyKey = {};
-                    dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
-                } else if (historyKey[global.user.id]) {
-                    console.log("listmount")
-                    exploreparams = historyKey[global.user.id];
-                    console.log(exploreparams)
-                    exploreparams.title = this.props.title;
-                    console.log(exploreparams)
-                    this.setState({exploreparams: historyKey[global.user.id]});
-                    dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
-                } else {
-                    dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
-                }
-            })
-        } else {
-            dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
-        }
+        let exploreparams = {};
+
+        dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
     }
 
   _onMomentumScrollEnd(event) {
