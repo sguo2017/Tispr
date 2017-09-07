@@ -173,7 +173,7 @@ export default class ServOfferList extends Component {
         if(!global.user.authentication_token){
             Util.noToken(this.props.navigator);
         }
-        let exploreparams = {};
+        let exploreparams = this.props.exploreparams;
 
         dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
     }

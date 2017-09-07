@@ -18,10 +18,10 @@ import {
 import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
 import Picker from 'react-native-picker';
 import { fetchExploreList } from '../actions/ServOfferListActions';
-import { fetchFriendList } from '../actions/FriendListActions';
 import { connect } from 'react-redux';
 import ServOfferList from './ServOfferList';
 import FriendList from './FriendList'
+import VillageList from './VillageList'
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TabCategoryBar from '../me/TabCategoryBar';
 import Constant from '../common/constants'
@@ -90,26 +90,32 @@ class ExploreList extends PureComponent {
             Util.noToken(this.props.navigator);
         }
         let page =1
-        let exploreparams = {};
+        let exploreparams = {title:this.state.searchTitle};
         dispatch(fetchExploreList(page, exploreparams, this.props.navigator));
         
     }
 
     friendSearch(){
         this.setState({
-            friendSearch: !this.state.friendSearch  
+            classSearch: false,
+            communitySearch: false,
+            friendSearch:true, 
         })
     }
     communitySearch(){
         this.setState({
-            communitySearch: !this.state.communitySearch  
+            classSearch: false,
+            communitySearch: true,
+            friendSearch:false, 
         })
 
     }
     classSearch(){
         this.setState({
-            classSearch: !this.state.classSearch  
-        })
+            classSearch: true,
+            communitySearch: false,
+            friendSearch:false,
+        },this.refresh)
     }
     render() {
         return (
@@ -151,7 +157,17 @@ class ExploreList extends PureComponent {
                 {
                     this.state.friendSearch?
                     <FriendList {...this.props} title={this.state.searchTitle} /> :
-                    <ServOfferList {...this.props} />    
+                   null  
+                }
+                {
+                    this.state.communitySearch?
+                    <VillageList {...this.props} title={this.state.searchTitle} /> :
+                   null
+                }
+                {
+                    this.state.classSearch?
+                     <ServOfferList {...this.props} exploreparams={{title:this.state.searchTitle}} />   :
+                     null
                 }
           </View>
         )

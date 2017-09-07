@@ -140,13 +140,6 @@ export default class MeInfo extends Component {
       });
     }
 
-    imageLoaded() { 
-      console.log(147)
-      let h = findNodeHandle(this.backgroundImage); 
-      console.log('dd'+h); 
-      setTimeout(()=>this.setState({viewRef: h}), 500)
-    }
-
     render() {
       let titles;
       let controllers;
@@ -170,15 +163,7 @@ export default class MeInfo extends Component {
                 <View>
                   {
                     this.props.isBrowseMode?
-                    <View>
-                    <CachedImage ref={(img) => { this.backgroundImage = img; }} onLoadEnd={this.imageLoaded.bind(this)} style={{width: 72, height:72, borderRadius: 36 }} source={{ uri: this.state.avatar }} />
-                      <BlurView
-                      style={{position: 'absolute', width: 72, height:72, borderRadius: 36}}
-                      viewRef={this.state.viewRef}
-                      blurType="light"
-                      blurAmount={4}
-                    />
-                    </View>
+                    <CachedImage style={{width: 72, height:72, borderRadius: 36 }} source={{ uri: this.state.avatar }} />
                     :
                     <TouchableOpacity onPress={this.clickJump.bind(this, 'EditInfo')}>
                         <CachedImage style={{width: 72, height:72, borderRadius: 36 }} source={{ uri: this.state.avatar }} />
