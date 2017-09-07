@@ -46,7 +46,7 @@ export default class getFriend extends Component {
                     let thisphone = data.phoneNumbers[0].number
                    // thisphone = thisphone.replace(/" "/g, "");
                     thisphone = thisphone.replace(/\s/g,'');
-                    let obj = {user_id: 3, friend_name:thisname, friend_num: thisphone}
+                    let obj = {user_id: global.user.id, friend_name:thisname, friend_num: thisphone}
                     return obj
                 });
                 this.setState({friends:friendArr});

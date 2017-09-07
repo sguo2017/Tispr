@@ -344,7 +344,7 @@ export default class Register extends Component {
             let user_url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ACTIVATE_USER+'/'+this.state.beRecommendedUserId;
             let user_data = {
               user:{
-                status: 'created',
+                status: '00A',
                 email: this.state.email,
                 password: this.state.password,
                 name:this.state.name

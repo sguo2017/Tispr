@@ -18,9 +18,20 @@ export default class getFriend extends Component {
     constructor(props) {
 		super(props);
 		this.state =({
-           
+           name:'',
+           num: '',
 		});
 	}
+    recommend(){
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS;
+        let data={
+            friend_name: this.state.name,
+            friend_num: this.state.num
+        }
+        util.post(url, data, (response)=>{
+            console.log("32"+JSON.stringify(response.feed))
+        },this.props.navigator)
+    }
 
     render(){
         return(
@@ -32,9 +43,34 @@ export default class getFriend extends Component {
                         leftIconAction = {()=>this.props.navigator.pop()}
                     />
                 </View>
-                    <TouchableOpacity  style={styles.loginButton}>
-                        <Text>推荐好友</Text>
-                    </TouchableOpacity>
+                <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee' }} >
+                    <TextInput
+                    ref = "1"
+                    onChangeText={(text) => this.setState({ name: text })}
+                    style={styles.input} placeholder="好友姓名"
+                    value={this.state.name}
+                    underlineColorAndroid="transparent"
+                    returnKeyType = 'next'
+                    placeholderTextColor  = '#ccc'
+                    multiline = {false}
+                    />
+                </View>
+                
+                <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee' }} >
+                    <TextInput
+                    ref = "2"
+                    onChangeText={(text) => this.setState({ num: text })}
+                    style={styles.input} placeholder="好友手机号"
+                    value={this.state.num}
+                    underlineColorAndroid="transparent"
+                    returnKeyType = 'next'
+                    placeholderTextColor  = '#ccc'
+                    multiline = {false}
+                    />
+                </View>
+                <TouchableOpacity onPress={this.recommend.bind(this)} style={styles.loginButton}>
+                    <Text>推荐好友</Text>
+                </TouchableOpacity>
             </View>
         )
     }
