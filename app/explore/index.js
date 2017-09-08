@@ -16,6 +16,7 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
+import { fetchFriendList } from '../actions/UserListActions';
 import Picker from 'react-native-picker';
 import { fetchExploreList } from '../actions/ServOfferListActions';
 import { connect } from 'react-redux';
@@ -101,6 +102,8 @@ class ExploreList extends PureComponent {
             communitySearch: false,
             friendSearch:true, 
         })
+        const { dispatch } = this.props;
+        dispatch(fetchFriendList(1, {title:this.state.searchTitle}, this.props.navigator));
     }
     communitySearch(){
         this.setState({
@@ -156,7 +159,7 @@ class ExploreList extends PureComponent {
                 </View>
                 {
                     this.state.friendSearch?
-                    <FriendList {...this.props} title={this.state.searchTitle} /> :
+                    <FriendList {...this.props} exploreparams={{title:this.state.searchTitle}}/> :
                    null  
                 }
                 {

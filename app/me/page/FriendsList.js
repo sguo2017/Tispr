@@ -12,7 +12,8 @@ import {
   RefreshControl,
   Linking,
   Alert,
-  FlatList
+  FlatList,
+  ToastAndroid
 } from 'react-native';
 
 import util from '../../common/utils'
@@ -54,6 +55,17 @@ export default class FriendsList extends Component {
     recommendUser(){
         this.props.navigator.push({component: recommend})
     }
+    agreeApply(id) {
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS + '/' + id + `?token=${global.user.authentication_token}`
+        let data = {
+            status: 'created',
+        }
+        util.patch(url, data, (response) => {
+            if (response.status == 0) {
+                ToastAndroid.show('你和他成为了好友', ToastAndroid.LONG);
+            }
+        }, this.props.navigator)
+    }
 
     render() {
         let friends = this.state.friends;
@@ -68,14 +80,19 @@ export default class FriendsList extends Component {
                             <Text style={{color: '#4a90e2'}}>添加推荐</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{ justifyContent: 'flex-start'}}>
                         <Text style={{color: 'black'}}>待验证</Text>
                         { 
                             profriends.map((item, index) => {
                                 return(
                                     <View style={styles.list} key={item.id}>
-                                        <Image source ={{uri:item.avatar}} style={{width:50,height:50}}/>
-                                        <Text style={{color: 'black'}}>{item.friend_name}</Text>
+                                        <View style={styles.list}>
+                                            <Image source ={{uri:item.avatar}} style={{width:50,height:50,borderRadius:25}}/>
+                                            <Text style={{color: 'black', marginLeft:20}}>{item.friend_name}</Text>
+                                        </View>
+                                        <TouchableOpacity onPress={this.agreeApply.bind(this, item.id)}>
+                                            <Text style={{color:global.gColors.themeColor}}>通过验证</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 )
                             })
@@ -91,8 +108,10 @@ export default class FriendsList extends Component {
                             friends.map((item, index) => {
                                 return(
                                     <View style={styles.list} key={item.id}>
-                                        <Image source ={{uri:item.avatar}} style={{width:50,height:50}}/>
-                                        <Text style={{color: 'black'}}>{item.friend_name}</Text>
+                                        <View style={styles.list}>
+                                            <Image source ={{uri:item.avatar}} style={{width:50,height:50,borderRadius:25}}/>
+                                            <Text style={{color: 'black', marginLeft:20}}>{item.friend_name}</Text>
+                                        </View>
                                     </View>
                                 )
                             })
@@ -105,7 +124,7 @@ export default class FriendsList extends Component {
 }
 const styles = StyleSheet.create({
     list: {
-        height: 40, 
+        height: 60, 
         borderBottomWidth: 1, 
         borderColor: '#eeeeee', 
         alignItems: 'center', 
