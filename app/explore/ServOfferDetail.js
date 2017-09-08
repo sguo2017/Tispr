@@ -21,7 +21,6 @@ import {
 import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
 import { observer } from 'mobx-react/native'
 import { reaction } from 'mobx'
-import { connect } from 'react-redux';
 import { CachedImage } from "react-native-img-cache";
 import Swiper from 'react-native-swiper';
 import * as WeChat from 'react-native-wechat';

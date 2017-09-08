@@ -79,7 +79,27 @@ const _image = {
     70: require('../../resource/industry/70.png'),
     71: require('../../resource/industry/71.png'),
     72: require('../../resource/industry/72.png'),
-    73: require('../../resource/industry/73.png'),  
+    73: require('../../resource/industry/73.png'),
+    76: require('../../resource/industry/73.png'),  
+    77: require('../../resource/industry/73.png'),  
+    78: require('../../resource/industry/73.png'),  
+    79: require('../../resource/industry/73.png'),  
+    80: require('../../resource/industry/73.png'),  
+    81: require('../../resource/industry/73.png'),  
+    82: require('../../resource/industry/73.png'),  
+    83: require('../../resource/industry/73.png'),  
+    84: require('../../resource/industry/73.png'),  
+    85: require('../../resource/industry/73.png'),  
+    86: require('../../resource/industry/73.png'),  
+    87: require('../../resource/industry/73.png'),  
+    88: require('../../resource/industry/73.png'),  
+    89: require('../../resource/industry/73.png'),  
+    90: require('../../resource/industry/73.png'),  
+    91: require('../../resource/industry/73.png'),  
+    92: require('../../resource/industry/73.png'),  
+    93: require('../../resource/industry/73.png'),  
+    94: require('../../resource/industry/73.png'),  
+   
 }
 export default class navpage extends Component {
 
