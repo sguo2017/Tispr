@@ -43,7 +43,8 @@ export default class MeInfo extends Component {
       request_count: global.user.request_count,
       favorites_count: global.user.favorites_count,
       phoneNum: global.user.num,
-      friend_status: false,
+      friend_status: '',
+      f_id: '',
     }
   }
 
@@ -72,7 +73,8 @@ export default class MeInfo extends Component {
           request_count: thisUser.request_count,
           favorites_count: thisUser.favorites_count,
           phoneNum: thisUser.num ? thisUser.num : 10000,
-          friend_status: thisUser.friend_status
+          friend_status: thisUser.friend_status,
+          f_id: thisUser.f_id,
         });
       },
       (error) => {
@@ -158,6 +160,29 @@ export default class MeInfo extends Component {
       }
     },this.props.navigator)
   }
+  async deleteFriend() {
+    try {
+      let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DELETE_FRIEND + '/' + this.state.f_id + '?token=' + global.user.authentication_token;
+      let response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      let res = await response.text();
+      if (response.status >= 200 && response.status < 300) {
+        let resObject = JSON.parse(res);
+        if (resObject.status == 0) {
+          console.log(resObject.msg);
+        } else {
+          console.log(resObject.msg);
+        }
+      }
+    } catch (error) {
+      console.log(107)
+    }
+  }
   render() {
     let titles;
     let controllers;
@@ -230,7 +255,10 @@ export default class MeInfo extends Component {
             <Text style={styles.text}>{this.state.info}</Text>
             {
               this.props.isBrowseMode?
-              (this.state.friend_status?<Text style={{color:global.gColors.buttonColor, marginLeft:20}}>好友</Text>:
+              (this.state.friend_status == 'created'?
+              <TouchableOpacity onPress={this.deleteFriend.bind(this)} style={{marginLeft:20}}>
+                <Text style={{color:global.gColors.buttonColor, marginLeft:20}}>删除好友</Text>
+              </TouchableOpacity>:
               <TouchableOpacity onPress={this.addFriend.bind(this)} style={{marginLeft:20}}>
                 <Text style={{color:'#fff'}}>加好友</Text>
               </TouchableOpacity>)
