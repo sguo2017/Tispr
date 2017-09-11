@@ -132,6 +132,7 @@ let url = {
      SERV_API_REPORT:`/api/suggestion/reports?token=`,//举报API
      SERV_API_PHONE_SETTING: `/api/users/phone_call/`,//接听电话时间设置API
      SERV_API_PERSON_INFO: `/api/users/users/`,//用户信息API
+     SERV_API_INVITATION_CODE: `/api/users/invitation_code`,//获取用户邀请码API
      SERV_API_VALIDATE_CODE:`/api/users/validate_code`,//验证邀请码API
      SERV_API_ACTIVATE_USER:`/api/users/users`,//激活用户API
      SERV_API_FRIEND_SEARCH: `/api/users/users/`,//搜索好友API

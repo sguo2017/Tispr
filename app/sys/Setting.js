@@ -111,6 +111,14 @@ export default class Setting extends Component {
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:inviteFriend,name:'inviteFriend'})}>
+						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+							<Text style={styles.rectangle_text} >
+								邀请好友
+			  			</Text>
+						</View>
+						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
+					</TouchableOpacity>
 					<View style={{ height: 40, backgroundColor: '#f7f7f7',justifyContent:'center',paddingLeft:20 }}>
 						<Text style={{color:'#999999'}}>帮助</Text>
 					</View>
