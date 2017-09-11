@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
-import Search from './searchReducer';
 import MeMarkList from './MeMarkListReducer';
 import MeOfferList from './MeOfferListReducer';
 import ServOfferList from './ServOfferListReducer';
-import UserList from './UserListReducer'
+import UserList from './UserListReducer';
+import MeFriendList from './MeFriendListReducer';
 
 export default rootReducer = combineReducers({
   MeOfferList,
   MeMarkList,
-  Search,
   ServOfferList,
-  UserList
+  UserList,
+  MeFriendList,
 });
