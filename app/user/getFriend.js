@@ -56,7 +56,7 @@ export default class getFriend extends Component {
     }
     getFriendDetail(){
         let friendList = [];
-        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CONTACTS_LIST;
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_CONTACTS_LIST+ `?token=${global.user.authentication_token}`;
         let data= {friends: this.state.friends};
         util.post(url,data, (result)=>{
                 console.log("55:"+result.feeds[0].friend_name + result.feeds[0].status)

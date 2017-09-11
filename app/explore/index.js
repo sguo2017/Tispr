@@ -164,7 +164,7 @@ class ExploreList extends PureComponent {
                 }
                 {
                     this.state.communitySearch?
-                    <VillageList {...this.props} title={this.state.searchTitle} /> :
+                    <VillageList {...this.props} exploreparams={{title:this.state.searchTitle}}/> :
                    null
                 }
                 {
