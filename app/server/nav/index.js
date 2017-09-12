@@ -13,7 +13,8 @@ import {
     PixelRatio,
     Alert,
     Dimensions,
-    FlatList
+    FlatList,
+    Modal
 } from 'react-native'
 import { CachedImage } from "react-native-img-cache";
 import Header from '../../components/HomeNavigation';
@@ -25,6 +26,7 @@ import ServRequest from '../request/title';
 import Util from '../../common/utils';
 import breakdown from '../../sys/others/breakdown';
 import offline from '../../sys/others/offline';
+import recommend from '../../friend/recommendUser'
 const screenW = Dimensions.get('window').width;
 const _image = {
     21: require('../../resource/industry/21.png'),
@@ -112,7 +114,10 @@ export default class navpage extends Component {
             user: this.props.user,  
             pwd: this.props.pwd,
             goods_tpye: this.props.goods_tpye,
-            page: 0
+            page: 0,
+            showRecommendWay:false,
+            recommendCatalogId: '',
+            recommendCatalogName: ''
         }
     }
 
@@ -145,33 +150,56 @@ export default class navpage extends Component {
     } 
 
     jump(goods_catalogs_id, goods_catalogs_name) {
-        console.log("this.state.goods_tpye:" + this.state.goods_tpye);
-        if (this.state.goods_tpye == "serv_offer") {
-            const { navigator } = this.props;
-            goods_tpye = this.state.goods_tpye;
-            console.log("goods_catalogs_id" + goods_catalogs_id);
-            navigator.resetTo({
-                component: ServOffer,
-                name: 'ServOffer',
-                passProps: { goods_catalogs_id, goods_catalogs_name, goods_tpye },
+        const { navigator } = this.props;
+        if(this.props.recommendUser){
+            this.setState({
+                showRecommendWay:true,
+                recommendCatalogId:goods_catalogs_id,
+                recommendCatalogName:goods_catalogs_name
             })
-        }
-        else if (this.state.goods_tpye == "serv_request") {
-            const { navigator } = this.props;
-            goods_tpye = this.state.goods_tpye;
-            console.log("goods_catalogs_id" + goods_catalogs_id);
-            navigator.resetTo({
-                component: ServRequest,
-                name: 'ServRequest',
-                passProps: { goods_catalogs_id, goods_catalogs_name, goods_tpye },
-            })
+        }else{
+            console.log("this.state.goods_tpye:" + this.state.goods_tpye);
+            if (this.state.goods_tpye == "serv_offer") {
+                goods_tpye = this.state.goods_tpye;
+                console.log("goods_catalogs_id" + goods_catalogs_id);
+                navigator.resetTo({
+                    component: ServOffer,
+                    name: 'ServOffer',
+                    passProps: { goods_catalogs_id, goods_catalogs_name, goods_tpye },
+                })
+            }
+            else if (this.state.goods_tpye == "serv_request") {
+                goods_tpye = this.state.goods_tpye;
+                console.log("goods_catalogs_id" + goods_catalogs_id);
+                navigator.resetTo({
+                    component: ServRequest,
+                    name: 'ServRequest',
+                    passProps: { goods_catalogs_id, goods_catalogs_name, goods_tpye },
+                })
+            }
         }
     }
     _onBack = () => {        
         const { navigator } = this.props;
-        navigator.resetTo({component: ServIndex, name: 'ServIndex'})
+        if(this.props.recommendUser){
+            navigator.pop();
+        }else{
+            navigator.resetTo({component: ServIndex, name: 'ServIndex'})
+        }
     }
     _keyExtractor = (item, index) => item.id;
+    recommendUser(){
+        this.setState({
+            showRecommendWay:false
+        })
+        this.props.navigator.push({
+            component: recommend,
+            passProps: {
+                catalog_id:this.state.recommendCatalogId,
+                catalog_name: this.state.recommendCatalogName
+            }
+        })
+    }
     render() {
         let param = global.goods_catalog_I;
         let max = 0;
@@ -184,8 +212,11 @@ export default class navpage extends Component {
         this.state.page = max;
         return (
             <View style={styles.listView}>
+                {this.state.showRecommendWay?
+                <View style={styles.cover}></View>
+                :null}
                 <Header
-                    leftIconAction={() => this.props.navigator.resetTo({component: ServIndex, name: 'ServIndex'})}
+                    leftIconAction={this._onBack}
                     title='选择分类'
                     leftIcon={require('../../resource/ic_back_white.png')}
                 /> 
@@ -247,6 +278,34 @@ export default class navpage extends Component {
                         })
                     }
                 </ScrollableTabView>
+                <Modal
+                    animationType='slide'
+                    transparent={true}
+                    visible={this.state.showRecommendWay}
+                >
+                <View style={{flex: 1}}>
+                    <View style={styles.modal}>
+                        <TouchableOpacity 
+                            style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
+                        >
+                            <Text 
+                                style={[styles.modalText, {color: global.gColors.themeColor}]}>从通讯录添加</Text>
+                        </TouchableOpacity>
+                        <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
+                        <TouchableOpacity 
+                            style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center',}]}
+                            onPress={this.recommendUser.bind(this)}
+                        >
+                            <Text style={[styles.modalText, {color: global.gColors.themeColor}]}>手动输入添加</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            onPress={() => this.setState({ showRecommendWay: false })} 
+                            style={{ alignItems: 'center', justifyContent: 'center'}}>
+                            <Text style={styles.modalText}>取消</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                </Modal>    
             </View>
 
         )
@@ -254,6 +313,40 @@ export default class navpage extends Component {
 }
 
 const styles = StyleSheet.create({
+    cover: {
+        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        height: global.gScreen.height, 
+        width: global.gScreen.width, 
+        zIndex: 99
+    },
+    container:{  
+        flex:1,  
+        backgroundColor: '#fff',   
+        justifyContent:'center',  
+        alignItems:'center'  
+    },  
+    modal: {
+        marginTop: 300,
+        width: global.gScreen.width,
+        position: 'absolute',
+        bottom: 0,
+        height: 150, 
+        borderTopWidth: 0,
+        paddingHorizontal: 8, 
+        backgroundColor: '#fff'
+    },
+        modalItem: {
+        height: 56,
+        justifyContent: 'center',
+        marginHorizontal: 22
+    },
+    modalText: {
+        fontSize: 16,
+        color: 'black',
+    },
     listView: {
         flex: 1,
         backgroundColor: '#f5f5f5',

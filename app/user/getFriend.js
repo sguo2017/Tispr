@@ -147,7 +147,7 @@ export default class getFriend extends Component {
             </View>
         )
         return(
-            <View style={StyleSheet.container}>
+            <View style={styles.container}>
                 <View>
                     <Header
                         title='获取通讯录'
@@ -157,9 +157,16 @@ export default class getFriend extends Component {
                 </View>
                 {
                     this.state.showList?friendListView:
-                    <TouchableOpacity onPress ={()=> this.getFriendDetail()} style={styles.loginButton}>
-                        <Text style={styles.loginButtonText}>查看通讯录</Text>
-                    </TouchableOpacity>
+                    <View>
+                        <View style={{justifyContent: 'center',alignItems: 'center'}}>
+                            <Text style={{fontSize: 16,margin:20, color: '#000'}}>找找哪些熟人在用奇客</Text>
+                            <Text>将展示出你可能认识的好友，他们也正在使用奇客</Text>                            
+                        </View>
+                        <TouchableOpacity onPress ={()=> this.getFriendDetail()} style={styles.loginButton}>
+                            <Text style={styles.loginButtonText}>确定</Text>
+                        </TouchableOpacity>
+                    </View>
+                    
                 }
                 
             </View>

@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import { MapView, MapTypes, Geolocation } from 'react-native-baidu-map';
 import { fetchFriendList } from '../actions/UserListActions';
+import { fetchVillageList } from '../actions/VillageListActions';
 import Picker from 'react-native-picker';
 import { fetchExploreList } from '../actions/ServOfferListActions';
 import { connect } from 'react-redux';
@@ -111,7 +112,8 @@ class ExploreList extends PureComponent {
             communitySearch: true,
             friendSearch:false, 
         })
-
+        const { dispatch } = this.props;
+        dispatch(fetchVillageList(1, {title:this.state.searchTitle}, this.props.navigator));
     }
     classSearch(){
         this.setState({

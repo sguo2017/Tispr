@@ -18,6 +18,7 @@ import Loading from '../components/Loading';
 import Util from '../common/utils';
 import Constant from '../common/constants';
 import Me from '../me/index';
+import VillageDetail from './VillageDetail';
 class ExploreVillageList extends PureComponent {
 
     constructor(props) {
@@ -55,7 +56,12 @@ class ExploreVillageList extends PureComponent {
         const { dispatch } = this.props;
         dispatch(fetchVillageList(1, this.props.exploreparams, this.props.navigator));
     }
-
+    jumpVillageDetail(village){
+        this.props.navigator.push({
+            component: VillageDetail,
+            passProps: {village}
+        })
+    }
     render() {
         const { VillageList } = this.props;
         return (
@@ -81,7 +87,7 @@ class ExploreVillageList extends PureComponent {
                             <View style={{ flex: 1 }}>
                                 {VillageList.villageList.map((data, index) => {
                                     return (
-                                        <TouchableOpacity key={index} style={{flexDirection:'row',alignItems: 'center',margin:6, paddingHorizontal: 12}}>
+                                        <TouchableOpacity key={index} onPress={this.jumpVillageDetail.bind(this, data)} style={{flexDirection:'row',alignItems: 'center',margin:6, paddingHorizontal: 12}}>
                                             
                                             <Text style={{color:'#000',margin:10,fontSize:16}}>{data.name}</Text>
                                         </TouchableOpacity>

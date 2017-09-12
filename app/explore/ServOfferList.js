@@ -31,7 +31,7 @@ import AutoTextInput from '../components/AutoTextInput'
 import ChatRoom from '../chat/ChatRoom'
 import Util from '../common/utils'
 import NavPage from '../server/nav/index'
-
+import chooseCatalog from '../server/nav/index'
 const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: 'row',
@@ -157,7 +157,8 @@ export default class ServOfferList extends Component {
         hasSeenTotalTimes: false,
         content: '',
         editable: false,
-        exploreparams: this.props.exploreparams
+        exploreparams: this.props.exploreparams,
+        recommendList:[]
       };
       UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -167,6 +168,18 @@ export default class ServOfferList extends Component {
             }
         })
   }
+    componentWillMount(){
+        try {
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_FRIENDS_LIST+ '?user_id='+global.user.id+ '&qry_type=3&token='+global.user.authentication_token;
+            Util.get(url, (result) => {
+                this.setState({recommendList: JSON.parse(result.feeds)});
+            },(error) => {
+
+            })
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
     componentDidMount() {
         const { dispatch } = this.props;
@@ -308,6 +321,9 @@ export default class ServOfferList extends Component {
             });
         }
     }
+    recommendUser(){
+        this.props.navigator.push({component: chooseCatalog, passProps:{recommendUser:true}})
+    }
 
   render() {
     const { ServOfferList } = this.props;
@@ -333,6 +349,37 @@ export default class ServOfferList extends Component {
             />
           }
         >
+            {
+            this.state.recommendList[0]?
+            <View style={{padding:8}}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between',height:30}}>
+                    <Text style={{color: 'black',fontSize:16}}>我的推荐</Text>
+                    <TouchableOpacity onPress={this.recommendUser.bind(this)}>
+                        <Text style={{color: '#4a90e2',fontSize:16}}>添加推荐</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                    {
+                        this.state.recommendList.map((item, index)=>{
+                            return(
+                                <TouchableOpacity key={index} style={{justifyContent:'center', alignItems:'center', marginRight:20}}>
+                                    <Image source ={{uri:item.avatar}} style={{width:50,height:50,borderRadius:25}}/>
+                                    <Text style={{color: 'black'}}>{item.friend_name}</Text>                                                       
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+                </View>
+            </View>
+            :
+            <View style={{margin:10}}>
+                <Text style={{fontSize:18, color:'#000',marginBottom:10}}>添加推荐</Text>
+                <Text style={{marginBottom:20}}>向朋友推荐专业人士，他们可以通过为邻订购服务</Text>
+                <TouchableOpacity style={{flex:1,borderWidth:1,borderColor:global.gColors.themeColor, justifyContent:'center',alignItems:'center',height:40}} onPress={this.recommendUser.bind(this)}>
+                    <Text style={{color: '#4a90e2',fontSize:16}}>添加推荐</Text>
+                </TouchableOpacity>
+            </View>
+            }
             <View style={styles.contentContainer}>
                 <View style={{ flex: 1 }}>
                     {ServOfferList.exploreList.map((serv, i) => {
