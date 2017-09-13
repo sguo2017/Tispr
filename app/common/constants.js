@@ -138,6 +138,8 @@ let url = {
      SERV_API_FRIEND_SEARCH: `/api/users/users/`,//搜索好友API
      SERV_API_VILLAGE_SEARCH: `/api/villages/villages/`,//搜索社区API
      SERV_API_COMMENT:'/api/suggestion/comments',//新增评价API
+     SERV_API_ADD_VILLAGES: '/api/villages/add_user',//用户加入社区API
+     SERV_API_DELETE_VILLAGES: '/api/villages/delete_user',//用户退出社区API
      //////////////////<<<<   GEOAPI服务器  >>>>>//////////////////////////////
      GEO_LOCATION_ADDR: "http://api.map.baidu.com/geocoder/v2/?output=json&pois=1&ak=ZFFEI4cl338WSpoGsGSuHhpxiQpuEnfe"
      

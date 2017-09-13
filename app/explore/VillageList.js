@@ -27,17 +27,15 @@ class ExploreVillageList extends PureComponent {
         this._onRefresh = this._onRefresh.bind(this);
     }
     componentDidMount() {
-        const { dispatch } = this.props;
+        const { dispatch ,exploreparams, qry_type, navigator} = this.props;
         if(!global.user.authentication_token){
             Util.noToken(this.props.navigator);
         }
-        let exploreparams = this.props.exploreparams;
-
-        dispatch(fetchVillageList(1, exploreparams, this.props.navigator));
+        dispatch(fetchVillageList(1, exploreparams , qry_type, navigator));
     }
 
     _onMomentumScrollEnd(event) {
-        const { dispatch, VillageList } = this.props;
+        const { dispatch, VillageList, exploreparams, qry_type, navigator } = this.props;
         if (!VillageList.canLoadMore || VillageList.isLoadMore) return;
 
         const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
@@ -45,7 +43,7 @@ class ExploreVillageList extends PureComponent {
         let viewBottomY = contentOffset.y + layoutMeasurement.height;
 
         if (Math.abs(viewBottomY - contentSizeH) <= 40) {
-            dispatch(fetchVillageList(VillageList.page + 1, this.props.exploreparams, this.props.navigator));
+            dispatch(fetchVillageList(VillageList.page + 1, exploreparams, qry_type, navigator));
         }
     }
 
@@ -53,8 +51,8 @@ class ExploreVillageList extends PureComponent {
         if (!global.user.authentication_token) {
             Util.noToken(this.props.navigator);
         }
-        const { dispatch } = this.props;
-        dispatch(fetchVillageList(1, this.props.exploreparams, this.props.navigator));
+        const { dispatch ,exploreparams, qry_type, navigator} = this.props;
+        dispatch(fetchVillageList(1, exploreparams, qry_type, navigator));
     }
     jumpVillageDetail(village){
         this.props.navigator.push({

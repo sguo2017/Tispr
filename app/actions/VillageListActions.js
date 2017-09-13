@@ -3,8 +3,8 @@ import Common from '../common/constants';
 import * as types from '../actions/actionTypes';
 import breakdown from '../sys/others/breakdown';
 import offline from '../sys/others/offline';
-export let fetchVillageList = (page, exploreparams, navigator) => {
-  let URL = `http://` + Common.url.SERV_API_ADDR + ':' + Common.url.SERV_API_PORT + Common.url.SERV_API_VILLAGE_SEARCH + '?token='+global.user.authentication_token+'&page='+page;
+export let fetchVillageList = (page, exploreparams,qry_type, navigator) => {
+  let URL = `http://` + Common.url.SERV_API_ADDR + ':' + Common.url.SERV_API_PORT + Common.url.SERV_API_VILLAGE_SEARCH + '?token='+global.user.authentication_token+'&qry_type='+qry_type+'&page='+page;
   return dispatch => {
     dispatch({ type: types.VILLAGE_FETCHING_LIST, payload: {page} });
     Util.get(URL, (response) => {

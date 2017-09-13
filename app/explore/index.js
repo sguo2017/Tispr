@@ -113,7 +113,7 @@ class ExploreList extends PureComponent {
             friendSearch:false, 
         })
         const { dispatch } = this.props;
-        dispatch(fetchVillageList(1, {title:this.state.searchTitle}, this.props.navigator));
+        dispatch(fetchVillageList(1, {title:this.state.searchTitle}, 1 , this.props.navigator));
     }
     classSearch(){
         this.setState({
@@ -166,7 +166,7 @@ class ExploreList extends PureComponent {
                 }
                 {
                     this.state.communitySearch?
-                    <VillageList {...this.props} exploreparams={{title:this.state.searchTitle}}/> :
+                    <VillageList {...this.props} qry_type={1} exploreparams={{title:this.state.searchTitle}}/> :
                    null
                 }
                 {

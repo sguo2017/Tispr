@@ -9,6 +9,7 @@ import {
     TextInput,
     Image,
     ScrollView,
+    ToastAndroid,
 } from 'react-native'
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
@@ -20,19 +21,45 @@ export default class getFriend extends Component {
 		this.state =({
            name:'',
            num: '',
+           in_village: this.props.village.in_village,
 		});
 	}
-    join(){
-        // let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS;
-        // let data={
-        //     friend_name: this.state.name,
-        //     friend_num: this.state.num
-        // }
-        // util.post(url, data, (response)=>{
-        //     console.log("32"+JSON.stringify(response.feed))
-        // },this.props.navigator)
-    }
+    componentWillMount(){
 
+    }
+    componentDidMount(){
+
+    }
+    join(v_id){
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_VILLAGES+`?token=${global.user.authentication_token}`;
+        let data={
+            user_id: global.user.id,
+            village_id: v_id,
+        }
+        util.post(url, data, (response)=>{
+            if(response.status == 0){
+                this.setState({
+                    in_village:true
+                })
+                ToastAndroid.show('加入成功',ToastAndroid.LONG);
+            }
+        },this.props.navigator)
+    }
+    out(v_id){
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DELETE_VILLAGES+`?token=${global.user.authentication_token}`;
+        let data={
+            user_id: global.user.id,
+            village_id: v_id,
+        }
+        util.post(url, data, (response)=>{
+            if(response.status == 0){
+                this.setState({
+                    in_village:false
+                })
+                ToastAndroid.show('退出成功',ToastAndroid.LONG);
+            }
+        },this.props.navigator)
+    }
     render(){
         let v = this.props.village
         return(
@@ -47,9 +74,15 @@ export default class getFriend extends Component {
                 <View>
                     <Text style ={{fontSize:20,alignSelf: 'center'}}>{v.name}</Text>
                 </View>
-                <TouchableOpacity onPress={this.join.bind(this)} style={styles.loginButton}>
-                    <Text>加入社区</Text>
-                </TouchableOpacity>
+                {
+                    this.state.in_village?
+                    <TouchableOpacity onPress={this.out.bind(this,v.id)} style={styles.loginButton}>
+                        <Text>退出社区</Text>
+                    </TouchableOpacity>:
+                    <TouchableOpacity onPress={this.join.bind(this,v.id)} style={styles.loginButton}>
+                        <Text>加入社区</Text>
+                    </TouchableOpacity>
+                }
             </View>
         )
     }

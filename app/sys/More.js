@@ -12,8 +12,10 @@ import Header from '../components/HomeNavigation';
 import MyRecommand from './account/MyRecommand';
 import MyFavorite from './account/MyFavorite';
 import MyRequest from './account/MyRequest';
+import MyVillage from './account/MyVillage';
 import MarkList from  '../explore/MarkList';
 import setting from  './Setting';
+
 export default class Setting extends Component {
 
 	constructor(props) {
@@ -44,7 +46,7 @@ export default class Setting extends Component {
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:MyRecommand})}>
+					<TouchableOpacity style={styles.rectangle_view} onPress={() => this.props.navigator.push({component:MyVillage})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 							<Text style={styles.rectangle_text} >
 								我的社区
