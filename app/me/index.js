@@ -20,11 +20,12 @@ import OffersList from './page/offersList';
 import RequestsList from './page/requestsList';
 import FriendsList from './page/FriendsList';
 import PersonInfo from './personalinfoEdit';
-import Setting from '../sys/Setting';
+import More from '../sys/More';
 import Constant from '../common/constants';
 import Util from '../common/utils';
 import breakdown from '../sys/others/breakdown';
 import offline from '../sys/others/offline';
+import RecommandList from './page/recommandList'
 export default class MeInfo extends Component {
   constructor(props) {
     super(props);
@@ -106,10 +107,10 @@ export default class MeInfo extends Component {
         passProps: { getdata },
       });
     }
-    if (navigator && toPage == 'Setting') {
+    if (navigator && toPage == 'More') {
       navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
-        name: "Setting",
-        component: Setting,
+        name: "More",
+        component: More,
         passProps: { getdata },
       });
     }
@@ -194,9 +195,10 @@ export default class MeInfo extends Component {
         { categoryId: 3, controller: FriendsList },
       ];
     } else {
-      titles = ['TA发布的服务(' + this.state.offer_count + ')'];
+      titles = ['TA发布的服务(' + this.state.offer_count + ')', 'TA的推荐'];
       controllers = [
-        { categoryId: 1, controller: OffersList }
+        { categoryId: 1, controller: OffersList },
+        { categoryId: 2, controller: RecommandList },        
       ];
     }
     return (
@@ -246,7 +248,7 @@ export default class MeInfo extends Component {
                   <Image style={{ width: 18, height: 18 }} source={require('../resource/w-cancel-line-nor.png')}></Image>
                 </TouchableOpacity>
                 :
-                <TouchableOpacity onPress={this.clickJump.bind(this, 'Setting')}>
+                <TouchableOpacity onPress={this.clickJump.bind(this, 'More')}>
                   <Image style={{ marginTop: -2 }} source={require('../resource/w-setting.png')}></Image>
                 </TouchableOpacity>
             }

@@ -194,9 +194,6 @@ export default class Personinfoedit extends Component {
                                     if (this.props.getdata) {
                                         this.props.getdata(global.user.avatar, global.user.profile, global.user.website, global.user.name);
                                     }
-                                    if (navigator) {
-                                        navigator.pop();
-                                    }
                                 }
                             
                             }},

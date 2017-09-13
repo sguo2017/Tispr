@@ -83,7 +83,7 @@ export default class Setting extends Component {
 					</View>
 					<TouchableOpacity style={[styles.rectangle_view, { borderTopColor: '#dedfe0', borderTopWidth: 1 }]} onPress={() => this.props.navigator.push({component:PasswordConfirm,name:'PasswordConfirm'})}>
 						<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-							<Text style={styles.rectangle_text}>账户</Text>
+							<Text style={styles.rectangle_text}>账户设置</Text>
 						</View>
 						<Image source={require('../resource/g_chevron right.png')} style={{ alignSelf: 'center', width: 20, height: 20 }} />
 					</TouchableOpacity>

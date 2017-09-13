@@ -106,12 +106,6 @@ class FriendsList extends PureComponent {
                     >
                         <View style={styles.contentContainer}>
                             <View style={{ flex: 1 }}>
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between',height:30}}>
-                                    <Text style={{color: 'black',fontSize:16}}>我的推荐</Text>
-                                    <TouchableOpacity onPress={this.recommendUser.bind(this)}>
-                                        <Text style={{color: '#4a90e2',fontSize:16}}>添加推荐</Text>
-                                    </TouchableOpacity>
-                                </View>
                                 {
                                     profriends[0]?
                                     <View style={{ justifyContent: 'flex-start'}}>
