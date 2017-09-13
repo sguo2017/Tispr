@@ -15,6 +15,7 @@ import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import util from '../common/utils'
 import TabBarView from '../containers/TabBarView';
+import uploadAvatar from './uploadAvatar';
 var Contacts = require('react-native-contacts')
 export default class getFriend extends Component {
     constructor(props) {
@@ -105,11 +106,21 @@ export default class getFriend extends Component {
             }
         }, this.props.navigator)
     }
-
+    toUploadAvatar(){
+        const { navigator} = this.props;
+        navigator.push({
+            component: uploadAvatar
+        })
+    }
     _keyExtractor = (item, index) => item.id;
     render(){
         var friendListView = (
             <View>
+                <Header
+                    title='你的朋友'
+                    leftIcon={require('../resource/ic_back_white.png')}
+                    leftIconAction = {()=>this.props.navigator.resetTo({component: TabBarView})}
+                />
                 <FlatList
                     data = {this.state.friendList}
                     keyExtractor={this._keyExtractor}
@@ -144,20 +155,21 @@ export default class getFriend extends Component {
 
                     }}
                 />
+                <TouchableOpacity onPress ={()=> this.toUploadAvatar()} style={styles.loginButton}>
+                    <Text style={styles.loginButtonText}>下一步</Text>
+                </TouchableOpacity>
             </View>
         )
         return(
             <View style={styles.container}>
-                <View>
-                    <Header
-                        title='获取通讯录'
-                        leftIcon={require('../resource/ic_back_white.png')}
-                        leftIconAction = {()=>this.props.navigator.resetTo({component: TabBarView})}
-                    />
-                </View>
                 {
                     this.state.showList?friendListView:
                     <View>
+                        <Header
+                            title='获取通讯录'
+                            leftIcon={require('../resource/ic_back_white.png')}
+                            leftIconAction = {()=>this.props.navigator.resetTo({component: TabBarView})}
+                        />
                         <View style={{justifyContent: 'center',alignItems: 'center'}}>
                             <Text style={{fontSize: 16,margin:20, color: '#000'}}>找找哪些熟人在用奇客</Text>
                             <Text>将展示出你可能认识的好友，他们也正在使用奇客</Text>                            
@@ -185,7 +197,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: global.gColors.buttonColor,
         position: 'absolute',
-        top: 200,
         bottom: 0,
         right:0,
         left: 0,
