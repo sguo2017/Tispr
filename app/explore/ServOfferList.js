@@ -171,7 +171,7 @@ export default class ServOfferList extends Component {
     }
     componentWillMount() {
         try {
-            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_FRIENDS_LIST + '?user_id=' + global.user.id + '&qry_type=3&token=' + global.user.authentication_token;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_COMMENT_USERS_LIST + '?user_id=' + global.user.id + '&qry_type=1&token=' + global.user.authentication_token;
             Util.get(url, (result) => {
                 this.setState({ recommendList: JSON.parse(result.feeds) });
             }, (error) => {
@@ -370,7 +370,7 @@ export default class ServOfferList extends Component {
                                                     return (
                                                         <TouchableOpacity key={index} style={{ justifyContent: 'center', alignItems: 'center', marginRight: 16 }}>
                                                             <Image source={{ uri: item.avatar }} style={{ width: 50, height: 50, borderRadius: 25 }} />
-                                                            <Text style={{ color: 'black' }}>{item.friend_name}</Text>
+                                                            <Text style={{ color: 'black' }}>{item.name}</Text>
                                                         </TouchableOpacity>
                                                     )
                                                 }

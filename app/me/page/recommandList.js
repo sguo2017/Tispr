@@ -82,7 +82,7 @@ class RecommandList extends PureComponent {
                                     return (
                                         <TouchableOpacity key={index} style={{flexDirection:'row',alignItems: 'center',margin:6, paddingHorizontal: 12}}>
                                             <Image source={{uri: data.avatar}} style={{width:50, height:50, borderRadius:25}}/>
-                                            <Text style={{color:'#000',margin:10,fontSize:16}}>{data.friend_name}</Text>
+                                            <Text style={{color:'#000',margin:10,fontSize:16}}>{data.name}</Text>
                                         </TouchableOpacity>
                                     );
                                 })}

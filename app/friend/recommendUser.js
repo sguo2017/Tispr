@@ -36,7 +36,7 @@ export default class recommendUser extends Component {
             console.log("32"+JSON.stringify(response.feed))
             this.props.navigator.push({
                 component: commentPage,
-                passProps: {user:response.user}
+                passProps: {user:response.user,newUser:true}
             })
         },this.props.navigator)
     }

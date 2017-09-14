@@ -71,7 +71,7 @@ class FriendsList extends PureComponent {
         this.props.navigator.push({component: recommend})
     }
     agreeApply(id) {
-        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS + '/' + id + `?token=${global.user.authentication_token}`
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_AGREE_FRIENDS + '/' + id + `?token=${global.user.authentication_token}`
         let data = {
             status: 'created',
         }

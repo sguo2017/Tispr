@@ -41,6 +41,7 @@ import Util from '../common/utils';
 import Me from '../me/index';
 import breakdown from '../sys/others/breakdown';
 import offline from '../sys/others/offline';
+import commentPage from '../friend/friendComment';
 const screenW = Dimensions.get('window').width;
 
 const msg1 = '你发布的专业服务很棒！';
@@ -74,6 +75,8 @@ export default class ServOfferDetail extends Component {
             editable: false,
             content: '',
             isReported: this.props.feed.isReported,
+            isRecommanded: this.props.feed.isRecommanded,
+            commentList:[]
         };
         UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -91,6 +94,7 @@ export default class ServOfferDetail extends Component {
     }
     componentWillMount() {
         this._getSameTypeOffer();
+        this._getComments();
     }
     componentDidMount() {
         let longitude = 116.406568, latitude = 39.915156 //缺省是天安门位置
@@ -120,6 +124,31 @@ export default class ServOfferDetail extends Component {
             console.warn(error, 'error')
         })
 
+    }
+    async _getComments(){
+        let user_id = this.props.feed.user_id;
+        if(!global.user.authentication_token){
+            Util.noToken(this.props.navigator);
+        }
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_COMMENT_LIST + global.user.authentication_token + `&user_id=${user_id}&qry_type=2`;        
+        Util.get(
+            url,
+            (response) => {
+                let commentList = this.state.commentList
+                commentList = (response.feeds);
+                this.setState({
+                    commentList: commentList,
+                });
+            },
+            (error) => {
+                if(error.message == 'Network request failed'){
+                    this.props.navigator.push({component: offline})
+                }else{
+                    console.log("servOfferDetail错误信息"+error)
+                    this.props.navigator.push({component: breakdown})
+                }
+            }
+        )       
     }
     async _getSameTypeOffer() {
         let catalog_id = this.props.feed.goods_catalog_id;
@@ -391,6 +420,19 @@ export default class ServOfferDetail extends Component {
             }
         });
     }
+    toRecommandPage(){
+        const { feed, navigator } = this.props;
+        let _this = this;
+        let getData = (a)=>{
+            _this.setState({
+                isRecommanded:a
+            })
+        }
+        navigator.push({
+            component: commentPage,
+            passProps: {user:feed.user, getData}
+        })
+    }
 
     render() {
         const { feed } = this.props;
@@ -401,30 +443,43 @@ export default class ServOfferDetail extends Component {
                 {this.state.show_share||this.state.show_report||this.state.isMine?
                 <View style={styles.cover}></View>
                 :null}
-                <Header
-                    title='服务'
-                    leftIcon={require('../resource/w-back.png')}
-                    leftIconAction={() => this.props.navigator.pop()}
-                    rightIcon={require('../resource/w-more.png')}
-                    rightIconAction={() => {
-                        mine? this.setState({ isMine: true}):this.setState({ show_report: true });
-                        }
-                    }
-                    rightIcon2={require('../resource/w-share.png')}
-                    rightIcon2Action={() => {
-                        this.setState({ show_share: true });
-                        {/* Animated.timing(
-                            this.state.fadeAnim,
-                            {
-                                toValue: 1,
-                                //duration: 5000,
+                {
+                    feed.user_id == global.user.id ?
+                    <Header
+                        title='服务'
+                        leftIcon={require('../resource/w-back.png')}
+                        leftIconAction={() => this.props.navigator.pop()}
+                        rightIcon={require('../resource/w-more.png')}
+                        rightIconAction={() => {
+                            mine? this.setState({ isMine: true}):this.setState({ show_report: true });
                             }
-                        ).start(); */}
-                    }}
-                    style={{ height: 50 }}
-                />
-                
-                <ScrollView>
+                        }
+                        rightIcon2={require('../resource/w-share.png')}
+                        rightIcon2Action={() => {
+                            this.setState({ show_share: true });
+                        }}
+                        style={{ height: 50 }}
+                    />
+                    :
+                    <Header
+                        title='服务'
+                        leftIcon={require('../resource/w-back.png')}
+                        leftIconAction={() => this.props.navigator.pop()}
+                        rightIcon={require('../resource/w-more.png')}
+                        rightIconAction={() => {
+                            mine? this.setState({ isMine: true}):this.setState({ show_report: true });
+                            }
+                        }
+                        rightIcon2={require('../resource/w-share.png')}
+                        rightIcon2Action={() => {
+                            this.setState({ show_share: true });
+                        }}
+                        rightIcon3={this.state.isRecommanded? require('../resource/ic_account_favour.png'):require('../resource/ic_news_collect.png')}
+                        rightIcon3Action={this.state.isRecommanded?()=>{}:this.toRecommandPage.bind(this)}
+                        style={{ height: 50 }}
+                    />
+                }
+                <ScrollView ref="_scrollView">
                     <View style={{ paddingHorizontal: 16, justifyContent: 'space-between', backgroundColor: 'white' }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 8, height: 48}}>
                             <View style={{ justifyContent: 'space-around', flexDirection: 'row', }}>
@@ -443,6 +498,22 @@ export default class ServOfferDetail extends Component {
                             <View>
                                 <Text style={{ color: '#999999', fontSize: 12 }}>{feed.created_at.substring(0, 4) + '/' + feed.created_at.substring(5, 7) + '/' + feed.created_at.substring(8, 10)}</Text>
                             </View>
+                        </View>
+                        <View style={{height: 1, backgroundColor: '#EDEDED', width: screenW, marginLeft: -16, marginBottom: 16}}></View>                        
+                        <View>
+                            <Text style={{ fontSize: 16, lineHeight: 20, color: '#000' }}>由朋友及人脉网络推荐</Text>
+                            <View style={{flexDirection:'row',marginTop:10, marginBottom:10}}>
+                            {
+                                this.state.commentList.map((data,index)=>{
+                                    return(
+                                        <TouchableOpacity onPress={this._onPressAvatar.bind(this,data.user_id)} key={index} style={{marginRight:10}}>
+                                            <Image source={{uri:data.user_avatar}} style={{width: 32, height: 32, borderRadius: 16}}/>
+                                        </TouchableOpacity>
+                                    )
+                                })
+                            }
+                            </View>
+                            <Text onPress={() => { this.refs["_scrollView"].scrollTo({y: 720,animated: false});}} style={{color:global.gColors.themeColor}}>查看客户评价</Text>
                         </View>
                         <View style={{height: 1, backgroundColor: '#EDEDED', width: screenW, marginLeft: -16, marginBottom: 16}}></View>
                         {
@@ -484,6 +555,27 @@ export default class ServOfferDetail extends Component {
                                 </TouchableOpacity>
                             </View>
                     }
+                    <View style={{paddingHorizontal:16,paddingVertical: 10, backgroundColor:'#fff'}}>
+                        <Text style={{color:'#000', fontSize:16}}>TA收到的评价</Text>
+                        {
+                            this.state.commentList.map((data, index)=>{
+                                return(
+                                    <View key={index} style={{marginTop:5,backgroundColor:'#eee'}}>
+                                        <View style={{flexDirection:'row',alignItems:'center'}}>
+                                            <View>
+                                            <Image source={{uri: data.user_avatar}} style={{width:40, height:40,borderRadius:20,margin:10}}/>
+                                            </View>
+                                            <View>
+                                                <Text>{data.user_name}</Text>
+                                                <Text style={{color:'#000'}}>{data.content}</Text>
+                                            </View>
+                                        </View>
+                                        <Text style={{alignSelf:'flex-end',margin:5}}>{data.created_at}</Text>
+                                    </View>
+                                )
+                            })
+                        }
+                    </View>
                     <View style={{paddingHorizontal:16,paddingVertical: 10, backgroundColor: 'white'}}>
                         {   
                             feed.via == 'local' ?<Text>提供{feed.province}{feed.city}{feed.district}{Constant.offer_range[feed.range]}的服务</Text>  :<Text></Text>                        

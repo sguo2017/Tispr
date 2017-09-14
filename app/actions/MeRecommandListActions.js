@@ -4,7 +4,7 @@ import * as types from '../actions/actionTypes';
 import breakdown from '../sys/others/breakdown';
 import offline from '../sys/others/offline';
 export let fetchRecommandList = (page, userId, navigator) => {
-  let URL = 'http://' + Common.url.SERV_API_ADDR + ':' + Common.url.SERV_API_PORT + Common.url.SERV_API_FRIENDS_LIST+'?user_id='+ userId +'&qry_type=3&page='+page+'&token='+global.user.authentication_token;
+  let URL = 'http://' + Common.url.SERV_API_ADDR + ':' + Common.url.SERV_API_PORT + Common.url.SERV_API_COMMENT_USERS_LIST+'?user_id='+ userId +'&qry_type=1&page='+page+'&token='+global.user.authentication_token;
   return dispatch => {
     dispatch({ type: types.ME_RECOMMAND_FETCHING_LIST });
     Util.get(URL, (response) => {

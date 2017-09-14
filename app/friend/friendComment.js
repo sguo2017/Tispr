@@ -9,6 +9,7 @@ import {
     TextInput,
     Image,
     ScrollView,
+    ToastAndroid
 } from 'react-native'
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
@@ -35,14 +36,21 @@ export default class friendComment extends Component {
         }
         util.post(url, data, (response)=>{
             console.log("32"+JSON.stringify(response.feed))
-            this.props.navigator.push({
-                component: recommandSuccess,
-                passProps: {user: this.props.user}
-            })
+            if(this.props.newUser){
+                this.props.navigator.push({
+                    component: recommandSuccess,
+                    passProps: {user: this.props.user}
+                })
+            }else{
+                ToastAndroid.show('评价成功',ToastAndroid.LONG);
+                this.props.getData(true);
+                this.props.navigator.pop();
+            }
         },this.props.navigator)
     }
 
     render(){
+        let placeholderContent = "发表你对"+this.props.user.name+"的评价"
         return(
             <View style={styles.container}>
                 <View>
@@ -60,7 +68,8 @@ export default class friendComment extends Component {
                 <View style={{margin:10}}>
                     <TextInput
                     onChangeText={(text) => this.setState({ content: text })}
-                    style={{height:100,borderWidth: 1, borderColor: '#ccc',marginBottom: 20}} placeholder="发表你对TA的评价"
+                    style={{height:100,borderWidth: 1, borderColor: '#ccc',marginBottom: 20}} 
+                    placeholder={placeholderContent}
                     value={this.state.content}
                     underlineColorAndroid="transparent"
                     returnKeyType = 'next'
