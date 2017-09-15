@@ -84,6 +84,7 @@ let Util = {
         })
         .catch((err) => {
             navigator.push({component: breakdown});
+            console.log("87patch"+err)
         });
     },
     noToken: (navigator) => {

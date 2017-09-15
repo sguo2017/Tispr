@@ -14,6 +14,7 @@ import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
 import util from '../common/utils'
 import commentPage from './friendComment'
+import recommandSuccess from './recommandSuccess'
 export default class recommendUser extends Component {
     constructor(props) {
 		super(props);
@@ -29,15 +30,23 @@ export default class recommendUser extends Component {
             friend_name: this.state.name,
             friend_num: this.state.num,
             user_id: global.user.id,
+            catalog:this.props.recommendCustomer?'customer':'friend',
             catalog_id: this.props.catalog_id,
             catalog_name:this.props.catalog_name,
         }
         util.post(url, data, (response)=>{
             console.log("32"+JSON.stringify(response.feed))
-            this.props.navigator.push({
-                component: commentPage,
-                passProps: {user:response.user,newUser:true}
-            })
+            if(this.props.recommendCustomer){
+                 this.props.navigator.push({
+                    component: recommandSuccess,
+                    passProps: {user: response.user}
+                })
+            }else{
+                this.props.navigator.push({
+                    component: commentPage,
+                    passProps: {user:response.user,newUser:true}
+                })
+            }
         },this.props.navigator)
     }
 
@@ -46,7 +55,7 @@ export default class recommendUser extends Component {
             <View style={styles.container}>
                 <View>
                     <Header
-                        title='添加专业人士'
+                        title={this.props.recommendCustomer?'推荐客户':'推荐专业人士'}
                         leftIcon={require('../resource/ic_back_white.png')}
                         leftIconAction = {()=>this.props.navigator.pop()}
                     />

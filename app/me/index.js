@@ -25,7 +25,8 @@ import Constant from '../common/constants';
 import Util from '../common/utils';
 import breakdown from '../sys/others/breakdown';
 import offline from '../sys/others/offline';
-import RecommandList from './page/recommandList'
+import RecommandList from './page/recommandList';
+import CustomerList from './page/customerList';
 export default class MeInfo extends Component {
   constructor(props) {
     super(props);
@@ -188,10 +189,10 @@ export default class MeInfo extends Component {
     let titles;
     let controllers;
     if (!this.props.isBrowseMode || this.props.id && this.props.id == global.user.id) {
-      titles = ['服务(' + global.user.offer_count + ')', '需求(' + global.user.request_count + ')', '好友(' + global.user.favorites_count + ')'];
+      titles = ['服务', '客户', '好友'];
       controllers = [
         { categoryId: 1, controller: OffersList },
-        { categoryId: 2, controller: RequestsList },
+        { categoryId: 2, controller: CustomerList },
         { categoryId: 3, controller: FriendsList },
       ];
     } else {

@@ -19,6 +19,7 @@ import Loading from '../../components/Loading';
 import util from '../../common/utils'
 import Constant from '../../common/constants'
 import recommend from '../../friend/recommendUser'
+import MyPending from '../../sys/account/MyPending'
 class FriendsList extends PureComponent {
 
     constructor(props) {
@@ -30,6 +31,9 @@ class FriendsList extends PureComponent {
         }
     }
     componentWillMount() {
+        this.loadProfriends();
+    }
+    loadProfriends(){
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_FRIENDS_LIST+ '?user_id='+global.user.id+ '&qry_type=2&token='+global.user.authentication_token;
             util.get(url, (result) => {
@@ -65,6 +69,7 @@ class FriendsList extends PureComponent {
             Util.noToken(this.props.navigator);
         }
         const { dispatch } = this.props;
+        this.loadProfriends()
         dispatch(fetchFriendList(1, this.props.navigator));
     }
     recommendUser(){
@@ -127,7 +132,7 @@ class FriendsList extends PureComponent {
                                                 )
                                             })
                                         } 
-                                        <TouchableOpacity>
+                                        <TouchableOpacity onPress={()=>{this.props.navigator.push({component:MyPending})}}>
                                             <Text style={{color: '#4a90e2',fontSize:16}}>查看全部</Text>
                                         </TouchableOpacity>
                                     </View>
