@@ -114,13 +114,15 @@ class FriendsList extends PureComponent {
                                             profriends.map((item, index) => {
                                                 return(
                                                     <View style={styles.list} key={item.id}>
-                                                        <View style={styles.list}>
-                                                            <Image source ={{uri:item.avatar}} style={{width:50,height:50,borderRadius:25}}/>
-                                                            <Text style={{color: 'black', marginLeft:20}}>{item.friend_name}</Text>
+                                                        <View style={{flexDirection:'row',justifyContent:'space-between', alignItems: 'center',margin:6, paddingHorizontal: 12}}>
+                                                            <View style={{flexDirection: 'row',alignItems: 'center'}}>
+                                                                <Image source ={{uri:item.avatar}} style={{width:50,height:50,borderRadius:25}}/>
+                                                                <Text style={{color: 'black', marginLeft:20}}>{item.friend_name}</Text>
+                                                            </View>
+                                                            <TouchableOpacity onPress={this.agreeApply.bind(this, item.id)}>
+                                                                <Text style={{color:global.gColors.themeColor}}>通过验证</Text>
+                                                            </TouchableOpacity>
                                                         </View>
-                                                        <TouchableOpacity onPress={this.agreeApply.bind(this, item.id)}>
-                                                            <Text style={{color:global.gColors.themeColor}}>通过验证</Text>
-                                                        </TouchableOpacity>
                                                     </View>
                                                 )
                                             })

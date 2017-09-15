@@ -195,10 +195,9 @@ export default class MeInfo extends Component {
         { categoryId: 3, controller: FriendsList },
       ];
     } else {
-      titles = ['TA发布的服务(' + this.state.offer_count + ')', 'TA的推荐'];
+      titles = ['TA发布的服务'];
       controllers = [
         { categoryId: 1, controller: OffersList },
-        { categoryId: 2, controller: RecommandList },        
       ];
     }
     return (
@@ -301,6 +300,15 @@ export default class MeInfo extends Component {
 }
 
 const styles = StyleSheet.create({
+  cover: {
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        position: 'absolute', 
+        top: 176, 
+        left: 0, 
+        height: global.gScreen.height, 
+        width: global.gScreen.width, 
+        zIndex: 99
+    },
   container: {
     flex: 1,
     backgroundColor: '#fff',

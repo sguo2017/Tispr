@@ -95,7 +95,13 @@ class FriendList extends PureComponent {
                                     return (
                                         <TouchableOpacity key={index} onPress={this.jumpUserDetail.bind(this, data.id)} style={{flexDirection:'row',alignItems: 'center',margin:6, paddingHorizontal: 12}}>
                                             <Image source={{uri: data.avatar}} style={{width:50, height:50, borderRadius:25}}/>
-                                            <Text style={{color:'#000',margin:10,fontSize:16}}>{data.name}</Text>
+                                            <View>
+                                                <Text style={{color:'#000',marginLeft:10,fontSize:16}}>{data.name}</Text>
+                                                {
+                                                    data.comments_count == 0 ?null:
+                                                    <Text style={{marginLeft:10}}>推荐了{data.comments_count}个专业人士</Text>
+                                                }
+                                            </View>
                                         </TouchableOpacity>
                                     );
                                 })}
