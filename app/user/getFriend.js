@@ -115,7 +115,7 @@ export default class getFriend extends Component {
     _keyExtractor = (item, index) => item.id;
     render(){
         var friendListView = (
-            <View>
+            <View style={{flex:1}}>
                 <Header
                     title='你的朋友'
                     leftIcon={require('../resource/ic_back_white.png')}
@@ -164,7 +164,7 @@ export default class getFriend extends Component {
             <View style={styles.container}>
                 {
                     this.state.showList?friendListView:
-                    <View>
+                    <View style={{flex:1}}>
                         <Header
                             title='获取通讯录'
                             leftIcon={require('../resource/ic_back_white.png')}
@@ -175,7 +175,7 @@ export default class getFriend extends Component {
                             <Text>将展示出你可能认识的好友，他们也正在使用奇客</Text>                            
                         </View>
                         <TouchableOpacity onPress ={()=> this.getFriendDetail()} style={styles.loginButton}>
-                            <Text style={styles.loginButtonText}>确定</Text>
+                            <Text>确定</Text>
                         </TouchableOpacity>
                     </View>
                     

@@ -53,37 +53,6 @@ class ExploreList extends PureComponent {
     componentDidMount() {
 
     }
-
-    async getGoodsCatalog() {
-        if(!global.user.authentication_token){
-               Util.noToken(this.props.navigator);
-        }
-        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_GOODS_CATALOG + global.user.authentication_token + `&level=1`;
-        Util.get(url,
-            (response)=>{
-                 let goods_catalog_I = this.state.goods_catalog_I;
-                goods_catalog_I = JSON.parse(response.feeds);
-                global.goods_catalog_I = goods_catalog_I;
-                for(let i = 0;i< goods_catalog_I.length;i++){
-                    let ids=[];
-                    goods_catalogs_II[i] = JSON.parse(goods_catalog_I[i].goods_catalogs_II);
-                    for(let j=0;j < goods_catalogs_II[i].length;j++){
-                        if(goods_catalogs_II[i][j].id)
-                            ids.push(goods_catalogs_II[i][j].id);
-                    }
-                    goods_catalogs_II_id[i]=ids;
-                }
-                global.goods_catalogs_II_id = goods_catalogs_II_id;
-            },
-            (error) => {
-                if(error.message == 'Network request failed'){
-                    this.props.navigator.push({component: offline})
-                }else{
-                    this.props.navigator.push({component: breakdown})
-                }
-            }
-        )
-    }
     
     refresh() {
         const { dispatch } = this.props;

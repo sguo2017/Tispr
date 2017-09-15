@@ -147,17 +147,34 @@ export default class Personinfoedit extends Component {
                     title='添加头像'
                     leftIcon={require('../resource/w-back.png')}
                     leftIconAction={this._back.bind(this)}
-                    rightButton='保存'
-                    rightButtonAction={this.updateavatar.bind(this)}
                 />
                 <ScrollView style={{ flex: 1, padding: 16 }}>
-                    <View style={{ alignItems: 'center', marginBottom: 16 }}>
+                    <View style={{ alignItems: 'center', marginBottom: 16 ,marginTop:70}}>
                         <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-                            <Image style={{ width: 60, height:60, borderRadius: 30 }} source={{uri:this.state.avatar}} />
+                            <Image style={{ width: 80, height:80, borderRadius: 40 }} source={{uri:this.state.avatar}} />
                         </TouchableOpacity>
-                    </View>          
+                    </View>   
+                    <View style={{marginTop:100,marginLeft:20}}>
+                        <Text style={{color:'#000',fontSize:16,marginBottom:10}}>完善你的形象</Text>
+                        <Text>请上传你的头像，以便你的好友和潜在客户更容易找到你</Text>
+                    </View>       
                 </ScrollView>
+                <TouchableOpacity onPress ={this.updateavatar.bind(this)} style={styles.loginButton}>
+                    <Text>保存</Text>
+                </TouchableOpacity>
             </View>
         )
     }
 }
+const styles = StyleSheet.create({
+    loginButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: global.gColors.buttonColor,
+        position: 'absolute',
+        bottom: 0,
+        right:0,
+        left: 0,
+        height: 44,
+    },
+})
