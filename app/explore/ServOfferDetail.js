@@ -76,7 +76,8 @@ export default class ServOfferDetail extends Component {
             content: '',
             isReported: this.props.feed.isReported,
             isRecommanded: this.props.feed.isRecommanded,
-            commentList:[]
+            commentList: [],
+            show_recommand: false
         };
         UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
             if (hasSeenTotalRestimesPage != null && hasSeenTotalRestimesPage[global.user.id] == true) {
@@ -125,12 +126,12 @@ export default class ServOfferDetail extends Component {
         })
 
     }
-    async _getComments(){
+    async _getComments() {
         let user_id = this.props.feed.user_id;
-        if(!global.user.authentication_token){
+        if (!global.user.authentication_token) {
             Util.noToken(this.props.navigator);
         }
-        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_COMMENT_LIST + global.user.authentication_token + `&user_id=${user_id}&qry_type=2`;        
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_COMMENT_LIST + global.user.authentication_token + `&user_id=${user_id}&qry_type=2`;
         Util.get(
             url,
             (response) => {
@@ -141,22 +142,22 @@ export default class ServOfferDetail extends Component {
                 });
             },
             (error) => {
-                if(error.message == 'Network request failed'){
-                    this.props.navigator.push({component: offline})
-                }else{
-                    console.log("servOfferDetail错误信息"+error)
-                    this.props.navigator.push({component: breakdown})
+                if (error.message == 'Network request failed') {
+                    this.props.navigator.push({ component: offline })
+                } else {
+                    console.log("servOfferDetail错误信息" + error)
+                    this.props.navigator.push({ component: breakdown })
                 }
             }
-        )       
+        )
     }
     async _getSameTypeOffer() {
         let catalog_id = this.props.feed.goods_catalog_id;
         let serv_id = this.props.feed.id;
-        if(!global.user.authentication_token){
+        if (!global.user.authentication_token) {
             Util.noToken(this.props.navigator);
         }
-        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_INDEX + global.user.authentication_token + `&catalog_id=${catalog_id}&serv_id=${serv_id}`;        
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_INDEX + global.user.authentication_token + `&catalog_id=${catalog_id}&serv_id=${serv_id}`;
         Util.get(
             url,
             (response) => {
@@ -167,14 +168,14 @@ export default class ServOfferDetail extends Component {
                 });
             },
             (error) => {
-                if(error.message == 'Network request failed'){
-                    this.props.navigator.push({component: offline})
-                }else{
-                    console.log("servOfferDetail错误信息"+error)
-                    this.props.navigator.push({component: breakdown})
+                if (error.message == 'Network request failed') {
+                    this.props.navigator.push({ component: offline })
+                } else {
+                    console.log("servOfferDetail错误信息" + error)
+                    this.props.navigator.push({ component: breakdown })
                 }
             }
-        )       
+        )
     }
 
     async _sendMessage() {
@@ -214,12 +215,12 @@ export default class ServOfferDetail extends Component {
             if (response.status >= 200 && response.status < 300) {
                 //console.log("line:153");
                 let resObject = JSON.parse(res);
-                 let newOrder = resObject.feed;
+                let newOrder = resObject.feed;
                 let avaliableTimes = resObject.avaliable;
                 if (resObject.status == 0) {
                     this._createChat(newOrder, avaliableTimes, default_msg);
                 } else if (resObject.status == -2) {
-                    this.props.navigator.push({component: noConnectTimes})
+                    this.props.navigator.push({ component: noConnectTimes })
                 }
             } else {
                 let error = res;
@@ -230,24 +231,24 @@ export default class ServOfferDetail extends Component {
         }
     }
 
-    async _createChat(newOrder, avaliableTimes, chat_content){
-    let type = 'offer';
+    async _createChat(newOrder, avaliableTimes, chat_content) {
+        let type = 'offer';
         /*当前用户没有看过每天联系总数量的提示时 */
-    if (!this.state.hasSeenTotalTimes) {
-        UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
-            if (hasSeenTotalRestimesPage == null) {
-                hasSeenTotalRestimesPage = {};
-            }
-            hasSeenTotalRestimesPage[global.user.id] = true
-            UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
-        })
-        this.props.navigator.push({component:totalResTimes, passProps:{feed: newOrder,type}});
-    }else if(avaliableTimes == 5){
-        this.props.navigator.push({component:resTimes, passProps:{feed: newOrder,type}});
-    }else{
-        this.props.navigator.resetTo({component:ChatRoom, passProps: {feed: newOrder, newChat: true}});
-    }      
-  }
+        if (!this.state.hasSeenTotalTimes) {
+            UserDefaults.cachedObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE).then((hasSeenTotalRestimesPage) => {
+                if (hasSeenTotalRestimesPage == null) {
+                    hasSeenTotalRestimesPage = {};
+                }
+                hasSeenTotalRestimesPage[global.user.id] = true
+                UserDefaults.setObject(Constant.storeKeys.HAS_SEEN_TOTAL_RESTIMES_PAGE, hasSeenTotalRestimesPage);
+            })
+            this.props.navigator.push({ component: totalResTimes, passProps: { feed: newOrder, type } });
+        } else if (avaliableTimes == 5) {
+            this.props.navigator.push({ component: resTimes, passProps: { feed: newOrder, type } });
+        } else {
+            this.props.navigator.resetTo({ component: ChatRoom, passProps: { feed: newOrder, newChat: true } });
+        }
+    }
     _onPressCell(feed) {
         this.props.navigator.push({
             component: ServOfferDetail,
@@ -257,7 +258,7 @@ export default class ServOfferDetail extends Component {
 
     _selectMessage = (feed) => {
         let connectUser = feed.user
-        if(connectUser){
+        if (connectUser) {
             this.setState({
                 connectUserAvatar: connectUser.avatar,
                 connectUserName: connectUser.name,
@@ -299,7 +300,7 @@ export default class ServOfferDetail extends Component {
             if (response.status >= 200 && response.status < 300) {
                 let rmsg = JSON.parse(response._bodyText);
                 this.props.feed.favorite_id = rmsg.favorite_id;
-                this.props.feed.isFavorited? (this.props.feed.isFavorited= true):(this.props.isFavorited);
+                this.props.feed.isFavorited ? (this.props.feed.isFavorited = true) : (this.props.isFavorited);
                 global.user.favorites_count++;
                 this.setState({ isFavorited: true });
             } else {
@@ -347,15 +348,15 @@ export default class ServOfferDetail extends Component {
         };
         let _this = this;
         let getData = (a) => {
-            _this.setState({isReported: a})
+            _this.setState({ isReported: a })
         }
         this.props.navigator.push({
             component: Report,
-            passProps: { obj, getData}
+            passProps: { obj, getData }
         });
     }
 
-    focusNextField (nextField){
+    focusNextField(nextField) {
         this.refs[nextField].focus();
     };
 
@@ -370,16 +371,16 @@ export default class ServOfferDetail extends Component {
             '提示',
             '确认删除该服务？',
             [
-                 { text: '取消', onPress: () => {} },
-                 { text: '确定', onPress: this.deleteOffer.bind(this)}
+                { text: '取消', onPress: () => { } },
+                { text: '确定', onPress: this.deleteOffer.bind(this) }
             ]
         )
     }
 
     async  deleteOffer() {
-        this.setState({ isMine: false});
+        this.setState({ isMine: false });
         try {
-            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_EDIT+ this.props.feed.id +`?token=`+ global.user.authentication_token;
+            let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_SERV_OFFER_EDIT + this.props.feed.id + `?token=` + global.user.authentication_token;
             let response = await fetch(url, {
                 method: 'DELETE',
                 headers: {
@@ -390,21 +391,21 @@ export default class ServOfferDetail extends Component {
             let res = await response.text();
             if (response.status >= 200 && response.status < 300) {
                 global.user.offer_count--;
-                let resObject =JSON.parse(res);
-                if(resObject.status==0){
+                let resObject = JSON.parse(res);
+                if (resObject.status == 0) {
                     this.props.navigator.pop()
-                }else{
+                } else {
                 }
             }
-        } catch(error) {
+        } catch (error) {
 
-        }  
+        }
     }
 
     focusOnTextInput = () => {
         this.setState({ editable: true });
         InteractionManager.runAfterInteractions(() => {
-        this.modelTextInput.focus();
+            this.modelTextInput.focus();
         });
     }
 
@@ -420,68 +421,111 @@ export default class ServOfferDetail extends Component {
             }
         });
     }
-    toRecommandPage(){
+    toRecommandPage(pre_comment) {
         const { feed, navigator } = this.props;
         let _this = this;
-        let getData = (a)=>{
+        let getData = (a) => {
             _this.setState({
-                isRecommanded:a
+                isRecommanded: a
             })
         }
-        navigator.push({
-            component: commentPage,
-            passProps: {user:feed.user, getData}
+        this.setState({
+            show_recommand: false
         })
+        if(pre_comment){
+            let content = feed.comment_content
+            let comment_id = feed.comment_id
+            navigator.push({
+                component: commentPage,
+                passProps: { user: feed.user, getData,comment_id, content }
+            })
+        }else{
+            navigator.push({
+                component: commentPage,
+                passProps: { user: feed.user, getData }
+            })
+        }
     }
-
+    cancelRecommand(){
+        Alert.alert(
+            '提示',
+            '确认取消推荐？',
+            [
+                { text: '取消', onPress: () => { } },
+                { text: '确定', onPress: this.deleteComment.bind(this) }
+            ]
+        )
+    }
+    async deleteComment(){
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_COMMENT + `/${this.props.feed.comment_id}?token=${global.user.authentication_token}`
+        try {
+            let response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            });
+            let res = await response.text();
+            if (response.status >= 200 && response.status < 300) {
+               this.setState({
+                   show_recommand:false,
+                   isRecommanded:false,
+               })
+                ToastAndroid.show(`你取消了对${this.props.feed.user.name}的推荐`,ToastAndroid.LONG);
+            }
+        } catch (error) {
+            this.props.navigator.push({component:breakdown})
+        }
+    }
     render() {
         const { feed } = this.props;
         let _images = feed.serv_images.split(',');
-        let mine = feed.user.id === global.user.id? true : false;
+        let mine = feed.user.id === global.user.id ? true : false;
         return (
             <View style={styles.listView}>
-                {this.state.show_share||this.state.show_report||this.state.isMine?
-                <View style={styles.cover}></View>
-                :null}
+                {this.state.show_share || this.state.show_report || this.state.isMine || this.state.show_recommand ?
+                    <View style={styles.cover}></View>
+                    : null}
                 {
                     feed.user_id == global.user.id ?
-                    <Header
-                        title='服务'
-                        leftIcon={require('../resource/w-back.png')}
-                        leftIconAction={() => this.props.navigator.pop()}
-                        rightIcon={require('../resource/w-more.png')}
-                        rightIconAction={() => {
-                            mine? this.setState({ isMine: true}):this.setState({ show_report: true });
+                        <Header
+                            title='服务'
+                            leftIcon={require('../resource/w-back.png')}
+                            leftIconAction={() => this.props.navigator.pop()}
+                            rightIcon={require('../resource/w-more.png')}
+                            rightIconAction={() => {
+                                mine ? this.setState({ isMine: true }) : this.setState({ show_report: true });
                             }
-                        }
-                        rightIcon2={require('../resource/w-share.png')}
-                        rightIcon2Action={() => {
-                            this.setState({ show_share: true });
-                        }}
-                        style={{ height: 50 }}
-                    />
-                    :
-                    <Header
-                        title='服务'
-                        leftIcon={require('../resource/w-back.png')}
-                        leftIconAction={() => this.props.navigator.pop()}
-                        rightIcon={require('../resource/w-more.png')}
-                        rightIconAction={() => {
-                            mine? this.setState({ isMine: true}):this.setState({ show_report: true });
                             }
-                        }
-                        rightIcon2={require('../resource/w-share.png')}
-                        rightIcon2Action={() => {
-                            this.setState({ show_share: true });
-                        }}
-                        rightIcon3={this.state.isRecommanded? require('../resource/ic_account_favour.png'):require('../resource/ic_news_collect.png')}
-                        rightIcon3Action={this.state.isRecommanded?()=>{}:this.toRecommandPage.bind(this)}
-                        style={{ height: 50 }}
-                    />
+                            rightIcon2={require('../resource/w-share.png')}
+                            rightIcon2Action={() => {
+                                this.setState({ show_share: true });
+                            }}
+                            style={{ height: 50 }}
+                        />
+                        :
+                        <Header
+                            title='服务'
+                            leftIcon={require('../resource/w-back.png')}
+                            leftIconAction={() => this.props.navigator.pop()}
+                            rightIcon={require('../resource/w-more.png')}
+                            rightIconAction={() => {
+                                mine ? this.setState({ isMine: true }) : this.setState({ show_report: true });
+                            }
+                            }
+                            rightIcon2={require('../resource/w-share.png')}
+                            rightIcon2Action={() => {
+                                this.setState({ show_share: true });
+                            }}
+                            rightIcon3={this.state.isRecommanded ? require('../resource/ic_account_favour.png') : require('../resource/ic_news_collect.png')}
+                            rightIcon3Action={this.state.isRecommanded ? () => { this.setState({ show_recommand: true }) } : this.toRecommandPage.bind(this, false)}
+                            style={{ height: 50 }}
+                        />
                 }
                 <ScrollView ref="_scrollView">
                     <View style={{ paddingHorizontal: 16, justifyContent: 'space-between', backgroundColor: 'white' }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 8, height: 48}}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, height: 48 }}>
                             <View style={{ justifyContent: 'space-around', flexDirection: 'row', }}>
                                 <TouchableOpacity onPress={this._onPressAvatar.bind(this, feed.user.id)}>
                                     <Image style={{ width: 32, height: 32, borderRadius: 16 }} source={{ uri: feed.user.avatar }} defaultsource={require('../resource/user_default_image.png')}></Image>
@@ -499,32 +543,32 @@ export default class ServOfferDetail extends Component {
                                 <Text style={{ color: '#999999', fontSize: 12 }}>{feed.created_at.substring(0, 4) + '/' + feed.created_at.substring(5, 7) + '/' + feed.created_at.substring(8, 10)}</Text>
                             </View>
                         </View>
-                        <View style={{height: 1, backgroundColor: '#EDEDED', width: screenW, marginLeft: -16, marginBottom: 16}}></View>                        
+                        <View style={{ height: 1, backgroundColor: '#EDEDED', width: screenW, marginLeft: -16, marginBottom: 16 }}></View>
                         <View>
                             <Text style={{ fontSize: 16, lineHeight: 20, color: '#000' }}>由朋友及人脉网络推荐</Text>
-                            <View style={{flexDirection:'row',marginTop:10, marginBottom:10}}>
-                            {
-                                this.state.commentList.map((data,index)=>{
-                                    return(
-                                        <TouchableOpacity onPress={this._onPressAvatar.bind(this,data.user_id)} key={index} style={{marginRight:10}}>
-                                            <Image source={{uri:data.user_avatar}} style={{width: 32, height: 32, borderRadius: 16}}/>
-                                        </TouchableOpacity>
-                                    )
-                                })
-                            }
+                            <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                                {
+                                    this.state.commentList.map((data, index) => {
+                                        return (
+                                            <TouchableOpacity onPress={this._onPressAvatar.bind(this, data.user_id)} key={index} style={{ marginRight: 10 }}>
+                                                <Image source={{ uri: data.user_avatar }} style={{ width: 32, height: 32, borderRadius: 16 }} />
+                                            </TouchableOpacity>
+                                        )
+                                    })
+                                }
                             </View>
-                            <Text onPress={() => { this.refs["_scrollView"].scrollTo({y: 720,animated: false});}} style={{color:global.gColors.themeColor}}>查看客户评价</Text>
+                            <Text onPress={() => { this.refs["_scrollView"].scrollTo({ y: 720, animated: false }); }} style={{ color: global.gColors.themeColor }}>查看客户评价</Text>
                         </View>
-                        <View style={{height: 1, backgroundColor: '#EDEDED', width: screenW, marginLeft: -16, marginBottom: 16}}></View>
+                        <View style={{ height: 1, backgroundColor: '#EDEDED', width: screenW, marginLeft: -16, marginBottom: 16 }}></View>
                         {
                             _images.length == 1 ?
-                                <Image style={{ height: 300, width: screenW-32, marginBottom: 10 }}  source={{ uri: _images[0] }}></Image>
+                                <Image style={{ height: 300, width: screenW - 32, marginBottom: 10 }} source={{ uri: _images[0] }}></Image>
                                 :
                                 <Swiper height={320} paginationStyle={{ alignSelf: 'center' }}>
                                     {
                                         _images.map((data, index) => {
                                             return (
-                                                <Image style={{ height: 300, width: screenW-32, marginBottom: 10 }} key={index} source={{ uri: data }}></Image>
+                                                <Image style={{ height: 300, width: screenW - 32, marginBottom: 10 }} key={index} source={{ uri: data }}></Image>
                                             )
                                         })
                                     }
@@ -540,12 +584,12 @@ export default class ServOfferDetail extends Component {
                         feed.user_id == global.user.id ?
                             <View style={{ paddingBottom: 16, backgroundColor: 'white' }}></View> :
                             <View style={{ backgroundColor: 'white', paddingTop: 23, paddingBottom: 16 }}>
-                                <TouchableOpacity 
-                                    style={{ 
-                                        backgroundColor: '#FFC400', 
-                                        borderRadius: 4, 
-                                        height: 44, 
-                                        marginHorizontal: 16, 
+                                <TouchableOpacity
+                                    style={{
+                                        backgroundColor: '#FFC400',
+                                        borderRadius: 4,
+                                        height: 44,
+                                        marginHorizontal: 16,
                                         alignItems: 'center',
                                         paddingVertical: 10,
                                     }}
@@ -555,55 +599,55 @@ export default class ServOfferDetail extends Component {
                                 </TouchableOpacity>
                             </View>
                     }
-                    <View style={{paddingHorizontal:16,paddingVertical: 10, backgroundColor:'#fff'}}>
-                        <Text style={{color:'#000', fontSize:16}}>TA收到的评价</Text>
+                    <View style={{ paddingHorizontal: 16, paddingVertical: 10, backgroundColor: '#fff' }}>
+                        <Text style={{ color: '#000', fontSize: 16 }}>TA收到的评价</Text>
                         {
-                            this.state.commentList.map((data, index)=>{
-                                return(
-                                    <View key={index} style={{marginTop:5,backgroundColor:'#eee'}}>
-                                        <View style={{flexDirection:'row',alignItems:'center'}}>
+                            this.state.commentList.map((data, index) => {
+                                return (
+                                    <View key={index} style={{ marginTop: 5, backgroundColor: '#eee' }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <View>
-                                            <Image source={{uri: data.user_avatar}} style={{width:40, height:40,borderRadius:20,margin:10}}/>
+                                                <Image source={{ uri: data.user_avatar }} style={{ width: 40, height: 40, borderRadius: 20, margin: 10 }} />
                                             </View>
                                             <View>
                                                 <Text>{data.user_name}</Text>
-                                                <Text style={{color:'#000'}}>{data.content}</Text>
+                                                <Text style={{ color: '#000' }}>{data.content}</Text>
                                             </View>
                                         </View>
-                                        <Text style={{alignSelf:'flex-end',margin:5}}>{data.created_at}</Text>
+                                        <Text style={{ alignSelf: 'flex-end', margin: 5 }}>{data.created_at}</Text>
                                     </View>
                                 )
                             })
                         }
                     </View>
-                    <View style={{paddingHorizontal:16,paddingVertical: 10, backgroundColor: 'white'}}>
-                        {   
-                            feed.via == 'local' ?<Text>提供{feed.province}{feed.city}{feed.district}{Constant.offer_range[feed.range]}的服务</Text>  :<Text></Text>                        
+                    <View style={{ paddingHorizontal: 16, paddingVertical: 10, backgroundColor: 'white' }}>
+                        {
+                            feed.via == 'local' ? <Text>提供{feed.province}{feed.city}{feed.district}{Constant.offer_range[feed.range]}的服务</Text> : <Text></Text>
                         }
                         {
-                            feed.via == 'remote'? <Text>提供远程服务</Text>:<Text></Text>
+                            feed.via == 'remote' ? <Text>提供远程服务</Text> : <Text></Text>
                         }
                         {
-                            feed.via == 'all'?<Text>提供远程服务，以及提供{feed.province}{feed.city}{feed.district}{Constant.offer_range[feed.range]}的服务</Text>:<Text></Text>
+                            feed.via == 'all' ? <Text>提供远程服务，以及提供{feed.province}{feed.city}{feed.district}{Constant.offer_range[feed.range]}的服务</Text> : <Text></Text>
                         }
                     </View>
-        
-                        <MapView
-                            trafficEnabled={this.state.trafficEnabled}
-                            baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
-                            zoom={this.state.zoom}
-                            mapType={this.state.mapType}
-                            center={this.state.center}
-                            marker={this.state.marker}
-                            markers={this.state.markers}
-                            style={styles.map}
-                            onMarkerClick={(e) => {
-                                console.warn(JSON.stringify(e));
-                            }}
-                            onMapClick={(e) => {
-                            }}
-                        >
-                        </MapView>
+
+                    <MapView
+                        trafficEnabled={this.state.trafficEnabled}
+                        baiduHeatMapEnabled={this.state.baiduHeatMapEnabled}
+                        zoom={this.state.zoom}
+                        mapType={this.state.mapType}
+                        center={this.state.center}
+                        marker={this.state.marker}
+                        markers={this.state.markers}
+                        style={styles.map}
+                        onMarkerClick={(e) => {
+                            console.warn(JSON.stringify(e));
+                        }}
+                        onMapClick={(e) => {
+                        }}
+                    >
+                    </MapView>
                     {
                         this.state.offerList.length > 0 ?
                             <View style={{ justifyContent: 'space-around', alignItems: 'center', marginTop: 2, backgroundColor: '#eeee' }}>
@@ -617,7 +661,7 @@ export default class ServOfferDetail extends Component {
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: '#eeee' }}>
                         <View>
                             {this.state.offerList.map((data, index) => {
-                                if (index%2 === 1) return;
+                                if (index % 2 === 1) return;
                                 return (
                                     <OfferItem
                                         key={`${data.id}-${index}`}
@@ -630,7 +674,7 @@ export default class ServOfferDetail extends Component {
                         </View>
                         <View>
                             {this.state.offerList.map((data, index) => {
-                                if (index%2 === 0) return;
+                                if (index % 2 === 0) return;
                                 return (
                                     <OfferItem
                                         key={`${data.id}-${index}`}
@@ -641,7 +685,7 @@ export default class ServOfferDetail extends Component {
                                 )
                             })}
                         </View>
-                    </View>                    
+                    </View>
                 </ScrollView>
                 {/*分享弹窗*/}
                 <Modal
@@ -651,64 +695,68 @@ export default class ServOfferDetail extends Component {
                     onShow={() => { }}
                     onRequestClose={() => { }}
                 >
-                    <TouchableWithoutFeedback style={{flex: 1}} onPress={()=> this.setState({show_share: false})}>
-                    <View style={styles.container}>
-                    <View style={styles.modal}>
-                        <TouchableWithoutFeedback  onPress={() => {}}>
-                        <View style={{ borderRadius: 10, backgroundColor: 'white', height: 112, alignItems: 'center', justifyContent: 'center'}}>
-                            <View style={styles.share}>
-                                <TouchableOpacity style={styles.item} onPress={() => {
-                                    console.log("558yes")
-                                    WeChat.isWXAppInstalled()
-                                        .then((isInstalled) => {
-                                            console.log("561yes")
-                                        if (isInstalled) {
-                                            console.log("563yes")
-                                            WeChat.shareToSession({title: feed.serv_title,
-                                            description: feed.serv_detail,
-                                            thumbImage: _images[0],
-                                            type: 'news',
-                                            webpageUrl: 'http://'+Constant.url.SHARE_SERV_ADDR + ':' + Constant.url.SHARE_SERV_PORT + '/goods_show?id='+ feed.id})
-                                            .catch((error) => {
-                                            console.log("566"+JSON.stringify(error));
-                                            });
-                                        } else {
-                                            console.log('没有安装微信软件，请您安装微信之后再试');
-                                        }
-                                        });
-                                }}>
-                                    <Image source={require('../resource/ico-wechat.png')} style={styles.img}></Image>
-                                    <Text style={styles.text}>微信</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.item}
-                                    onPress={() => {
-                                WeChat.isWXAppInstalled()
-                                    .then((isInstalled) => {
-                                    if (isInstalled) {
-                                WeChat.shareToTimeline({title:feed.serv_title,
-                          description: feed.serv_detail,
-                          thumbImage: _images[0],
-                          type: 'news',
-                          webpageUrl: 'http://'+Constant.url.SHARE_SERV_ADDR + ':' + Constant.url.SHARE_SERV_PORT + '/goods_show?id='+ feed.id})
-                                        .catch((error) => {
-                                        console.log("583"+JSON.stringify(error));
+                    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={() => this.setState({ show_share: false })}>
+                        <View style={styles.container}>
+                            <View style={styles.modal}>
+                                <TouchableWithoutFeedback onPress={() => { }}>
+                                    <View style={{ borderRadius: 10, backgroundColor: 'white', height: 112, alignItems: 'center', justifyContent: 'center' }}>
+                                        <View style={styles.share}>
+                                            <TouchableOpacity style={styles.item} onPress={() => {
+                                                console.log("558yes")
+                                                WeChat.isWXAppInstalled()
+                                                    .then((isInstalled) => {
+                                                        console.log("561yes")
+                                                        if (isInstalled) {
+                                                            console.log("563yes")
+                                                            WeChat.shareToSession({
+                                                                title: feed.serv_title,
+                                                                description: feed.serv_detail,
+                                                                thumbImage: _images[0],
+                                                                type: 'news',
+                                                                webpageUrl: 'http://' + Constant.url.SHARE_SERV_ADDR + ':' + Constant.url.SHARE_SERV_PORT + '/goods_show?id=' + feed.id
+                                                            })
+                                                                .catch((error) => {
+                                                                    console.log("566" + JSON.stringify(error));
+                                                                });
+                                                        } else {
+                                                            console.log('没有安装微信软件，请您安装微信之后再试');
+                                                        }
+                                                    });
+                                            }}>
+                                                <Image source={require('../resource/ico-wechat.png')} style={styles.img}></Image>
+                                                <Text style={styles.text}>微信</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.item}
+                                                onPress={() => {
+                                                    WeChat.isWXAppInstalled()
+                                                        .then((isInstalled) => {
+                                                            if (isInstalled) {
+                                                                WeChat.shareToTimeline({
+                                                                    title: feed.serv_title,
+                                                                    description: feed.serv_detail,
+                                                                    thumbImage: _images[0],
+                                                                    type: 'news',
+                                                                    webpageUrl: 'http://' + Constant.url.SHARE_SERV_ADDR + ':' + Constant.url.SHARE_SERV_PORT + '/goods_show?id=' + feed.id
+                                                                })
+                                                                    .catch((error) => {
+                                                                        console.log("583" + JSON.stringify(error));
 
-                                          if (error instanceof WeChat.WechatError) {
-                                                console.error(error.stack);
-                                            } else {
-                                                throw error;
-                                            }
-                                        });
-                                    } else {
-                                        console.log('没有安装微信软件，请您安装微信之后再试');
-                                    }
-                                    });
-                            }}
-                                >
-                                    <Image source={require('../resource/ico-friend.png')} style={styles.img}></Image>
-                                    <Text style={styles.text}>朋友圈</Text>
-                                </TouchableOpacity>
-                                {/*<TouchableOpacity style={styles.item}>
+                                                                        if (error instanceof WeChat.WechatError) {
+                                                                            console.error(error.stack);
+                                                                        } else {
+                                                                            throw error;
+                                                                        }
+                                                                    });
+                                                            } else {
+                                                                console.log('没有安装微信软件，请您安装微信之后再试');
+                                                            }
+                                                        });
+                                                }}
+                                            >
+                                                <Image source={require('../resource/ico-friend.png')} style={styles.img}></Image>
+                                                <Text style={styles.text}>朋友圈</Text>
+                                            </TouchableOpacity>
+                                            {/*<TouchableOpacity style={styles.item}>
                                     <Image source={require('../resource/ico-qq.png')} style={styles.img}></Image>
                                     <Text style={styles.text}>QQ</Text>
                                 </TouchableOpacity>
@@ -716,16 +764,16 @@ export default class ServOfferDetail extends Component {
                                     <Image source={require('../resource/ico-weibo.png')} style={styles.img}></Image>
                                     <Text style={styles.text}>新浪微博</Text>
                                 </TouchableOpacity>*/}
+                                        </View>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <TouchableOpacity
+                                    onPress={() => this.setState({ show_share: false })}
+                                    style={{ alignItems: 'center', justifyContent: 'center', marginTop: 6, borderRadius: 10, backgroundColor: 'white', height: 56 }}>
+                                    <Text style={styles.cancel}>取消</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableOpacity 
-                            onPress={() => this.setState({ show_share: false })} 
-                            style={{ alignItems: 'center', justifyContent: 'center',marginTop: 6, borderRadius: 10, backgroundColor: 'white', height: 56}}>
-                            <Text style={styles.cancel}>取消</Text>
-                        </TouchableOpacity>
-                    </View>
-                    </View>
                     </TouchableWithoutFeedback>
                 </Modal>
 
@@ -749,51 +797,51 @@ export default class ServOfferDetail extends Component {
                             </View>
                             <ScrollView>
                                 <View style={{ marginLeft: 20 }}>
-                                    <Image defaultSource={require('../resource/user_default_image.png')} source={{uri: this.state.connectUserAvatar}} style={styles.avatar}></Image>
+                                    <Image defaultSource={require('../resource/user_default_image.png')} source={{ uri: this.state.connectUserAvatar }} style={styles.avatar}></Image>
                                     {/*<View style={{height:80}}>
                                         <Text style={{fontSize: 16, color: '#1B2833'}}>{this.state.connectUserName}您好！{this.state.button1&&msg1}{this.state.button2&&msg2}{this.state.button3&&msg3}</Text>
                                     </View>*/}
                                     <AutoTextInput
-                                            ref={(textInput) => { this.modelTextInput = textInput; }}
-                                            multiline={true}
-                                            onChangeText={(text) => 
-                                                {
-                                                    let length= (this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')).length;
-                                                    this.setState({content: text.substring(length)});
+                                        ref={(textInput) => { this.modelTextInput = textInput; }}
+                                        multiline={true}
+                                        onChangeText={(text) => {
+                                            let length = (this.state.connectUserName + '您好！' + (this.state.button1 ? msg1 : '') + (this.state.button2 ? msg2 : '') + (this.state.button3 ? msg3 : '')).length;
+                                            this.setState({ content: text.substring(length) });
 
-                                                }
-                                            }
-                                            onBlur={() => {
-                                                this.setState({editable: false})}
-                                            }
-                                            style={{fontSize: 16, color: '#1B2833', marginBottom: 8}}
-                                            value={this.state.connectUserName+'您好！'+(this.state.button1?msg1: '')+(this.state.button2?msg2: '')+(this.state.button3?msg3: '')+this.state.content}
-                                            underlineColorAndroid={'transparent'}
-                                            editable={this.state.editable}
-                                        />
+                                        }
+                                        }
+                                        onBlur={() => {
+                                            this.setState({ editable: false })
+                                        }
+                                        }
+                                        style={{ fontSize: 16, color: '#1B2833', marginBottom: 8 }}
+                                        value={this.state.connectUserName + '您好！' + (this.state.button1 ? msg1 : '') + (this.state.button2 ? msg2 : '') + (this.state.button3 ? msg3 : '') + this.state.content}
+                                        underlineColorAndroid={'transparent'}
+                                        editable={this.state.editable}
+                                    />
 
-                                    <TouchableHighlight 
-                                        style={[!this.state.button1&&styles.notSelectedButton, this.state.button1&&styles.selectedButton]} 
-                                        onPress={()=>this.setState({button1: !this.state.button1})}
+                                    <TouchableHighlight
+                                        style={[!this.state.button1 && styles.notSelectedButton, this.state.button1 && styles.selectedButton]}
+                                        onPress={() => this.setState({ button1: !this.state.button1 })}
                                     >
-                                        <Text style={[!this.state.button1&&styles.themeColorText, this.state.button1&&styles.whiteText]}>{msg1}</Text>
+                                        <Text style={[!this.state.button1 && styles.themeColorText, this.state.button1 && styles.whiteText]}>{msg1}</Text>
                                     </TouchableHighlight>
-                                    <TouchableHighlight 
-                                        style={[!this.state.button2&&styles.notSelectedButton, this.state.button2&&styles.selectedButton]} 
-                                        onPress={()=>this.setState({button2: !this.state.button2})}
+                                    <TouchableHighlight
+                                        style={[!this.state.button2 && styles.notSelectedButton, this.state.button2 && styles.selectedButton]}
+                                        onPress={() => this.setState({ button2: !this.state.button2 })}
                                     >
-                                        <Text style={[!this.state.button2&&styles.themeColorText, this.state.button2&&styles.whiteText]}>{msg2}</Text>
+                                        <Text style={[!this.state.button2 && styles.themeColorText, this.state.button2 && styles.whiteText]}>{msg2}</Text>
                                     </TouchableHighlight>
-                                    <TouchableHighlight 
-                                        style={[!this.state.button3&&styles.notSelectedButton, this.state.button3&&styles.selectedButton]} 
-                                        onPress={()=>this.setState({button3: !this.state.button3})}
+                                    <TouchableHighlight
+                                        style={[!this.state.button3 && styles.notSelectedButton, this.state.button3 && styles.selectedButton]}
+                                        onPress={() => this.setState({ button3: !this.state.button3 })}
                                     >
-                                        <Text style={[!this.state.button3&&styles.themeColorText, this.state.button3&&styles.whiteText]}>{msg3}</Text>
+                                        <Text style={[!this.state.button3 && styles.themeColorText, this.state.button3 && styles.whiteText]}>{msg3}</Text>
                                     </TouchableHighlight>
-                                    <TouchableHighlight 
-                                        style={[styles.notSelectedButton, {width:Platform.OS ==='ios'?120:100}]} 
-                                        onPress={()=> {
-                                            {/* this.setState({editable: true}); */}
+                                    <TouchableHighlight
+                                        style={[styles.notSelectedButton, { width: Platform.OS === 'ios' ? 120 : 100 }]}
+                                        onPress={() => {
+                                            {/* this.setState({editable: true}); */ }
                                             this.focusOnTextInput();
                                         }}
                                     >
@@ -810,98 +858,180 @@ export default class ServOfferDetail extends Component {
                     visible={this.state.show_report}
                     onRequestClose={() => { }}
                 >
-                    <TouchableWithoutFeedback style={{flex: 1}} onPress={() => this.setState({show_report: false})}>
-                    <View style={styles.container}> 
-                    <View style={styles.modal}>
-                        <TouchableWithoutFeedback  onPress={() => {}}>
-                        <View style={{ borderRadius: 10, backgroundColor: 'white'}}>
-                            <TouchableOpacity 
-                                style={[styles.modalItem, {alignItems: 'center', justifyContent:'center',}]}
-                                onPress={()=>{
-                                    this._switch(this.state.isFavorited, this.state.favorite_id);
-                                    this.setState({show_report: false})
-                                }}
-                            >
-                                {!this.state.isFavorited?
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Image source={require('../resource/b-archive.png')} />
-                                    <Text style={styles.modalText}>收藏</Text>
-                                </View>:
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Image source={require('../resource/y-check-r.png')} />
-                                    <Text style={{ lineHeight: 21 }}>已收藏</Text>
-                                </View>}
-                            </TouchableOpacity>
-                            <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
-                            {!this.state.isReported?
-                            <TouchableOpacity style={[styles.modalItem, {justifyContent: 'center', alignItems: 'center' }]}
-                                onPress={
-                                    this.reportOffer.bind(this, feed.id)
-                                }
-                            >
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Image source={require('../resource/y-jubao.png')} />
-                                    <Text style={styles.modalText}>举报</Text>
-                                </View>
-                            </TouchableOpacity>:
-                            <View style={[styles.modalItem, {justifyContent: 'center', alignItems: 'center' }]}>
-                                <Text style={{ fontSize: 14}}>已举报</Text>
+                    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={() => this.setState({ show_report: false })}>
+                        <View style={styles.container}>
+                            <View style={styles.modal}>
+                                <TouchableWithoutFeedback onPress={() => { }}>
+                                    <View style={{ borderRadius: 10, backgroundColor: 'white' }}>
+                                        <TouchableOpacity
+                                            style={[styles.modalItem, { alignItems: 'center', justifyContent: 'center', }]}
+                                            onPress={() => {
+                                                this._switch(this.state.isFavorited, this.state.favorite_id);
+                                                this.setState({ show_report: false })
+                                            }}
+                                        >
+                                            {!this.state.isFavorited ?
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <Image source={require('../resource/b-archive.png')} />
+                                                    <Text style={styles.modalText}>收藏</Text>
+                                                </View> :
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <Image source={require('../resource/y-check-r.png')} />
+                                                    <Text style={{ lineHeight: 21 }}>已收藏</Text>
+                                                </View>}
+                                        </TouchableOpacity>
+                                        <View style={{ height: 0.5, backgroundColor: 'rgba(237,237,237,1)' }}></View>
+                                        {!this.state.isReported ?
+                                            <TouchableOpacity style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center' }]}
+                                                onPress={
+                                                    this.reportOffer.bind(this, feed.id)
+                                                }
+                                            >
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <Image source={require('../resource/y-jubao.png')} />
+                                                    <Text style={styles.modalText}>举报</Text>
+                                                </View>
+                                            </TouchableOpacity> :
+                                            <View style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center' }]}>
+                                                <Text style={{ fontSize: 14 }}>已举报</Text>
+                                            </View>
+                                        }
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <TouchableOpacity
+                                    onPress={() => this.setState({ show_report: false })}
+                                    style={{ alignItems: 'center', justifyContent: 'center', marginTop: 6, borderRadius: 10, backgroundColor: 'white', height: 56 }}>
+                                    <Text style={styles.modalText}>取消</Text>
+                                </TouchableOpacity>
                             </View>
-                            }    
                         </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableOpacity 
-                            onPress={() => this.setState({ show_report: false })} 
-                            style={{ alignItems: 'center', justifyContent: 'center', marginTop: 6, borderRadius: 10, backgroundColor: 'white', height: 56}}>
-                            <Text style={styles.modalText}>取消</Text>
-                        </TouchableOpacity>
-                    </View>
-                    </View>
                     </TouchableWithoutFeedback>
                 </Modal>
                 <Modal
                     animationType='slide'
                     transparent={true}
                     visible={this.state.isMine}
-                    onRequestClose={()=>{}}
+                    onRequestClose={() => { }}
                 >
-                <TouchableWithoutFeedback style={{flex: 1}} onPress={() => this.setState({isMine: false})}>
-                    <View style={styles.container}> 
-                    <View style={styles.modal}>
-                        <TouchableWithoutFeedback  onPress={() => {}}>
-                        <View style={{ borderRadius: 10, backgroundColor: 'white',  marginBottom: 6}}>
-                            <TouchableOpacity 
-                                style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
-                                onPress={() => {
-                                    this.props.navigator.push({
-                                        component: offerEdit,
-                                        passProps: {mine, feed}
-                                    });
-                                    this.setState({isMine: false});
-                                }}
-                            >
-                                <Text 
-                                    style={[styles.modalText, {color: global.gColors.themeColor}]}>编辑</Text>
-                            </TouchableOpacity>
-                            <View style={{height: 0.5, backgroundColor: 'rgba(237,237,237,1)'}}></View>
-                            <TouchableOpacity 
-                                style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center',}]}
-                                onPress={this.cancelOffer.bind(this)}
-                            >
-                                <Text style={[styles.modalText, {color: 'red'}]}>删除</Text>
-                            </TouchableOpacity>
-                        </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableOpacity
-                            onPress={() => this.setState({isMine: false})} 
-                            style={{alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: 'white', height: 56}}>
-                            <Text style={styles.modalText}>取消</Text>
-                        </TouchableOpacity>
+                    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={() => this.setState({ isMine: false })}>
+                        <View style={styles.container}>
+                            <View style={styles.modal}>
+                                <TouchableWithoutFeedback onPress={() => { }}>
+                                    <View style={{ borderRadius: 10, backgroundColor: 'white', marginBottom: 6 }}>
+                                        <TouchableOpacity
+                                            style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
+                                            onPress={() => {
+                                                this.props.navigator.push({
+                                                    component: offerEdit,
+                                                    passProps: { mine, feed }
+                                                });
+                                                this.setState({ isMine: false });
+                                            }}
+                                        >
+                                            <Text
+                                                style={[styles.modalText, { color: global.gColors.themeColor }]}>编辑</Text>
+                                        </TouchableOpacity>
+                                        <View style={{ height: 0.5, backgroundColor: 'rgba(237,237,237,1)' }}></View>
+                                        <TouchableOpacity
+                                            style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
+                                            onPress={this.cancelOffer.bind(this)}
+                                        >
+                                            <Text style={[styles.modalText, { color: 'red' }]}>删除</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <TouchableOpacity
+                                    onPress={() => this.setState({ isMine: false })}
+                                    style={{ alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: 'white', height: 56 }}>
+                                    <Text style={styles.modalText}>取消</Text>
+                                </TouchableOpacity>
 
-                    </View>
-                    </View>
-                </TouchableWithoutFeedback>
-                </Modal>    
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
+                {/*取消推荐编辑评价弹窗*/}
+                <Modal
+                    animationType='slide'
+                    transparent={true}
+                    visible={this.state.show_recommand}
+                    onRequestClose={() => { }}
+                >
+                    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={() => this.setState({ show_report: false })}>
+                        <View style={styles.container}>
+                            <View style={styles.modal}>
+                                <TouchableWithoutFeedback onPress={() => { }}>
+                                    <View style={{ borderRadius: 10, backgroundColor: 'white' }}>
+                                        <TouchableOpacity
+                                            style={[styles.modalItem, { alignItems: 'center', justifyContent: 'center', }]}
+                                            onPress={this.toRecommandPage.bind(this, true)}
+                                        >
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Text style={styles.modalText}>编辑评价</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <View style={{ height: 0.5, backgroundColor: 'rgba(237,237,237,1)' }}></View>
+                                        <TouchableOpacity style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center' }]}
+                                            onPress={this.cancelRecommand.bind(this)}
+                                        >
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Text style={styles.modalText}>取消推荐</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <TouchableOpacity
+                                    onPress={() => this.setState({ show_recommand: false })}
+                                    style={{ alignItems: 'center', justifyContent: 'center', marginTop: 6, borderRadius: 10, backgroundColor: 'white', height: 56 }}>
+                                    <Text style={styles.modalText}>返回</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
+                <Modal
+                    animationType='slide'
+                    transparent={true}
+                    visible={this.state.isMine}
+                    onRequestClose={() => { }}
+                >
+                    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={() => this.setState({ isMine: false })}>
+                        <View style={styles.container}>
+                            <View style={styles.modal}>
+                                <TouchableWithoutFeedback onPress={() => { }}>
+                                    <View style={{ borderRadius: 10, backgroundColor: 'white', marginBottom: 6 }}>
+                                        <TouchableOpacity
+                                            style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
+                                            onPress={() => {
+                                                this.props.navigator.push({
+                                                    component: offerEdit,
+                                                    passProps: { mine, feed }
+                                                });
+                                                this.setState({ isMine: false });
+                                            }}
+                                        >
+                                            <Text
+                                                style={[styles.modalText, { color: global.gColors.themeColor }]}>编辑</Text>
+                                        </TouchableOpacity>
+                                        <View style={{ height: 0.5, backgroundColor: 'rgba(237,237,237,1)' }}></View>
+                                        <TouchableOpacity
+                                            style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
+                                            onPress={this.cancelOffer.bind(this)}
+                                        >
+                                            <Text style={[styles.modalText, { color: 'red' }]}>删除</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <TouchableOpacity
+                                    onPress={() => this.setState({ isMine: false })}
+                                    style={{ alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: 'white', height: 56 }}>
+                                    <Text style={styles.modalText}>取消</Text>
+                                </TouchableOpacity>
+
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
             </View>
         )
     }
@@ -910,24 +1040,24 @@ export default class ServOfferDetail extends Component {
 const styles = StyleSheet.create({
     cover: {
         backgroundColor: 'rgba(0, 0, 0, 0.25)',
-        position: 'absolute', 
-        top: 0, 
-        left: 0, 
-        height: global.gScreen.height, 
-        width: global.gScreen.width, 
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        height: global.gScreen.height,
+        width: global.gScreen.width,
         zIndex: 99
     },
-    container:{  
-        flex:1,  
-        backgroundColor: 'transparent',  
+    container: {
+        flex: 1,
+        backgroundColor: 'transparent',
         // position: 'absolute',  
         // top: 0,  
         // bottom: 0,  
         // left: 0,  
         // right: 0,  
-        justifyContent:'center',  
-        alignItems:'center'  
-    },  
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     listView: {
         flex: 1,
         position: 'relative'
@@ -937,9 +1067,9 @@ const styles = StyleSheet.create({
         width: global.gScreen.width,
         position: 'absolute',
         bottom: 0,
-        height: 180, 
+        height: 180,
         borderTopWidth: 0,
-        paddingHorizontal: 8, 
+        paddingHorizontal: 8,
         backgroundColor: 'transparent'
     },
     share: {
@@ -1030,24 +1160,24 @@ const styles = StyleSheet.create({
     notSelectedButton: {
         borderWidth: 1,
         borderColor: global.gColors.themeColor,
-        padding:5,
+        padding: 5,
         height: 36,
         marginRight: 20,
         marginBottom: 8,
         borderRadius: 4,
-        width:Platform.OS === 'ios'? 250: 210,
+        width: Platform.OS === 'ios' ? 250 : 210,
         justifyContent: 'center'
     },
     selectedButton: {
-       borderWidth: 1,
+        borderWidth: 1,
         borderColor: global.gColors.themeColor,
         backgroundColor: global.gColors.themeColor,
-        padding:5,
+        padding: 5,
         height: 36,
         marginRight: 20,
-        marginBottom:8,
+        marginBottom: 8,
         borderRadius: 4,
-        width:Platform.OS === 'ios'? 250: 210,
+        width: Platform.OS === 'ios' ? 250 : 210,
         justifyContent: 'center'
     },
     avatar: {
@@ -1081,7 +1211,7 @@ const OfferItem = ({
     let offerUser = offer.user;
     let offerUserNil = offer.user && true;
     let serv_image = offer.serv_images && offer.serv_images != 'undefined' ? { uri: offer.serv_images.split(',')[0] } : require('../resource/qk_nav_default.png');
-    if(!offerUserNil){
+    if (!offerUserNil) {
         return (<View></View>)
     }
     return (
@@ -1121,13 +1251,13 @@ const OfferItem = ({
                         {offerUserNil && offerUser.name}
                     </Text>
                 </View>
-                {offer.user.id == global.user.id?<View></View>:
-                <TouchableOpacity
-                    activeOpacity={0.75}
-                    onPress={onCall}
-                >
-                    <Image style={{ height: 18, width: 18 }} source={require('../resource/y-chat.png')} />
-                </TouchableOpacity>}
+                {offer.user.id == global.user.id ? <View></View> :
+                    <TouchableOpacity
+                        activeOpacity={0.75}
+                        onPress={onCall}
+                    >
+                        <Image style={{ height: 18, width: 18 }} source={require('../resource/y-chat.png')} />
+                    </TouchableOpacity>}
             </View>
         </TouchableOpacity>
     );

@@ -19,7 +19,7 @@ export default class friendComment extends Component {
     constructor(props) {
 		super(props);
 		this.state =({
-           content: ''
+           content: this.props.content
 		});
 	}
 
@@ -47,6 +47,28 @@ export default class friendComment extends Component {
                 this.props.navigator.pop();
             }
         },this.props.navigator)
+    }
+    updateComment(){
+        let u = this.props.user
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_COMMENT + `/${this.props.comment_id}?token=${global.user.authentication_token}`
+        let data={
+            comment:{
+                content: this.state.content
+            }
+        }
+        util.patch(url, data, (response)=>{
+            console.log("32"+JSON.stringify(response.feed))
+            ToastAndroid.show('修改评价成功',ToastAndroid.LONG);
+            this.props.getData(true);
+            this.props.navigator.pop();
+        },this.props.navigator)
+    }
+    saveComment(){
+        if(this.props.content){
+            this.updateComment();
+        }else{
+            this.commentFriend();
+        }
     }
 
     render(){
@@ -78,7 +100,7 @@ export default class friendComment extends Component {
                     />
                     <Text>您的朋友们将会看到您的推荐，稍后向你表示感谢</Text>
                 </View>
-                <TouchableOpacity onPress={this.commentFriend.bind(this)} style={styles.loginButton}>
+                <TouchableOpacity onPress={this.saveComment.bind(this)} style={styles.loginButton}>
                     <Text>完成</Text>
                 </TouchableOpacity>
             </View>

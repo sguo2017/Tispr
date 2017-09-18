@@ -22,10 +22,22 @@ export default class getFriend extends Component {
            name:'',
            num: '',
            in_village: this.props.village.in_village,
+           user_list:[]
 		});
 	}
     componentWillMount(){
+        let v = this.props.village
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_VILLAGE_RECOMMAND+`/${v.id}?token=${global.user.authentication_token}`;
+        util.get(url,
+            (response)=>{
+                this.setState({
+                    user_list: response.feeds
+                })
+            },
+            (error)=>{
 
+            }
+        )
     }
     componentDidMount(){
 
@@ -74,6 +86,18 @@ export default class getFriend extends Component {
                 <View>
                     <Text style ={{fontSize:20,alignSelf: 'center'}}>{v.name}</Text>
                 </View>
+                {
+                    this.state.user_list.map((data, index)=>{
+                        return(
+                            <View key={index}>
+                                <View style={{flexDirection:'row'}}>
+                                    <Image source={{uri:data.avatar}} style={{height:50,width:50,borderRadius:25}}/>
+                                </View>
+                                <Text>{data.name}</Text>
+                            </View>
+                        )
+                    })
+                }
                 {
                     this.state.in_village?
                     <TouchableOpacity onPress={this.out.bind(this,v.id)} style={styles.loginButton}>
