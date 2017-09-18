@@ -147,6 +147,8 @@ export default class Personinfoedit extends Component {
                     title='添加头像'
                     leftIcon={require('../resource/w-back.png')}
                     leftIconAction={this._back.bind(this)}
+                    rightButton='跳过'
+                    rightButtonAction= {()=>this.props.navigator.resetTo({component: TabBarView})}
                 />
                 <ScrollView style={{ flex: 1, padding: 16 }}>
                     <View style={{ alignItems: 'center', marginBottom: 16 ,marginTop:70}}>

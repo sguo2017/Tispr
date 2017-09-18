@@ -119,7 +119,7 @@ export default class getFriend extends Component {
                 <Header
                     title='你的朋友'
                     leftIcon={require('../resource/ic_back_white.png')}
-                    leftIconAction = {()=>this.props.navigator.resetTo({component: TabBarView})}
+                    leftIconAction = {()=>this.props.navigator.resetTo({component: uploadAvatar})}
                 />
                 <FlatList
                     data = {this.state.friendList}
@@ -168,7 +168,10 @@ export default class getFriend extends Component {
                         <Header
                             title='获取通讯录'
                             leftIcon={require('../resource/ic_back_white.png')}
-                            leftIconAction = {()=>this.props.navigator.resetTo({component: TabBarView})}
+                            leftIconAction = {()=>this.props.navigator.resetTo({component: uploadAvatar})}
+                            rightButton='跳过'
+                            rightButtonAction= {()=>this.props.navigator.resetTo({component: uploadAvatar})}
+                
                         />
                         <View style={{justifyContent: 'center',alignItems: 'center'}}>
                             <Text style={{fontSize: 16,margin:20, color: '#000'}}>找找哪些熟人在用奇客</Text>

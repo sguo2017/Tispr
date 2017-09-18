@@ -8,7 +8,8 @@ import {
 	TouchableOpacity,
 	TouchableHighlight,
 	Modal,
-	TouchableWithoutFeedback
+	TouchableWithoutFeedback,
+	Linking
 } from 'react-native'
 import * as WeChat from 'react-native-wechat';
 import { observer } from 'mobx-react/native';
@@ -89,6 +90,30 @@ export default class UseHelp extends Component {
 				}
 			});
 	}
+	shareToSms(){
+		let message = "我在使用【为邻】，我的邀请码是"+this.state.friendCode+"，你可以免费注册，并完善你的资料，这样我的朋友们可以通过为邻订购你的服务"
+        Linking.canOpenURL(`sms:`).then(supported => {
+        if (!supported) {
+            Alert.alert(
+            '提示',
+            '无法打开短信',
+            [
+                { text: '确定', onPress: null },
+            ]
+            )
+        } else {
+            Linking.openURL((`sms:?body=${message}`) )
+        }
+        }).catch(err => {
+            Alert.alert(
+                null,
+                '出错了',
+                [
+                { text: '确定', onPress: null },
+                ]
+            );
+        });
+	}
 	render() {
 		return (
 			<View style={styles.container}>
@@ -119,6 +144,12 @@ export default class UseHelp extends Component {
 								<TouchableWithoutFeedback onPress={() => { }}>
 									<View style={{ borderRadius: 10, backgroundColor: 'white', height: 112, alignItems: 'center', justifyContent: 'center' }}>
 										<View style={styles.share}>
+											<TouchableOpacity style={styles.item}
+												onPress={this.shareToSms.bind(this)}
+											>
+												<Image source={require('../../resource/ico-friend.png')} style={styles.img}></Image>
+												<Text style={styles.text}>短信</Text>
+											</TouchableOpacity>
 											<TouchableOpacity style={styles.item} onPress={this.shareToWechat.bind(this)}>
 												<Image source={require('../../resource/ico-wechat.png')} style={styles.img}></Image>
 												<Text style={styles.text}>微信</Text>
