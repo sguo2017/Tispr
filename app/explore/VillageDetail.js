@@ -86,14 +86,15 @@ export default class getFriend extends Component {
                 <View>
                     <Text style ={{fontSize:20,alignSelf: 'center'}}>{v.name}</Text>
                 </View>
+                <Text style={{color:'#000',margin:10,fontSize:16}}>社区推荐以下用户</Text>
                 {
                     this.state.user_list.map((data, index)=>{
                         return(
-                            <View key={index}>
-                                <View style={{flexDirection:'row'}}>
+                            <View key={index} style={{margin:10}}>
+                                <View style={{flexDirection:'row',alignItems:'center'}}>
                                     <Image source={{uri:data.avatar}} style={{height:50,width:50,borderRadius:25}}/>
+                                    <Text style={{color:'#000',margin:10,fontSize:16}}>{data.name}</Text>
                                 </View>
-                                <Text>{data.name}</Text>
                             </View>
                         )
                     })

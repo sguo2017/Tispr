@@ -6,6 +6,8 @@ const initialState = {
   isLoadMore: false,
   page: 1,
   canLoadMore: true,
+  changeLevel: false,
+  qry_level: 1
 };
 
 let servOfferListReducer = (state = initialState, {type, payload}) => {
@@ -18,9 +20,11 @@ let servOfferListReducer = (state = initialState, {type, payload}) => {
       return Object.assign({}, state, {
         isLoadMore: false,
         isLoading: false,
-        exploreList: payload.page == 1 ? payload.exploreList : state.exploreList.concat(payload.exploreList),
+        exploreList: payload.page == 1 && payload.qry_level ==1? payload.exploreList : state.exploreList.concat(payload.exploreList),
         page: payload.exploreList.length > 0 ? payload.page : state.page,
-        canLoadMore: payload.exploreList.length > 0 ? true : false,
+        canLoadMore: payload.exploreList.length > 0  && payload.qry_level != 6 ? true : false,
+        changeLevel: payload.exploreList.length < 5 ? true : false,
+        qry_level: payload.exploreList.length <5 ? payload.qry_level : state.qry_level
       });
     default:
       return state

@@ -189,7 +189,7 @@ export default class ServOfferList extends Component {
         }
         let exploreparams = this.props.exploreparams;
 
-        dispatch(fetchExploreList(1, exploreparams, this.props.navigator));
+        dispatch(fetchExploreList(1, 1, exploreparams, this.props.navigator));
     }
 
     _onMomentumScrollEnd(event) {
@@ -203,7 +203,12 @@ export default class ServOfferList extends Component {
 
         if (Math.abs(viewBottomY - contentSizeH) <= 40) {
             console.log(this.props.exploreparams)
-            dispatch(fetchExploreList(ServOfferList.page + 1, this.props.exploreparams, this.props.navigator));
+            if(ServOfferList.changeLevel){
+               dispatch(fetchExploreList(ServOfferList.qry_level + 1, 1 , this.props.exploreparams, this.props.navigator));
+         
+            }else{
+                dispatch(fetchExploreList(ServOfferList.qry_level, ServOfferList.page + 1, this.props.exploreparams, this.props.navigator));
+            }
         }
     }
 

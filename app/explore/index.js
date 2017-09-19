@@ -62,8 +62,7 @@ class ExploreList extends PureComponent {
         }
         let page =1
         let exploreparams = {title:this.state.searchTitle};
-        dispatch(fetchExploreList(page, exploreparams, this.props.navigator));
-        
+        dispatch(fetchExploreList(1, page, exploreparams, this.props.navigator));
     }
 
     friendSearch(){
