@@ -570,6 +570,9 @@ const ServItem = ({
                     <Text style={{ fontSize: 12, color: '#b8b8b8' }}>{serv.district}</Text>
                 </View>
             </View>
+            {   serv.recommand_user?
+                <Text>{serv.recommand_user.name}推荐</Text>:null
+            }
             <View style={styles.cardUserInfoView}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <CachedImage
