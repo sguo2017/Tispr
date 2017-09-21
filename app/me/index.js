@@ -253,16 +253,19 @@ export default class MeInfo extends Component {
                 </TouchableOpacity>
             }
           </View>
-          <View style={{ marginTop: 16,flexDirection: 'row' }}>
+          
+          <View style={{flexDirection: 'row', justifyContent:'space-between',margin:6 }}>
             <Text style={styles.text}>{this.state.info}</Text>
             {
               this.props.isBrowseMode?
               (this.state.friend_status == 'created'?
-              <TouchableOpacity onPress={this.deleteFriend.bind(this)} style={{marginLeft:20}}>
-                <Text style={{color:global.gColors.buttonColor, marginLeft:20}}>删除好友</Text>
+              <TouchableOpacity onPress={this.deleteFriend.bind(this)} style={{marginLeft:20,flexDirection:'row',alignItems:'center'}}>
+                <Image source={require('../resource/g_cancel_pre.png')} style={{width:20,height:20,borderRadius:10}}/>                
+                <Text style={{color:global.gColors.buttonColor}}>删除好友</Text>
               </TouchableOpacity>:
-              <TouchableOpacity onPress={this.addFriend.bind(this)} style={{marginLeft:20}}>
-                <Text style={{color:'#fff'}}>加好友</Text>
+              <TouchableOpacity onPress={this.addFriend.bind(this)} style={{marginLeft:20,flexDirection:'row',alignItems:'center'}}>
+                <Image source={require('../resource/y-ico-add.png')} style={{width:16,height:16,borderRadius:8}}/>
+                <Text style={{color:global.gColors.buttonColor}}>加好友</Text>
               </TouchableOpacity>)
               :null
             }

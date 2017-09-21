@@ -26,7 +26,7 @@ let servOfferListReducer = (state = initialState, {type, payload}) => {
         canLoadMore: payload.qry_level != 6 || payload.exploreList.length > 0? true : false,
         changeLevel: payload.exploreList.length < 5 ? true : false,
         qry_level: payload.exploreList.length <5 ? payload.qry_level : state.qry_level,
-        autoLoad: true
+        autoLoad: payload.exploreList.length < 5 ? true: false
       });
     default:
       return state

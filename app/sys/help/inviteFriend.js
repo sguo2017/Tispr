@@ -130,16 +130,16 @@ export default class UseHelp extends Component {
 				</View>
 				<View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
 					<View style ={{alignItems:'center',justifyContent:'space-between',height:110,width:70}}>
-						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
-						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+						<Image source={require('../../resource/ico-wechat.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+						<Image source={require('../../resource/aboutus-ico-email.png')} style={{ width:40,height:40,borderRadius:20 }}/>
 					</View>
 					<View style ={{alignItems:'center',justifyContent:'space-between',height:200,width:70}}>
-						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+						<Image source={require('../../resource/ico-qq.png')} style={{ width:40,height:40,borderRadius:20 }}/>
 						<Image source={{uri:global.user.avatar}} style={{ width:60,height:60,borderRadius:30}}/>
-						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+						<Image source={require('../../resource/ico-weibo.png')} style={{ width:40,height:40,borderRadius:20 }}/>
 					</View>
 					<View style ={{alignItems:'center',justifyContent:'space-between',height:110,width:70}}>
-						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+						<Image source={require('../../resource/icon_tel.png')} style={{ width:40,height:40,borderRadius:20 }}/>
 						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
 					</View>
 				</View>

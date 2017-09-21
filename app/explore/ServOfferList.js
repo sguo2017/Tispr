@@ -213,7 +213,7 @@ export default class ServOfferList extends Component {
 
         if (Math.abs(viewBottomY - contentSizeH) <= 40) {
             console.log(this.props.exploreparams)
-            if(ServOfferList.changeLevel){
+            if(ServOfferList.changeLevel && ServOfferList.qry_level< 6){
                dispatch(fetchExploreList(ServOfferList.qry_level + 1, 1 , this.props.exploreparams, this.props.navigator));
          
             }else{
@@ -223,6 +223,8 @@ export default class ServOfferList extends Component {
     }
 
     _onRefresh() {
+        const { dispatch, ServOfferList, exploreparams } = this.props;
+        dispatch(fetchExploreList(1, 1, exploreparams, this.props.navigator));       
         console.log('listfresh');
     }
 
@@ -463,7 +465,9 @@ export default class ServOfferList extends Component {
                                     >
                                         <Text style={{ color: 'white' }}>发布新的需求</Text>
                                     </TouchableOpacity>
+                                    <View style={{height:300}}></View>
                                 </View>
+                                
                         }
                     </ScrollView>
                 }

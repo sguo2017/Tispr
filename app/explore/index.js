@@ -31,8 +31,6 @@ import area from '../sys/others/area.json'
 import Util from '../common/utils'
 import MarkList from './MarkList'
 import UserDefaults from '../common/UserDefaults'
-
-const titles = ['本地','远程', ];
 var goods_catalogs_II=[];
 var goods_catalogs_II_id=[];
 class ExploreList extends PureComponent {
@@ -90,6 +88,15 @@ class ExploreList extends PureComponent {
             friendSearch:false,
         },this.refresh)
     }
+    freshSearch(){
+        if(this.state.classSearch){
+            this.classSearch();
+        }else if(this.state.communitySearch){
+            this.communitySearch();
+        }else if(this.state.friendSearch){
+            this.friendSearch();
+        }
+    }
     render() {
         return (
             <View style={styles.listView}>
@@ -107,7 +114,7 @@ class ExploreList extends PureComponent {
                             returnKeyLabel = 'search'
                             placeholderTextColor='white'
                             selectTextOnFocus ={true}
-                            onSubmitEditing = {() => this.refresh()}
+                            onSubmitEditing = {this.freshSearch.bind(this)}
                             onChangeText={(val) => {
                                 this.setState({searchTitle: val})
                             }}
