@@ -9,7 +9,8 @@ import {
     TextInput,
     Image,
     ScrollView,
-    FlatList
+    FlatList,
+    ToastAndroid
 } from 'react-native'
 import Header from '../components/HomeNavigation';
 import Constant from '../common/constants';
@@ -23,6 +24,7 @@ export default class getFriend extends Component {
 		this.state =({
            friends: [],
            friendList:[],
+           friendListStatus: [],
            showList: false
 		});
 	}
@@ -62,7 +64,9 @@ export default class getFriend extends Component {
         util.post(url,data, (result)=>{
                 console.log("55:"+result.feeds[0].friend_name + result.feeds[0].status)
                 console.log(result.feeds[2])
-                this.setState({friendList: result.feeds, showList: true})
+                let length = result.feeds.length
+                let statusArray = Array(length).fill(true)
+                this.setState({friendList: result.feeds, showList: true, friendListStatus: statusArray})
                 friendList = result.feeds;
             },
             this.props.navigator
@@ -70,7 +74,7 @@ export default class getFriend extends Component {
         
     }
 
-    async deleteFriend(id) {
+    async deleteFriend(id,index) {
         try {
             let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_DELETE_FRIEND+'/'+ id + '?token='+ global.user.authentication_token;
             let response = await fetch(url, {
@@ -84,25 +88,33 @@ export default class getFriend extends Component {
             if (response.status >= 200 && response.status < 300) {
                 let resObject =JSON.parse(res);
                 if(resObject.status==0){
-                    console.log(resObject.msg);
+                    let statusArray = this.state.friendListStatus;
+                    statusArray[index] = false;
+                    this.setState({
+                        friendListStatus:statusArray
+                    })
                 }else{
-                    console.log(resObject.msg);
+                    ToastAndroid.show('移除失败',ToastAndroid.SHORT);
                 }
             }
         } catch(error) {
             console.log(107)
         }
     }
-    addFriend(id){
+    addFriend(id,index){
         let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS+'/'+id +'?token='+global.user.authentication_token;
         let data = {
             status: 'created'
         }
         util.patch(url, data,(result)=>{
+            let statusArray = this.state.friendListStatus;
+            statusArray[index] = true;
             if(result.status == 0){
-                console.log("添加成功");
+                this.setState({
+                    friendListStatus:statusArray
+                })
             }else{
-                console.log("添加失败");
+                ToastAndroid.show('添加失败',ToastAndroid.SHORT);
             }
         }, this.props.navigator)
     }
@@ -130,25 +142,20 @@ export default class getFriend extends Component {
                         return (
                             <View style={styles.list}>
                                 <Text style={{color: 'black', }}>{item.item.friend_name}</Text>
-                                {item.item.status == 'created'?
+                                { this.state.friendListStatus[item.index]?
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                     <Text>已自动添加为好友</Text>
-                                 <TouchableOpacity style={{marginLeft: 10}} onPress={this.deleteFriend.bind(this, item.item.id)}>
+                                 <TouchableOpacity style={{marginLeft: 10}} onPress={this.deleteFriend.bind(this, item.item.id, item.index)}>
                                      <Text style={{color: 'red', }}>移除好友</Text>
                                  </TouchableOpacity>
 
                                 </View>:
-                                item.item.status == 'notfriend'?
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                                     <Text>已解除好友关系</Text>
-                                 <TouchableOpacity style={{marginLeft: 10}} onPress={this.addFriend.bind(this, item.item.id, item.item.friend_name, item.item.friend_num)}>
+                                 <TouchableOpacity style={{marginLeft: 10}} onPress={this.addFriend.bind(this, item.item.id, item.index)}>
                                      <Text style={{color: 'red', }}>加为好友</Text>
                                  </TouchableOpacity>
                                 </View>
-                                :
-                                 <TouchableOpacity>
-                                     <Text style={{color: '#4a90e2', }}>邀请</Text>
-                                 </TouchableOpacity>
                                 }
                             </View>                          
                             );

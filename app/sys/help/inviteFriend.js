@@ -125,8 +125,30 @@ export default class UseHelp extends Component {
 					leftIcon={require('../../resource/ic_back_white.png')}
 					leftIconAction={this._onBack.bind(this)}
 				/>
-				<View>
-					<Text style={{ fontSize: 20 }}>你的邀请码：{this.state.friendCode}</Text>
+				
+				<View style={{ height:80 }}>
+				</View>
+				<View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+					<View style ={{alignItems:'center',justifyContent:'space-between',height:110,width:70}}>
+						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+					</View>
+					<View style ={{alignItems:'center',justifyContent:'space-between',height:200,width:70}}>
+						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+						<Image source={{uri:global.user.avatar}} style={{ width:60,height:60,borderRadius:30}}/>
+						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+					</View>
+					<View style ={{alignItems:'center',justifyContent:'space-between',height:110,width:70}}>
+						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+					</View>
+				</View>
+				<View style={{ height:80 }}>
+				</View>
+				<View style={{margin:10}}>
+					<Text style={{ fontSize: 18, color:'#000' }}>奇客只限邀请制</Text>
+					<Text style={{ fontSize: 16 }}>帮助你的朋友加入奇客，并与你分享他们推荐的专业人士与服务</Text>
+					<Text style={{ fontSize: 18 }}>你的邀请码：{this.state.friendCode}</Text>
 				</View>
 				<TouchableOpacity style={styles.loginButton} onPress={() => this.setState({ showModal: true })}>
 					<Text style={styles.loginButtonText}>分享给好友</Text>

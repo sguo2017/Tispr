@@ -19,13 +19,16 @@ export default class recommendUser extends Component {
     constructor(props) {
 		super(props);
 		this.state =({
-           name:'',
-           num: '',
+           name:this.props.friend_name,
+           num: this.props.friend_num,
            email: '',
 		});
 	}
     recommend(){
-        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS + `?token=${global.user.authentication_token}`;
+        this.refs["1"].blur();
+        this.refs["2"].blur();
+        this.refs["3"].blur();
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_ADD_FRIENDS + `?token=${global.user.authentication_token}&recommand=1`;
         let data={
             friend_name: this.state.name,
             friend_num: this.state.num,
@@ -35,17 +38,27 @@ export default class recommendUser extends Component {
             catalog_name:this.props.catalog_name,
         }
         util.post(url, data, (response)=>{
-            console.log("32"+JSON.stringify(response.feed))
-            if(this.props.recommendCustomer){
-                 this.props.navigator.push({
-                    component: recommandSuccess,
-                    passProps: {user: response.user}
-                })
-            }else{
-                this.props.navigator.push({
-                    component: commentPage,
-                    passProps: {user:response.user,newUser:true}
-                })
+            if(response.status == 0){
+                if(this.props.recommendCustomer){
+                    this.
+                    this.props.navigator.push({
+                        component: recommandSuccess,
+                        passProps: {user: response.user}
+                    })
+                }else{
+                    this.props.navigator.push({
+                        component: commentPage,
+                        passProps: {user:response.user,newUser:true}
+                    })
+                }
+            }else if(response.status == -1){
+                Alert.alert(
+                    '添加推荐失败',
+                    '用户已经加入为邻，请在对方的服务页下推荐',
+                    [
+                    { text: '确定' },
+                    ]
+                )
             }
         },this.props.navigator)
     }
@@ -70,6 +83,7 @@ export default class recommendUser extends Component {
                     returnKeyType = 'next'
                     placeholderTextColor  = '#ccc'
                     multiline = {false}
+                    maxLength ={4}
                     />
                 </View>
                 
@@ -83,11 +97,12 @@ export default class recommendUser extends Component {
                     returnKeyType = 'next'
                     placeholderTextColor  = '#ccc'
                     multiline = {false}
+                    maxLength ={11}
                     />
                 </View>
                 <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee' }} >
                     <TextInput
-                    ref = "2"
+                    ref = "3"
                     onChangeText={(text) => this.setState({ email: text })}
                     style={styles.input} placeholder="电子邮箱"
                     value={this.state.email}

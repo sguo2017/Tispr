@@ -212,7 +212,7 @@ export default class Register extends Component {
   }
 
   _smsSend = () => {
-    let reg = /^1[3|4|5|7|8][0-9]{9}$/;
+    let reg = /^1[3|5|8][0-9]{9}$/;
     if (!reg.test(this.state.num)) {
       ToastAndroid.show('请正确输入手机号码', ToastAndroid.SHORT);
       return;
@@ -386,6 +386,13 @@ export default class Register extends Component {
           }
         }
         if (result.error) {
+          Alert.alert(
+            '注册失败',
+            '邮箱已经被注册',
+            [
+              { text: '确定' },
+            ]
+          )
           console.log("邮箱已经被注册")
         }
       },
@@ -496,6 +503,7 @@ export default class Register extends Component {
                 returnKeyLabel='next'
                 multiline={false}
                 onSubmitEditing={this._smsSend.bind(this)}
+                maxLength ={11}
               />
             </View>
           </View>
@@ -513,6 +521,7 @@ export default class Register extends Component {
                 returnKeyType='done'
                 returnKeyLabel='done'
                 multiline={false}
+                maxLength ={4}
               />
             </View>
             <TouchableOpacity disabled={this.state.sendingCode} onPress={this._smsSend.bind(this)} style={styles.smsCodeButton}>
@@ -549,7 +558,7 @@ export default class Register extends Component {
                 returnKeyType='next'
                 placeholderTextColor='#ccc'
                 multiline={false}
-                placeholder="heh"
+                placeholder=""
               />
             </View>
             <View style={styles.buttonView}>

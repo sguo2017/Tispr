@@ -145,6 +145,7 @@ let url = {
      SERV_API_ADD_VILLAGES: '/api/villages/add_user',//用户加入社区API
      SERV_API_DELETE_VILLAGES: '/api/villages/delete_user',//用户退出社区API
      SERV_API_VILLAGE_RECOMMAND: '/api/villages/villages/',//获取社区推荐用户
+     SERV_API_NEARBY_VILLAGE: '/api/villages/nearby_village?token=',//获取周边社区
      //////////////////<<<<   GEOAPI服务器  >>>>>//////////////////////////////
      GEO_LOCATION_ADDR: "http://api.map.baidu.com/geocoder/v2/?output=json&pois=1&ak=ZFFEI4cl338WSpoGsGSuHhpxiQpuEnfe"
      

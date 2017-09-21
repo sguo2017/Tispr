@@ -180,16 +180,26 @@ export default class ServOfferList extends Component {
         } catch (error) {
             console.log(error);
         }
-    }
 
-    componentDidMount() {
-        const { dispatch } = this.props;
+        const { dispatch, ServOfferList } = this.props;
         if (!global.user.authentication_token) {
             Util.noToken(this.props.navigator);
         }
         let exploreparams = this.props.exploreparams;
 
-        dispatch(fetchExploreList(1, 1, exploreparams, this.props.navigator));
+        dispatch(fetchExploreList(1, 1, exploreparams, this.props.navigator));       
+}
+
+    componentDidMount() {
+        const { dispatch, ServOfferList } = this.props;
+        if (!global.user.authentication_token) {
+            Util.noToken(this.props.navigator);
+        }
+        let exploreparams = this.props.exploreparams;
+        
+        if(ServOfferList.autoLoad){
+            dispatch(fetchExploreList(ServOfferList.qry_level + 1, 1 , this.props.exploreparams, this.props.navigator));
+        }
     }
 
     _onMomentumScrollEnd(event) {

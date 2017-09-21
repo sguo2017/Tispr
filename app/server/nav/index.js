@@ -26,7 +26,8 @@ import ServRequest from '../request/title';
 import Util from '../../common/utils';
 import breakdown from '../../sys/others/breakdown';
 import offline from '../../sys/others/offline';
-import recommend from '../../friend/recommendUser'
+import recommend from '../../friend/recommendUser';
+import chooseInvited from '../../friend/chooseInvited';
 const screenW = Dimensions.get('window').width;
 const _image = {
     21: require('../../resource/industry/21.png'),
@@ -200,6 +201,18 @@ export default class navpage extends Component {
             }
         })
     }
+    chooseInvited(){
+        this.setState({
+            showRecommendWay:false
+        })
+        this.props.navigator.push({
+            component: chooseInvited,
+            passProps: {
+                catalog_id:this.state.recommendCatalogId,
+                catalog_name: this.state.recommendCatalogName
+            }
+        })
+    }
     render() {
         let param = global.goods_catalog_I;
         let max = 0;
@@ -234,7 +247,7 @@ export default class navpage extends Component {
                             var dataArray =Array.from(data_II)
                             return (
                                 <View tabLabel={data_I.name}  key={index} >
-                                    {
+                                    {/*{
                                         this.state.goods_tpye == "serv_request" ?
                                           <View style={styles.conclusionView}>
                                               <Image style={{ width: 24, height: 24, marginRight: 6 }} source={require('../../resource/b-people.png')} />
@@ -250,11 +263,11 @@ export default class navpage extends Component {
                                             </Text>
                                         </View>
                                     }
-                                    
+                                    */}
                                     <FlatList
                                         data = {dataArray}
                                         keyExtractor={this._keyExtractor}
-                                        style={{marginBottom:60}}
+                                        style={{}}
                                         removeClippedSubviews={false}
                                         renderItem = {(item)=>{
                                             return (
@@ -287,6 +300,7 @@ export default class navpage extends Component {
                     <View style={styles.modal}>
                         <TouchableOpacity 
                             style={[styles.modalItem, { justifyContent: 'center', alignItems: 'center', }]}
+                            onPress={this.chooseInvited.bind(this)}
                         >
                             <Text 
                                 style={[styles.modalText, {color: global.gColors.themeColor}]}>从通讯录添加</Text>

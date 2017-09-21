@@ -16,7 +16,7 @@ import Constant from '../common/constants';
 import ImagePicker from 'react-native-image-picker';
 import TabBarView from '../containers/TabBarView';
 import Util from '../common/utils'
-
+import getVillage from './getVillage'
 export default class Personinfoedit extends Component {
     constructor(props) {
         super(props);
@@ -27,13 +27,7 @@ export default class Personinfoedit extends Component {
             fileSource: this.props.source,
         }
     }
-    _back(){
-        let { navigator } = this.props;
-        navigator.resetTo({
-            component: TabBarView,
-            name: 'TabBarView'
-        });
-    }
+
     selectPhotoTapped() {
         const options = {
             title: '请选择',
@@ -128,8 +122,8 @@ export default class Personinfoedit extends Component {
                         { text: '确定' , onPress: () => {
                             let { navigator } = this.props;
                             navigator.resetTo({
-                                component: TabBarView,
-                                name: 'TabBarView'
+                                component: getVillage,
+                                name: 'getVillage'
                             });
                         }},
                     ]
@@ -145,10 +139,8 @@ export default class Personinfoedit extends Component {
             <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
                     title='添加头像'
-                    leftIcon={require('../resource/w-back.png')}
-                    leftIconAction={this._back.bind(this)}
                     rightButton='跳过'
-                    rightButtonAction= {()=>this.props.navigator.resetTo({component: TabBarView})}
+                    rightButtonAction= {()=>this.props.navigator.push({component: getVillage})}
                 />
                 <ScrollView style={{ flex: 1, padding: 16 }}>
                     <View style={{ alignItems: 'center', marginBottom: 16 ,marginTop:70}}>

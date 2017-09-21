@@ -27,7 +27,7 @@ export default class getFriend extends Component {
 	}
     componentWillMount(){
         let v = this.props.village
-        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_VILLAGE_RECOMMAND+`/${v.id}?token=${global.user.authentication_token}`;
+        let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_VILLAGE_RECOMMAND+`${v.id}?token=${global.user.authentication_token}`;
         util.get(url,
             (response)=>{
                 this.setState({
@@ -54,6 +54,8 @@ export default class getFriend extends Component {
                     in_village:true
                 })
                 ToastAndroid.show('加入成功',ToastAndroid.LONG);
+            }else{
+                ToastAndroid.show('加入失败，最多只能加入6个社区',ToastAndroid.LONG);
             }
         },this.props.navigator)
     }
@@ -83,22 +85,26 @@ export default class getFriend extends Component {
                         leftIconAction = {()=>this.props.navigator.pop()}
                     />
                 </View>
-                <View>
-                    <Text style ={{fontSize:20,alignSelf: 'center'}}>{v.name}</Text>
-                </View>
-                <Text style={{color:'#000',margin:10,fontSize:16}}>社区推荐以下用户</Text>
-                {
-                    this.state.user_list.map((data, index)=>{
-                        return(
-                            <View key={index} style={{margin:10}}>
-                                <View style={{flexDirection:'row',alignItems:'center'}}>
-                                    <Image source={{uri:data.avatar}} style={{height:50,width:50,borderRadius:25}}/>
-                                    <Text style={{color:'#000',margin:10,fontSize:16}}>{data.name}</Text>
+                <ScrollView>
+                    <View>
+                        <Text style ={{fontSize:20,alignSelf: 'center'}}>{v.name}</Text>
+                    </View>
+                    <Text style={{color:'#000',margin:10,fontSize:16}}>社区推荐以下用户</Text>
+                    
+                    {
+                        this.state.user_list.map((data, index)=>{
+                            return(
+                                <View key={index} style={{margin:10}}>
+                                    <View style={{flexDirection:'row',alignItems:'center'}}>
+                                        <Image source={{uri:data.avatar}} style={{height:50,width:50,borderRadius:25}}/>
+                                        <Text style={{color:'#000',margin:10,fontSize:16}}>{data.name}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                        )
-                    })
-                }
+                            )
+                        })
+                    }
+                    <View style={{height:100}}></View>
+                </ScrollView>
                 {
                     this.state.in_village?
                     <TouchableOpacity onPress={this.out.bind(this,v.id)} style={styles.loginButton}>
