@@ -127,11 +127,11 @@ class ExploreList extends PureComponent {
                     <TouchableOpacity style={styles.filterButton} onPress={this.classSearch.bind(this)}>
                         <Text style={styles.whiteText}>职业</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.filterButton} onPress={this.communitySearch.bind(this)}>
-                        <Text style={styles.whiteText}>社区</Text>
-                    </TouchableOpacity>
                     <TouchableOpacity style={styles.filterButton} onPress={this.friendSearch.bind(this)}>
                         <Text style={styles.whiteText}>好友</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.filterButton} onPress={this.communitySearch.bind(this)}>
+                        <Text style={styles.whiteText}>社区</Text>
                     </TouchableOpacity>
                 </View>
                 {
