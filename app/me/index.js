@@ -158,7 +158,8 @@ export default class MeInfo extends Component {
     }
     Util.post(url, data, (response)=>{
       if(response.status == 0){
-        ToastAndroid.show('请求发送成功，请等待对方验证',ToastAndroid.LONG);
+        this.setState({friend_status: "apply"})
+        ToastAndroid.show('请求发送成功，请等待对方验证',ToastAndroid.SHORT);
       }
     },this.props.navigator)
   }
@@ -263,10 +264,17 @@ export default class MeInfo extends Component {
                 <Image source={require('../resource/g_cancel_pre.png')} style={{width:20,height:20,borderRadius:10}}/>                
                 <Text style={{color:global.gColors.buttonColor}}>删除好友</Text>
               </TouchableOpacity>:
+              this.state.friend_status == 'apply'?
+              <View style={{marginLeft:20,flexDirection:'row',alignItems:'center'}}>
+                <Image source={require('../resource/y-ico-add.png')} style={{width:16,height:16,borderRadius:8}}/>
+                <Text style={{color:global.gColors.buttonColor}}>等待对方验证</Text>
+              </View>
+              :
               <TouchableOpacity onPress={this.addFriend.bind(this)} style={{marginLeft:20,flexDirection:'row',alignItems:'center'}}>
                 <Image source={require('../resource/y-ico-add.png')} style={{width:16,height:16,borderRadius:8}}/>
                 <Text style={{color:global.gColors.buttonColor}}>加好友</Text>
-              </TouchableOpacity>)
+              </TouchableOpacity>
+              )
               :null
             }
           </View>

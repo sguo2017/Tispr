@@ -188,7 +188,7 @@ export default class ServOfferList extends Component {
         let exploreparams = this.props.exploreparams;
 
         dispatch(fetchExploreList(1, 1, exploreparams, this.props.navigator));       
-}
+    }
 
     componentDidMount() {
         const { dispatch, ServOfferList } = this.props;

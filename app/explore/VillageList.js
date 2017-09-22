@@ -86,7 +86,7 @@ class ExploreVillageList extends PureComponent {
                                 {VillageList.villageList.map((data, index) => {
                                     return (
                                         <TouchableOpacity key={index} onPress={this.jumpVillageDetail.bind(this, data)} style={{flexDirection:'row',alignItems: 'center',margin:6, paddingHorizontal: 12}}>
-                                            
+                                            <Image source={{uri:data.avatar}} style={{width:40,height:40,borderRadius:20}}/>
                                             <Text style={{color:'#000',margin:10,fontSize:16}}>{data.name}</Text>
                                         </TouchableOpacity>
                                     );
