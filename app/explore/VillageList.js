@@ -86,8 +86,17 @@ class ExploreVillageList extends PureComponent {
                                 {VillageList.villageList.map((data, index) => {
                                     return (
                                         <TouchableOpacity key={index} onPress={this.jumpVillageDetail.bind(this, data)} style={{flexDirection:'row',alignItems: 'center',margin:6, paddingHorizontal: 12}}>
-                                            <Image source={{uri:data.avatar}} style={{width:40,height:40,borderRadius:20}}/>
-                                            <Text style={{color:'#000',margin:10,fontSize:16}}>{data.name}</Text>
+                                            <Image source={{uri:data.avatar}} style={{width:50,height:50,borderRadius:25}}/>
+                                            <View>
+                                                <Text>
+                                                    <Text style={{color:'#000',marginLeft:10,fontSize:16}}>{data.name}</Text>
+                                                    <Text style={{marginLeft:10}}>&nbsp;&nbsp;{data.city}&nbsp;{data.district}</Text>
+                                                </Text>
+                                                {
+                                                    data.users_count == 0 ?null:
+                                                    <Text style={{marginLeft:10}}>有{data.users_count}个用户</Text>
+                                                }
+                                            </View>
                                         </TouchableOpacity>
                                     );
                                 })}

@@ -214,7 +214,7 @@ export default class ServOfferList extends Component {
         if (Math.abs(viewBottomY - contentSizeH) <= 40) {
             console.log(this.props.exploreparams)
             if(ServOfferList.changeLevel && ServOfferList.qry_level< 6){
-               dispatch(fetchExploreList(ServOfferList.qry_level + 1, 1 , this.props.exploreparams, this.props.navigator));
+                dispatch(fetchExploreList(ServOfferList.qry_level + 1, 1 , this.props.exploreparams, this.props.navigator));
          
             }else{
                 dispatch(fetchExploreList(ServOfferList.qry_level, ServOfferList.page + 1, this.props.exploreparams, this.props.navigator));

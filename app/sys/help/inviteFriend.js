@@ -129,26 +129,26 @@ export default class UseHelp extends Component {
 				<View style={{ height:80 }}>
 				</View>
 				<View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-					<View style ={{alignItems:'center',justifyContent:'space-between',height:110,width:70}}>
-						<Image source={require('../../resource/ico-wechat.png')} style={{ width:40,height:40,borderRadius:20 }}/>
-						<Image source={require('../../resource/aboutus-ico-email.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+					<View style ={styles.shareColumn}>
+						<Image source={require('../../resource/ico-wechat.png')} style={styles.shareIcon}/>
+						<Image source={require('../../resource/aboutus-ico-email.png')} style={styles.shareIcon}/>
 					</View>
-					<View style ={{alignItems:'center',justifyContent:'space-between',height:200,width:70}}>
-						<Image source={require('../../resource/ico-qq.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+					<View style ={[styles.shareColumn,{height:200}]}>
+						<Image source={require('../../resource/ico-qq.png')} style={styles.shareIcon}/>
 						<Image source={{uri:global.user.avatar}} style={{ width:60,height:60,borderRadius:30}}/>
-						<Image source={require('../../resource/ico-weibo.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+						<Image source={require('../../resource/ico-weibo.png')} style={styles.shareIcon}/>
 					</View>
-					<View style ={{alignItems:'center',justifyContent:'space-between',height:110,width:70}}>
-						<Image source={require('../../resource/icon_tel.png')} style={{ width:40,height:40,borderRadius:20 }}/>
-						<Image source={require('../../resource/ico-friend.png')} style={{ width:40,height:40,borderRadius:20 }}/>
+					<View style ={styles.shareColumn}>
+						<Image source={require('../../resource/icon_tel.png')} style={styles.shareIcon}/>
+						<Image source={require('../../resource/ico-friend.png')} style={styles.shareIcon}/>
 					</View>
 				</View>
 				<View style={{ height:80 }}>
 				</View>
 				<View style={{margin:10}}>
-					<Text style={{ fontSize: 18, color:'#000' }}>奇客只限邀请制</Text>
-					<Text style={{ fontSize: 16 }}>帮助你的朋友加入奇客，并与你分享他们推荐的专业人士与服务</Text>
-					<Text style={{ fontSize: 18 }}>你的邀请码：{this.state.friendCode}</Text>
+					<Text style={{ fontSize: 18, color:'#000', lineHeight: 30 }}>奇客只限邀请制</Text>
+					<Text style={{ fontSize: 16, lineHeight: 24 }}>帮助你的朋友加入奇客，并与你分享他们推荐的专业人士与服务</Text>
+					<Text style={{ fontSize: 16, lineHeight: 24 }}>你的邀请码：{this.state.friendCode}</Text>
 				</View>
 				<TouchableOpacity style={styles.loginButton} onPress={() => this.setState({ showModal: true })}>
 					<Text style={styles.loginButtonText}>分享给好友</Text>
@@ -157,8 +157,8 @@ export default class UseHelp extends Component {
 					animationType='slide'
 					transparent={true}
 					visible={this.state.showModal}
-					onShow={() => { }}
-					onRequestClose={() => { }}
+					onShow={() => {}}
+					onRequestClose={() => {}}
 				>
 					<TouchableWithoutFeedback style={{ flex: 1 }} onPress={() => this.setState({ showModal: false })}>
 						<View style={styles.modalContainer}>
@@ -169,7 +169,7 @@ export default class UseHelp extends Component {
 											<TouchableOpacity style={styles.item}
 												onPress={this.shareToSms.bind(this)}
 											>
-												<Image source={require('../../resource/ico-friend.png')} style={styles.img}></Image>
+												<Image source={require('../../resource/b-reg-smail.png')} style={styles.img}></Image>
 												<Text style={styles.text}>短信</Text>
 											</TouchableOpacity>
 											<TouchableOpacity style={styles.item} onPress={this.shareToWechat.bind(this)}>
@@ -264,4 +264,15 @@ const styles = StyleSheet.create({
         //marginTop: 30,
         marginHorizontal: 132
     },
+	shareIcon: {
+		 width:40,
+		 height:40,
+		 borderRadius:20 
+	},
+	shareColumn:{
+		alignItems:'center',
+		justifyContent:'space-between',
+		height:110,
+		width:70
+	}
 });

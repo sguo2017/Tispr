@@ -21,7 +21,6 @@ export default class recommendUser extends Component {
 		this.state =({
            name:this.props.friend_name,
            num: this.props.friend_num,
-           email: '',
 		});
 	}
     recommend(){
@@ -73,44 +72,34 @@ export default class recommendUser extends Component {
                         leftIconAction = {()=>this.props.navigator.pop()}
                     />
                 </View>
-                <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee' }} >
-                    <TextInput
-                    ref = "1"
-                    onChangeText={(text) => this.setState({ name: text })}
-                    style={styles.input} placeholder="真实姓名"
-                    value={this.state.name}
-                    underlineColorAndroid="transparent"
-                    returnKeyType = 'next'
-                    placeholderTextColor  = '#ccc'
-                    multiline = {false}
-                    maxLength ={4}
-                    />
-                </View>
-                
-                <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee' }} >
-                    <TextInput
-                    ref = "2"
-                    onChangeText={(text) => this.setState({ num: text })}
-                    style={styles.input} placeholder="手机号码"
-                    value={this.state.num}
-                    underlineColorAndroid="transparent"
-                    returnKeyType = 'next'
-                    placeholderTextColor  = '#ccc'
-                    multiline = {false}
-                    maxLength ={11}
-                    />
-                </View>
-                <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee' }} >
-                    <TextInput
-                    ref = "3"
-                    onChangeText={(text) => this.setState({ email: text })}
-                    style={styles.input} placeholder="电子邮箱"
-                    value={this.state.email}
-                    underlineColorAndroid="transparent"
-                    returnKeyType = 'next'
-                    placeholderTextColor  = '#ccc'
-                    multiline = {false}
-                    />
+                <View style={{paddingHorizontal: 16 }}>
+                    <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee' }} >
+                        <TextInput
+                        ref = "1"
+                        onChangeText={(text) => this.setState({ name: text })}
+                        style={styles.input} placeholder="真实姓名"
+                        value={this.state.name}
+                        underlineColorAndroid="transparent"
+                        returnKeyType = 'next'
+                        placeholderTextColor  = '#ccc'
+                        multiline = {false}
+                        maxLength ={4}
+                        />
+                    </View>
+                    
+                    <View style={{ borderBottomWidth: 1, borderBottomColor: '#eeeeee' }} >
+                        <TextInput
+                        ref = "2"
+                        onChangeText={(text) => this.setState({ num: text })}
+                        style={styles.input} placeholder="手机号码"
+                        value={this.state.num}
+                        underlineColorAndroid="transparent"
+                        returnKeyType = 'next'
+                        placeholderTextColor  = '#ccc'
+                        multiline = {false}
+                        maxLength ={11}
+                        />
+                    </View>
                 </View>
                 <TouchableOpacity onPress={this.recommend.bind(this)} style={styles.loginButton}>
                     <Text>保存</Text>
@@ -135,5 +124,11 @@ const styles = StyleSheet.create({
         right:0,
         left: 0,
         height: 44,
+    },
+    input: {
+        height: 40,
+        marginTop: 10,
+        padding: 4,
+        fontSize: 18,
     },
 })

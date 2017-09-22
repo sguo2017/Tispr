@@ -85,19 +85,35 @@ export default class getFriend extends Component {
                         leftIconAction = {()=>this.props.navigator.pop()}
                     />
                 </View>
-                <ScrollView>
-                    <View>
-                        <Text style ={{fontSize:20,alignSelf: 'center'}}>{v.name}</Text>
+                <ScrollView style={{padding:10}}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                        <Image source={{uri:v.avatar}} style={{ width: 72, height: 72, borderRadius: 36}}/>
+                        <View  style={{ flex: 1, justifyContent: 'space-around', marginLeft: 15 }}>
+                            <Text style ={{fontSize:18,color:'#000'}}>{v.name}</Text>
+                            <Text style ={{fontSize:16}}>{v.city}&nbsp;{v.district}</Text>
+                            {
+                                this.state.in_village?
+                                <Text style={{color:global.gColors.buttonColor}}>已加入</Text>:
+                                <Text style={{color:global.gColors.themeColor}}>未加入</Text>
+                            }
+                        </View>
                     </View>
-                    <Text style={{color:'#000',margin:10,fontSize:16}}>社区推荐以下用户</Text>
-                    
+                    <View style={styles.line}></View>
+                    {/*<View style={{marginBottom:20}}>
+                        <Text style={{color:'#000',fontSize:16,lineHeight:30}}>关于</Text>
+                        <Text style={{lineHeight:30}}>来自邻居们的重点推荐</Text>
+                    </View>*/}
+                    <Text style={{color:'#000',fontSize:16}}>来自{v.name}推荐的专业人士</Text>
                     {
                         this.state.user_list.map((data, index)=>{
                             return(
-                                <View key={index} style={{margin:10}}>
+                                <View key={index} style={{marginTop:10}}>
                                     <View style={{flexDirection:'row',alignItems:'center'}}>
                                         <Image source={{uri:data.avatar}} style={{height:50,width:50,borderRadius:25}}/>
-                                        <Text style={{color:'#000',margin:10,fontSize:16}}>{data.name}</Text>
+                                        <View style={{justifyContent:'space-between',marginLeft:10}}>
+                                            <Text style={{color:'#000',fontSize:16}}>{data.name}</Text>
+                                            <Text style={{fontSize:14}}>{data.goods_catalog}</Text>
+                                        </View>
                                     </View>
                                 </View>
                             )
@@ -134,5 +150,11 @@ const styles = StyleSheet.create({
         right:0,
         left: 0,
         height: 44,
+    },
+    line: {
+        flex: 1,
+        height: 1,
+        backgroundColor: '#ddd',
+        marginVertical: 20,
     },
 })

@@ -150,6 +150,7 @@ export default class Register extends Component {
     if (global.user == undefined) {
       global.user = {}
     }
+    
     let address = await UserDefaults.cachedObject(Constant.storeKeys.ADDRESS_COMPONENT);
     global.user.addressComponent = address;
     UserDefaults.clearCachedObject(Constant.storeKeys.ACCESS_TOKEN_TISPR);
@@ -170,7 +171,6 @@ export default class Register extends Component {
             password: this.state.password,
             password_confirmation: this.state.password,
             num: this.state.num,
-            code: this.state.code,
             avatar: Constant.default_img.AVATAR,
             district: global.user.addressComponent.district,
             city: global.user.addressComponent.city,
@@ -304,6 +304,16 @@ export default class Register extends Component {
   };
   //验证邀请码
   validateCode() {
+    if(this.state.password.length<6){
+      Alert.alert(
+        '提示',
+        '密码长度至少要6位',
+        [
+          { text: '确定' },
+        ]
+      );
+      return
+    }
     let url = 'http://' + Constant.url.SERV_API_ADDR + ':' + Constant.url.SERV_API_PORT + Constant.url.SERV_API_VALIDATE_CODE;
     data = { code: this.state.invitationCode }
     util.post(url, data, (result) => {
@@ -707,6 +717,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 5,
     fontSize: 16,
+    color: '#000',
     fontWeight: 'bold',
     textAlign: 'center',
   },
