@@ -140,13 +140,19 @@ class FriendsList extends PureComponent {
                                     null
                                 }
                                 
-                                <Text style={{color: '#000',fontSize:16}}>我的好友</Text>
+                                {/*<Text style={{color: '#000',fontSize:16}}>我的好友</Text>*/}
                                 {MeFriendList.friendList.map((data, index) => {
                                     return (
-                                        <TouchableOpacity key={index} style={{flexDirection:'row',alignItems: 'center',margin:6, paddingHorizontal: 12}}>
-                                            <Image source={{uri: data.avatar}} style={{width:50, height:50, borderRadius:25}}/>
-                                            <Text style={{color:'#000',margin:10,fontSize:16}}>{data.friend_name}</Text>
-                                        </TouchableOpacity>
+                                        <View>
+                                            <View style={styles.line}></View>
+                                            <TouchableOpacity key={index} style={{flexDirection:'row',alignItems: 'center',padding:6, paddingHorizontal: 12,backgroundColor:'#fff'}}>
+                                                <Image source={{uri: data.avatar}} style={{width:50, height:50, borderRadius:25}}/>
+                                                <View>
+                                                    <Text style={{color:'#000',margin:10,fontSize:16}}>{data.friend_name}</Text>
+                                                    <Text style={{marginLeft:10}}>{data.city}&nbsp;{data.district}</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
                                     );
                                 })}
                             </View>
@@ -182,6 +188,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f5f5f5'
+    },
+    line: {
+        flex: 1,
+        height: 1,
+        backgroundColor: '#eee',
     },
 })
 

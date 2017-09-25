@@ -304,6 +304,13 @@ export default class MeInfo extends Component {
             )
           })}
         </ScrollableTabView>
+        {
+          this.props.isBrowseMode && user.status == "00B"?
+          <TouchableOpacity style={styles.loginButton}>
+            <Text style={styles.loginButtonText}>邀请加入</Text>
+          </TouchableOpacity>
+          :null
+        }
       </View>
     );
   }
@@ -342,4 +349,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  loginButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: global.gColors.buttonColor,
+    position: 'absolute',
+    bottom: 10,
+    right: 0,
+    left: 0,
+    height: 44,
+  },
+  loginButtonText:{
+    color:'#fff'
+  }
 });

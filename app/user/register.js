@@ -474,7 +474,7 @@ export default class Register extends Component {
                 secureTextEntry={this.state.seePassword}
                 multiline={false}
                 onSubmitEditing={() => { if (this.state.isEmail && this.state.name && this.state.password) { this.setState({ firstPage: false }); } }}
-                onBlur={() => { if (this.state.password) { this.setState({ passwordValid: true }) } else { this.setState({ passwordValid: false }) } }}
+                onBlur={() => { if (this.state.password.length>6) { this.setState({ passwordValid: true }) } else { this.setState({ passwordValid: false }) } }}
               />
             </View>
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={() => this.setState({ seePassword: !this.state.seePassword })}>

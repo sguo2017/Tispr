@@ -107,36 +107,39 @@ class CustomersList extends PureComponent {
                     >
                         <View style={styles.contentContainer}>
                             <View style={{ flex: 1 }}>
-                                <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
+                                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                                    <Text style={{color: '#000',fontSize:16}}>我的客户</Text>
                                     <Text style={{color: global.gColors.themeColor,fontSize:16}} onPress={this.recommendUser.bind(this)}>
                                     添加客户
-                                </Text>
+                                    </Text>
                                 </View>
-                                <Text style={{color: '#000',fontSize:16}}>我的客户</Text>
                                 {MeCustomerList.customerList.map((data, index) => {
                                     return (
-                                        <View key={index} style={{flexDirection:'row',justifyContent:'space-between',alignItems: 'center',margin:6, paddingHorizontal: 12}}>
-                                            <View style={{flexDirection:'row',alignItems:'center'}}>
-                                                <Image source={{uri: data.avatar}} style={{width:50, height:50, borderRadius:25}}/>
-                                                <View>
-                                                    <Text style={{color:'#000',marginLeft:10,fontSize:16}}>{data.friend_name}</Text>
-                                                    {
-                                                         data.status == "unregistered"?
-                                                        <Text style={{marginLeft:10}}>还未加入奇客</Text>
-                                                        :null
-                                                    }
+                                        <View key={index}>
+                                            <View style={styles.line}></View>
+                                            <View  style={{flexDirection:'row',justifyContent:'space-between',alignItems: 'center',padding:6, paddingHorizontal: 12,backgroundColor:'#fff'}}>
+                                                <View style={{flexDirection:'row',alignItems:'center'}}>
+                                                    <Image source={{uri: data.avatar}} style={{width:50, height:50, borderRadius:25}}/>
+                                                    <View>
+                                                        <Text style={{color:'#000',marginLeft:10,fontSize:16}}>{data.friend_name}</Text>
+                                                        {
+                                                            data.status == "unregistered"?
+                                                            <Text style={{marginLeft:10}}>还未加入奇客</Text>
+                                                            :null
+                                                        }
+                                                    </View>
                                                 </View>
+                                                {
+                                                    data.status == "unregistered"?
+                                                    <TouchableOpacity
+                                                    onPress={this.openSms.bind(this, data.friend_num)}
+                                                    style={{backgroundColor:global.gColors.buttonColor,padding:8,borderRadius:8,width:80,alignItems:'center'}}>
+                                                        <Text style={{color:'#fff',fontSize:16}}
+                                                        >邀请</Text>
+                                                    </TouchableOpacity>
+                                                    :null
+                                                }
                                             </View>
-                                            {
-                                                data.status == "unregistered"?
-                                                <TouchableOpacity
-                                                 onPress={this.openSms.bind(this, data.friend_num)}
-                                                 style={{backgroundColor:global.gColors.buttonColor,padding:8,borderRadius:8,width:80,alignItems:'center'}}>
-                                                    <Text style={{color:'#fff',fontSize:16}}
-                                                    >邀请</Text>
-                                                </TouchableOpacity>
-                                                :null
-                                            }
                                         </View>
                                     );
                                 })}
@@ -173,6 +176,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f5f5f5'
+    },
+    line: {
+        flex: 1,
+        height: 1,
+        backgroundColor: '#eee',
     },
 })
 
