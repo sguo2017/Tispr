@@ -215,7 +215,6 @@ export default class ServOfferList extends Component {
             console.log(this.props.exploreparams)
             if(ServOfferList.changeLevel && ServOfferList.qry_level< 6){
                 dispatch(fetchExploreList(ServOfferList.qry_level + 1, 1 , this.props.exploreparams, this.props.navigator));
-         
             }else{
                 dispatch(fetchExploreList(ServOfferList.qry_level, ServOfferList.page + 1, this.props.exploreparams, this.props.navigator));
             }
@@ -373,7 +372,7 @@ export default class ServOfferList extends Component {
                     >
                         {
                             rList[0] ?
-                                <View style={{ padding: 8 }}>
+                                <View style={{ margin: 8,padding:8 ,borderColor:'#888', borderWidth:1}}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 30 }}>
                                         <Text style={{ color: 'black', fontSize: 16 }}>我的推荐</Text>
                                         <TouchableOpacity onPress={this.recommendUser.bind(this)}>

@@ -186,6 +186,30 @@ export default class MeInfo extends Component {
       console.log(107)
     }
   }
+  sendMessage(num){
+    let message = "快来加入为邻吧"
+    Linking.canOpenURL(`sms:${num}`).then(supported => {
+    if (!supported) {
+        Alert.alert(
+        '提示',
+        '无法打开短信',
+        [
+            { text: '确定', onPress: null },
+        ]
+        )
+    } else {
+        Linking.openURL((`sms:${num}?body=${message}`) )
+    }
+    }).catch(err => {
+        Alert.alert(
+            null,
+            '出错了',
+            [
+            { text: '确定', onPress: null },
+            ]
+        );
+    });
+  }
   render() {
     let titles;
     let controllers;
@@ -306,7 +330,7 @@ export default class MeInfo extends Component {
         </ScrollableTabView>
         {
           this.props.isBrowseMode && user.status == "00B"?
-          <TouchableOpacity style={styles.loginButton}>
+          <TouchableOpacity style={styles.loginButton} onPress={this.sendMessage(this.state.phoneNum)}>
             <Text style={styles.loginButtonText}>邀请加入</Text>
           </TouchableOpacity>
           :null
