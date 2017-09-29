@@ -208,6 +208,9 @@ export default class ServOfferConfirm extends Component {
                         goods_catalog_id: this.state.serv_offer.goods_catalogs_id,
                         via: this.state.serv_offer.via,
                         range: this.state.serv_offer.range,
+                        change_price: this.state.serv_offer.change_price,
+                        price: this.state.serv_offer.price,
+                        unit: this.state.serv_offer.unit
                     }
                 })
             });
@@ -348,6 +351,17 @@ export default class ServOfferConfirm extends Component {
                         <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b-zanshi-xl.png')} />
                         <View style={styles.rowTextView}>
                             <Text style={styles.contentText}>{this.state.serv_offer.serv_detail}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.rowView}>
+                        <Image style={{ width: 20, height: 20, alignSelf: 'center' }} source={require('../../resource/b-zanshi-xl.png')} />
+                        <View style={styles.rowTextView}>
+                            {
+                                this.state.serv_offer.change_price?
+                                <Text style={styles.contentText}>浮动报价</Text>:
+                                <Text style={styles.contentText}>{this.state.serv_offer.price}元/{this.state.serv_offer.unit}</Text>
+                            }
                         </View>
                     </View>
 

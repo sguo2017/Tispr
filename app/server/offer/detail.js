@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import Header from '../../components/HomeNavigation';
 import AutoTextInput from '../../components/AutoTextInput';
-import ServOfferDelivory from './delivory';
+import ServOfferPrice from './price';
 
 export default class ServOfferDetail extends Component {
     constructor(props) {
@@ -46,8 +46,8 @@ export default class ServOfferDetail extends Component {
             const dismissKeyboard = require('dismissKeyboard'); 
             dismissKeyboard();
             navigator.push({　　//navigator.push 传入name和你想要跳的组件页面
-                name: "ServOfferDelivory",
-                component: ServOfferDelivory,
+                name: "ServOfferPrice",
+                component: ServOfferPrice,
                 passProps: {
                     serv_offer: this.state.serv_offer,
                     getdata: (offer)=>{
