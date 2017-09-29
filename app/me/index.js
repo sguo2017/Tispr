@@ -47,6 +47,7 @@ export default class MeInfo extends Component {
       phoneNum: global.user.num,
       friend_status: '',
       f_id: '',
+      show_all: false
     }
   }
 
@@ -280,7 +281,12 @@ export default class MeInfo extends Component {
           </View>
           
           <View style={{flexDirection: 'row', justifyContent:'space-between',margin:6 }}>
-            <Text style={styles.text}>{this.state.info}</Text>
+            {
+              this.state.show_all?<Text style={styles.text} >{this.state.info}</Text>:
+              <Text style={styles.text} numberOfLines={2}>{this.state.info}</Text>
+            }
+            
+            <TouchableOpacity onPress={()=>this.setState({show_all:!this.state.show_all})}><Text>hi</Text></TouchableOpacity>
             {
               this.props.isBrowseMode?
               (this.state.friend_status == 'created'?
